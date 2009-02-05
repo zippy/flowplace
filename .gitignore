@@ -6,6 +6,7 @@ doc/app
 doc/plugins
 public/cache/**/*
 *.sqlite3.db
+*.sqlite3
 *-bak.*
 db/schema.rb
 config/database.yml
