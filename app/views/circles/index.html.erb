@@ -1,0 +1,21 @@
+<% @title='Circle' %>
+
+<h3>Circles</h3>
+
+<%= link_to 'New circle', new_circle_path %>
+
+<table>
+  <tr>
+    <th>Name</th>
+  </tr>
+
+<% for circle in @circles %>
+  <tr>
+    <td><%=h circle.name %></td>
+    <td><%= link_to 'Show', circle %></td>
+    <td><%= link_to 'Edit', edit_circle_path(circle) %></td>
+    <td><%= link_to 'Destroy', circle, :confirm => 'Are you sure?', :method => :delete %></td>
+  </tr>
+<% end %>
+</table>
+

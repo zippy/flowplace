@@ -1,0 +1,46 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
+        "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+<head>
+  	<meta http-equiv="content-type" content="text/html;charset=UTF-8" />
+	<title>MANA Statistics Project<%= @title ? ": #{@title}" : '' %></title>
+	  <%= stylesheet_link_tag 'mana' %>
+	  <%= javascript_include_tag :defaults %>
+</head>
+<%= %Q*<body id="email_form" #{"class='enlargeFont'" if current_user.has_preference('enlargeFont')}>* %>
+<% if @processed %>
+<% if @delivery_failed %>
+    <p><b>There was a problem and your message could not be sent. Error: <%@delivery_failed.inspect%><p><b>
+<% else %>
+    <p><b>Your message has been sent.</b></p>
+<% end %>
+<p><input type="button" name="_Submit2" value="Close window" onclick="window.close()"></p>
+<% else %>
+<p><b>Send an e-mail message to <%= @to_name %></b></p>
+<% form_tag process_email_user_url,:method => :put do -%>
+<p><label>From:</label><%= @from_email %></p>
+<p>
+    <%if @to_error %><span class="errortext">To is required</span><br/><%end%>
+    <%if @to_error_bad_format %><span class="errortext">E-mail address format is invalid</span><br/><%end%>
+    <label>To:</label> 
+    <%= text_field_tag :to_email,@to_email,:size=>65, :maxlength=>70%> 
+</p>
+<p><label>Subject:</label> <%= text_field_tag :subject,@subject,:size=>65, :maxlength=>70%></p>
+<p>
+    <%if @body_error %> <span class="errortext">Body is required</span><br/><%end%>
+    <label>Body:</label>
+	<%= text_area_tag :body, @body, :rows=>17, :cols=>63, :wrap=>"virtual"%>
+</p>
+<p id="buttons">
+    <%= submit_tag 'Send message' %>&nbsp;&nbsp;&nbsp;&nbsp;
+    <input type="reset" name="_Submit2" value="Reset message">&nbsp;&nbsp;&nbsp;&nbsp;
+    <input type="button" name="_Submit2" value="Close window" onclick="window.close()">
+</p>
+<% end -%>
+<% end -%>
+
+<div id="footer">
+	<span class="float_left">Web site copy-left</span>
+</div>
+</body>
+</html>

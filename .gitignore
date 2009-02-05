@@ -1,0 +1,13 @@
+log/*.log
+log/call_graph.html
+tmp/**/*
+doc/api
+doc/app
+doc/plugins
+public/cache/**/*
+*.sqlite3.db
+*-bak.*
+db/schema.rb
+config/database.yml
+tsestate.kbd
+.DS_Store

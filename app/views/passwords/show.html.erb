@@ -1,0 +1,39 @@
+<% @title = 'Reset Your Password' %>
+<% form_tag(update_passwords_path, :method=>:put) do -%>
+  <fieldset>
+    <legend><% if @user_name %> Reset password for <%= @user_name %> <% else %>Reset Your Password<% end %></legend>
+
+    <% unless @reset_error.blank? -%>
+      <div class="formError">
+        <p><%= h(@reset_error) %></p>
+      </div>
+    <% end -%>
+
+		<% if @user_name %>
+	  	<%= hidden_field_tag(:login,@user_name) %>
+	  	<%= hidden_field_tag(:user_name,@user_name) %>
+		<% else %>
+    <p>
+      <label for="login"><%=Bolt::Config.user_name_label%></label>
+      <%= text_field_tag(:login) %>
+    </p>
+		<% end %>
+
+    <p>
+      <label for="id">Reset Code:</label>
+      <%= text_field_tag(:id,params[:id],:size => 35) %>
+    </p>
+        
+    <p>
+      <label for="password">Choose a New Password:</label>
+      <%= password_field_tag(:password) %>
+    </p>
+    
+    <p>
+      <label for="confirmation">Confirm New Password:</label>
+      <%= password_field_tag(:confirmation) %>
+    </p>
+
+    <%= submit_tag('Reset Password') %>
+  </fieldset>
+<% end -%>

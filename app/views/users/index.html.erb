@@ -1,0 +1,76 @@
+<% @title='Accounts' %>
+
+<h3>Account Administration</h3>
+
+<% if current_user.can?(:createAccounts) %>
+	<%= link_to 'Add a new account', new_user_url %>
+<p>
+<% end %>
+<% 
+#Get data ready for search form:
+order_choices = [['Name','n'],
+                 ['Account name','a'],
+                 ['Account ID','i'],
+                 ['Type','t']]
+select_options = {
+    'main' => [['Full name contains','m_c'],
+		       ['Full name begins with','m_b'],
+		       ['Account name contains','a_c'],
+		       ['Account name begins with','a_b'],
+		       ['E-mail contains','e_c'],
+		       ['E-mail begins with','e_b'],
+		       ['State/province abbrev. is', 's_is'],
+		       ['Notes contain','n_c'],
+		       ['Show all','all']]
+						}
+form_pair_info = [{:name => "main", :on => :select, :for => :text_field, :first_focus => true}]
+if current_user.can?(:admin)
+    form_pair_info << {:sql => '', :label => 'Add optional SQL AND '}
+end
+form_tag('/users',:method => :get) do %>
+    <%= get_search_form_html(order_choices,form_pair_info,select_options) %>
+<% end %>
+
+<% if !@search_params.empty? %>
+<% if @users.empty? %>
+    <p><i>No accounts found</i></p>
+<% else %>
+    <p><i><%= @search_params[:paginate]=='yes' ? page_entries_info(@users).gsub('users','accounts') : "Displaying <b>all #{@users.size}</b> accounts" %></i></p>
+<% end %>    
+<% end %>
+
+<% for i in @users %>
+	<hr>
+ 
+	<%= i.user_name %>&nbsp;	<%= link_to '[edit account]', edit_user_url(:id => i.id) %>
+
+
+	<% if current_user.can?(:admin) %> &nbsp;<%= link_to '[sign in as]', login_as_user_url(i.id) %>
+	 <% unless i.activated? %>(not active)<% end %>
+	<br>
+	 Full Name: <%= i.full_name %><% end %>
+	<br>
+	<% if i.email? %><%= i.email %> 
+	<a href="#" onClick="window.open('<%= email_user_url(i.id) %>','email',config='menubar=1,scrollbars=1,height=500,width=675,resizable=1');">[send e-mail]</a>
+	/ <% end %><%= i.phone %> <% if i.phone2 %> or <%= i.phone2 %><% end %>
+	<br />
+	<%if i.address1? %>
+	<%= i.address1 %>, <% if i.address2? %><%= i.address2 %>, <% end %><%= i.city %>,  <%= i.state %>  <%= i.zip %>  <%= i.country %>
+	<br /> 
+	<% end %>
+
+	<% if current_user.can?(:admin) %>
+		<% perms = (i.privs.empty?) ? '<i>none</i>' : i.privs.join(", ") 
+		if current_user.can?(:assignPrivs) %>
+			<%= link_to 'Privileges:', permissions_user_url(i.id) %>
+		<% else %>
+			<%= 'Privileges:' %>
+		<% end %>
+		<%= perms %>
+		<br />
+	<% end %>
+
+	<% if i.notes %>Notes: <%= i.notes %><% end %>
+<% end %>
+<%= will_paginate @users if @search_params[:paginate]=='yes' && !@users.empty? %>
+

@@ -1,0 +1,28 @@
+<p>
+  <b>Title:</b>
+  <%=h @weal.title %>
+</p>
+
+<p>
+  <b>Phase:</b>
+  <%=h @weal.phase %>
+</p>
+
+<p>
+  <b>Description:</b>
+  <%=h @weal.description %>
+</p>
+
+<p>
+  <b>Requester:</b>
+  <%= render_name(:requester,@weal) %>
+</p>
+
+<p>
+  <b>Fulfiller:</b>
+  <%=render_name(:fulfiller,@weal) %>
+</p>
+
+
+<%= link_to 'Edit', edit_weal_path(@weal) %> |
+<%= link_to 'Back', weals_path %>

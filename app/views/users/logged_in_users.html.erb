@@ -1,0 +1,24 @@
+<% @title = 'Currently Logged In Users' %>
+
+<table class="bordered valign" border="1" cellspacing="0" cellpadding="4">
+<tr>
+<th class="bordered">Account Name</th>
+<th class="bordered">Name</th>
+<th class="bordered">Email</th>
+<th class="bordered">Phone</th>
+<th class="bordered">Time Since Last Action</th>
+</tr>
+<% @logged_in_users.each do |user|
+	u = user[:user]
+	 %>
+<tr>
+	<td class="bordered"><%= link_to u.user_name, "/users/#{u.id}/edit" %></td>
+	<td class="bordered"><%= u.full_name %></td>
+	<td class="bordered"><%= u.email %></td>
+	<td class="bordered"><%= u.phone %></td>
+	<td class="bordered"><%= user[:last_action_humanized] %></td>
+</tr>	
+<% end %>
+</table>
+
+

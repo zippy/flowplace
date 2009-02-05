@@ -1,0 +1,30 @@
+table {
+	border-width: 0px;
+	border-spacing: 0px;
+	border-collapse: collapse;
+}
+
+td {
+	border: none;
+}
+
+th {
+	font-weight: bold;
+	color: #000066;
+	padding: 2px;
+}
+
+table.bordered {
+	border: 1px #000066 solid; 
+	border-collapse: collapse;
+}
+thead {display: table-header-group;} 
+td.bordered {
+	border: 1px #000066 solid; 
+	padding: 3px;
+}
+
+th.bordered {
+	border: 1px #000066 solid; 
+	padding: 3px;
+}

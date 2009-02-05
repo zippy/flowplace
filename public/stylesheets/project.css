@@ -1,0 +1,272 @@
+
+/*  	Default Projcet CSS      */
+
+
+/* ---------LAYOUT---------- */
+
+body {
+	background-color:  #FFFFFF;
+}
+
+#entire_page {
+	margin:  0 auto 0 0;
+	width: 950px ;
+}
+
+#sideNav {
+	float:left;
+	width: 110px;
+	height: 200px;
+	padding: 0px 3px 3px 5px;
+}
+
+#header {
+	float:left;
+	height: 70px;
+	width: 800px;
+	color: #A3B15A;
+	font-weight: bold;
+	font-size: 14pt;	
+	font-family: Verdana,Arial,sans serif;
+	margin-left: 40px;
+	margin-top:  20px;
+	margin-bottom: 10px;
+}
+#header p {
+	float:left;
+}
+#header img {
+	float:right;
+}
+
+#page_content {
+	float:left;
+	width: 800px;
+	margin-left:40px;
+	
+}
+#footer {
+	margin-top: 10px;
+	float:right;
+	font-size: .8em;
+	width: 800px;
+}
+#email_form #footer {
+	margin-top: 30px;
+	float:left;
+}
+#email_form label {
+	width: 60px;
+	float:left;
+}
+#email_form #buttons {
+	margin-left: 60px;
+}
+#notice {
+	border: 1px solid #000066;
+	padding: 4px;
+	margin-bottom: 10px;
+	background-color: #A3B15A;
+}
+
+#tip {
+	background-color: #A399FF;
+	border: 2px solid #000066;
+	padding: 4px;
+	margin-bottom: 10px;
+}
+
+fieldset {
+	border: 1px solid #777;
+	margin:0em 0em 0em 0em;
+	padding:0px 10px 0px 10px;
+	display:inline;
+}
+/* ---------- Fieldset (used in login) --------- */
+#log_in_content fieldset label {
+	display:block;
+	float:left;
+	margin-right:0.5em;
+	text-align:right;
+	width:8em;
+}
+
+fieldset p {
+	margin: 2px;
+}
+
+.field_label {
+	vertical-align: top;
+}
+
+/* ----------COLORS AND TEXT STYLES---------- */
+
+body {
+	font-family: Verdana,Arial,sans serif;
+	font-size: 10pt;
+	line-height: 1.2em;
+	color: #000066;
+	margin: 0 0 0 10px;
+/* temporary right margin for work on form; should be 0 */
+
+	background-image: url("/images/background.gif");
+  	background-repeat: no-repeat;	
+ }
+body.enlargeFont {
+	font-size: 12pt;
+}
+body#email_form {
+	background-image: none;
+}
+
+a:link    {color: #3333CC;}
+a:active  {color: #6666FF;}
+a:visited {color: #333399;}
+
+
+#footer p {
+	font-size: .8em;
+	text-align: center;
+}
+
+.float_right {
+	float: right;
+	clear:both;
+}
+.float_left {
+	float: left;
+	clear:both;
+}
+.clear {
+	clear:both;
+}
+
+.endnote {
+	font-size: .8em;
+	line-height: .8em;
+	vertical-align: top;
+}
+
+
+.smalltext {
+	font-size: .8em;
+}
+
+.submit_button {
+	margin-top: 10px;
+}
+
+	/* ----------NAVIGATION TEXT---------- */
+
+
+#sideNav {
+	font-size: 9pt;
+	margin:0px 0px 0px 0px;
+	padding:0px;
+}
+
+#sideNav p {
+	line-height:1.3em;
+	margin: 0px 0px 5px 0px;
+}
+	
+#sideNav a:link {
+	color: #000066;
+	text-decoration: none;
+	}
+
+#sideNav a:active {
+	color: #660099;
+	}
+
+#sideNav a:visited {
+	color: #000066;
+	text-decoration: none;
+	}
+	
+#sideNav a:hover {
+	color: white;
+	text-decoration: none;
+	border-color: #70787F;
+	}
+	
+/* ----------HIERARCHICAL LIST---------- */
+ul.item_list {
+	padding: 0px 0px 0px 0px;
+	margin-top:0em; margin-bottom:0em; margin-left:0em; margin-right:0em; list-style:none;
+	} 
+
+li.item {
+}
+
+/* --------------TAG CLOUT ---------------------*/
+#intention_tag_cloud {
+	float: right;
+	border: 1px solid #000066;
+	padding: 4px;
+	width: 300px;
+	margin-bottom: 10px;
+}
+.css1 { font-size: 1.0em; }
+.css2 { font-size: 1.2em; }
+.css3 { font-size: 1.4em; }
+.css4 { font-size: 1.6em; }
+
+/* ----------NOT SURE WHAT THESE ARE FOR---------- */
+
+fieldset.admin {
+	padding: 10px 10px 10px 10px;
+	background-color: #EEEEEE;
+	line-height: .5em;
+}
+
+.emphasize {
+	font-weight:bold;
+}
+
+.no_border {
+	border:none;
+}
+
+fieldset.search_box {
+	padding-top: 5px;	
+	padding-bottom: 5px;
+}
+fieldset.search_box p {
+	margin-top: 5px;
+	margin-bottom: 5px;
+}
+img.clickable {
+	cursor:pointer;
+}
+
+.pagination {
+	margin-top: 20px;
+	text-align: center;
+}
+
+.inline_area .question {
+	display:inline;
+}
+
+.small_text {
+	font-size: 86%;
+}
+
+.centered_text {
+	width: 600px;
+	margin: 20px auto 0 auto;
+}
+.centered_text.short {
+	width: 170px;
+	margin: 10px auto 0 auto;
+}
+
+.stats_filters td {
+	padding: 5px;
+	padding-top: 8px;
+}
+
+#hide_me_with_css {
+	display: none;
+}

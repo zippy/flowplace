@@ -1,0 +1,47 @@
+<% @title='Sign In' %>
+<%=  javascript_tag <<-'EOJS'
+	var visitortime = new Date();
+	var timelocal_cookie;
+	var timezone_offset_cookie;
+	timelocal_cookie = visitortime.toString();
+	timezone_offset_cookie = visitortime.getTimezoneOffset() * 60;
+	visitortime.setDate(visitortime.getDate() + 1);
+	set_cookie('timezoneOffset',timezone_offset_cookie,visitortime);
+	set_cookie('timeLocal',timelocal_cookie,visitortime);
+	
+	function set_cookie(name,value,exp) {
+		document.cookie = name+'='+value+'; expires='+exp.toUTCString()+'; path=/';
+	}      
+EOJS
+%>
+<div id="log_in_content" class="bottom_margin_10">
+Welcome to the Project!  
+<P>
+
+<% unless @login_error.blank? %>
+<p class="errortext">Either we don't have an account with that name, or you've entered the wrong password.  Please try again.  (Remember that uppercase and lowercase matter in your password.  Make sure your Caps Lock is not on.)</p>
+<% end %> 
+
+<fieldset>
+<legend>Please sign in</legend>
+<% form_tag('/sessions') do -%>
+    <p>
+      <label for="login">Account Name:</label>
+ 	  <%= text_field_tag :login, nil, :class => 'first_focus' %>   
+    </p>
+    <p>
+      <label for="password">Password:</label>
+      <%= password_field_tag(:password) %>
+    </p>
+	<p>
+	  <label for="commit">&nbsp;</label>
+	  <%= submit_tag('Log in') %>
+	</p>
+<p class="smalltext">
+	<%= link_to 'Forgot your account name or password?', forgot_passwords_url%>
+	<br />
+</p>
+ <% end -%>
+</fieldset>
+</div>
+

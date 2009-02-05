@@ -1,0 +1,42 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
+        "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+<head>
+  	<meta http-equiv="content-type" content="text/html;charset=UTF-8" />
+	<title>The Project<%= @title ? ": #{@title}" : '' %></title>
+	
+	  <%= stylesheet_link_tag 'project', :media => "all" %>
+	  <%= stylesheet_link_tag 'table', :media => "screen" %>
+	  <%= stylesheet_link_tag 'project-print', :media => "print" %>
+	  <%= javascript_include_tag :defaults %>
+</head>
+<%= %Q*<body #{"class='enlargeFont'" if current_user.has_preference('enlargeFont')}>* %>
+<div id="entire_page">
+
+<%= render(:partial => 'shared/nav') %>
+<div id="header">
+	<p>The Project</p>
+</div>
+<div id="page_content">
+<%if flash[:notice] %><div id='notice'><%=notice(flash[:notice],flash[:notice_param])%></div><%end%>
+<%= yield  %>
+</div>
+<div id="footer">
+	<span class="float_left">The contents of this web-site are copy-left!</span>
+	<% if logged_in? %>
+		<span class="float_right">&nbsp;Logged in as: <%= current_user.full_name %>&nbsp;</span>
+	<% end %>
+</div>
+
+</div>
+<iframe style="height:0px;width:0px;visibility:hidden" src="about:blank">
+	This frame prevents back forward cache in Safari.
+</iframe>
+<%= 
+javascript_tag <<-EOJS
+var first_focus = $$('.first_focus');
+if (first_focus.length > 0) {first_focus[0].focus()};
+EOJS
+%>
+</body>
+</html>

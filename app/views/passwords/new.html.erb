@@ -1,0 +1,39 @@
+<% @title='Password Change' %>
+<h3>
+<% if @user.id != current_user.id%>
+Change Password for <%= @user.public_name %>
+<% else %>
+Change Your Password
+<% end %>
+</h3>
+
+<% unless @password_error.blank? -%>
+    <p class="errortext"><%= h(@password_error) %></p>
+<% end -%>
+
+<% if @account && @account.errors.empty? %> 
+Your password has been changed.
+<p>
+<font class="smalltext">(Remember that passwords are case-sensitive: uppercase and lowercase make a difference.  And if you ever forget your password, you can use the link on the 
+log-in page to request that we send it to you.)</font>
+<% else %>
+
+<% form_tag(passwords_path) do -%>
+<table cellpadding=2 border=0 width=400>
+<tr>
+<td colspan=2>To change your password please confirm your current password:</td>
+<tr>
+<td colspan=2>
+<%= password_field_tag(:current)%>
+</td></tr>
+<tr><td>New Password:</td><td><%= password_field_tag(:password)%></td></tr>
+<tr><td>Confirm New Password:</td><td><%= password_field_tag(:confirmation)%></td></tr>
+<tr><td colspan="2"><span class="smalltext">
+To keep your account safe from people or software programs that might try to guess your password, we suggest you use a password that 1) is not a word found in the dictionary; 2) is more than 5 characters long; and 3) includes at least one number.  Also, passwords are case-sensitive: uppercase and lowercase make a difference.</span></td></tr>
+<td>
+<%= submit_tag "Change Password" %>
+</td></tr>
+</table>
+<% end -%>
+<% end %>
+

@@ -1,0 +1,19 @@
+.home_title {
+	margin-top: 10px;
+	margin-bottom: 2px;
+}
+.home_explanation {
+	margin-left: 30px;
+}
+
+.home_note {
+	font-style: italic;
+}
+
+#home_content ul {
+	margin-top:5px;						
+}
+
+.ul_with_form li {
+	margin-bottom:4px;
+}

@@ -1,0 +1,24 @@
+<% @title='Currencies' %>
+
+<h3>Currencies</h3>
+
+<table>
+  <tr>
+    <th>Name</th>
+    <th>Scope</th>
+  </tr>
+
+<% for currency in @currencies %>
+  <tr>
+    <td><%=h currency.name %></td>
+    <td><%=h currency.circle ? currency.circle.name : '' %> <%= currency.global ? ' Global' : ''%> </td>
+    <td><%= link_to 'Show', currency %></td>
+    <td><%= link_to 'Edit', edit_currency_path(currency) %></td>
+    <td><%= link_to 'Destroy', currency, :confirm => 'Are you sure?', :method => :delete %></td>
+  </tr>
+<% end %>
+</table>
+
+<br />
+
+<%= link_to 'New currency', new_currency_path %>

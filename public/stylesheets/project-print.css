@@ -1,0 +1,28 @@
+body {
+    background-image: none
+}
+
+#header img {
+	width: 0;
+	height: 0;
+}
+
+#sideNav {
+	width: 0;
+	height: 0;
+	display: none;
+}
+
+#footer {
+	margin-top: 20px;
+}
+
+input {
+	display: none;
+	height: 0px;
+	width: 0px;
+}
+
+td, label, span.label {
+	padding-right: 8px;
+}

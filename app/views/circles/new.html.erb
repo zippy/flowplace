@@ -1,0 +1,17 @@
+<% @title='New Circle' %>
+
+<h3>New Circle</h3>
+
+<% form_for(@circle) do |f| %>
+  <%= f.error_messages %>
+
+  <p>
+    <%= f.label :name %><br />
+    <%= f.text_field :name %>
+  </p>
+  <p>
+    <%= f.submit "Create" %>
+  </p>
+<% end %>
+
+<%= link_to 'Back', circles_path %>

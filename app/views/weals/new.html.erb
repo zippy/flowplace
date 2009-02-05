@@ -1,0 +1,10 @@
+<% @title='Place Intention' %>
+
+<h3>Place Intention</h3>
+
+<% form_for(@weal) do |f| %>
+ 	<%= render(:partial => 'f', :object => f) %>
+  <p>
+    <%= f.submit "Place" %>
+  </p>
+<% end %>

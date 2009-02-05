@@ -1,0 +1,23 @@
+<h3>Contact Information</h3>
+
+<%= error_messages_for :user %>
+
+<% form_for(:user, :url => set_contact_info_user_url(@user), :html => { :method => :put }) do |f| %>
+
+<table>
+<tr><td align="left">First name: </td><td><%= f.text_field(:first_name) %></td></tr>
+<tr><td align="left">Last name: </td><td><%= f.text_field(:last_name) %></td></tr>
+<tr><td align="left">E-mail: </td><td><%= f.text_field(:email) %></td></tr>
+<tr><td align="left">Phone: </td><td><%= f.text_field(:phone) %></td></tr>
+<tr><td align="left">Phone 2: </td><td><%= f.text_field(:phone2) %></td></tr>
+<tr><td align="left">Address 1: </td><td><%= f.text_field(:address1) %></td></tr>
+<tr><td align="left">Address 2: </td><td><%= f.text_field(:address2) %></td></tr>
+<tr><td align="left">City: </td><td><%= f.text_field(:city) %></td></tr>
+<tr><td align="left">State: </td><td><%= f.text_field(:state) %></td></tr>
+<tr><td align="left">Zip/Postal Code: </td><td><%= f.text_field(:zip) %></td></tr>
+<tr><td align="left">Country: </td><td><%= f.text_field(:country) %></td></tr>
+<% if current_user.can?(:admin) %><tr><td align="left">TimeZone: </td><td><%= f.time_zone_select(:time_zone, ActiveSupport::TimeZone.us_zones,:include_blank => true) %></tr><% end %>
+</table>
+<P>
+<%= submit_tag "Update" %>
+<% end -%>

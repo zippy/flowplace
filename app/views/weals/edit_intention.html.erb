@@ -1,0 +1,12 @@
+<% @title='Edit Intention' %>
+
+<h3>Edit Intention</h3>
+<% form_for(@weal) do |f| %>
+	<%= render(:partial => 'f', :object => f) %>
+
+  <p>
+    <%= f.submit "Update" %>
+  </p>
+<% end %>
+
+<%= link_to 'Back', intentions_path %>

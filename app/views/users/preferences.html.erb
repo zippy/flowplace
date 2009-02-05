@@ -1,0 +1,29 @@
+<% @title='Preferences' %>
+<h3>
+<% if @user.id != current_user.id%>
+Account and Preferences for <%= @user.public_name %>
+<% else %>
+Your Account and Your Preferences
+<% end %>
+</h3>
+          
+<% form_tag(set_preferences_user_url(@user.id),:method => :put) do -%>
+ 	<%= [
+	['terse','I know how the site works now.  Hide the long-winded instructions.'],
+	['enlargeFont', 'I don\'t like to squint.  Use a larger font size.']
+	].collect {|p| check_box_tag("prefs[#{p[0]}]", value = 1, checked = @preferences.include?(p[0])) << " " << p[1]}.join("<br />")
+	-%>
+<p>
+
+<%= submit_tag "Set Preferences" %>
+<% end -%>
+<p>
+<br />
+<%= link_to 'Review/change your contact information', contact_info_user_url(@user.id)%>
+<p>
+<%= link_to 'Change your password', passwords_url%>
+
+
+<!--removed this preference: 
+  ['boxesClosed','I know the contents of the Yes/No expanding boxes in the data form. Display them closed unless I choose Yes.' ],
+-->

@@ -1,0 +1,50 @@
+<% @title='Edit Account' %>
+<h3>Account Info</h3>
+<P>
+	
+<%= error_messages_for :user %>
+
+<% form_for(:user, :url => user_path(@user), :html => { :method => :put }) do |f| %>
+
+	<% if current_user.can?(:createAccounts) %>
+	<table  border="0" cellspacing="0" cellpadding="0">
+	<tr><td>
+	<fieldset style=padding:5px>
+
+	<p>Last signed in: <% if @user.last_login_ip? %> <%= localize_time(@user.last_login) %> from <%= @user.last_login_ip %> <%else%> <i>never signed in</i><% end %></p>
+	<p>Created: <%= localize_time(@user.created_at) %>
+	</p>
+
+	<% if current_user.can?(:createAccounts) %>
+		<% if current_user.can?(:admin) %>
+			<p>
+			<%= link_to 'Delete this account', user_url(@user), :method => :delete, :confirm => "Are you sure you want to delete this account?"%></p>
+		<% end %>
+	<% else %>
+	<% end %>
+
+	</fieldset>
+	</td></tr></table>
+	<br>
+	<% end %>
+
+	<b>Account Name:</b> <%= @user.user_name %>
+
+	<p>
+	<b>Status:</b> 
+	<% case
+		when @user.deactivated?%>
+		This account has not yet been activated.
+	<% when @user.activation_pending? %>
+		An activation e-mail was sent out for this account.
+	<% when @user.activated? %>
+		This is an activated account.
+	<% end %>
+	</p>
+
+  <%= render(:partial => 'form', :object => f) %>
+
+  <p>
+    <%= submit_tag "Update" %>
+  </p>
+<% end %>
