@@ -207,9 +207,9 @@ li.item {
 	width: 300px;
 	margin-bottom: 10px;
 }
-.css1 { font-size: 1.0em; }
-.css2 { font-size: 1.2em; }
-.css3 { font-size: 1.4em; }
+.css1 { font-size: .7em;}
+.css2 { font-size: 1.0em; }
+.css3 { font-size: 1.3em; }
 .css4 { font-size: 1.6em; }
 
 /* ----------NOT SURE WHAT THESE ARE FOR---------- */
