@@ -1,0 +1,7 @@
+# Read about fixtures at http://ar.rubyonrails.org/classes/Fixtures.html
+
+one:
+  user_name: user_one
+  first_name: user_one_first_name
+  last_name: user_one_last_name
+

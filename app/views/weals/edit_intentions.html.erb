@@ -1,7 +1,7 @@
 <% @title='Edit Intention' %>
 
 <h3>Edit Intention</h3>
-<% form_for(@weal) do |f| %>
+<% form_for(@weal,:url => intention_path(@weal)) do |f| %>
 	<%= render(:partial => 'f', :object => f) %>
 
   <p>

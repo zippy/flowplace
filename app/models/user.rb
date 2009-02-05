@@ -2,6 +2,8 @@ require 'lib/constants'
 class User < ActiveRecord::Base
   has_many :circle_user_links, :dependent => :destroy
   has_many :circles, :through => :circle_user_links
+  has_many :weals_as_fulfiller, :class_name => 'Weal', :foreign_key => :fulfiller_id
+  has_many :weals_as_requester, :class_name => 'Weal', :foreign_key => :requester_id
 
   Permissions = %w(dev admin  assignPrivs createAccounts accessAccounts)
   Preferences = %w(terse enlargeFont)
@@ -14,6 +16,10 @@ class User < ActiveRecord::Base
   cattr_reader :per_page
   @@per_page = 10
   
+  def weals
+    weals_as_fulfiller.concat(weals_as_requester)
+  end
+  
   def full_name(lastname_first = true)
     if lastname_first
       "#{last_name}, #{first_name}"
@@ -21,7 +27,6 @@ class User < ActiveRecord::Base
       "#{first_name} #{last_name}"
     end
   end
- 
   
   # Bolt calls this method at login time if it exists
   def login_action(request)

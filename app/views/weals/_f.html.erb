@@ -10,7 +10,7 @@
 </p>
 <p>
 	Is a requirement of: 
-	<%= select(:extras,:required_id, Weal.find(:all,:conditions=>["id != ?",@weal.id]).collect {|p| [ p.title, p.id ] }, :include_blank => '-none-')%>
+	<%= f.select(:parent_id, current_user.weals.collect {|w| [ w.title, w.id ] }, :include_blank => '-none-')%>
 <p>
 <p>
 	For this intention I am: <%= radio_button_tag('as', 'requester', checked = @weal.requester || @weal.new_record?) %> requester

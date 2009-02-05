@@ -1,24 +1,25 @@
 <div id="sideNav">
-<a href="/" title="Go to your dashboard">Dashboard</a>
+<p><%= link_to 'Dashboard',home_url,{:title=>"Go to your dashboard"}%></p>
+<p><%= link_to 'Intentions', intentions_url,{:title => 'Place and manage intentions'}%></p>
 
 <% if current_user.can?(:accessAccounts) %>
 <hr width="50%" align="left">
-<p><a href="<%= users_url %>" title="Add or modify user accounts">Accounts</a></p>
+<p><%= link_to 'Accounts',users_url,{:title => 'Add or modify user accounts'}%></p>
 <% end %>
 
 <% if current_user.can?(:admin) %>
 <hr width="50%" align="left">
-<p><a href="<%= circles_url %>" title="Manage circles">Circles</a></p>
-<p><a href="<%= currencies_url %>" title="Manage Currencies">Currencies</a></p>
+<p><%= link_to 'Circles',circles_url,{:title => 'Manage circles'}%></p>
+<p><%= link_to 'Currencies',currencies_url,{:title => 'Manage Currencies'}%></p>
 <% end %>
 
 <hr width="50%" align="left">
 
 <% if logged_in? %>
-<p><a href="<%= set_prefs_url %>" title="Choose how the site works for you">Preferences</a></p>
+<p><%= link_to 'Preferences',set_prefs_url,{:title => 'Choose how the site works for you'}%></p>
 
-<p><a href="<%= logout_url %>" title="End your session">Log Out</a></p>
+<p><%= link_to 'Log Out',logout_url,{:title => 'End your session'}%></p>
 <% else %>
-<p><a href="<%= login_url %>" title="Log in">Log In</a></p>
+<p><%= link_to 'Log In',login_url,{:title => 'Log in'}%></p>
 <% end %>
 </div>

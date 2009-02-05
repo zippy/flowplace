@@ -9,7 +9,7 @@ describe Weal do
       :fulfiller_id => 1
     }
   end
-
+  
   it "should create a new instance given valid attributes" do
     w  = Weal.create!(@valid_attributes)
     w.should be_an_instance_of(Weal)
@@ -26,4 +26,5 @@ describe Weal do
     @valid_attributes.delete(:fulfiller_id)
     lambda {Weal.create!(@valid_attributes)}.should raise_error(ActiveRecord::RecordInvalid,"Validation failed: Must have a requester or fulfiller")
   end
+  
 end
