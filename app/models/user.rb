@@ -24,7 +24,7 @@ class User < ActiveRecord::Base
     Weal.find(:all,:conditions => ["(fulfiller_id = ? or requester_id = ?) and phase ='intention'",self.id,self.id])
   end
   
-  def full_name(lastname_first = true)
+  def full_name(lastname_first = false)
     if lastname_first
       "#{last_name}, #{first_name}"
     else
