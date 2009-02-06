@@ -14,15 +14,30 @@
 <p>
 <% case @type
 	when :intentions %>
+<%if @weal.requester && @weal.fulfiller 
+	if @weal.requester == current_user
+		i_am = 'requester'
+		other_is = 'fulfiller'
+		other = @weal.fulfiller
+	else
+		i_am = 'fulfiller'
+		other_is = 'requester'
+		other = @weal.requester
+	end
+	%>
+<p>
+	For this intention I am:  <%=  i_am %>
+</p>
+<p>
+	The <%= other_is %> is:  <%= other.full_name %>
+</p>
+<% else %>
 <p>
 	For this intention I am: 
-	<%if @weal.requester && @weal.fulfiller %>
-		<%= @weal.requester == current_user ? 'requester' : 'fulfiller' %>
-	<%else%>
 		<%= radio_button_tag('as', 'requester', checked = @weal.requester == current_user || @weal.new_record?) %> requester
 		<%= radio_button_tag('as', 'fulfiller', checked = @weal.fulfiller == current_user) %> fulfiller
-	<%end%>
 </p>
+<%end%>
 <% when :weals 
 	users = User.find(:all)%>
 <p>

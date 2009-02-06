@@ -12,7 +12,7 @@
 <li class="item" style="margin: <%= weal.level==0 ? 5 : 0 %>px 0 0 <%= weal.level*20 %>px;">
 	<%=link_to weal.title,edit_intention_path(weal),{:title=>weal.description} %>
 	as <%= weal.requester == current_user ? 'requester' : 'fulfiller' %>
-	(<%= link_to 'Delete', weal, :confirm => 'Are you sure?', :method => :delete %>)
+	(<%= link_to 'Delete', weal, :confirm => 'Are you sure?'+ (weal.children? ? " Warning: This intention has child-intentions, deleting it will delete all children." : ''), :method => :delete %>)
 </ul>
 </li>
 

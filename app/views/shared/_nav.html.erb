@@ -1,23 +1,23 @@
 <ul id="nav">
-<li><%= nav_link 'Dashboard',home_url,"Go to your dashboard"%></li>
-<li><%= nav_link 'My Intentions', intentions_url,'Place and manage intentions'%></li>
-<li><%= nav_link 'Weals', weals_url,'Browse intentions placed as requests'%></li>
-
-<% if current_user.can?(:accessAccounts) %>
-
-<li><%= nav_link 'Accounts',users_url,'Add or modify user accounts'%></li>
-<% end %>
-
-<% if current_user.can?(:admin) %>
-
-
-<li><%= nav_link 'Circles',circles_url,'Manage circles'%></li>
-<li><%= nav_link 'Currencies',currencies_url,'Manage Currencies'%></li>
-<% end %>
-
-
-
 <% if logged_in? %>
-<li><%= nav_link 'Preferences',set_prefs_url,'Choose how the site works for you'%></li>
+	<li><%= nav_link 'Dashboard',home_url,"Go to your dashboard"%></li>
+	<li><%= nav_link 'My Intentions', intentions_url,'Place and manage intentions'%></li>
+	<li><%= nav_link 'Weals', weals_url,'Browse intentions placed as requests'%></li>
+
+	<% if current_user.can?(:accessAccounts) %>
+
+	<li><%= nav_link 'Accounts',users_url,'Add or modify user accounts'%></li>
+	<% end %>
+
+	<% if current_user.can?(:admin) %>
+
+
+	<li><%= nav_link 'Circles',circles_url,'Manage circles'%></li>
+	<li><%= nav_link 'Currencies',currencies_url,'Manage Currencies'%></li>
+	<% end %>
+
+
+
+	<li><%= nav_link 'Preferences',set_prefs_url,'Choose how the site works for you'%></li>
 <%end%>
 </ul>
