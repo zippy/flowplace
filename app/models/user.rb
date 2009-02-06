@@ -17,7 +17,7 @@ class User < ActiveRecord::Base
   @@per_page = 10
   
   def weals
-    weals_as_fulfiller.concat(weals_as_requester)
+    Weal.find(:all,:conditions => ['fulfiller_id = ? or requester_id = ?',self.id,self.id])
   end
   
   def full_name(lastname_first = true)

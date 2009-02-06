@@ -48,8 +48,6 @@ class WealsController < ApplicationController
   def create
     setup_save_attributes
     @weal = Weal.new(@save_attributes)
-    @weal.fulfiller_id = current_user.id if params[:as] == 'fulfiller'
-    @weal.requester_id = current_user.id if params[:as] == 'requester'
     prepare_for_save  
     respond_to do |format|
       if @weal.save
@@ -68,16 +66,12 @@ class WealsController < ApplicationController
   # PUT /weals/1.xml
   def update
     @weal = Weal.find(params[:id])
-    if params[:as]
-      @weal.fulfiller_id = (params[:as]  == 'fulfiller') ? current_user.id : nil
-      @weal.requester_id = (params[:as]  == 'requester') ? current_user.id : nil
-    end
     setup_save_attributes
     prepare_for_save
     respond_to do |format|
       if @weal.update_attributes(@save_attributes)
         finalize_save
-        flash[:notice] = (params[:as] ? 'Intention' : 'Weal') + ' was successfully updated.'
+        flash[:notice] = (@type == :intention ? 'Intention' : 'Weal') + ' was successfully updated.'
         format.html { redirect_to index_url }
         format.xml  { head :ok }
       else
@@ -104,6 +98,12 @@ class WealsController < ApplicationController
     @save_attributes = params[:weal]
     @parent_id = @save_attributes[:parent_id]
     @save_attributes.delete(:parent_id)
+
+    if params[:as]
+      @save_attributes[:fulfiller_id] = (params[:as]  == 'fulfiller') ? current_user.id : nil
+      @save_attributes[:requester_id] = (params[:as]  == 'requester') ? current_user.id : nil
+    end
+
   end
 
   def prepare_for_save
@@ -111,6 +111,7 @@ class WealsController < ApplicationController
   end
 
   def finalize_save
+puts "IN HERE!"
     if @parent_id && Weal.exists?(@parent_id)
       @weal.move_to_child_of(@parent_id)
     else

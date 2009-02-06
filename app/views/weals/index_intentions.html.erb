@@ -3,10 +3,7 @@
 <h3>Intentions</h3>
 
 <div id="intention_tag_cloud">
-	Tags:
-	<% tag_cloud Weal.tag_counts, %w(css1 css2 css3 css4) do |tag, css_class| %> 
-		<%= link_to tag.name, { :action => :tag, :id => tag.name }, :class => css_class %> 
-	<% end %>
+	Tags: <%= render_intentions_tag_cloud(:conditions => ['fulfiller_id = ? or requester_id = ?',current_user.id,current_user.id])%>
 </div>
 <p> <%= link_to 'Place a new intention',new_intention_path %></p>
 
@@ -14,7 +11,7 @@
 <ul class="item_list">
 <li class="item" style="margin: <%= weal.level==0 ? 5 : 0 %>px 0 0 <%= weal.level*20 %>px;">
 	<%=link_to weal.title,edit_intention_path(weal),{:title=>weal.description} %>
-	as <% weal.requester ? 'requester' : 'fulfiller' %>
+	as <%= weal.requester ? 'requester' : 'fulfiller' %>
 	(<%= link_to 'Delete', weal, :confirm => 'Are you sure?', :method => :delete %>)
 </li>
 </ul>
