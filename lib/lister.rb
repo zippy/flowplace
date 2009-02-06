@@ -127,7 +127,8 @@ module Lister
       search_for.map!{|s| search_rule[:block].call(s)}.each do |s|
         if sql
           queries << s[0]
-          terms << s[1]
+          terms << s[1..s.size]
+          terms = terms.flatten
         else
           queries << s
         end

@@ -3,9 +3,10 @@ require File.expand_path(File.dirname(__FILE__) + '/../spec_helper')
 describe User do
   before(:each) do
     @valid_attributes = {
+      :user_name => "user",
       :first_name => "value for first_name",
       :last_name => "value for last_name",
-      :last_name => "some@email.com"
+      :email => "some@email.com"
     }
   end
 
@@ -37,6 +38,12 @@ describe User do
     
     it "should be able to return a list of its weals" do
       @user.weals.should == [@weal,@wealf]
+    end
+
+    it "should be able to return a list of its intentions" do
+      @wealf.phase = 'project'
+      @wealf.save
+      @user.intentions.should == [@weal]
     end
 
   end

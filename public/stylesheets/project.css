@@ -4,33 +4,28 @@
 
 /* ---------LAYOUT---------- */
 
-body {
-	background-color:  #FFFFFF;
+.wrap_to_center {
+  margin: 0 auto;
+  display: block;
+  width: 950px;
 }
 
-#entire_page {
-	margin:  0 auto 0 0;
-	width: 950px ;
+
+#top_bar {
+	padding: 0 0 0 0;
+	margin: 0 0 0 0;
+	border: 1px solid #000066;
+	background-color: #444444;
 }
 
-#sideNav {
-	float:left;
-	width: 110px;
-	height: 200px;
-	padding: 0px 3px 3px 5px;
-}
 
 #header {
-	float:left;
-	height: 70px;
-	width: 800px;
+	height: 50px;
+	width: 950px;
 	color: #A3B15A;
 	font-weight: bold;
 	font-size: 14pt;	
 	font-family: Verdana,Arial,sans serif;
-	margin-left: 40px;
-	margin-top:  20px;
-	margin-bottom: 10px;
 }
 #header p {
 	float:left;
@@ -38,12 +33,61 @@ body {
 #header img {
 	float:right;
 }
+#login_stuff {
+	margin-right: 5px;
+	font-size: 8pt;
+	float:right;
+	color:white;
+}
+#login_stuff a {
+	font-size: 8pt;
+	color:white;
+}
+
+	/* ----------NAVIGATION TEXT---------- */
+
+
+#nav {
+	font-size: 9pt;
+	margin:0px 0px 0px 0px;
+	padding:0px;
+	font-weight: normal;
+}
+	
+#nav a:link {
+	color: #ffffff;
+	text-decoration: none;
+	}
+
+#nav a:active {
+	color: #ffffff;
+	}
+
+#nav a:visited {
+	color: #ffffff;
+	text-decoration: none;
+	}
+	
+#nav a:hover {
+	color: white;
+	text-decoration: none;
+	border-color: #70787F;
+	}
+
+ul#nav {float:right;display:block;margin-top:35px;list-style:none;}
+ul#nav li {display:block;float:left;}
+ul#nav li a {display:block;float:left;margin:0px;padding: 0 10px;}
+ul#nav li a:hover {background: gray;}
+ul#nav li a.active {background: white;color:#000000;}
+ul#nav li.last a {margin-right:0;}
 
 #page_content {
 	float:left;
-	width: 800px;
-	margin-left:40px;
-	
+	width: 950px;
+	margin-top: 0px;
+	padding-left: 6px;
+	padding-right: 6px;
+	background-color:  #FFFFFF;	
 }
 #footer {
 	margin-top: 10px;
@@ -104,13 +148,11 @@ fieldset p {
 body {
 	font-family: Verdana,Arial,sans serif;
 	font-size: 10pt;
-	line-height: 1.2em;
 	color: #000066;
-	margin: 0 0 0 10px;
-/* temporary right margin for work on form; should be 0 */
-
-	background-image: url("/images/background.gif");
-  	background-repeat: no-repeat;	
+	margin: 0;
+	background-color: #EEEEEE;
+/*	background-image: url("/images/background.gif");
+  	background-repeat: no-repeat;	*/
  }
 body.enlargeFont {
 	font-size: 12pt;
@@ -156,47 +198,15 @@ a:visited {color: #333399;}
 	margin-top: 10px;
 }
 
-	/* ----------NAVIGATION TEXT---------- */
-
-
-#sideNav {
-	font-size: 9pt;
-	margin:0px 0px 0px 0px;
-	padding:0px;
-}
-
-#sideNav p {
-	line-height:1.3em;
-	margin: 0px 0px 5px 0px;
-}
-	
-#sideNav a:link {
-	color: #000066;
-	text-decoration: none;
-	}
-
-#sideNav a:active {
-	color: #660099;
-	}
-
-#sideNav a:visited {
-	color: #000066;
-	text-decoration: none;
-	}
-	
-#sideNav a:hover {
-	color: white;
-	text-decoration: none;
-	border-color: #70787F;
-	}
 	
 /* ----------HIERARCHICAL LIST---------- */
 ul.item_list {
 	padding: 0px 0px 0px 0px;
-	margin-top:0em; margin-bottom:0em; margin-left:0em; margin-right:0em; list-style:none;
+	margin-top:0em; margin-bottom:0em; margin-left:0em; margin-right:0em;
 	} 
 
 li.item {
+	list-style:none;
 }
 
 /* --------------TAG CLOUT ---------------------*/

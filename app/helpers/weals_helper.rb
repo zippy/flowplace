@@ -7,9 +7,13 @@ module WealsHelper
     when :fulfiller
       weal.fulfiller
     end
-    u.nil? ? 'NA' : u.full_name
+    if u.nil?
+      'NA'
+    else
+     u.full_name
+   end
   end
-  def render_intentions_tag_cloud(options={})
+  def render_weals_tag_cloud(options={})
 	  tags = Weal.tag_counts(options)
 		if tags.empty?
 		  ''

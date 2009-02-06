@@ -7,6 +7,10 @@ ActionController::Routing::Routes.draw do |map|
     }
 
   map.resources :weals
+  map.resources :weals, :member => {
+    :set_mate => :put
+    }
+
   map.resources :intentions, :controller => "weals"
 
   # The priority is based upon order of creation: first created -> highest priority.

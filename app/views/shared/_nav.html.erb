@@ -1,25 +1,23 @@
-<div id="sideNav">
-<p><%= link_to 'Dashboard',home_url,{:title=>"Go to your dashboard"}%></p>
-<p><%= link_to 'Intentions', intentions_url,{:title => 'Place and manage intentions'}%></p>
+<ul id="nav">
+<li><%= nav_link 'Dashboard',home_url,"Go to your dashboard"%></li>
+<li><%= nav_link 'My Intentions', intentions_url,'Place and manage intentions'%></li>
+<li><%= nav_link 'Weals', weals_url,'Browse intentions placed as requests'%></li>
 
 <% if current_user.can?(:accessAccounts) %>
-<hr width="50%" align="left">
-<p><%= link_to 'Accounts',users_url,{:title => 'Add or modify user accounts'}%></p>
+
+<li><%= nav_link 'Accounts',users_url,'Add or modify user accounts'%></li>
 <% end %>
 
 <% if current_user.can?(:admin) %>
-<hr width="50%" align="left">
-<p><%= link_to 'Circles',circles_url,{:title => 'Manage circles'}%></p>
-<p><%= link_to 'Currencies',currencies_url,{:title => 'Manage Currencies'}%></p>
+
+
+<li><%= nav_link 'Circles',circles_url,'Manage circles'%></li>
+<li><%= nav_link 'Currencies',currencies_url,'Manage Currencies'%></li>
 <% end %>
 
-<hr width="50%" align="left">
+
 
 <% if logged_in? %>
-<p><%= link_to 'Preferences',set_prefs_url,{:title => 'Choose how the site works for you'}%></p>
-
-<p><%= link_to 'Log Out',logout_url,{:title => 'End your session'}%></p>
-<% else %>
-<p><%= link_to 'Log In',login_url,{:title => 'Log in'}%></p>
-<% end %>
-</div>
+<li><%= nav_link 'Preferences',set_prefs_url,'Choose how the site works for you'%></li>
+<%end%>
+</ul>

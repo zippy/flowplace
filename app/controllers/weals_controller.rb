@@ -1,5 +1,6 @@
 class WealsController < ApplicationController
   require_authorization
+  include Lister
   before_filter :determine_weal_type
   # GET /weals
   # GET /weals.xml
@@ -92,10 +93,12 @@ class WealsController < ApplicationController
       format.xml  { head :ok }
     end
   end
+  
   private
 
   def setup_save_attributes
     @save_attributes = params[:weal]
+    @save_parent_id =  @save_attributes.has_key?(:parent_id)
     @parent_id = @save_attributes[:parent_id]
     @save_attributes.delete(:parent_id)
 
@@ -111,30 +114,57 @@ class WealsController < ApplicationController
   end
 
   def finalize_save
-puts "IN HERE!"
-    if @parent_id && Weal.exists?(@parent_id)
-      @weal.move_to_child_of(@parent_id)
-    else
-      @weal.move_to_right_of(@weal.parent) if @weal.parent
-    end
-    params[:currencies].each do |currency_id,value|
-      exists  = @weal.currencies.exists?(currency_id)
-      if value == '1'
-        @weal.currencies << Currency.find(currency_id)  if !exists
-        link = @weal.currency_weal_links.find(:first,:conditions => ["currency_id = ?",currency_id])
-        link.link_spec = params[:currencies]["#{currency_id}_val"]
-        link.save
+    if @save_parent_id
+      if @parent_id && Weal.exists?(@parent_id)
+        @weal.move_to_child_of(@parent_id)
       else
-        @weal.currencies.delete(Currency.find(currency_id)) if exists
+        @weal.move_to_right_of(@weal.parent) if @weal.parent
+      end
+    end
+    if params[:currencies]
+      params[:currencies].each do |currency_id,value|
+        exists  = @weal.currencies.exists?(currency_id)
+        if value == '1'
+          @weal.currencies << Currency.find(currency_id)  if !exists
+          link = @weal.currency_weal_links.find(:first,:conditions => ["currency_id = ?",currency_id])
+          link.link_spec = params[:currencies]["#{currency_id}_val"]
+          link.save
+        else
+          @weal.currencies.delete(Currency.find(currency_id)) if exists
+        end
       end
     end
   end
 
   def load_weals
     if @type == :intentions
-      @weals = current_user.weals.sort { |a,b| a.lft <=> b.lft }
+      @weals = current_user.intentions
     else
-      @weals = Weal.find(:all,:order => :lft)
+      def_sort_rules(* [['r','lft,users.last_name,users.first_name,weals.created_at'],['d','lft,weals.created_at']])
+
+      def_search_rules(:sql,[['t','title'],['d','description']])
+      def_search_rule 'base' do |search_for|
+        ["phase = 'intention' and requester_id is not null and fulfiller_id is null"]
+      end
+      def_search_rule 'full' do |search_for|
+        s = "%#{search_for}%"
+        ["#{SQL_FULL_NAME} #{ILIKE} ? or description #{ILIKE} ? or title #{ILIKE} ?",s,s,s]
+      end
+      def_search_rule 'requester' do |search_for|
+        ["#{SQL_FULL_NAME} #{ILIKE} ?","%#{search_for}%"]
+      end
+      set_params(:user,params[:use_session],:order_current => 'd',:paginate => 'yes')
+      @search_params.update({'on_base' => 'base', 'for_base' => 'dummy'})
+      sql_options = get_sql_options.update({:include => :requester})
+      if sql_options[:conditions] || @display_all
+        if @search_params[:paginate]=='yes'
+          @weals = Weal.paginate(:all,sql_options.update({:page => @search_params[:page]}))
+        else
+          @weals = Weal.find(:all,sql_options)
+        end
+      else
+        @weals = []
+      end
     end
   end
   
@@ -143,7 +173,7 @@ puts "IN HERE!"
   end
   
   def determine_weal_type
-    request.request_uri =~ /^\/([^\/]*)/
+    request.path =~ /^\/([^\/]*)/
     @type = $1.to_sym
   end
   
@@ -151,6 +181,8 @@ puts "IN HERE!"
     case @type
     when :intentions
       intentions_url
+    when :requests
+      requests_url
     else
       weals_url
     end

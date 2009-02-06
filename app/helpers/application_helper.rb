@@ -55,5 +55,23 @@ module ApplicationHelper
   def localize_time(the_time)
     standard_time(current_user.localize_time(the_time))
   end
+  def nav_link(text,url,title)
+    options = {:title => title}
+    options[:class] = 'active' if case text
+    when 'Circles'
+      request.path =~ /^\/circles/
+    when 'Currencies'
+      request.path =~ /^\/currencies/
+    when 'Dashboard'
+      request.path == '/'
+    when 'My Intentions'
+      request.path =~ /^\/intentions/
+    when 'Weals'
+      request.path =~ /^\/weals/
+    when 'Accounts'
+      request.path =~ /^\/users/
+    end
+    link_to text,url,options
+  end
   
 end

@@ -1,0 +1,59 @@
+<% @title='Weals' %>
+
+<h3>Weals</h3>
+
+<%
+#Get data ready for search form:
+order_choices = [
+  ['Created','d'],
+  ['Requester','r']
+  ]
+select_options = {
+	'main' => [
+		['Any field contains','full'],
+		['Title contains','t_c'],
+		['Descriptions contains','d_c'],
+		['Requester name contains','requester'],
+		['Show all','all']]
+	}
+form_pair_info = [{:name => "main", :on => :select, :for => :text_field, :first_focus => true}]
+form_tag(weals_path,:method => :get) do %>
+<%= select_tag("search[on_main]", options_for_select(select_options['main'],@search_params["on_main"])) %>
+<%val = ''
+	val = @search_params["for_main"] if !['all','',nil].include?(@search_params["on_main"]) 
+%>
+<%= text_field_tag("search[for_main]", val) %>
+
+Order by: <%= select_tag('search[order_current]', options_for_select(order_choices,@search_params[:order_current]))%>
+
+<%= check_box_tag('search[paginate]','yes',@search_params[:paginate]=='yes') %> Paginate results
+  <input id='search[paginate]' name='search[paginate]' type='hidden' value='no' />
+<%= submit_tag 'Search' %>
+<% end %>
+
+<div id="intention_tag_cloud">
+	Tags: <%= render_weals_tag_cloud%>
+</div>
+<table>
+<tr>
+	<th>Intention</th>
+	<th>Created</th>
+	<th>Requester</th>
+</tr>
+
+<% for weal in @weals %>
+<tr>
+	<td>
+		<span class="item" style="margin: <%= weal.level==0 ? 5 : 0 %>px 0 0 <%= weal.level*20 %>px;">
+		<%=link_to weal.title,weal_url(weal),{:title=>weal.description} %>
+		</span>
+	</td>
+	<td>
+		<%= standard_date_time(weal.created_at)%>
+	</td>
+	<td>
+		<%= render_name(:requester,weal)%>
+	</td>
+</tr>
+<% end %>
+</table>
