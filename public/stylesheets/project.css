@@ -43,6 +43,9 @@
 	font-size: 8pt;
 	color:white;
 }
+#login_stuff img {
+	float:right;
+}
 
 	/* ----------NAVIGATION TEXT---------- */
 
@@ -233,10 +236,16 @@ p.intention_proposal_description {
 	padding: 4px;
 	width: 200px;
 }
-p.activity {
-	margin-bottom: 0;
+
+.activity img{
+	float:left;
+	margin: 4px;
 }
-	
+
+.activity {
+	margin-bottom: 5px;
+}
+
 /* ----------HIERARCHICAL LIST---------- */
 ul.item_list {
 	padding: 0px 0px 0px 0px;

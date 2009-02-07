@@ -1,5 +1,7 @@
 require 'lib/constants'
 class User < ActiveRecord::Base
+  is_gravtastic
+  
   has_many :circle_user_links, :dependent => :destroy
   has_many :circles, :through => :circle_user_links
   has_many :weals_as_fulfiller, :class_name => 'Weal', :foreign_key => :fulfiller_id
