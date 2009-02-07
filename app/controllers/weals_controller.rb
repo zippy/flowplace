@@ -57,7 +57,7 @@ class WealsController < ApplicationController
   # POST /weals
   # POST /weals.xml
   def create
-    Acivity
+    Activity
     setup_save_attributes
     @weal = Weal.new(@save_attributes)
     prepare_for_save 

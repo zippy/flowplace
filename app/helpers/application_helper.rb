@@ -75,4 +75,7 @@ module ApplicationHelper
     end
     link_to text,url,options
   end
+  def gravitar_image_tag(user,options = {:size=>32})
+    image_tag user.gravatar_url(options),:class=>'gravitar'
+  end
 end

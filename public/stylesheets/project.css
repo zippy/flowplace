@@ -200,7 +200,6 @@ a:visited {color: #333399;}
 .submit_button {
 	margin-top: 10px;
 }
-
 /* ---------- RIGHT BOXES ---------- */
 p.box_title {
 	margin-top: 0;
@@ -208,6 +207,44 @@ p.box_title {
 	text-align: center;
 	font-weight: bold;
 	border-bottom: 1px solid #AAAAAA;
+}
+
+/* ---------- HOLOPTIVIEW ---------- */
+
+p.holoptiview_box_title {
+	margin-top: 0;
+	margin-bottom: 4px;
+	text-align: center;
+	font-weight: bold;
+	border-top: 1px solid #AAAAAA;
+}
+
+.holoptiview_box {
+	width: 400px;
+	margin-bottom: 20px;
+}
+#holoptiview td {
+	vertical-align: top;
+}
+td.holoptiview_my {
+	vertical-align: top;
+}
+
+/* ---------- ACTIVITIES ---------- */
+
+.activity img {
+float:left;
+}
+
+img.gravitar {
+	margin: 2px;
+	padding: 1px;
+	border: 1px solid #aaaaaa;
+}
+
+.activity {
+	margin-bottom: 5px;
+	font-size: .8em;
 }
 
 /* ---------- proposals ---------- */
@@ -228,23 +265,6 @@ p.intention_proposal_description {
 	margin-left: 10px;
 }
 
-/* ---------- ACTIVITIES ---------- */
-
-#activities_box {
-	float: right;
-	border: 1px solid #000066;
-	padding: 4px;
-	width: 200px;
-}
-
-.activity img{
-	float:left;
-	margin: 4px;
-}
-
-.activity {
-	margin-bottom: 5px;
-}
 
 /* ----------HIERARCHICAL LIST---------- */
 ul.item_list {

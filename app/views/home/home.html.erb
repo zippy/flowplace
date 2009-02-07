@@ -7,19 +7,62 @@
     <p class="errortext">This site requires the use of Javascript.  Your browser is currently not allowing the use of Javascript.  In order to use the MANA Statistics Project web site, you will need to change this setting in your browser.  For more information, you can contact us at support@manastats.org</p>
     </div>    
 <%= javascript_tag "$('hide_me_with_js').hide();" %>
+<%= gravitar_image_tag(@user,:size=>64) %>
 
-<div id="activities_box">
-	<p class='box_title'>Activities</p>
-<% for activity in @activities%>
-	<div class='activity clear'>
-		<% activity_type = activity.humanize.downcase %>
-		<%= image_tag (activity.user.gravatar_url(:size=>32)) %> 
-		<%= activity.contents %> <%= %w(a e i o u).include?(activity_type[0..0]) ? 'an' : 'a' %> <%= link_to activity_type,polymorphic_url(activity.activityable) %> 
-		<%= time_ago_in_words(activity.created_at) %> ago
-	</div>
-<%end%>
-</div>
-Welcome to the flowplace, <%= current_user.first_name %>.
+<table id='holoptiview'>
+<tr>
+	<td class='holoptiview_my'>
+		<div class="holoptiview_box">
+			<p class='holoptiview_box_title'><%=@who%> Wealth</p>
+		</div>
+	</td>
+	<td>
+		<div class="holoptiview_box">
+			<p class='holoptiview_box_title'>HolptiWealth</p>
+		</div>
+	</td>
+</tr>
+<tr>
+	<td class='holoptiview_my'>
+		<div class="holoptiview_box">
+			<p class='holoptiview_box_title'><%=@who%> Projects</p>
+			Projects: <%= @projects_total_my%>
+		</div>
+	</td>
+	<td>
+		<div class="holoptiview_box">
+			<p class='holoptiview_box_title'>Projects</p>
+			Projects: <%= @projects_total%>
+		</div>
+	</td>
+</tr>
+<tr>
+	<td class='holoptiview_my'>
+		<div class="holoptiview_box">
+			<p class='holoptiview_box_title'><%=@who%> Intentions</p>
+			Proposals: <%= @proposals_total_my%><br />
+			<%= link_to('Intentions',intentions_path) %>: <%= @intentions_total_my%>
+		</div>
+	</td>
+	<td>
+		<div class="holoptiview_box">
+			<p class='holoptiview_box_title'>Intentions</p>
+			Proposals: <%= @proposals_total%><br />
+			<%= link_to('Intentions',weals_path) %>: <%= @intentions_total%>
+		</div>
+	</td>
+</tr>
+<tr>
+	<td class='holoptiview_my'>
+		<div class="holoptiview_box">
+			<%= render(:partial => 'activities', :locals => { :title => "#{@who} Activities", :conditions=> ['user_id=?',@user.id] }) %>
+		</div>
+	</td>
+	<td>
+		<div class="holoptiview_box">
+			<%= render(:partial => 'activities', :locals => { :title => 'Activities', :conditions=>['user_id!=?',@user.id] }) %>
+		</div>
+	</td>
+</tr>
 
-
-
+</table>
