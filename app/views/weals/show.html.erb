@@ -16,29 +16,8 @@
 	<b>Is a requirement of: </b>
 	<%= p = @weal.parent; h p.nil? ? '-none-' : p.title %>
 <p>
-
-<%if @weal.requester %>
-	<p>
-	  <b>Requester:</b>
-	  <%= render_name(:requester,@weal) %>
-	</p>
-<%else 
-	form_for(@weal) do |f| %>
-	<%= f.submit("Make me requester") %>
-	<%= hidden_field_tag('weal[requester_id]',current_user.id) %>
-<% end end %>
-
-<%if @weal.fulfiller %>
-	<p>
-	  <b>Fulfiller:</b>
-	  <%=render_name(:fulfiller,@weal) %>
-	</p>
-<%else 
-	form_for(@weal) do |f| %>
-	<%= f.submit("Make me fulfiller") %>
-	<%= hidden_field_tag('weal[fulfiller_id]',current_user.id) %>
-<% end end %>
-
+	<%= render(:partial => 'proposal_form', :locals => { :party => :requester }) %>
+	<%= render(:partial => 'proposal_form', :locals => { :party => :fulfiller }) %>
 
 <%= link_to 'Back', weals_path %>
 

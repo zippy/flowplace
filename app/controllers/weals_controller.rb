@@ -41,6 +41,16 @@ class WealsController < ApplicationController
   def edit
     @weal = Weal.find(params[:id])
     @currencies = load_currencies
+    if @weal.requester == current_user
+  		@holding_as = 'requester'
+  		@other_holding_as = 'fulfiller'
+  		@other_party = @weal.fulfiller
+		end
+    if @weal.fulfiller == current_user
+  		@holding_as = 'fulfiller'
+  		@other_holding_as = 'requester'
+  		@other_party = @weal.requester
+  	end
     render :template => "weals/edit_#{@type}"
   end
 
@@ -49,7 +59,7 @@ class WealsController < ApplicationController
   def create
     setup_save_attributes
     @weal = Weal.new(@save_attributes)
-    prepare_for_save  
+    prepare_for_save 
     respond_to do |format|
       if @weal.save
         finalize_save
@@ -105,6 +115,7 @@ class WealsController < ApplicationController
     if params[:as]
       @save_attributes[:fulfiller_id] = (params[:as]  == 'fulfiller') ? current_user.id : nil
       @save_attributes[:requester_id] = (params[:as]  == 'requester') ? current_user.id : nil
+      @save_attributes[:created_by_requester] = !@save_attributes[:requester_id].nil?
     end
 
   end
@@ -144,18 +155,28 @@ class WealsController < ApplicationController
 
       def_search_rules(:sql,[['t','title'],['d','description']])
       def_search_rule 'base' do |search_for|
-        ["phase = 'intention' and requester_id is not null and fulfiller_id is null"]
+        ["phase = 'intention'"]
       end
       def_search_rule 'full' do |search_for|
         s = "%#{search_for}%"
         ["#{SQL_FULL_NAME} #{ILIKE} ? or description #{ILIKE} ? or title #{ILIKE} ?",s,s,s]
       end
-      def_search_rule 'requester' do |search_for|
+      def_search_rule 'as_name' do |search_for|
         ["#{SQL_FULL_NAME} #{ILIKE} ?","%#{search_for}%"]
       end
+      def_search_rule 'as' do |search_for|
+        case search_for
+        when 'requester'
+          ['requester_id is not null and fulfiller_id is null']
+        when 'fulfiller'
+          ['fulfiller_id is not null and requester_id is null']
+        end
+      end
       set_params(:user,params[:use_session],:order_current => 'd',:paginate => 'yes')
-      @search_params.update({'on_base' => 'base', 'for_base' => 'dummy'})
-      sql_options = get_sql_options.update({:include => :requester})
+      @search_params.update({'on_base' => 'base', 'for_base' => 'dummy','on_as' => 'as'})
+      @search_params["for_as"] ||= 'requester'
+      sql_options = get_sql_options.update({:include => @search_params[:for_as]})
+#      raise sql_options.inspect
       if sql_options[:conditions] || @display_all
         if @search_params[:paginate]=='yes'
           @weals = Weal.paginate(:all,sql_options.update({:page => @search_params[:page]}))

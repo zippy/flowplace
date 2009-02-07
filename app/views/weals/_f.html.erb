@@ -1,12 +1,31 @@
 <%= f.error_messages %>
 
+<% proposals = @weal.proposals 
+	if !proposals.empty? %>
+	<%= f.hidden_field "#{@other_holding_as}_id" %>
+	<div id="intention_proposals_box">
+	<b>Proposals:</b>
+	<%= radio_button_tag 'accepter', 1,@weal.attributes["#{@other_holding_as}_id"].nil?, {:onClick => "$('weal_#{@other_holding_as}_id').value=null"}%> Acceptance pending <br />
+	<% for p in proposals %>
+		<p class="intention_proposal_source">
+		From <%=h p.user.full_name %>
+		</p>
+		<p class="intention_proposal_description">
+				<%=h p.description %>
+		</p>
+		<%= radio_button_tag 'accepter',1,@weal.attributes["#{@other_holding_as}_id"] == p.user_id, {:onClick => "$('weal_#{@other_holding_as}_id').value=#{p.user_id}"}%> Accept this proposal
+	  
+	<% end %>
+	</div>
+<% end %>
+
 <p>
   <%= f.label :title %><br />
   <%= f.text_field :title,:size=>80 %>
 </p>
 <p>
   <%= f.label :description %><br />
-  <%= f.text_area :description, :cols=>80,:rows => 10 %>
+  <%= f.text_area :description, :cols=>70,:rows => 10 %>
 </p>
 <p>
 	Is a requirement of: 
@@ -14,29 +33,23 @@
 <p>
 <% case @type
 	when :intentions %>
-<%if @weal.requester && @weal.fulfiller 
-	if @weal.requester == current_user
-		i_am = 'requester'
-		other_is = 'fulfiller'
-		other = @weal.fulfiller
-	else
-		i_am = 'fulfiller'
-		other_is = 'requester'
-		other = @weal.requester
-	end
-	%>
-<p>
-	For this intention I am:  <%=  i_am %>
-</p>
-<p>
-	The <%= other_is %> is:  <%= other.full_name %>
-</p>
+<%if @weal.matched? %>
+	<p>
+		I am holding this intention as:  <%=  @holding_as %>
+	</p>
+	<p>
+		The <%= @other_holding_as %> is:  <%= @other_party.full_name %>
+	</p>
 <% else %>
-<p>
-	For this intention I am: 
-		<%= radio_button_tag('as', 'requester', checked = @weal.requester == current_user || @weal.new_record?) %> requester
-		<%= radio_button_tag('as', 'fulfiller', checked = @weal.fulfiller == current_user) %> fulfiller
-</p>
+	<p>
+		I am holding this intention as:
+		<% if proposals.empty? %>
+			<%= radio_button_tag('as', 'requester', checked = @weal.requester == current_user || @weal.new_record?) %> requester
+			<%= radio_button_tag('as', 'fulfiller', checked = @weal.fulfiller == current_user) %> fulfiller
+		<%else%>
+			<%=  @holding_as %>
+		<% end %>
+	</p>
 <%end%>
 <% when :weals 
 	users = User.find(:all)%>

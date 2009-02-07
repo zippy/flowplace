@@ -39,13 +39,26 @@ describe User do
     it "should be able to return a list of its weals" do
       @user.weals.should == [@weal,@wealf]
     end
+    describe 'intentions method' do
+      before(:each) do
+        @wealf.phase = 'project'
+        @wealf.save
+      end
+      
+      it "should return intentions declared" do
+        @user.intentions.should == [@weal]
+      end
 
-    it "should be able to return a list of its intentions" do
-      @wealf.phase = 'project'
-      @wealf.save
-      @user.intentions.should == [@weal]
+      it "should also return intentions proposed" do
+        @p = Proposal.create!(:user_id => @user.id,
+          :description => "my proposal",
+          :as => "fulfiller",
+          :weal_id => @wealx.id
+          )
+        @user.proposals.should == [@p]
+        @user.intentions.should == [@weal,@wealx]
+      end
     end
-
   end
   
 end

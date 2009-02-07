@@ -11,6 +11,7 @@ class Weal < ActiveRecord::Base
 
   has_many :currency_weal_links, :dependent => :destroy
   has_many :currencies, :through => :currency_weal_links
+  has_many :proposals, :dependent => :destroy
 
   Phases = %w(intention project)
   def initialize(attrs=nil)
@@ -18,6 +19,14 @@ class Weal < ActiveRecord::Base
     self.phase = 'intention'
   end
 
+  def created_by
+    self.created_by_requester ? requester : fulfiller
+  end
+
+  def matched?
+    requester && fulfiller ? true : false
+  end
+  
   protected
 
   def validate

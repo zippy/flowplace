@@ -1,0 +1,9 @@
+<p>
+	Proposal by <%=h @proposal.user.full_name %> to be <%=h @proposal.as %> for intention <%=h @proposal.weal.title %>:
+</p>
+<p>
+  <%=h @proposal.description %>
+</p>
+
+<%= link_to 'Edit', edit_proposal_path(@proposal) %> |
+<%= link_to 'Back', proposals_path %>

@@ -13,6 +13,20 @@ module WealsHelper
      u.full_name
    end
   end
+
+  def render_as(weal)
+    case
+    when weal.requester == current_user
+      'requester'
+    when weal.fulfiller == current_user
+      'fulfiller'
+    when p = weal.proposals.detect {|p| p.user_id == current_user.id ? p.as : false }
+      "proposed #{p.as}"
+    else
+      "NA"
+    end
+  end
+  
   def render_weals_tag_cloud(options={})
 	  tags = Weal.tag_counts(options)
 		if tags.empty?

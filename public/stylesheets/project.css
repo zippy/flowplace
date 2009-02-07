@@ -198,6 +198,23 @@ a:visited {color: #333399;}
 	margin-top: 10px;
 }
 
+/* ---------- PROPOSALS ---------- */
+
+#intention_proposals_box {
+	float: right;
+	border: 1px solid #000066;
+	padding: 4px;
+	width: 300px;
+}
+p.intention_proposal_source {
+	margin-bottom: 0;
+}
+
+p.intention_proposal_description {
+	margin-top: 0;
+	margin-bottom: 0;
+	margin-left: 10px;
+}
 	
 /* ----------HIERARCHICAL LIST---------- */
 ul.item_list {
@@ -214,7 +231,7 @@ li.item {
 	float: right;
 	border: 1px solid #000066;
 	padding: 4px;
-	width: 300px;
+	width: 250px;
 	margin-bottom: 10px;
 }
 .css1 { font-size: .7em;}

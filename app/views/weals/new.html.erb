@@ -1,10 +1,10 @@
-<% @title='Place Intention' %>
+<% @title='Declare Intention' %>
 
-<h3>Place Intention</h3>
+<h3>Declare Intention</h3>
 
 <% form_for(@weal,:url => intentions_path) do |f| %>
  	<%= render(:partial => 'f', :object => f) %>
   <p>
-    <%= f.submit "Place" %>
+    <%= f.submit "Declare" %>
   </p>
 <% end %>

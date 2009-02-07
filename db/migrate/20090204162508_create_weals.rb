@@ -9,6 +9,7 @@ class CreateWeals < ActiveRecord::Migration
       t.integer :parent_id
       t.integer :lft
       t.integer :rgt
+      t.boolean :created_by_requester, :null => false, :default => true
       
       t.timestamps
     end

@@ -64,14 +64,16 @@ module ApplicationHelper
       request.path =~ /^\/currencies/
     when 'Dashboard'
       request.path == '/'
-    when 'My Intentions'
+    when 'Intentions'
       request.path =~ /^\/intentions/
-    when 'Weals'
+    when 'Match!'
       request.path =~ /^\/weals/
     when 'Accounts'
       request.path =~ /^\/users/
     end
     link_to text,url,options
   end
-  
+  def pluralize(word,count)
+    count > 1 ? word.pluralize : word
+  end
 end

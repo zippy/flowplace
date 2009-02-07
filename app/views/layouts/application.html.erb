@@ -11,13 +11,13 @@
 			<div id="top_bar">
 				<div id="login_stuff">
 				<% if logged_in? %> 
-				Logged in as: <%= current_user.full_name %> <%= link_to 'Log Out',logout_url,{:title => 'End your session'}%>
+				Logged in as: <%= current_user.full_name %><br />
+				<%= link_to 'Preferences',set_prefs_url,{:title =>'Choose how the site works for you'}%></li>
+				<%= link_to 'Log Out',logout_url,{:title => 'End your session'}%>
 				<% else %>
 					<%= link_to 'Log In',login_url,{:title => 'Log in'}%>
 				<% end %>
 			</div>
-
-				
 				<div class='wrap_to_center'>
 				<div id="header">
 					<p> flowplace </p>

@@ -1,0 +1,26 @@
+<h1>Listing proposals</h1>
+
+<table>
+  <tr>
+    <th>User</th>
+    <th>Description</th>
+    <th>As</th>
+    <th>Weal</th>
+  </tr>
+
+<% for proposal in @proposals %>
+  <tr>
+    <td><%=h proposal.user_id %></td>
+    <td><%=h proposal.description %></td>
+    <td><%=h proposal.as %></td>
+    <td><%=h proposal.weal_id %></td>
+    <td><%= link_to 'Show', proposal %></td>
+    <td><%= link_to 'Edit', edit_proposal_path(proposal) %></td>
+    <td><%= link_to 'Destroy', proposal, :confirm => 'Are you sure?', :method => :delete %></td>
+  </tr>
+<% end %>
+</table>
+
+<br />
+
+<%= link_to 'New proposal', new_proposal_path %>
