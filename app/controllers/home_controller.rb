@@ -7,6 +7,9 @@ class HomeController < ApplicationController
 
   def logged_out
   end
+
+  def admin
+  end
   
   def version
     response.content_type = 'text/plain'

@@ -70,6 +70,8 @@ module ApplicationHelper
       request.path =~ /^\/weals/
     when 'Accounts'
       request.path =~ /^\/users/
+    when 'Admin'
+      request.path =~ /^\/admin/
     end
     link_to text,url,options
   end
