@@ -1,28 +1,19 @@
-<h1>Listing activities</h1>
-
+<% @title='Activities' %>
+<h3> Activities </h3>
 <table>
   <tr>
     <th>User</th>
     <th>Type</th>
-    <th>Activityable type</th>
-    <th>Activityable</th>
     <th>Contents</th>
   </tr>
 
 <% for activity in @activities %>
   <tr>
-    <td><%=h activity.user_id %></td>
-    <td><%=h activity.type %></td>
-    <td><%=h activity.activityable_type %></td>
-    <td><%=h activity.activityable_id %></td>
+    <td><%=h activity.user.full_name %></td>
+    <td><%= activity_type = activity.humanize.downcase; link_to activity_type,polymorphic_url(activity.activityable) %> </td>
     <td><%=h activity.contents %></td>
-    <td><%= link_to 'Show', activity %></td>
-    <td><%= link_to 'Edit', edit_activity_path(activity) %></td>
-    <td><%= link_to 'Destroy', activity, :confirm => 'Are you sure?', :method => :delete %></td>
   </tr>
 <% end %>
 </table>
 
-<br />
-
-<%= link_to 'New activity', new_activity_path %>
+<%= will_paginate @activities if !@activities.empty? %>

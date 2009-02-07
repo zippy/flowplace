@@ -18,6 +18,9 @@
 <% if current_user.can?(:admin) %>
 	<p class="home_title first_focus">Administrator Features</p>
 	<ul>
+		<li><%= link_to 'All Activities',activities_url %></li>
+	</ul>
+	<ul>
 		<li><%= link_to 'Logged-in users',logged_in_users_url %></li>
 	</ul>
 <% end %>

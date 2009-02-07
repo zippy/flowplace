@@ -19,6 +19,8 @@ ActionController::Routing::Routes.draw do |map|
 
   # The priority is based upon order of creation: first created -> highest priority.
 
+  map.admin('/admin', :controller => 'home', :action => 'admin')
+
   map.logged_out('/logged_out', :controller => 'home', :action => 'logged_out')
 
   map.from_plugin(:bolt)
