@@ -7,6 +7,7 @@ Account Privileges for <%= @user.user_name %>:
 	['dev','Developer'],
 	['admin','Administrator'],
 	['createAccounts','Create accounts'],
+	['accessAccounts','Access accounts'],
 	['assignPrivs','Set privileges'],
 	].collect {|perm| check_box_tag("perms[#{perm[0]}]", value = 1, checked = @permissions.include?(perm[0])) << " " << perm[1]}.join("<br />")
 	-%>

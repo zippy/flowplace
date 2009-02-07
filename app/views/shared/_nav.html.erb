@@ -4,15 +4,14 @@
 	<li><%= nav_link 'Intentions', intentions_url,'Place and manage intentions'%></li>
 	<li><%= nav_link 'Match!', weals_url,'Browse intentions placed as requests'%></li>
 
-	<% if current_user.can?(:accessAccounts) %>
-
-	<li><%= nav_link 'Accounts',users_url,'Add or modify user accounts'%></li>
-	<% end %>
-
 	<% if current_user.can?(:admin) %>
 	<li><%= nav_link 'Circles',circles_url,'Manage circles'%></li>
 	<li><%= nav_link 'Currencies',currencies_url,'Manage Currencies'%></li>
 	<li><%= nav_link 'Admin',admin_url,'Site Administration Options'%></li>
+	<% end %>
+
+	<% if current_user.can?(:accessAccounts) %>
+	<li><%= nav_link 'Accounts',users_url,'Add or modify user accounts'%></li>
 	<% end %>
 
 <%end%>
