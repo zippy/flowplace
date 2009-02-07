@@ -40,10 +40,12 @@ class ProposalsController < ApplicationController
   # POST /proposals
   # POST /proposals.xml
   def create
+    Activity
     @proposal = Proposal.new(params[:proposal])
 
     respond_to do |format|
       if @proposal.save
+        IntentionActivity.add(@proposal.user,@proposal.weal,'made a proposal to')
         flash[:notice] = 'Proposal was successfully created.'
         format.html { redirect_after_save }
         format.xml  { render :xml => @proposal, :status => :created, :location => @proposal }

@@ -1,0 +1,31 @@
+<h1>New activity</h1>
+
+<% form_for(@activity) do |f| %>
+  <%= f.error_messages %>
+
+  <p>
+    <%= f.label :user_id %><br />
+    <%= f.text_field :user_id %>
+  </p>
+  <p>
+    <%= f.label :type %><br />
+    <%= f.text_field :type %>
+  </p>
+  <p>
+    <%= f.label :activityable_type %><br />
+    <%= f.text_field :activityable_type %>
+  </p>
+  <p>
+    <%= f.label :activityable_id %><br />
+    <%= f.text_field :activityable_id %>
+  </p>
+  <p>
+    <%= f.label :contents %><br />
+    <%= f.text_area :contents %>
+  </p>
+  <p>
+    <%= f.submit "Create" %>
+  </p>
+<% end %>
+
+<%= link_to 'Back', activities_path %>

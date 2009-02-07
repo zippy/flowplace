@@ -52,7 +52,7 @@ Order by: <%= select_tag('search[order_current]', options_for_select(order_choic
 		<span class="item" style="margin: <%= weal.level==0 ? 5 : 0 %>px 0 0 <%= weal.level*20 %>px;">
 		<%=link_to weal.title,weal_url(weal),{:title=>weal.description} %>
 		<%if (c = weal.proposals.size) > 0%>
-			(<%= c%> <%= pluralize("proposal",c)%>)
+			(<%= pluralize(c,"proposal")%>)
 		<%end%>
 		</span>
 	</td>

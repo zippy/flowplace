@@ -1,7 +1,8 @@
 class HomeController < ApplicationController
   require_authentication :except => :logged_out
   require_authorization :admin,:only => :version
-  def home    
+  def home
+    @activities = Activity.find(:all,:limit=>10,:order => 'created_at DESC')
   end
 
   def logged_out

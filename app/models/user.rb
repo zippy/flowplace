@@ -5,6 +5,7 @@ class User < ActiveRecord::Base
   has_many :weals_as_fulfiller, :class_name => 'Weal', :foreign_key => :fulfiller_id
   has_many :weals_as_requester, :class_name => 'Weal', :foreign_key => :requester_id
   has_many :proposals
+  has_many :activities
 
   Permissions = %w(dev admin  assignPrivs createAccounts accessAccounts)
   Preferences = %w(terse enlargeFont)

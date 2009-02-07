@@ -4,7 +4,7 @@
 	if !proposals.empty? %>
 	<%= f.hidden_field "#{@other_holding_as}_id" %>
 	<div id="intention_proposals_box">
-	<b>Proposals:</b>
+	<p class='box_title'>Proposals</p>
 	<%= radio_button_tag 'accepter', 1,@weal.attributes["#{@other_holding_as}_id"].nil?, {:onClick => "$('weal_#{@other_holding_as}_id').value=null"}%> Acceptance pending <br />
 	<% for p in proposals %>
 		<p class="intention_proposal_source">

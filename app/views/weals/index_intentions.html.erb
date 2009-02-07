@@ -13,7 +13,7 @@
 	<%if weal.matched? %>
 		(matched!)
 	<%elsif (c = weal.proposals.size) > 0%>
-		(<%= c%> <%= pluralize("proposal",c)%>)
+		(<%= pluralize(c,"proposal")%>)
 	<%end%>
 	<% if weal.created_by == current_user%>
 		(<%= link_to 'Delete', weal, :confirm => 'Are you sure?'+ (weal.children? ? " Warning: This intention has child-intentions, deleting it will delete all children." : ''), :method => :delete %>)

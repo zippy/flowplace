@@ -1,6 +1,6 @@
 <ul id="nav">
 <% if logged_in? %>
-	<li><%= nav_link 'Dashboard',home_url,"Go to your dashboard"%></li>
+	<li><%= nav_link 'My Wealth Stream',home_url,"Go to your dashboard"%></li>
 	<li><%= nav_link 'Intentions', intentions_url,'Place and manage intentions'%></li>
 	<li><%= nav_link 'Match!', weals_url,'Browse intentions placed as requests'%></li>
 
@@ -10,8 +10,6 @@
 	<% end %>
 
 	<% if current_user.can?(:admin) %>
-
-
 	<li><%= nav_link 'Circles',circles_url,'Manage circles'%></li>
 	<li><%= nav_link 'Currencies',currencies_url,'Manage Currencies'%></li>
 	<% end %>

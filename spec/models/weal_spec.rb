@@ -10,12 +10,6 @@ describe Weal do
     }
   end
   
-  def create_user(user='user')
-    u = User.new({:user_name => user, :first_name => 'Joe',:last_name => user.capitalize,:email=>"#{user}@#{user}.org"})
-    u.create_bolt_identity(:user_name => :user_name,:password => 'password') && u.save
-    u
-  end
-  
   it "should create a new instance given valid attributes" do
     w  = Weal.create!(@valid_attributes)
     w.should be_an_instance_of(Weal)

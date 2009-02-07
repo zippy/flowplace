@@ -12,6 +12,8 @@ class Weal < ActiveRecord::Base
   has_many :currency_weal_links, :dependent => :destroy
   has_many :currencies, :through => :currency_weal_links
   has_many :proposals, :dependent => :destroy
+  
+  has_many :intention_activities, :as => :activityable
 
   Phases = %w(intention project)
   def initialize(attrs=nil)

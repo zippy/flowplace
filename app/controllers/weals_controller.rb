@@ -57,13 +57,15 @@ class WealsController < ApplicationController
   # POST /weals
   # POST /weals.xml
   def create
+    Acivity
     setup_save_attributes
     @weal = Weal.new(@save_attributes)
     prepare_for_save 
     respond_to do |format|
       if @weal.save
         finalize_save
-        flash[:notice] = 'Your intention was placed.'
+        IntentionActivity.add(current_user,@weal,'created')
+        flash[:notice] = 'Your intention was declared.'
         format.html { redirect_to index_url }
         format.xml  { render :xml => @weal, :status => :created, :location => @weal }
       else

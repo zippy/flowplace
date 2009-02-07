@@ -10,6 +10,16 @@
 
 <div id="home_content">
 <h3>Dashboard</h3>
+<div id="activities_box">
+	<p class='box_title'>Activities</p>
+<% for activity in @activities%>
+	<p class='activity'>
+		<% activity_type = activity.humanize.downcase %>
+		<%= activity.user.full_name %> <%= activity.contents %> <%= %w(a e i o u).include?(activity_type[0..0]) ? 'an' : 'a' %> <%= link_to activity_type,polymorphic_url(activity.activityable) %> 
+		<%= time_ago_in_words(activity.created_at) %> ago
+	</p>
+<%end%>
+</div>
 Welcome to the flowplace, <%= current_user.first_name %>.
 Here are your current options:
 

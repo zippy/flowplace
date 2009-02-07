@@ -41,10 +41,12 @@ class CirclesController < ApplicationController
   # POST /circles
   # POST /circles.xml
   def create
+    Activity
     @circle = Circle.new(params[:circle])
 
     respond_to do |format|
       if @circle.save
+        CircleActivity.add(current_user,@circle,'created')
         flash[:notice] = 'Circle was successfully created.'
         format.html { redirect_to(@circle) }
         format.xml  { render :xml => @circle, :status => :created, :location => @circle }

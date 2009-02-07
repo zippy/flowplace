@@ -13,13 +13,7 @@ describe User do
   it "should create a new instance given valid attributes" do
     User.create!(@valid_attributes)
   end
-  
-  def create_user(user='user')
-    u = User.new({:user_name => user, :first_name => 'Joe',:last_name => user.capitalize,:email=>"#{user}@#{user}.org"})
-    u.create_bolt_identity(:user_name => :user_name,:password => 'password') && u.save
-    u
-  end
-  
+    
   describe 'retreiving weals' do
     before(:each) do
       @user = create_user

@@ -73,7 +73,4 @@ module ApplicationHelper
     end
     link_to text,url,options
   end
-  def pluralize(word,count)
-    count > 1 ? word.pluralize : word
-  end
 end

@@ -1,0 +1,28 @@
+<p>
+  <b>User:</b>
+  <%=h @activity.user_id %>
+</p>
+
+<p>
+  <b>Type:</b>
+  <%=h @activity.type %>
+</p>
+
+<p>
+  <b>Activityable type:</b>
+  <%=h @activity.activityable_type %>
+</p>
+
+<p>
+  <b>Activityable:</b>
+  <%=h @activity.activityable_id %>
+</p>
+
+<p>
+  <b>Contents:</b>
+  <%=h @activity.contents %>
+</p>
+
+
+<%= link_to 'Edit', edit_activity_path(@activity) %> |
+<%= link_to 'Back', activities_path %>

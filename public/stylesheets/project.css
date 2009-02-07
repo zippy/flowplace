@@ -198,7 +198,16 @@ a:visited {color: #333399;}
 	margin-top: 10px;
 }
 
-/* ---------- PROPOSALS ---------- */
+/* ---------- RIGHT BOXES ---------- */
+p.box_title {
+	margin-top: 0;
+	margin-bottom: 4px;
+	text-align: center;
+	font-weight: bold;
+	border-bottom: 1px solid #AAAAAA;
+}
+
+/* ---------- proposals ---------- */
 
 #intention_proposals_box {
 	float: right;
@@ -214,6 +223,18 @@ p.intention_proposal_description {
 	margin-top: 0;
 	margin-bottom: 0;
 	margin-left: 10px;
+}
+
+/* ---------- ACTIVITIES ---------- */
+
+#activities_box {
+	float: right;
+	border: 1px solid #000066;
+	padding: 4px;
+	width: 200px;
+}
+p.activity {
+	margin-bottom: 0;
 }
 	
 /* ----------HIERARCHICAL LIST---------- */
