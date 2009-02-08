@@ -78,4 +78,15 @@ module ApplicationHelper
   def gravitar_image_tag(user,options = {:size=>32})
     image_tag user.gravatar_url(options),:class=>'gravitar'
   end
+  
+  def users_select_tag(users,opts={})
+    select_tag(:user_id, options_for_select_users(users), opts)
+  end
+  def options_for_select_users(users)
+    options_for_select([['-','']] + users.collect{|u| [u.full_name,u.id]})
+  end
+  
+  def render_currency_icon(currency,size=20)
+    image_tag currency.api_icon, :height=>size, :width=>size
+  end
 end

@@ -1,0 +1,12 @@
+<% @title='New Currency Accounts' %>
+<h3>New Currency Accounts</h3>
+
+<% form_for(@currency_account) do |f| %>
+	<%= render(:partial => 'f', :object => f) %>
+
+  <p>
+    <%= f.submit "Create" %>
+  </p>
+<% end %>
+
+<%= link_to 'Back', currency_accounts_path %>

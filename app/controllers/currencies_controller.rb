@@ -42,7 +42,7 @@ class CurrenciesController < ApplicationController
   # POST /currencies.xml
   def create
     @currency = Currency.new(params[:currency])
-
+    @currency.type = params[:currency][:type]
     respond_to do |format|
       if @currency.save
         flash[:notice] = 'Currency was successfully created.'

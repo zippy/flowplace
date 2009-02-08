@@ -1,4 +1,6 @@
 ActionController::Routing::Routes.draw do |map|
+  map.resources :currency_accounts
+
   map.resources :activities
 
   map.resources :proposals

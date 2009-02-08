@@ -3,13 +3,14 @@ class User < ActiveRecord::Base
   is_gravtastic
   
   has_many :circle_user_links, :dependent => :destroy
+  has_many :currency_accounts, :dependent => :destroy
   has_many :circles, :through => :circle_user_links
   has_many :weals_as_fulfiller, :class_name => 'Weal', :foreign_key => :fulfiller_id
   has_many :weals_as_requester, :class_name => 'Weal', :foreign_key => :requester_id
   has_many :proposals
   has_many :activities
 
-  Permissions = %w(dev admin  assignPrivs createAccounts accessAccounts)
+  Permissions = %w(dev admin assignPrivs createAccounts accessAccounts)
   Preferences = %w(terse enlargeFont)
   
   validates_uniqueness_of :user_name
@@ -39,6 +40,12 @@ class User < ActiveRecord::Base
       "#{first_name} #{last_name}"
     end
   end
+  
+  def position(currency)
+    Currency::Position.new
+  end
+  
+  ##############################################
   
   # Bolt calls this method at login time if it exists
   def login_action(request)

@@ -10,11 +10,10 @@
 
 <% for currency in @currencies %>
   <tr>
-    <td><%=h currency.name %></td>
+    <td><%= render_currency_icon(currency,32) %><%= link_to currency.name, edit_currency_path(currency) %> </td>
     <td><%=h currency.circle ? currency.circle.name : '' %> <%= currency.global ? ' Global' : ''%> </td>
-    <td><%= link_to 'Show', currency %></td>
-    <td><%= link_to 'Edit', edit_currency_path(currency) %></td>
-    <td><%= link_to 'Remove', currency, :confirm => 'Are you sure?', :method => :delete %></td>
+    <td></td>
+    <td><%= link_to 'Remove', currency_path(currency), :confirm => 'Are you sure?', :method => :delete %></td>
   </tr>
 <% end %>
 </table>

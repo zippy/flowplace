@@ -1,0 +1,20 @@
+<% @title='Currency Accounts' %>
+
+<p>
+  <b>User:</b>
+  <%=h @currency_account.user.full_name %>
+</p>
+
+<p>
+  <b>Currency:</b>
+  <%=h @currency_account.currency.name %>
+</p>
+
+<p>
+  <b>Summary:</b>
+  <%=h @currency_account.summary %>
+</p>
+
+
+<%= link_to 'Edit', edit_currency_account_path(@currency_account) %> |
+<%= link_to 'Back', currency_accounts_path %>

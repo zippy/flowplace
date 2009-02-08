@@ -56,6 +56,17 @@ describe User do
         @user.proposals.should == [@p]
         @user.intentions.should == [@weal,@wealx]
       end
+    end    
+  end
+  describe 'users and currency' do
+    before(:each) do
+      @user = create_user
+      @usd = Currency::USD.create!(:name => "USD")
+    end
+    it "should return the user's currency accounts" do
+      @user.currency_accounts.should == []
+      @user.currency_accounts << CurrencyAccount.new(:currency => @usd)
+      @user.currency_accounts[0].currency.should == @usd
     end
   end
   

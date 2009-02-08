@@ -3,20 +3,7 @@
 <h3>New Currency</h3>
 
 <% form_for(@currency) do |f| %>
-  <%= f.error_messages %>
-
-  <p>
-    <%= f.label :name %><br />
-    <%= f.text_field :name %>
-  </p>
-  <p>
-    <%= f.label :global %><br />
-    <%= f.check_box :global %>
-  </p>
-  <p>
-    <%= f.label :circle_id %><br />
-	  <%= f.select(:circle_id, Circle.find(:all).collect {|p| [ p.name, p.id ] }, {:include_blank => '-none-'})%>
-  </p>
+	<%= render(:partial => 'f', :object => f) %>
   <p>
     <%= f.submit "Create" %>
   </p>

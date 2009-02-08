@@ -1,0 +1,12 @@
+<% @title='Edit Currency Account' %>
+<h3>Edit Currency Account</h3>
+
+<% form_for(@currency_account) do |f| %>
+<%= render(:partial => 'f', :object => f) %>
+  <p>
+    <%= f.submit "Update" %>
+  </p>
+<% end %>
+
+<%= link_to 'Show', @currency_account %> |
+<%= link_to 'Back', currency_accounts_path %>

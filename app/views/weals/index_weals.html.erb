@@ -64,8 +64,11 @@ Order by: <%= select_tag('search[order_current]', options_for_select(order_choic
 	</td>
 	<td>
 		<% if weal.currency_weal_links %>
-			<% for link in weal.currency_weal_links %>
-				<%= link.currency.name%> <%= link.link_spec%>
+			<% for link in weal.currency_weal_links 
+				currency = link.currency
+				currency = Currency.find(currency.id)
+				%>
+				<%= render_currency_icon(currency) %> <%= currency.api_render_value(link.link_spec)%>
 			<% end %>
 		<% else %>
 			<i>none specified</i>

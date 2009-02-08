@@ -14,11 +14,19 @@
 	<td class='holoptiview_my'>
 		<div class="holoptiview_box">
 			<p class='holoptiview_box_title'><%=@who%> Wealth</p>
+			<%for account in @currency_accounts_my
+				currency = Currency.find(account.currency.id)
+				%>
+				<%=render_currency_icon(currency)%><%= currency.api_render_account_summary(account) %>
+			<% end %>
 		</div>
 	</td>
 	<td>
 		<div class="holoptiview_box">
 			<p class='holoptiview_box_title'>HolptiWealth</p>
+			<%for currency in @currencies%>
+				<%=render_currency_icon(currency)%><%= currency.api_render_summary %>
+			<% end %>
 		</div>
 	</td>
 </tr>

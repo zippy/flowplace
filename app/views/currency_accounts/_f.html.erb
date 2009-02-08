@@ -1,0 +1,14 @@
+<%= f.error_messages %>
+
+<p>
+  <%= f.label :user_id %><br />
+  <%= f.select(:user_id, User.find(:all).collect {|p| [ p.full_name, p.id ] }, { :include_blank => @currency_account.new_record? }) %>
+</p>
+<p>
+  <%= f.label :currency_id %><br />
+  <%= f.select(:currency_id, Currency.find(:all).collect {|p| [ p.name, p.id ] }, { :include_blank => @currency_account.new_record? }) %>
+</p>
+<p>
+  <%= f.label :summary %><br />
+  <%= f.text_area :summary %>
+</p>
