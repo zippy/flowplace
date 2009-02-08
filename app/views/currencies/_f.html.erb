@@ -1,5 +1,5 @@
 <%= f.error_messages %>
-
+<%= hidden_field_tag :currency_params_key, @currency.class.to_s.underscore%>
 <p>
   <%= f.label :name %><br />
   <%= f.text_field :name %>

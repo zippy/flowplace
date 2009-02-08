@@ -6,13 +6,14 @@
   <tr>
     <th>Name</th>
     <th>Scope</th>
+    <th>Summary</th>
   </tr>
 
 <% for currency in @currencies %>
   <tr>
     <td><%= render_currency_icon(currency,32) %><%= link_to currency.name, edit_currency_path(currency) %> </td>
     <td><%=h currency.circle ? currency.circle.name : '' %> <%= currency.global ? ' Global' : ''%> </td>
-    <td></td>
+    <td><%=h currency.api_render_summary%></td>
     <td><%= link_to 'Remove', currency_path(currency), :confirm => 'Are you sure?', :method => :delete %></td>
   </tr>
 <% end %>

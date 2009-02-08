@@ -41,8 +41,9 @@ class CurrenciesController < ApplicationController
   # POST /currencies
   # POST /currencies.xml
   def create
-    @currency = Currency.new(params[:currency])
-    @currency.type = params[:currency][:type]
+    params_key = params[:currency_params_key]
+    @currency = Currency.new(params[params_key])
+    @currency.type = params[params_key][:type]
     respond_to do |format|
       if @currency.save
         flash[:notice] = 'Currency was successfully created.'
@@ -59,9 +60,10 @@ class CurrenciesController < ApplicationController
   # PUT /currencies/1.xml
   def update
     @currency = Currency.find(params[:id])
+    params_key = params[:currency_params_key]
 
     respond_to do |format|
-      if @currency.update_attributes(params[:currency])
+      if @currency.update_attributes(params[params_key])
         flash[:notice] = 'Currency was successfully updated.'
         format.html { redirect_to currencies_url }
         format.xml  { head :ok }
