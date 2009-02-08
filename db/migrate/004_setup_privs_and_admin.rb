@@ -16,6 +16,7 @@ class SetupPrivsAndAdmin < ActiveRecord::Migration
     Permission.destroy_all
     Role.destroy_all
     Allowance.destroy_all
-    User.find(1).destroy
+    User.find(1).delete
+    Identity.find(1).delete
   end
 end

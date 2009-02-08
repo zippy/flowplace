@@ -19,7 +19,7 @@ form_tag(weals_path,:method => :get,:id=>'search') do %>
 
 Match:
 <%= radio_button_tag('search[for_as]','requester',@search_params["for_as"]=='requester',:onClick=>"$('search').submit();")%> requests
-<%= radio_button_tag('search[for_as]','fulfiller',@search_params["for_as"]=='fulfiller',:onClick=>"$('search').submit();")%> offers
+<%= radio_button_tag('search[for_as]','offerer',@search_params["for_as"]=='offerer',:onClick=>"$('search').submit();")%> offers
 <br />
 
 <%= select_tag("search[on_main]", options_for_select(select_options['main'],@search_params["on_main"])) %>

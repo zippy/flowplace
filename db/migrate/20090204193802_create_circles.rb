@@ -13,7 +13,7 @@ class CreateCircles < ActiveRecord::Migration
   end
 
   def self.down
-    drop_table :circles
     drop_table :circle_user_links
+    drop_table :circles
   end
 end

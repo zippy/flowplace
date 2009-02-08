@@ -5,7 +5,7 @@ class User < ActiveRecord::Base
   has_many :circle_user_links, :dependent => :destroy
   has_many :currency_accounts, :dependent => :destroy
   has_many :circles, :through => :circle_user_links
-  has_many :weals_as_fulfiller, :class_name => 'Weal', :foreign_key => :fulfiller_id
+  has_many :weals_as_offerer, :class_name => 'Weal', :foreign_key => :offerer_id
   has_many :weals_as_requester, :class_name => 'Weal', :foreign_key => :requester_id
   has_many :proposals
   has_many :activities
@@ -22,15 +22,15 @@ class User < ActiveRecord::Base
   @@per_page = 10
   
   def weals
-    Weal.find(:all,:conditions => ['fulfiller_id = ? or requester_id = ? or proposals.user_id = ?',self.id,self.id,self.id],:include =>:proposals,:order => 'lft')
+    Weal.find(:all,:conditions => ['offerer_id = ? or requester_id = ? or proposals.user_id = ?',self.id,self.id,self.id],:include =>:proposals,:order => 'lft')
   end
 
   def intentions
-    Weal.find(:all,:conditions => ["(fulfiller_id = ? or requester_id = ? or proposals.user_id = ?) and phase ='intention'",self.id,self.id,self.id],:include =>:proposals,:order => 'lft')
+    Weal.find(:all,:conditions => ["(offerer_id = ? or requester_id = ? or proposals.user_id = ?) and phase ='intention'",self.id,self.id,self.id],:include =>:proposals,:order => 'lft')
   end
 
   def projects
-    Weal.find(:all,:conditions => ["(fulfiller_id = ? or requester_id = ?) and phase ='project'",self.id,self.id],:order => 'lft')
+    Weal.find(:all,:conditions => ["(offerer_id = ? or requester_id = ?) and phase ='project'",self.id,self.id],:order => 'lft')
   end
   
   def full_name(lastname_first = false)

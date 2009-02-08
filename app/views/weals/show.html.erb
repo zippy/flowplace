@@ -17,7 +17,7 @@
 	<%= p = @weal.parent; h p.nil? ? '-none-' : p.title %>
 <p>
 	<%= render(:partial => 'proposal_form', :locals => { :party => :requester }) %>
-	<%= render(:partial => 'proposal_form', :locals => { :party => :fulfiller }) %>
+	<%= render(:partial => 'proposal_form', :locals => { :party => :offerer }) %>
 
 <%= link_to 'Back', weals_path %>
 

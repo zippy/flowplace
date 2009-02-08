@@ -18,7 +18,7 @@ describe User do
     before(:each) do
       @user = create_user
       @weal  = Weal.create!(:title => "title",:requester_id=>@user.id)
-      @wealf = Weal.create!(:title => "title2",:fulfiller_id=>@user.id)
+      @wealf = Weal.create!(:title => "title2",:offerer_id=>@user.id)
       @wealx = Weal.create!(:title => "title3",:requester_id=>999)
     end
     
@@ -26,8 +26,8 @@ describe User do
       @user.weals_as_requester.should == [@weal]
     end
 
-    it "should be able to return a list of its fulfiller weals" do
-      @user.weals_as_fulfiller.should == [@wealf]
+    it "should be able to return a list of its offerer weals" do
+      @user.weals_as_offerer.should == [@wealf]
     end
     
     it "should be able to return a list of its weals" do
@@ -50,7 +50,7 @@ describe User do
       it "should also return intentions proposed" do
         @p = Proposal.create!(:user_id => @user.id,
           :description => "my proposal",
-          :as => "fulfiller",
+          :as => "offerer",
           :weal_id => @wealx.id
           )
         @user.proposals.should == [@p]

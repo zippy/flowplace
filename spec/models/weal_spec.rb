@@ -6,7 +6,7 @@ describe Weal do
       :title => "value for title",
       :description => "value for description",
       :requester_id => 1,
-      :fulfiller_id => 1
+      :offerer_id => 1
     }
   end
   
@@ -21,10 +21,10 @@ describe Weal do
     lambda {Weal.create!(@valid_attributes)}.should raise_error("Validation failed: Title can't be blank")
   end
 
-  it "should fail to create a new instance without a requester or fulfiller" do
+  it "should fail to create a new instance without a requester or offerer" do
     @valid_attributes.delete(:requester_id)
-    @valid_attributes.delete(:fulfiller_id)
-    lambda {Weal.create!(@valid_attributes)}.should raise_error(ActiveRecord::RecordInvalid,"Validation failed: Must have a requester or fulfiller")
+    @valid_attributes.delete(:offerer_id)
+    lambda {Weal.create!(@valid_attributes)}.should raise_error(ActiveRecord::RecordInvalid,"Validation failed: Must have a requester or offerer")
   end
   
   it "should be able to report who created it" do
@@ -38,7 +38,7 @@ describe Weal do
     @weal  = Weal.create!(:title => "title",:requester_id=>@user.id)
     @weal.should_not be_matched
     @user = create_user('x')
-    @weal.fulfiller_id = @user.id
+    @weal.offerer_id = @user.id
     @weal.should be_matched
   end
   

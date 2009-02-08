@@ -4,8 +4,8 @@ module WealsHelper
     u = case which
     when :requester
       weal.requester
-    when :fulfiller
-      weal.fulfiller
+    when :offerer
+      weal.offerer
     end
     if u.nil?
       'NA'
@@ -18,8 +18,8 @@ module WealsHelper
     case
     when weal.requester == current_user
       'requester'
-    when weal.fulfiller == current_user
-      'fulfiller'
+    when weal.offerer == current_user
+      'offerer'
     when p = weal.proposals.detect {|p| p.user_id == current_user.id ? p.as : false }
       "proposed #{p.as}"
     else

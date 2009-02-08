@@ -1,7 +1,7 @@
 <% @title='Intentions' %>
 
 <div id="intention_tag_cloud">
-	Tags: <%= render_weals_tag_cloud(:conditions => ['fulfiller_id = ? or requester_id = ?',current_user.id,current_user.id])%>
+	Tags: <%= render_weals_tag_cloud(:conditions => ['offerer_id = ? or requester_id = ?',current_user.id,current_user.id])%>
 </div>
 <p> <%= link_to 'Declare a new intention',new_intention_path %></p>
 

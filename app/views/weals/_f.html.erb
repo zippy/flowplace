@@ -45,7 +45,7 @@
 		I am holding this intention as:
 		<% if proposals.empty? %>
 			<%= radio_button_tag('as', 'requester', checked = @weal.requester == current_user || @weal.new_record?) %> requester
-			<%= radio_button_tag('as', 'fulfiller', checked = @weal.fulfiller == current_user) %> fulfiller
+			<%= radio_button_tag('as', 'offerer', checked = @weal.offerer == current_user) %> offerer
 		<%else%>
 			<%=  @holding_as %>
 		<% end %>
@@ -58,8 +58,8 @@
   <%= f.select(:requester_id, users.collect {|p| [ p.full_name, p.id ] }, {:include_blank => '-'})%>
 </p>
 <p>
-  <%= f.label :fulfiller_id %><br />
-  <%= f.select(:fulfiller_id, users.collect {|p| [ p.full_name, p.id ] }, {:include_blank => '-'})%>
+  <%= f.label :offerer_id %><br />
+  <%= f.select(:offerer_id, users.collect {|p| [ p.full_name, p.id ] }, {:include_blank => '-'})%>
 </p>
 <% end %>
 <p>
@@ -67,10 +67,10 @@
 	<% for currency in @currencies 
 		exists = @weal.currencies.exists?(currency.id)
 		%>
-		<%= check_box_tag("currencies[#{currency.id}]",'1',exists)%> <%=render_currency_icon(currency)%> 
+		<%= check_box_tag("currencies[#{currency.id}][used]",'1',exists)%> <%=render_currency_icon(currency)%> 
 		<%= currency.name %>
-		<%= currency.api_input_html("currencies[#{currency.id}_val]",exists ? @weal.currency_weal_links.find(:first,:conditions => "currency_id = #{currency.id}").link_spec : nil) %>
-		<%=  hidden_field_tag "currencies[#{currency.id}]", '0'%>
+		<%= currency.api_input_html("currencies[#{currency.id}][val]",exists ? @weal.currency_weal_links.find(:first,:conditions => "currency_id = #{currency.id}").link_spec : nil) %>
+		<%=  hidden_field_tag "currencies[#{currency.id}][used]", '0'%>
 		<br />
 	<% end %>
 </p>

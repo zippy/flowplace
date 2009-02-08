@@ -43,11 +43,11 @@ class WealsController < ApplicationController
     @currencies = load_currencies
     if @weal.requester == current_user
   		@holding_as = 'requester'
-  		@other_holding_as = 'fulfiller'
-  		@other_party = @weal.fulfiller
+  		@other_holding_as = 'offerer'
+  		@other_party = @weal.offerer
 		end
-    if @weal.fulfiller == current_user
-  		@holding_as = 'fulfiller'
+    if @weal.offerer == current_user
+  		@holding_as = 'offerer'
   		@other_holding_as = 'requester'
   		@other_party = @weal.requester
   	end
@@ -115,7 +115,7 @@ class WealsController < ApplicationController
     @save_attributes.delete(:parent_id)
 
     if params[:as]
-      @save_attributes[:fulfiller_id] = (params[:as]  == 'fulfiller') ? current_user.id : nil
+      @save_attributes[:offerer_id] = (params[:as]  == 'offerer') ? current_user.id : nil
       @save_attributes[:requester_id] = (params[:as]  == 'requester') ? current_user.id : nil
       @save_attributes[:created_by_requester] = !@save_attributes[:requester_id].nil?
     end
@@ -135,12 +135,12 @@ class WealsController < ApplicationController
       end
     end
     if params[:currencies]
-      params[:currencies].each do |currency_id,value|
+      params[:currencies].each do |currency_id,values|
         exists  = @weal.currencies.exists?(currency_id)
-        if value == '1'
+        if values['used'] == '1'
           @weal.currencies << Currency.find(currency_id)  if !exists
           link = @weal.currency_weal_links.find(:first,:conditions => ["currency_id = ?",currency_id])
-          link.link_spec = params[:currencies]["#{currency_id}_val"]
+          link.link_spec = values['val']
           link.save
         else
           @weal.currencies.delete(Currency.find(currency_id)) if exists
@@ -169,9 +169,9 @@ class WealsController < ApplicationController
       def_search_rule 'as' do |search_for|
         case search_for
         when 'requester'
-          ['requester_id is not null and fulfiller_id is null']
-        when 'fulfiller'
-          ['fulfiller_id is not null and requester_id is null']
+          ['requester_id is not null and offerer_id is null']
+        when 'offerer'
+          ['offerer_id is not null and requester_id is null']
         end
       end
       set_params(:user,params[:use_session],:order_current => 'd',:paginate => 'yes')

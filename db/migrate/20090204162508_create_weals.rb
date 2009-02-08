@@ -5,7 +5,7 @@ class CreateWeals < ActiveRecord::Migration
       t.string :phase
       t.text :description
       t.integer :requester_id
-      t.integer :fulfiller_id
+      t.integer :offerer_id
       t.integer :parent_id
       t.integer :lft
       t.integer :rgt

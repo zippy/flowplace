@@ -2,9 +2,9 @@
 <%
 	if party == :requester
 		user = @weal.requester
-		other_user = @weal.fulfiller
+		other_user = @weal.offerer
 	else
-		user = @weal.fulfiller
+		user = @weal.offerer
 		other_user = @weal.requester
 	end
 	if user %>
