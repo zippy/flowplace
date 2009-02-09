@@ -8,7 +8,7 @@ describe "/weals/show.html.erb" do
       :phase => "value for phase",
       :description => "value for description",
       :requester_id => 1,
-      :fulfiller_id => 1
+      :offerer_id => 1
     )
   end
 

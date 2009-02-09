@@ -10,7 +10,7 @@ describe "/weals/edit.html.erb" do
       :phase => "value for phase",
       :description => "value for description",
       :requester_id => 1,
-      :fulfiller_id => 1
+      :offerer_id => 1
     )
   end
 
@@ -22,7 +22,7 @@ describe "/weals/edit.html.erb" do
       with_tag('input#weal_phase[name=?]', "weal[phase]")
       with_tag('textarea#weal_description[name=?]', "weal[description]")
       with_tag('input#weal_requester_id[name=?]', "weal[requester_id]")
-      with_tag('input#weal_fulfiller_id[name=?]', "weal[fulfiller_id]")
+      with_tag('input#weal_offerer_id[name=?]', "weal[offerer_id]")
     end
   end
 end

@@ -5,11 +5,11 @@ one:
   phase: MyString
   description: MyText
   requester_id: 1
-  fulfiller_id: 1
+  offerer_id: 1
 
 two:
   title: MyString
   phase: MyString
   description: MyText
   requester_id: 1
-  fulfiller_id: 1
+  offerer_id: 1
