@@ -1,9 +1,9 @@
 [submodule "vendor/plugins/bolt"]
 	path = vendor/plugins/bolt
-	url = git://github.com:zippy/bolt.git
+	url = git://github.com/zippy/bolt.git
 [submodule "vendor/plugins/webrat"]
 	path = vendor/plugins/webrat
-	url = git://github.com:zippy/webrat.git
+	url = git://github.com/zippy/webrat.git
 [submodule "vendor/plugins/engines"]
 	path = vendor/plugins/engines
 	url = git://github.com/lazyatom/engines.git
