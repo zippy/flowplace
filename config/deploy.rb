@@ -4,6 +4,8 @@ set :application, "flowplace"
 set :domain, "dev.flowplace.org"
 set :repository,  "git://github.com/zippy/flowplace.git"
 
+set :gems_for_project, %w(gravtastic) # list of gems to be installed
+
 # If you aren't using Subversion to manage your source code, specify
 # your SCM below:
 set :scm, :git

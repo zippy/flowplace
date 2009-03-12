@@ -1,0 +1,21 @@
+# Don't cause the server to break if Passenger module not loaded
+<IfModule passenger_module>
+	<VirtualHost *:80>
+	  ServerName dev.flowplace.org
+        ServerAlias assets0.flowplace.org
+        ServerAlias assets1.flowplace.org
+        ServerAlias assets2.flowplace.org
+        ServerAlias assets3.flowplace.org
+
+	  DocumentRoot "/opt/apps/flowplace/current/public"
+	  RailsEnv production
+	  RailsAllowModRewrite off
+	  #
+		
+	  <Directory "/opt/apps/flowplace/current/public">
+	    Order allow,deny
+	    Allow from all
+	  </Directory>
+	</VirtualHost>
+</IfModule>
+
