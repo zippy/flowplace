@@ -1,0 +1,18 @@
+[submodule "vendor/plugins/bolt"]
+	path = vendor/plugins/bolt
+	url = git@github.com:zippy/bolt.git
+[submodule "vendor/plugins/webrat"]
+	path = vendor/plugins/webrat
+	url = git@github.com:zippy/webrat.git
+[submodule "vendor/plugins/engines"]
+	path = vendor/plugins/engines
+	url = git://github.com/lazyatom/engines.git
+[submodule "vendor/plugins/better_nested_set"]
+	path = vendor/plugins/better_nested_set
+	url = git://github.com/chris/better_nested_set.git
+[submodule "vendor/plugins/acts-as-taggable-on"]
+	path = vendor/plugins/acts-as-taggable-on
+	url = git://github.com/mbleigh/acts-as-taggable-on.git
+[submodule "vendor/plugins/will_paginate"]
+	path = vendor/plugins/will_paginate
+	url = git://github.com/mislav/will_paginate.git
