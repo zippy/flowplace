@@ -1,20 +1,28 @@
 def create_user(user)
-  u = User.new({:user_name => user, :first_name => 'Joe',:last_name => user.capitalize,:email=>"#{user}@#{user}.org"})
+  u = User.new({:user_name => user, :first_name => user.capitalize,:last_name => 'User',:email=>"#{user}@#{user}.org"})
   u.create_bolt_identity(:user_name => :user_name,:password => 'password') && u.save
   u
 end
 
-Given /I am on the login page/ do
-  visit "/login"
+Given /I am logged into my( "([^\"]*)")* account/ do |dummy,user|
+  user ||= 'anonymous'
+  user = %Q| as "#{user}"|
+	Given "I have an account" + user
+	Given "I log in"+ user
 end
 
-Given /I have an account/ do
-  create_user('user')
+
+Given /^I log in( as "([^\"]*)")*$/ do |dummy,user|
+  user ||= 'anonymous'
+  Given "I go to the login page"
+  Given %Q|I fill in "Account Name" with "#{user}"|
+  Given 'I fill in "Password" with "password"'
+	Given 'I press "Log in"'
 end
 
-Given /I am logged in/ do
-  user = create_user('user')
-  controller.current_user = user
+Given /I have an account( as "([^\"]*)")*/ do |dummy,user|
+  user ||= 'anonymous'
+  create_user(user)
 end
 
 Then "I $should be logged in" do |should|

@@ -67,6 +67,7 @@ Rails::Initializer.run do |config|
   # (create the session table with "rake db:sessions:create")
   config.action_controller.session_store = :active_record_store
 
+
   # Use SQL instead of Active Record's schema dumper when creating the test database.
   # This is necessary if your schema can't be completely dumped by the schema dumper,
   # like if you have constraints or database-specific column types
@@ -76,3 +77,15 @@ Rails::Initializer.run do |config|
   # Please note that observers generated using script/generate observer need to have an _observer suffix
   # config.active_record.observers = :cacher, :garbage_collector, :forum_observer
 end
+
+ActionMailer::Base.delivery_method = :smtp
+ActionMailer::Base.perform_deliveries = true
+ActionMailer::Base.raise_delivery_errors = true
+ActionMailer::Base.smtp_settings = {
+  :address  => "mail.harris-braun.com",
+  :port  => 25,
+  :domain  => "mail.harris-braun.com",
+  :user_name  => "sender@manastats.org",
+  :password  => 'x3erf5us!',
+  :authentication  => :login
+    }

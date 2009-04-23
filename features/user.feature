@@ -3,11 +3,13 @@ Feature: Users
   As a player
   I want there to be users!
 
-  Scenario: Logged in
+  Scenario: logging in as a user with an account
 		Given I have an account
-	  And I am on the login page
-	  And I fill in "Account Name" with "user"
-	  And I fill in "Password" with "password"
-		And I press "Log in"
+	  And I log in
 		Then I should be logged in
+		And I should be taken to the dashboard page
 
+  Scenario: logging in as a user without an account
+	  When I log in
+		Then I should not be logged in
+		And I should see "Either we don't have an account with that name, or you've entered the wrong password.  Please try again."

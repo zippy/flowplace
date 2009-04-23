@@ -3,8 +3,12 @@ Feature: Dashboard
   As a player
   I want to be able to see it all
 
-	Scenario: Dashboard contents
- 		Given I am on the dashboard page
-		Given I am logged in
- 		Given I am on the dashboard page
-		Then I should see "Manage your account and preferences" 
+	Background:
+		Given I am logged into my account
+	
+	Scenario: User looks at dashboard
+		When I go to on the dashboard page
+		Then I should see "My Wealth" 
+		Then I should see "My Intentions" 
+		Then I should see "My Projects" 
+		Then I should see "My Activities" 

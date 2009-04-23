@@ -119,7 +119,6 @@ class WealsController < ApplicationController
       @save_attributes[:requester_id] = (params[:as]  == 'requester') ? current_user.id : nil
       @save_attributes[:created_by_requester] = !@save_attributes[:requester_id].nil?
     end
-
   end
 
   def prepare_for_save
