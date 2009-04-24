@@ -32,6 +32,11 @@ class Weal < ActiveRecord::Base
   protected
 
   def validate
-    errors.add_to_base("Must have a requester or offerer") if requester_id.blank? && offerer_id.blank?
+    if requester_id.blank? && offerer_id.blank?
+      errors.add_to_base("Must have a requester or offerer")
+    else
+      errors.add_to_base("Must have a requester if created by requester is true") if requester_id.blank? && created_by_requester?
+      errors.add_to_base("Must have an offerer if created by requester is false") if offerer_id.blank? && !created_by_requester?
+    end
   end
 end

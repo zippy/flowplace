@@ -26,11 +26,26 @@ describe Weal do
     @valid_attributes.delete(:offerer_id)
     lambda {Weal.create!(@valid_attributes)}.should raise_error(ActiveRecord::RecordInvalid,"Validation failed: Must have a requester or offerer")
   end
+
+  it "should fail to create a new instance without a requester if created_by_requester is true" do
+    @valid_attributes.delete(:requester_id)
+    @valid_attributes[:created_by_requester] = true
+    lambda {Weal.create!(@valid_attributes)}.should raise_error(ActiveRecord::RecordInvalid,"Validation failed: Must have a requester if created by requester is true")
+  end
+
+  it "should fail to create a new instance without a offerer if created_by_requester is false" do
+    @valid_attributes.delete(:offerer_id)
+    @valid_attributes[:created_by_requester] = false
+    lambda {Weal.create!(@valid_attributes)}.should raise_error(ActiveRecord::RecordInvalid,"Validation failed: Must have an offerer if created by requester is false")
+  end
   
   it "should be able to report who created it" do
     @user = create_user
-    @weal  = Weal.create!(:title => "title",:requester_id=>@user.id)
+    @user2 = create_user('bob')
+    @weal  = Weal.create!(:title => "title",:requester_id=>@user.id,:created_by_requester => true)
+    @weal2  = Weal.create!(:title => "title2",:offerer_id=>@user2.id,:created_by_requester => false)
     @weal.created_by.should == @user
+    @weal2.created_by.should == @user2
   end
   
   it "should have a matched? method to report if the intention is matched" do
