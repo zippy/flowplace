@@ -28,6 +28,6 @@
 <% if current_user.can?(:dev) %>
 	<p class="home_title">Developer Features</p>
 	<ul class="ul_with_form">
-		<li><%= link_to 'Site Version',version_url()%></li>
+		<li><%= link_to 'System Info',sys_info_url()%></li>
 	</ul>	
 <% end %>

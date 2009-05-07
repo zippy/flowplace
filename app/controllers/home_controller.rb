@@ -24,16 +24,16 @@ class HomeController < ApplicationController
     @projects_total =  Weal.count(:conditions=>"phase = 'project'")
   end
 
+  def sys_info
+    @version = `/usr/local/bin/git describe`
+    @git_log = `/usr/local/bin/git log -15`
+    @current_database = ActiveRecord::Base.connection.current_database if ActiveRecord::Base.connection.respond_to?(:current_database)
+  end
+
   def logged_out
   end
 
   def admin
   end
   
-  def version
-    response.content_type = 'text/plain'
-    render :text=>'version 0.0.1'
-#    render :text=>`git log -1`
-  end
-
 end
