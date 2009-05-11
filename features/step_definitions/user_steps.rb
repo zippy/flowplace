@@ -1,6 +1,7 @@
 def create_user(user)
   u = User.new({:user_name => user, :first_name => user.capitalize,:last_name => 'User',:email=>"#{user}@#{user}.org"})
   u.create_bolt_identity(:user_name => :user_name,:password => 'password') && u.save
+  @user = u
   u
 end
 
@@ -27,4 +28,18 @@ end
 
 Then "I $should be logged in" do |should|
   controller.send(shouldify(should), be_logged_in)
+end
+
+Given /permissions setup/ do
+  User::Permissions.each do |p|
+    Permission.create(:name => p)
+    r = Role.create!(:name => p)
+    r.allowances.add(p)
+  end
+  @permissions_setup = true
+end
+
+Given /^I have "([^\"]*)" privs$/ do |priv_name|
+  Given "permissions setup" unless @permissions_setup
+  @user.roles << Role.find_by_name(priv_name)
 end

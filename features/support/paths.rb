@@ -2,15 +2,24 @@ module NavigationHelpers
   def path_to(page_name)
     case page_name
     
-    when /the dashboard page/
-      '/'
     when /the login page/
       '/login'
+    when /the my wealth stream page/
+      '/'
     when /the new intentions page/
       '/intentions/new'
-    when /the intentions list/
+    when /the intentions page/
       '/intentions'
-      
+    when /the circles page/
+      '/circles'
+    when /the currencies page/
+      '/currencies'
+    when /the match page/
+      '/weals'
+    when /the accounts page/
+      '/users'
+    when /the admin page/
+      '/admin'
     # Add more page name => path mappings here
     
     else

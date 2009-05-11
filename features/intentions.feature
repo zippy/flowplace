@@ -11,5 +11,5 @@ Feature: Intentions
     And I fill in "Title" with "intention 1"
     And I fill in "Description" with "intention 1 description"
     And I press "Declare"
-    Then I should be taken to the intentions list
+    Then I should be taken to the intentions page
 		And I should see "intention 1"
