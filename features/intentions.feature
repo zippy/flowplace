@@ -3,8 +3,8 @@ Feature: Intentions
   As a player
   I want to be able to declare and manage my intentions in the system
 
-	Background:
-		Given I am logged into my account
+  Background:
+    Given I am logged into my account
   
   Scenario: Declaring an intention
     When I go to the new intentions page
@@ -12,4 +12,4 @@ Feature: Intentions
     And I fill in "Description" with "intention 1 description"
     And I press "Declare"
     Then I should be taken to the intentions page
-		And I should see "intention 1"
+    And I should see "intention 1"

@@ -8,8 +8,8 @@ end
 Given /I am logged into my( "([^\"]*)")* account/ do |dummy,user|
   user ||= 'anonymous'
   user = %Q| as "#{user}"|
-	Given "I have an account" + user
-	Given "I log in"+ user
+  Given "I have an account" + user
+  Given "I log in"+ user
 end
 
 
@@ -18,7 +18,7 @@ Given /^I log in( as "([^\"]*)")*$/ do |dummy,user|
   Given "I go to the login page"
   Given %Q|I fill in "Account Name" with "#{user}"|
   Given 'I fill in "Password" with "password"'
-	Given 'I press "Log in"'
+  Given 'I press "Log in"'
 end
 
 Given /I have an account( as "([^\"]*)")*/ do |dummy,user|
@@ -31,15 +31,17 @@ Then "I $should be logged in" do |should|
 end
 
 Given /permissions setup/ do
-  User::Permissions.each do |p|
-    Permission.create(:name => p)
-    r = Role.create!(:name => p)
-    r.allowances.add(p)
+  unless @permissions_setup
+    User::Permissions.each do |p|
+      Permission.create(:name => p)
+      r = Role.create!(:name => p)
+      r.allowances.add(p)
+    end
+    @permissions_setup = true
   end
-  @permissions_setup = true
 end
 
 Given /^I have "([^\"]*)" privs$/ do |priv_name|
-  Given "permissions setup" unless @permissions_setup
+  Given "permissions setup"
   @user.roles << Role.find_by_name(priv_name)
 end
