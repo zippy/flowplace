@@ -14,6 +14,8 @@ module NavigationHelpers
       '/circles'
     when /the currencies page/
       '/currencies'
+    when /the new currencies page/
+      '/currencies/new'
     when /the match page/
       '/weals'
     when /the accounts page/

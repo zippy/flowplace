@@ -3,33 +3,45 @@ require File.expand_path(File.dirname(__FILE__) + '/../spec_helper')
 describe Currency do
   before(:each) do
     @valid_attributes = {
-      :name => "value for name"
+      :name => "My Currency",
+      :icon_url => "/images/my_currency.gif",
+      :symbol => "MC"
     }
   end
 
   it "should create a new instance given valid attributes" do
-    Currency.create!(@valid_attributes)
+    c = Currency.create!(@valid_attributes)
+  end
+
+  it "should raise an error given no name attribute" do
+    lambda {Currency.create!}.should raise_error
   end
   
+  describe "currency autoload" do
+    it "should create currency classes for xgfl files in the currencies directory" do
+      CurrencyMutualCredit.class.should == Class
+      CurrencyMutualCredit::XGFL.chop.should == IO.read(XGFLDir+'/mutual_credit.xgfl')
+    end
+    it "should load Currency class variable with the loaded classes" do
+      Currency.types.should == ['CurrencyMutualCredit']
+    end
+    it "should be able to list a human friend version for creating HTML selects" do
+      Currency.types_list.should == [['Mutual Credit','CurrencyMutualCredit']]
+    end
+  end
   describe "API" do
     before(:each) do
-      @c = Currency::USD.create!(:name => "USD")
+      @c = Currency.create!(@valid_attributes)
     end
     
     it "should provide a url to an icon to represent the currency" do
-      @c.api_icon.should == '/images/currency_icon_usd.jpg'
+      @c.api_icon.should == "/images/my_currency.gif"
     end
     it "should provide a symbol to represent the currency" do
-      @c.api_symbol.should == '$'
-    end
-    it "should provide a text symbol to represent the currency" do
-      @c.api_text_symbol.should == 'USD'
+      @c.api_symbol.should == 'MC'
     end
     it "should provide a text name for the currency" do
-      @c.api_name.should == 'Dollar'
-    end
-    it "should provide a text name for the currency in the specified locale" do
-#      @c.api_name(:es).should == 'Dolar'
+      @c.api_name.should == "My Currency"
     end
   end
 end

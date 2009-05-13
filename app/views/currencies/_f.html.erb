@@ -7,7 +7,17 @@
 
 <p>
   <%= f.label :type %><br />
-  <%= f.select :type,Currency::Types %>
+  <%= f.select :type,Currency.types_list,:include_blank => true %>
+</p>
+
+<p>
+  <%= f.label :icon_url %><br />
+  <%= f.text_field :icon_url %>
+</p>
+
+<p>
+  <%= f.label :symbol %><br />
+  <%= f.text_field :symbol %>
 </p>
 
 <p>

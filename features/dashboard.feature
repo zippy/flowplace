@@ -6,7 +6,7 @@ Feature: Wealth Stream
 	Background:
 		Given I am logged into my account
 	
-	Scenario: User looks at wealth strea
+	Scenario: User looks at wealth stream
 		When I go to on the my wealth stream page
 		Then I should see "My Wealth" 
 		Then I should see "My Intentions" 

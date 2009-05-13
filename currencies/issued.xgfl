@@ -1,0 +1,54 @@
+<game>
+  <player_classes>
+    <player_class name="issuer" />
+    <player_class name="user" />
+  </player_classes>
+  <states>
+    <state name="user_state" player_class="user"><integer name="balance" /><integer name="volume" /></state>
+    <state name="issued_volume" player_class="issuer"><integer name="volume" /></state>
+  </states>
+
+  <plays>
+    <play name="_new">
+      <fields>
+        <field type="" id="class" />
+      </fields>
+      <script type="ruby">
+          <![CDATA[ @user_state.balance = 0 ]]>
+      </script>
+    </play>
+    <play name="payment" player_classes="user">
+      <fields>
+         <field type="player" id="from" />
+         <field type="player" id="to" />
+         <field type="player" id="aggregator" />
+         <field type="integer" id="amount" />
+         <field type="string" id="memo" />
+      </fields>
+      <script type="ruby">
+        <![CDATA[
+        @from.user_state.balance -= @amount
+        @from.user_state.volume += abs(@amount)
+        @to.user_state.balance += @amount
+        @to.user_state.volume += abs(@amount)
+        @issuer.issued_volume.volume += abs(@amount)
+        ]]>
+      </script>
+    </play>
+    <play name="reversal" player_classes="member">
+      <fields>
+         <field type="play" id="play_to_reverse" />
+         <field type="string" id="memo" />
+      </fields>
+      <script type="ruby">
+        <![CDATA[
+        @play_to_reverse.from.user_state.balance += @play.amount
+        @play_to_reverse.from.user_state.volume -= abs(@play.amount)
+        @play_to_reverse.to.user_state.balance -= @play.amount
+        @play_to_reverse.to.user_state.volume -= abs(@amount)
+        @play_to_reverse.issuer.issued_volume.volume -= abs(@amount)
+        ]]>
+      </script>
+    </play>
+  </plays>
+</game>

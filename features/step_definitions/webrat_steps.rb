@@ -113,3 +113,13 @@ end
 Then /^I should be on (.+)$/ do |page_name|
   URI.parse(current_url).path.should == path_to(page_name)
 end
+
+Then /^I should( not)* see the "([^\"]*)" image$/ do |should_not,url|
+  images = response.body.scan(/<img.*?src="(.*?)\?*[0-9]*"/).flatten
+  has_img = images.include?(url)
+  if should_not
+    has_img.should_not be_true
+  else
+    has_img.should be_true
+  end
+end
