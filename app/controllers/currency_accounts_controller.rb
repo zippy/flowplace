@@ -10,6 +10,8 @@ class CurrencyAccountsController < ApplicationController
     end
   end
 
+  # GET /my_currencies
+  # GET /currency_accounts.xml
   def my_currencies
     @currency_accounts = CurrencyAccount.find(:all)
 
@@ -41,6 +43,16 @@ class CurrencyAccountsController < ApplicationController
     end
   end
 
+  # GET /my_currencies/join
+  def join_currency
+    @currency_account = CurrencyAccount.new
+
+    respond_to do |format|
+      format.html # join_currency.html.erb
+      format.xml  { render :xml => @currency_account }
+    end
+  end
+
   # GET /currency_accounts/1/edit
   def edit
     @currency_account = CurrencyAccount.find(params[:id])
@@ -49,12 +61,22 @@ class CurrencyAccountsController < ApplicationController
   # POST /currency_accounts
   # POST /currency_accounts.xml
   def create
-    @currency_account = CurrencyAccount.new(params[:currency_account])
-
+    currency_account_params = params[:currency_account]
+    notice = ''
+    @currency = Currency.find(currency_account_params[:currency_id])
+    if currency_account_params[:user_id].blank?
+      notice = "You have joined #{@currency.name}"
+      redirect_url = my_currencies_path
+      currency_account_params[:user_id] = current_user
+    else
+      notice = "The currency account was created"
+      redirect_url = currency_accounts_path
+    end
+    @currency_account = CurrencyAccount.new(currency_account_params)
     respond_to do |format|
       if @currency_account.save
-        flash[:notice] = 'CurrencyAccount was successfully created.'
-        format.html { redirect_to( currency_accounts_path) }
+        flash[:notice] = notice
+        format.html { redirect_to( redirect_url) }
         format.xml  { render :xml => @currency_account, :status => :created, :location => @currency_account }
       else
         format.html { render :action => "new" }

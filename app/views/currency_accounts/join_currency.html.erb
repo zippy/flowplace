@@ -1,0 +1,17 @@
+<% @title='Join Currency' %>
+<h3>Join Currency</h3>
+
+<% form_for(@currency_account) do |f| %>
+  <%= f.error_messages %>
+
+  <p>
+    <%= f.label :currency_id %><br />
+    <%= f.select(:currency_id, Currency.find(:all).collect {|p| [ p.name, p.id ] }, { :include_blank => @currency_account.new_record? }) %>
+  </p>
+
+  <p>
+    <%= f.submit "Join" %>
+  </p>
+<% end %>
+
+<%= link_to 'Back', currency_accounts_path %>

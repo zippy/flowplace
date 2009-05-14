@@ -12,6 +12,8 @@ module NavigationHelpers
       '/intentions'
     when /the my currencies page/
       '/my_currencies'
+    when /the join currency page/
+      '/my_currencies/join'
     when /the my currency accounts page/
       '/currency_accounts'
     when /the circles page/

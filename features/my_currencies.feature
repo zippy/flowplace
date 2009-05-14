@@ -10,17 +10,22 @@ Feature: my currencies
     Given a "MutualCredit" currency "Y"
     Given I am a member of currency "Y"
     Given a "MutualCredit" currency "Z"
-#    Given currency "X" is used by circle "A"
-#    Given currency "X" is used by circle "B"
-#    Given currency "Y" is used by circle "C"
 
   Scenario: User looks at their currencies
     When I go to the my currencies page
     Then I should see "X"
-#    And I should see "A, B" as circles of "X"
     And I should see "Y"
-#    And I should see "C" as a circles of "Y"
-#
+
+  Scenario: User joins a currency
+    When I go to the my currencies page
+    Then I should not see "Z"
+    When I follow "Join Currency"
+    Then I should be taken to the join currency page
+    When I select "Z" from "Currency"
+    And I press "Join"
+    Then I should be taken to the my currencies page
+    And I should see "You have joined Z"
+
 #  Scenario: User looks at a currency account
 #    When I go to the currency accounts page
 #    And I follow "X"
