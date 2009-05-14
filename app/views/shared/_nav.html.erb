@@ -3,7 +3,7 @@
 	<li ><%= nav_link 'My Wealth Stream',home_url,"View your wealth stream"%></li>
 	<li><%= nav_link 'Intentions', intentions_url,'Place and manage intentions'%></li>
 	<li><%= nav_link 'Match!', weals_url,'Browse intentions placed as requests'%></li>
-	<li><%= nav_link 'My Currencies', currency_accounts_url,'View your currency accounts'%></li>
+	<li><%= nav_link 'My Currencies', my_currencies_url,'View your currency accounts'%></li>
 
 	<% if current_user.can?(:admin) %>
 	<li><%= nav_link 'Circles',circles_url,'Manage circles'%></li>

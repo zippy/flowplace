@@ -61,7 +61,7 @@ module ApplicationHelper
     when 'Circles'
       request.path =~ /^\/circles/
     when 'My Currencies'
-      request.path =~ /^\/currency_accounts/
+      request.path =~ /^\/my_currencies/
     when 'Currencies'
       request.path =~ /^\/currencies/
     when 'My Wealth Stream'
