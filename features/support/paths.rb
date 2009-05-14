@@ -10,6 +10,10 @@ module NavigationHelpers
       '/intentions/new'
     when /the intentions page/
       '/intentions'
+    when /the my currencies page/
+      '/my_currencies'
+    when /the my currency accounts page/
+      '/currency_accounts'
     when /the circles page/
       '/circles'
     when /the currencies page/

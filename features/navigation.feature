@@ -14,8 +14,11 @@ Feature: Navigation feedback
     When I go to the intentions page
     Then I should not see "My Wealth Stream" as the current tab
     And I should see "Intentions" as the current tab
-    When I go to the circles page
+    When I go to the my currencies page
     Then I should not see "Intentions" as the current tab
+    And I should see "My Currencies" as the current tab
+    When I go to the circles page
+    Then I should not see "My Currencies" as the current tab
     And I should see "Circles" as the current tab
     When I go to the currencies page
     Then I should not see "Circles" as the current tab

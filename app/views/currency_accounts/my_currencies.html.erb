@@ -1,0 +1,23 @@
+<% @title='My Currencies' %>
+<h3>My Currencies</h3>
+
+<table>
+  <tr>
+    <th>Currency</th>
+    <th>Summary</th>
+  </tr>
+
+<% for currency_account in @currency_accounts %>
+  <tr>
+    <td><%=h currency_account.currency.name %></td>
+    <td><%=h currency_account.summary %></td>
+    <td><%= link_to 'Show', currency_account %></td>
+    <td><%= link_to 'Edit', edit_currency_account_path(currency_account) %></td>
+    <td><%= link_to 'Destroy', currency_account, :confirm => 'Are you sure?', :method => :delete %></td>
+  </tr>
+<% end %>
+</table>
+
+<br />
+
+<%= link_to 'New currency_account', new_currency_account_path %>

@@ -60,6 +60,8 @@ module ApplicationHelper
     options[:class] = 'active' if case text
     when 'Circles'
       request.path =~ /^\/circles/
+    when 'My Currencies'
+      request.path =~ /^\/currency_accounts/
     when 'Currencies'
       request.path =~ /^\/currencies/
     when 'My Wealth Stream'

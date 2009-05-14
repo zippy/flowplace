@@ -2,6 +2,15 @@ class CurrencyAccountsController < ApplicationController
   # GET /currency_accounts
   # GET /currency_accounts.xml
   def index
+    @currency_accounts = CurrencyAccount.find(:all,:conditions=>["user_id = ?",current_user.id])
+
+    respond_to do |format|
+      format.html # index.html.erb
+      format.xml  { render :xml => @currency_accounts }
+    end
+  end
+
+  def my_currencies
     @currency_accounts = CurrencyAccount.find(:all)
 
     respond_to do |format|
