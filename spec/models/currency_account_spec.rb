@@ -12,4 +12,9 @@ describe CurrencyAccount do
   it "should create a new instance given valid attributes" do
     CurrencyAccount.create!(@valid_attributes)
   end
+
+  it "should not create a duplicate account for the same user and currency" do
+    CurrencyAccount.create!(@valid_attributes)
+    lambda {CurrencyAccount.create!(@valid_attributes)}.should raise_error
+  end
 end

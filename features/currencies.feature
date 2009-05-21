@@ -16,4 +16,3 @@ Feature: currencies
     Then I should be taken to the currencies page
     And I should see "WE"
     And I should see the "/images/currency_icon_we.jpg" image
-      

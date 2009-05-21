@@ -17,6 +17,11 @@ describe Currency do
     lambda {Currency.create!}.should raise_error
   end
   
+  it "should be able to report a name suitable for use as an html id" do
+    c = Currency.create!(@valid_attributes)
+    c.name_as_html_id.should == 'my_currency'
+  end
+  
   describe "currency autoload" do
     it "should create currency classes for xgfl files in the currencies directory" do
       CurrencyMutualCredit.class.should == Class

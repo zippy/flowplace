@@ -66,6 +66,10 @@ class Currency < ActiveRecord::Base
       super
     end
   end
+  
+  def name_as_html_id
+    name.downcase.gsub(/\s+/,'_')
+  end
 end
 
 XGFLDir = "#{RAILS_ROOT}/currencies"

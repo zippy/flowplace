@@ -2,7 +2,7 @@ class CurrencyAccountsController < ApplicationController
   # GET /currency_accounts
   # GET /currency_accounts.xml
   def index
-    @currency_accounts = CurrencyAccount.find(:all,:conditions=>["user_id = ?",current_user.id])
+    @currency_accounts = CurrencyAccount.find(:all)
 
     respond_to do |format|
       format.html # index.html.erb
@@ -13,7 +13,7 @@ class CurrencyAccountsController < ApplicationController
   # GET /my_currencies
   # GET /currency_accounts.xml
   def my_currencies
-    @currency_accounts = CurrencyAccount.find(:all)
+    @currency_accounts = current_user.currency_accounts
 
     respond_to do |format|
       format.html # index.html.erb
@@ -46,7 +46,7 @@ class CurrencyAccountsController < ApplicationController
   # GET /my_currencies/join
   def join_currency
     @currency_account = CurrencyAccount.new
-
+    @joinable_currencies = current_user.joinable_currencies
     respond_to do |format|
       format.html # join_currency.html.erb
       format.xml  { render :xml => @currency_account }
@@ -67,7 +67,7 @@ class CurrencyAccountsController < ApplicationController
     if currency_account_params[:user_id].blank?
       notice = "You have joined #{@currency.name}"
       redirect_url = my_currencies_path
-      currency_account_params[:user_id] = current_user
+      currency_account_params[:user_id] = current_user.id
     else
       notice = "The currency account was created"
       redirect_url = currency_accounts_path
@@ -92,7 +92,7 @@ class CurrencyAccountsController < ApplicationController
 
     respond_to do |format|
       if @currency_account.update_attributes(params[:currency_account])
-        flash[:notice] = 'CurrencyAccount was successfully updated.'
+        flash[:notice] = 'The currency account was successfully updated.'
         format.html { redirect_to(currency_accounts_path) }
         format.xml  { head :ok }
       else
@@ -106,11 +106,14 @@ class CurrencyAccountsController < ApplicationController
   # DELETE /currency_accounts/1.xml
   def destroy
     @currency_account = CurrencyAccount.find(params[:id])
+    if request.env['HTTP_REFERER'] == '/my_currencies'
+      flash[:notice] = 'You have left '+@currency_account.currency.name
+    end
     @currency_account.destroy
-
     respond_to do |format|
-      format.html { redirect_to(currency_accounts_url) }
+      format.html { redirect_to(request.env['HTTP_REFERER']) }
       format.xml  { head :ok }
     end
   end
+  
 end

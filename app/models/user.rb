@@ -21,18 +21,22 @@ class User < ActiveRecord::Base
   cattr_reader :per_page
   @@per_page = 10
   
+  ##############################################
   def weals
     Weal.find(:all,:conditions => ['offerer_id = ? or requester_id = ? or proposals.user_id = ?',self.id,self.id,self.id],:include =>:proposals,:order => 'lft')
   end
 
+  ##############################################
   def intentions
     Weal.find(:all,:conditions => ["(offerer_id = ? or requester_id = ? or proposals.user_id = ?) and phase ='intention'",self.id,self.id,self.id],:include =>:proposals,:order => 'lft')
   end
 
+  ##############################################
   def projects
     Weal.find(:all,:conditions => ["(offerer_id = ? or requester_id = ?) and phase ='project'",self.id,self.id],:order => 'lft')
   end
   
+  ##############################################
   def full_name(lastname_first = false)
     if lastname_first
       "#{last_name}, #{first_name}"
@@ -40,13 +44,9 @@ class User < ActiveRecord::Base
       "#{first_name} #{last_name}"
     end
   end
-  
-  def position(currency)
-    Currency::Position.new
-  end
-  
+
   ##############################################
-  
+
   # Bolt calls this method at login time if it exists
   def login_action(request)
     self.last_login = Time.now
@@ -90,19 +90,23 @@ class User < ActiveRecord::Base
     save
   end
   
+  ##############################################
   def has_preference(pref)
     preferences && preferences.include?(pref)
   end
   
+  ##############################################
   def destroy_with_identity
     bolt_identity.destroy if bolt_identity
     destroy
   end
   
+  ##############################################
   def privs
     roles.collect {|r| r.name.intern}
   end
 
+  ##############################################
   def localize_time(the_time)
     #TODO FIX THIS!
     return the_time
@@ -111,6 +115,19 @@ class User < ActiveRecord::Base
     else
       the_time
     end
+  end
+
+  ##############################################
+  # currencies returns a list of all the currencies the user has joined
+  def currencies
+    currency_accounts.collect {|ca| ca.currency}
+  end
+  
+  ##############################################
+  # joinable_currencies returns a list of all the currencies the user can join
+  # for now this is just a list of all the ones it hasn't yet joined
+  def joinable_currencies
+    Currency.find(:all) - currencies
   end
 
 end

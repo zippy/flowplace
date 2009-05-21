@@ -3,17 +3,16 @@
 
 <table>
   <tr>
-    <th>Currency</th>
+    <th colspan=2>Currency</th>
     <th>Summary</th>
   </tr>
 
 <% for currency_account in @currency_accounts %>
-  <tr>
-    <td><%=h currency_account.currency.name %></td>
-    <td><%=h currency_account.summary %></td>
-    <td><%= link_to 'Show', currency_account %></td>
-    <td><%= link_to 'Edit', edit_currency_account_path(currency_account) %></td>
-    <td><%= link_to 'Destroy', currency_account, :confirm => 'Are you sure?', :method => :delete %></td>
+  <tr id="currency_<%=currency_account.currency.name_as_html_id%>">
+    <td><%= render_currency_icon(currency_account.currency,20) %></td>
+    <td><%= link_to currency_account.currency.name, '/' %> <% if !currency_account.currency.symbol.blank? %>(<%=currency_account.currency.symbol%>)<%end%> </td>
+    <td><%= currency_account.summary %></td>
+    <td><%= link_to 'Leave currency', currency_account, :confirm => 'Are you sure?', :method => :delete %></td>
   </tr>
 <% end %>
 </table>

@@ -91,4 +91,9 @@ module ApplicationHelper
   def render_currency_icon(currency,size=20)
     image_tag currency.api_icon, :height=>size, :width=>size
   end
+
+  def currencies_list_for_select(currencies)
+    currencies.collect {|p| [ p.name, p.id ] }
+  end
+
 end

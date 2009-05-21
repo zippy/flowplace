@@ -61,12 +61,19 @@ describe User do
   describe 'users and currency' do
     before(:each) do
       @user = create_user
-      @usd = Currency::USD.create!(:name => "USD")
+      @usd = create_currency("USD")
     end
     it "should return the user's currency accounts" do
       @user.currency_accounts.should == []
+      @user.currencies.should == []
       @user.currency_accounts << CurrencyAccount.new(:currency => @usd)
       @user.currency_accounts[0].currency.should == @usd
+      @user.currencies.should == [@usd]
+    end
+    it "should be able to return a list of currencies a user can join" do
+      @user.joinable_currencies.should == [@usd]
+      @user.currency_accounts << CurrencyAccount.new(:currency => @usd)
+      @user.joinable_currencies.should == []
     end
   end
   

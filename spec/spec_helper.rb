@@ -18,6 +18,12 @@ Spec::Runner.configure do |config|
     u.create_bolt_identity(:user_name => :user_name,:password => 'password') && u.save
     u
   end
+  
+  def create_currency(currency)
+    c = Currency.create!(:name => currency)
+    c.save.should == true
+    c
+  end
 
   # == Fixtures
   #

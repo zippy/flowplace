@@ -13,19 +13,33 @@ Feature: my currencies
 
   Scenario: User looks at their currencies
     When I go to the my currencies page
-    Then I should see "X"
-    And I should see "Y"
+    Then I should see a currency "X"
+    And I should see a currency "Y"
 
   Scenario: User joins a currency
     When I go to the my currencies page
-    Then I should not see "Z"
+    Then I should not see a currency "Z"
     When I follow "Join Currency"
     Then I should be taken to the join currency page
+    And I should see "Z"
+    And I should not see "X"
+    And I should not see "Y"
     When I select "Z" from "Currency"
     And I press "Join"
     Then I should be taken to the my currencies page
     And I should see "You have joined Z"
-
+    And I should see a currency "Z"
+    When I follow "Join Currency"
+    Then I should not see "Z"
+    And I should see "There are no currencies you can join"
+    
+  Scenario: User leaves a currency
+    When I go to the my currencies page
+    And I follow "Leave currency" for currency "X"
+    Then I should be taken to the my currencies page
+    And I should not see a currency "X"
+    And I should see "You have left X"
+    
 #  Scenario: User looks at a currency account
 #    When I go to the currency accounts page
 #    And I follow "X"
