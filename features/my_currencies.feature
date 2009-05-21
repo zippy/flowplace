@@ -39,19 +39,22 @@ Feature: my currencies
     Then I should be taken to the my currencies page
     And I should not see a currency "X"
     And I should see "You have left X"
+
+  Scenario: Users makes a play in a currency
+    Given "Joe" is a member of currency "X"
+    When I go to the my currencies page
+    And I follow "X" for currency "X"
+    Then I should be taken to my currency "X" play page
+    And I should see "My Currencies: X"
+    And I should see a balance of "0"
+    When I fill in "amount" with "20"
+    And I fill in "description" with "leg waxing"
+    And I select "Joe" from "to"
+    And I press "Place flow"
+    Then I should see a balance of "-20"
     
 #  Scenario: User looks at a currency account
 #    When I go to the currency accounts page
 #    And I follow "X"
 #    Then I should see "X" as the title of the page
 #    And I should see "Currency Summary"
-#
-#  Scenario: User enters a trade
-#    Given "Joe" is a member of currency "X"
-#    When I go to the currency accounts page
-#    And I follow "X"
-#    And I fill in "amount" with "20"
-#    And I fill in "description" with "leg waxing"
-#    And I choose "Joe" from the "to" pop-up
-#    And I click "place flow"
-#    Then I should see my balance go down by "20"

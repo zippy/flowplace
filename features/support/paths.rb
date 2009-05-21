@@ -28,6 +28,10 @@ module NavigationHelpers
       '/users'
     when /the admin page/
       '/admin'
+    when /my currency "([^\"]*)" play page/
+      currency_name = $1
+      ca = controller.current_user.currency_accounts.find(:first,:conditions => ['currency_id = ?',Currency.find_by_name(currency_name)])
+      "/currency_accounts/#{ca.id}/play"
     # Add more page name => path mappings here
     
     else

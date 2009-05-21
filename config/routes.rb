@@ -1,13 +1,15 @@
 ActionController::Routing::Routes.draw do |map|
-  map.resources :currency_accounts
+  map.resources :currency_accounts, :member => {
+    :play => :get
+  }
+  map.my_currencies('/my_currencies', :controller => 'currency_accounts', :action => 'my_currencies')
+  map.join_currency('/my_currencies/join', :controller => 'currency_accounts', :action => 'join_currency')
 
   map.resources :activities
 
   map.resources :proposals
 
   map.resources :currencies
-  map.my_currencies('/my_currencies', :controller => 'currency_accounts', :action => 'my_currencies')
-  map.join_currency('/my_currencies/join', :controller => 'currency_accounts', :action => 'join_currency')
 
   map.resources :circles
   map.resources :circles, :member => {
