@@ -77,8 +77,10 @@ module ApplicationHelper
     end
     link_to text,url,options
   end
-  def gravitar_image_tag(user,options = {:size=>32})
-    image_tag user.gravatar_url(options),:class=>'gravitar'
+  def gravitar_image_tag(user,options={})
+    options[:size] ||= 32
+    size = options[:size]
+    image_tag user.gravatar_url(options),:class=>'gravitar',:size=>"#{size}x#{size}",:title => "#{current_user.full_name} (#{current_user.user_name})"
   end
   
   def users_select_tag(users,opts={})
