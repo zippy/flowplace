@@ -21,7 +21,10 @@ class Currency < ActiveRecord::Base
   }
 
   def self.humanize_type(type)
-    type[8..-1].titleize
+    return "" if type.nil?
+    less_prefix = type[8..-1]
+    return "" if less_prefix.nil?
+    less_prefix.titleize
   end
 
   def api_name

@@ -28,10 +28,10 @@ describe Currency do
       CurrencyMutualCredit::XGFL.chop.should == IO.read(XGFLDir+'/mutual_credit.xgfl')
     end
     it "should load Currency class variable with the loaded classes" do
-      Currency.types.should == ['CurrencyMutualCredit']
+      Currency.types.include?("CurrencyMutualCredit").should == true
     end
-    it "should be able to list a human friend version for creating HTML selects" do
-      Currency.types_list.should == [['Mutual Credit','CurrencyMutualCredit']]
+    it "should be able to humanize a type" do
+      Currency.humanize_type('CurrencyMutualCredit').should == 'Mutual Credit'
     end
   end
   describe "API" do
