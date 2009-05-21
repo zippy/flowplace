@@ -19,8 +19,9 @@ Spec::Runner.configure do |config|
     u
   end
   
-  def create_currency(currency)
-    c = Currency.create!(:name => currency)
+  def create_currency(currency,opts={})
+    opts.update({:name => currency})
+    c = Currency.create!(opts)
     c.save.should == true
     c
   end

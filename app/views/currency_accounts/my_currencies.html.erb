@@ -4,14 +4,20 @@
 <table>
   <tr>
     <th colspan=2>Currency</th>
+    <th>Type</th>
+    <th>Circle</th>
     <th>Summary</th>
+    <th>Description</th>
   </tr>
 
 <% for currency_account in @currency_accounts %>
   <tr id="currency_<%=currency_account.currency.name_as_html_id%>">
     <td><%= render_currency_icon(currency_account.currency,20) %></td>
     <td><%= link_to currency_account.currency.name, '/' %> <% if !currency_account.currency.symbol.blank? %>(<%=currency_account.currency.symbol%>)<%end%> </td>
+    <td><%=h currency_account.currency.humanized_type %></td>
+    <td><%=h humanized_currency_scope(currency_account.currency) %></td>
     <td><%= currency_account.summary %></td>
+    <td><%=h currency_account.currency.description %></td>
     <td><%= link_to 'Leave currency', currency_account, :confirm => 'Are you sure?', :method => :delete %></td>
   </tr>
 <% end %>

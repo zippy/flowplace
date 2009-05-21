@@ -6,8 +6,13 @@
 </p>
 
 <p>
+  <%= f.label :description %><br />
+  <%= f.text_area :description, :rows => 4, :cols => 70 %>
+</p>
+
+<p>
   <%= f.label :type %><br />
-  <%= f.select :type,Currency.types_list,:include_blank => true %>
+  <%= f.select :type,currency_types_list_for_select,:include_blank => true %>
 </p>
 
 <p>
@@ -27,8 +32,4 @@
 <p>
   <%= f.label :circle_id %><br />
   <%= f.select(:circle_id, Circle.find(:all).collect {|p| [ p.name, p.id ] }, {:include_blank => '-none-'})%>
-</p>
-<p>
-  <%= f.label :summary %><br />
-  <%= f.text_area :summary %>
 </p>

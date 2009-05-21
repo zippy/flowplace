@@ -4,16 +4,21 @@
 
 <table>
   <tr>
-    <th>Name</th>
+    <th colspan=2>Name</th>
+    <th>Type</th>
     <th>Scope</th>
     <th>Summary</th>
+    <th>Description</th>
   </tr>
 
 <% for currency in @currencies %>
   <tr>
-    <td><%= render_currency_icon(currency,32) %><%= link_to currency.name, edit_currency_path(currency) %> </td>
-    <td><%=h currency.circle ? currency.circle.name : '' %> <%= currency.global ? ' Global' : ''%> </td>
+    <td><%= render_currency_icon(currency,32) %></td>
+    <td><%= link_to currency.name, edit_currency_path(currency) %> </td>
+    <td><%=h currency.humanized_type %> </td>
+    <td><%=h humanized_currency_scope(currency) %> </td>
     <td><%=h currency.api_render_summary%></td>
+    <td><%=h currency.description%></td>
     <td><%= link_to 'Remove', currency_path(currency), :confirm => 'Are you sure?', :method => :delete %></td>
   </tr>
 <% end %>

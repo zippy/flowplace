@@ -19,10 +19,11 @@ class Currency < ActiveRecord::Base
     'text_symbol' => String,
     'name' => String,
   }
-  def self.types_list
-    @@types.collect {|t| [t[8..-1].titleize,t]}
+
+  def self.humanize_type(type)
+    type[8..-1].titleize
   end
-  
+
   def api_name
     name
   end
@@ -69,6 +70,10 @@ class Currency < ActiveRecord::Base
   
   def name_as_html_id
     name.downcase.gsub(/\s+/,'_')
+  end
+  
+  def humanized_type
+    Currency.humanize_type(type)
   end
 end
 
