@@ -5,7 +5,7 @@ Feature: Intentions
 
   Background:
     Given I am logged into my account
-  
+
   Scenario: Declaring an intention
     When I go to the new intentions page
     And I fill in "Title" with "intention 1"
