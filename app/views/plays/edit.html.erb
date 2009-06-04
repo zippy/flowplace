@@ -1,0 +1,20 @@
+<h1>Editing play</h1>
+
+<% form_for(@play) do |f| %>
+  <%= f.error_messages %>
+
+  <p>
+    <%= f.label :currency_account_id %><br />
+    <%= f.text_field :currency_account_id %>
+  </p>
+  <p>
+    <%= f.label :content %><br />
+    <%= f.text_area :content %>
+  </p>
+  <p>
+    <%= f.submit "Update" %>
+  </p>
+<% end %>
+
+<%= link_to 'Show', @play %> |
+<%= link_to 'Back', plays_path %>

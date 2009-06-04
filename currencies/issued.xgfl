@@ -4,49 +4,49 @@
     <player_class name="user" />
   </player_classes>
   <states>
-    <state name="user_state" player_class="user"><integer name="balance" /><integer name="volume" /></state>
-    <state name="issued_volume" player_class="issuer"><integer name="volume" /></state>
+    <state player_class="user"><integer name="balance" /><integer name="volume" /></state>
+    <state player_class="issuer"><integer name="in_circulation" /><integer name="volume" /></state>
   </states>
 
   <plays>
-    <play name="_new">
-      <fields>
-        <field type="" id="class" />
-      </fields>
+    <play name="_new_user">
       <script type="ruby">
-          <![CDATA[ @user_state.balance = 0 ]]>
+          <![CDATA[ @user_state.balance = 0; @user_state.volume=0]]>
+      </script>
+    </play>
+    <play name="_new_issuer">
+      <script type="ruby">
+          <![CDATA[ @issuer_state.volume=0;@issuer_state.in_circulation=0]]>
       </script>
     </play>
     <play name="payment" player_classes="user">
       <fields>
-         <field type="player" id="from" />
-         <field type="player" id="to" />
-         <field type="player" id="aggregator" />
+         <field type="player_user" id="from" />
+         <field type="player_user" id="to" />
          <field type="integer" id="amount" />
          <field type="string" id="memo" />
       </fields>
       <script type="ruby">
         <![CDATA[
-        @from.user_state.balance -= @amount
-        @from.user_state.volume += abs(@amount)
-        @to.user_state.balance += @amount
-        @to.user_state.volume += abs(@amount)
-        @issuer.issued_volume.volume += abs(@amount)
+        @play.from['balance'] -= @play.amount
+        @play.from['volume'] += @play.amount.abs
+        @play.to['balance'] += @play.amount
+        @play.to['volume'] += @play.amount.abs
         ]]>
       </script>
     </play>
-    <play name="reversal" player_classes="member">
+    <play name="issue" player_classes="issuer">
       <fields>
-         <field type="play" id="play_to_reverse" />
+        <field type="player_issuer" id="from" />
+        <field type="player_user" id="to" />
          <field type="string" id="memo" />
       </fields>
       <script type="ruby">
         <![CDATA[
-        @play_to_reverse.from.user_state.balance += @play.amount
-        @play_to_reverse.from.user_state.volume -= abs(@play.amount)
-        @play_to_reverse.to.user_state.balance -= @play.amount
-        @play_to_reverse.to.user_state.volume -= abs(@amount)
-        @play_to_reverse.issuer.issued_volume.volume -= abs(@amount)
+        @play.from['in_circulation'] += @play.amount
+        @play.from['volume'] += @play.amount.abs
+        @play.to['balance'] += @play.amount
+        @play.to['volume'] += @play.amount.abs
         ]]>
       </script>
     </play>

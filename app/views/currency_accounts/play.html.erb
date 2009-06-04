@@ -1,2 +1,9 @@
 <% @title='My Currencies '+@currency.name %>
 <h3>My Currencies: <%=@currency.name%></h3>
+
+<%= @currency.api_render_account_state(@currency_account)%>
+<div id="make_play">
+  <% form_tag(record_play_currency_account_path(@currency_account)) do -%>
+  <%= render_play_form(@currency,@currency_account)%>
+  <% end -%>
+</div>

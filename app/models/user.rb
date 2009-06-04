@@ -125,9 +125,8 @@ class User < ActiveRecord::Base
   
   ##############################################
   # joinable_currencies returns a list of all the currencies the user can join
-  # for now this is just a list of all the ones it hasn't yet joined
   def joinable_currencies
-    Currency.find(:all) - currencies
+    Currency.find(:all)
   end
 
 end

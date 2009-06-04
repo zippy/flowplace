@@ -8,12 +8,14 @@ describe "/currency_accounts/index.html.erb" do
       stub_model(CurrencyAccount,
         :user_id => 1,
         :currency_id => 1,
-        :summary => "value for summary"
+        :player_class => 'member',
+        :state => "value for state"
       ),
       stub_model(CurrencyAccount,
         :user_id => 1,
         :currency_id => 1,
-        :summary => "value for summary"
+        :player_class => 'member',
+        :state => "value for state"
       )
     ]
   end
@@ -22,7 +24,7 @@ describe "/currency_accounts/index.html.erb" do
     render "/currency_accounts/index.html.erb"
     response.should have_tag("tr>td", 1.to_s, 2)
     response.should have_tag("tr>td", 1.to_s, 2)
-    response.should have_tag("tr>td", "value for summary".to_s, 2)
+    response.should have_tag("tr>td", "value for state".to_s, 2)
   end
 end
 

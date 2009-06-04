@@ -73,6 +73,7 @@ class CurrencyAccountsController < ApplicationController
       redirect_url = currency_accounts_path
     end
     @currency_account = CurrencyAccount.new(currency_account_params)
+    @currency_account.setup
     respond_to do |format|
       if @currency_account.save
         flash[:notice] = notice
@@ -120,6 +121,40 @@ class CurrencyAccountsController < ApplicationController
   def play
     @currency_account = CurrencyAccount.find(params[:id])
     @currency = @currency_account.currency
+  end
+
+  # POST /currency_accounts/1/record_play
+  def record_play
+    @currency_account = CurrencyAccount.find(params[:id])
+    @currency = @currency_account.currency
+    @play = params[:play]
+    @play_name = params[:play_name]
+    @play['from'] = @currency_account
+    @currency.api_play_fields(@play_name).each do |field|
+      field_name = field.keys[0]
+      next if field_name == 'from'
+      field_type = field.values[0]
+      case field_type
+      when 'integer'
+        @play[field_name] = @play[field_name].to_i
+      when /^player_/
+        if @play[field_name]
+          @play[field_name] = CurrencyAccount.find(@play[field_name])
+        end
+      end
+    end
+    
+    @currency.api_play(@play_name,@currency_account,@play)
+    respond_to do |format|
+      if true
+        flash[:notice] = 'The play was recorded.'
+        format.html { redirect_to(my_currencies_path) }
+        format.xml  { head :ok }
+      else
+        format.html { render :action => "play" }
+        format.xml  { render :xml => @currency_account.errors, :status => :unprocessable_entity }
+      end
+    end
   end
   
 end

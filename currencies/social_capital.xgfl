@@ -1,52 +1,30 @@
 <game>
   <player_classes>
     <player_class name="member" />
-    <player_class name="aggregator" />
   </player_classes>
   <states>
-    <state name="member_state" player_class="member"><integer name="balance" /><integer name="volume" /></state>
-    <state name="aggregate_volume" player_class="aggregator"><integer name="volume" /></state>
+    <state player_class="member"><integer name="average_rating" /><integer name="total_ratings" /></state>
   </states>
 
   <plays>
-    <play name="_new">
+    <play name="_new_member">
       <fields>
         <field type="" id="class" />
       </fields>
       <script type="ruby">
-          <![CDATA[ @member_state.balance = 0 ]]>
+          <![CDATA[ @member_state.average_rating = 0 ]]>
       </script>
     </play>
-    <play name="payment" player_classes="member">
+    <play name="rate" player_classes="member">
       <fields>
          <field type="player" id="from" />
          <field type="player" id="to" />
-         <field type="player" id="aggregator" />
-         <field type="integer" id="amount" />
-         <field type="string" id="memo" />
+         <field type="integer" id="rating" />
       </fields>
       <script type="ruby">
         <![CDATA[
-        @from.member_state.balance -= @amount
-        @from.member_state.volume += abs(@amount)
-        @to.member_state.balance += @amount
-        @to.member_state.volume += abs(@amount)
-        @aggregator.aggregate_volume.volume += abs(@amount)
-        ]]>
-      </script>
-    </play>
-    <play name="reversal" player_classes="member">
-      <fields>
-         <field type="play" id="play_to_reverse" />
-         <field type="string" id="memo" />
-      </fields>
-      <script type="ruby">
-        <![CDATA[
-        @play_to_reverse.from.member_state.balance += @play.amount
-        @play_to_reverse.from.member_state.volume -= abs(@play.amount)
-        @play_to_reverse.to.member_state.balance -= @play.amount
-        @play_to_reverse.to.member_state.volume -= abs(@amount)
-        @play_to_reverse.aggregator.aggregate_volume.volume -= abs(@amount)
+        @play.from['average_rating'] = @play.from['average_rating'] + @play.rating/@play.from['total_ratings']
+        @play.from['total_ratings'] += 1
         ]]>
       </script>
     </play>

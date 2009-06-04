@@ -4,15 +4,19 @@
 <table>
   <tr>
     <th>User</th>
+    <th>Account Name</th>
     <th>Currency</th>
-    <th>Summary</th>
+    <th>Player Class</th>
+    <th>State</th>
   </tr>
 
 <% for currency_account in @currency_accounts %>
   <tr>
     <td><%=h currency_account.user.full_name %></td>
+    <td><%=h currency_account.name %></td>
     <td><%=h currency_account.currency.name %></td>
-    <td><%=h currency_account.summary %></td>
+    <td><%=h currency_account.player_class %></td>
+    <td><%=h currency_account.render_state %></td>
     <td><%= link_to 'Show', currency_account %></td>
     <td><%= link_to 'Edit', edit_currency_account_path(currency_account) %></td>
     <td><%= link_to 'Destroy', currency_account, :confirm => 'Are you sure?', :method => :delete %></td>

@@ -1,0 +1,22 @@
+<h1>Listing plays</h1>
+
+<table>
+  <tr>
+    <th>Currency account</th>
+    <th>Content</th>
+  </tr>
+
+<% for play in @plays %>
+  <tr>
+    <td><%=h play.currency_account_id %></td>
+    <td><%=h play.content %></td>
+    <td><%= link_to 'Show', play %></td>
+    <td><%= link_to 'Edit', edit_play_path(play) %></td>
+    <td><%= link_to 'Destroy', play, :confirm => 'Are you sure?', :method => :delete %></td>
+  </tr>
+<% end %>
+</table>
+
+<br />
+
+<%= link_to 'New play', new_play_path %>

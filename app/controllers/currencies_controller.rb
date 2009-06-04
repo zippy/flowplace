@@ -38,6 +38,12 @@ class CurrenciesController < ApplicationController
     @currency = Currency.find(params[:id])
   end
 
+  # GET /currencies/1/player_classes
+  def player_classes
+    @currency = Currency.find(params[:id])
+    render :partial => "player_classes"
+  end
+
   # POST /currencies
   # POST /currencies.xml
   def create

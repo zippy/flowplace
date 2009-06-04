@@ -20,10 +20,24 @@ Spec::Runner.configure do |config|
   end
   
   def create_currency(currency,opts={})
+    if opts.has_key?(:klass)
+      klass = opts[:klass]
+      opts.delete(:klass)
+    else
+      klass = Currency
+    end
     opts.update({:name => currency})
-    c = Currency.create!(opts)
+    c = klass.create!(opts)
     c.save.should == true
     c
+  end
+  
+  def create_currency_account(user,currency,player_class = 'member')
+    opts = {:user_id => user.id,:name => user.full_name,:currency_id => currency.id,:player_class => player_class}
+    ca = CurrencyAccount.create!(opts)
+    ca.setup
+    ca.save!
+    ca
   end
 
   # == Fixtures

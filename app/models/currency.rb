@@ -1,4 +1,30 @@
 class Currency < ActiveRecord::Base
+  class State
+    def initialize(states)
+      @state = {}
+      states.each {|s| @state[s.to_s] = nil}
+    end
+    def [](field_name)
+      method_missing(field_name)
+    end
+    def []=(field_name,val)
+      method_missing(field_name+'=',val)
+    end
+    def method_missing(method,*args)
+      method = method.to_s
+      if method =~ /(.*)=$/
+        return @state[$1] = args[0]
+      else
+        return @state[method] if @state.has_key?(method)
+      end
+      super
+    end
+    def get_state
+      @state
+    end
+  end
+  
+  require 'nokogiri'
   include ActionView::Helpers::FormTagHelper
   include ActionView::Helpers::TagHelper
   include ActionView::Helpers::FormOptionsHelper
@@ -9,6 +35,7 @@ class Currency < ActiveRecord::Base
   has_many :currency_weal_links, :dependent => :destroy
   has_many :weals, :through => :currency_weal_links
   has_many :currency_accounts, :dependent => :destroy
+  has_many :users, :through => :currency_accounts
   
   @@types = []
   cattr_accessor :types
@@ -43,20 +70,97 @@ class Currency < ActiveRecord::Base
     raise "no spec!"
   end
   
-  def api_input_html(field_id_prefix,value=nil)
-		text_field_tag(field_id_prefix,value,:size=>4)
+  def api_play_fields(play)
+    @play_fields ||= {}
+    return @play_fields[play] if @play_fields[play]
+    @xgfl ||= Nokogiri::XML.parse(xgfl)
+    @play_fields[play] = @xgfl.xpath(%Q|/game/plays/play[@name= "#{play}"]/fields/*|).to_a.collect{|f| {f.attributes["id"].to_s => f.attributes["type"].to_s}}
+  end
+  
+  def api_state_fields(player_class)
+    @state_fields ||= {}
+    return @state_fields if @state_fields[player_class]
+    @xgfl ||= Nokogiri::XML.parse(xgfl)
+    player_state = @xgfl.xpath(%Q|/game/states/state[@player_class="#{player_class}"]/*|)
+    @state_fields[player_class] = player_state.to_a.collect {|s| {s.attributes['name'].to_s => s.name.to_s}}
   end
 
   def api_render_value(value)
     value
   end
 
-  def api_render_account_summary(account)
-    account.summary
+  def api_render_account_state(account)
+    s = account.get_state
+    if s
+      state = []
+      s.keys.sort.each {|field| state.push "#{field.titleize}: #{s[field]}"}
+      state.join('; ')
+    end
+  end
+
+  def api_player_classes
+    @xgfl ||= Nokogiri::XML.parse(xgfl)
+    @xgfl.xpath(%Q|/game/player_classes/*|).to_a.collect{|c| c.attributes['name'].to_s}
   end
 
   def api_render_summary
     summary
+  end
+  
+  def api_new_player(player_class)
+    s = Currency::State.new(api_state_fields(player_class).collect {|state| state.keys[0]})
+    eval("@#{player_class}_state = s")
+    
+    script = get_play_script("_new_#{player_class}")
+    if !script.blank?
+      eval script
+    end
+    s.get_state
+  end
+  
+  def get_play_script(play_name)
+    @xgfl ||= Nokogiri::XML.parse(xgfl)
+    script = @xgfl.xpath(%Q|/game/plays/play[@name= "#{play_name}"]/script/text()|).to_s
+    if !script.blank?
+      if script =~ /<\!\[CDATA\[(.*)\]\]>/m
+        script = $1
+      end
+    end
+    script
+  end
+  
+  def api_play(play_name,currency_account,play)
+    @play = Currency::State.new(api_play_fields(play_name).collect {|field| field.keys[0]})
+    api_play_fields(play_name).each do |field|
+      field_name = field.keys[0]
+      field_type = field.values[0]
+      case field_type
+      when 'integer','string','text'
+        @play[field_name] = play[field_name]
+      when /player_(.*)/
+        player_class = $1
+        @play[field_name] = play[field_name].nil? ? nil : play[field_name].get_state
+      end
+    end
+    script = get_play_script(play_name)
+    eval(script)
+    
+    CurrencyAccount.transaction do
+      api_play_fields(play_name).each do |field|
+        field_name = field.keys[0]
+        field_type = field.values[0]
+        case field_type
+        when /player_(.*)/
+          player_class = $1
+          a = play[field_name]
+          if a
+            a.state = @play[field_name]
+            a.save
+          end
+        end
+      end
+      Play.create!(:content=>@play,:currency_account_id => currency_account.id)
+    end
   end
   
   def method_missing(method,*args)
@@ -72,7 +176,7 @@ class Currency < ActiveRecord::Base
   end
   
   def name_as_html_id
-    name.downcase.gsub(/\s+/,'_')
+    name.downcase.gsub(/\s+/,'_').gsub(/\W/,'X')
   end
   
   def humanized_type
@@ -95,9 +199,11 @@ if File.directory?(XGFLDir)
     file_contents = IO.read(file)
     new_class = <<-EORUBY
     class #{klass} < Currency
-      XGFL = <<-EOXGFL
+      def xgfl 
+        <<-EOXGFL
 #{file_contents}
-      EOXGFL
+        EOXGFL
+      end
     end
     EORUBY
     eval new_class,nil,file

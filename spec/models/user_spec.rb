@@ -72,8 +72,6 @@ describe User do
     end
     it "should be able to return a list of currencies a user can join" do
       @user.joinable_currencies.should == [@usd]
-      @user.currency_accounts << CurrencyAccount.new(:currency => @usd)
-      @user.joinable_currencies.should == []
     end
   end
   

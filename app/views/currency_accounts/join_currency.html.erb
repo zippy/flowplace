@@ -8,8 +8,21 @@
     <%= f.error_messages %>
 
     <p>
-      <%= f.label :currency_id %><br />
-      <%= f.select(:currency_id, currencies_list_for_select(@joinable_currencies), { :include_blank => @currency_account.new_record? }) %>
+      <%= f.label :currency_id %>
+      <%= f.select(:currency_id, currencies_list_for_select(@joinable_currencies),
+        {:include_blank => @currency_account.new_record?},
+        :onchange => %Q|new Ajax.Updater('currency_account_player_class', '/currencies/'+$F('currency_account_currency_id')+'/player_classes', {asynchronous:true, method:'get'})|
+      ) %>
+    </p>
+
+    <p>
+      <%= f.label :name %>
+      <%= f.text_field :name %>
+    </p>
+
+    <p>
+      <%= f.label :player_class %> 
+      <%= f.select(:player_class,[])%>
     </p>
 
     <p>

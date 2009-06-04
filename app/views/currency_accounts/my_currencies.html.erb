@@ -3,6 +3,7 @@
 
 <table>
   <tr>
+    <th>Name</th>
     <th colspan=2>Currency</th>
     <th>Type</th>
     <th>Circle</th>
@@ -13,12 +14,13 @@
 <% for currency_account in @currency_accounts 
   currency = currency_account.currency
   %>
-  <tr id="currency_<%=currency.name_as_html_id%>">
+  <tr id="currency_account_<%=currency_account.name_as_html_id%>">
+    <td><%= link_to currency_account.name, play_currency_account_url(currency_account) %></td>
     <td><%= render_currency_icon(currency,20) %></td>
-    <td><%= link_to currency.name, play_currency_account_url(currency_account) %> <% if !currency.symbol.blank? %>(<%=currency_account.currency.symbol%>)<%end%> </td>
+    <td><%= h currency.name %> <% if !currency.symbol.blank? %>(<%=currency_account.currency.symbol%>)<%end%> </td>
     <td><%=h currency.humanized_type %></td>
     <td><%=h humanized_currency_scope(currency) %></td>
-    <td><%= currency_account.summary %></td>
+    <td><%= currency_account.render_state %></td>
     <td><%=h currency.description %></td>
     <td><%= link_to 'Leave currency', currency_account, :confirm => 'Are you sure?', :method => :delete %></td>
   </tr>

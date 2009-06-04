@@ -3,9 +3,11 @@
 one:
   user_id: 1
   currency_id: 1
-  summary: MyText
+  player_class: 'x'
+  state: MyText
 
 two:
   user_id: 1
   currency_id: 1
-  summary: MyText
+  player_class: 'x'
+  state: MyText

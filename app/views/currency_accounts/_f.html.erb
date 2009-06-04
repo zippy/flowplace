@@ -5,10 +5,18 @@
   <%= f.select(:user_id, User.find(:all).collect {|p| [ p.full_name, p.id ] }, { :include_blank => @currency_account.new_record? }) %>
 </p>
 <p>
+  <%= f.label :name %><br />
+  <%= f.text_field :name %>
+</p>
+<p>
   <%= f.label :currency_id %><br />
   <%= f.select(:currency_id, Currency.find(:all).collect {|p| [ p.name, p.id ] }, { :include_blank => @currency_account.new_record? }) %>
 </p>
 <p>
-  <%= f.label :summary %><br />
-  <%= f.text_area :summary %>
+  <%= f.label :player_class %><br />
+  <%= f.text_field :player_class %>
+</p>
+<p>
+  <%= f.label :state %><br />
+  <%= f.text_area :state %>
 </p>

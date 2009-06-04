@@ -4,36 +4,39 @@
     <player_class name="aggregator" />
   </player_classes>
   <states>
-    <state name="member_state" player_class="member"><integer name="balance" /><integer name="volume" /></state>
-    <state name="aggregate_volume" player_class="aggregator"><integer name="volume" /></state>
+    <state player_class="member"><integer name="balance" /><integer name="volume" /></state>
+    <state player_class="aggregator"><integer name="volume" /></state>
   </states>
 
   <plays>
-    <play name="_new">
-      <fields>
-        <field type="" id="class" />
-      </fields>
+    <play name="_new_member">
       <script type="ruby">
-          <![CDATA[ @member_state.balance = 0 ]]>
+          <![CDATA[ @member_state.balance = 0; @member_state.volume = 0 ]]>
+      </script>
+    </play>
+    <play name="_new_aggregator">
+      <script type="ruby">
+          <![CDATA[ @aggregator_state.volume = 0 ]]>
       </script>
     </play>
     <play name="payment" player_classes="member">
       <fields>
-         <field type="player" id="from" />
-         <field type="player" id="to" />
-         <field type="player" id="aggregator" />
+         <field type="player_member" id="from" />
+         <field type="player_member" id="to" />
+         <field type="player_aggregator" id="aggregator" />
          <field type="integer" id="amount" />
-         <field type="string" id="memo" />
+         <field type="text" id="memo" />
       </fields>
       <script type="ruby">
         <![CDATA[
-        @from.member_state.balance -= @amount
-        @from.member_state.volume += abs(@amount)
-        @to.member_state.balance += @amount
-        @to.member_state.volume += abs(@amount)
-        @aggregator.aggregate_volume.volume += abs(@amount)
+        @play.from['balance'] -= @play.amount
+        @play.from['volume'] += @play.amount.abs
+        @play.to['balance'] += @play.amount
+        @play.to['volume'] += @play.amount.abs
+        @play.aggregator['volume'] += @play.amount.abs if @play.aggregator
         ]]>
       </script>
+      <play_sentence lang='en'><from /> acknowledges <to /> in the amount of <amount /> for <memo /></play_sentence>
     </play>
     <play name="reversal" player_classes="member">
       <fields>
@@ -46,7 +49,7 @@
         @play_to_reverse.from.member_state.volume -= abs(@play.amount)
         @play_to_reverse.to.member_state.balance -= @play.amount
         @play_to_reverse.to.member_state.volume -= abs(@amount)
-        @play_to_reverse.aggregator.aggregate_volume.volume -= abs(@amount)
+        @play_to_reverse.aggregator.aggregator_state.volume -= abs(@amount)
         ]]>
       </script>
     </play>

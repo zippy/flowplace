@@ -8,7 +8,8 @@ describe "/currency_accounts/edit.html.erb" do
       :new_record? => false,
       :user_id => 1,
       :currency_id => 1,
-      :summary => "value for summary"
+      :player_class => "member"
+      :state => "value for state"
     )
   end
 
@@ -18,7 +19,8 @@ describe "/currency_accounts/edit.html.erb" do
     response.should have_tag("form[action=#{currency_account_path(@currency_account)}][method=post]") do
       with_tag('input#currency_account_user_id[name=?]', "currency_account[user_id]")
       with_tag('input#currency_account_currency_id[name=?]', "currency_account[currency_id]")
-      with_tag('textarea#currency_account_summary[name=?]', "currency_account[summary]")
+      with_tag('input#player_class[name=?]', "currency_account[player_class]")
+      with_tag('textarea#currency_account_state[name=?]', "currency_account[state]")
     end
   end
 end
