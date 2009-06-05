@@ -69,7 +69,7 @@
 		%>
 		<%= check_box_tag("currencies[#{currency.id}][used]",'1',exists)%> <%=render_currency_icon(currency)%> 
 		<%= currency.name %>
-		<%= currency.api_input_html("currencies[#{currency.id}][val]",exists ? @weal.currency_weal_links.find(:first,:conditions => "currency_id = #{currency.id}").link_spec : nil) %>
+		<%= %Q|currency.api_input_html("currencies[#{currency.id}][val]",exists ? @weal.currency_weal_links.find(:first,:conditions => "currency_id = #{currency.id}").link_spec : nil)|;'' %>
 		<%=  hidden_field_tag "currencies[#{currency.id}][used]", '0'%>
 		<br />
 	<% end %>
