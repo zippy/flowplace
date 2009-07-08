@@ -64,7 +64,7 @@ Feature: my currencies
   Scenario: Users makes a play in a currency
     Given "Joe" is a "member" of currency "X"
     When I go to the my currencies page
-    And I follow "Anonymous User's X member account"
+    And I follow "X"
     Then I should be taken to my currency account "Anonymous User's X member account" play page
     And I should see "My Currencies: X"
     And I should see "Balance: 0"
