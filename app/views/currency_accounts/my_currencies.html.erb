@@ -3,7 +3,7 @@
 
 <table>
   <tr>
-    <th>Name</th>
+    <%if current_user.has_preference('multi_account') %><th>Account</th><%end%>
     <th colspan=2>Currency</th>
     <th>Type</th>
     <th>Circle</th>
@@ -15,9 +15,14 @@
   currency = currency_account.currency
   %>
   <tr id="currency_account_<%=currency_account.name_as_html_id%>">
+  <%if current_user.has_preference('multi_account') %>
     <td><%= link_to currency_account.name, play_currency_account_url(currency_account) %></td>
     <td><%= render_currency_icon(currency,20) %></td>
     <td><%= h currency.name %> <% if !currency.symbol.blank? %>(<%=currency_account.currency.symbol%>)<%end%> </td>
+  <%else%>
+    <td><%= render_currency_icon(currency,20) %></td>
+    <td><%= link_to currency.name, play_currency_account_url(currency_account) %> <% if !currency.symbol.blank? %>(<%=currency_account.currency.symbol%>)<%end%> </td>
+  <%end%>
     <td><%=h currency.humanized_type %></td>
     <td><%=h humanized_currency_scope(currency) %></td>
     <td><%= currency_account.render_state %></td>

@@ -126,7 +126,9 @@ class User < ActiveRecord::Base
   ##############################################
   # joinable_currencies returns a list of all the currencies the user can join
   def joinable_currencies
-    Currency.find(:all)
+    c = Currency.find(:all)
+    c -= currencies if !has_preference('multi_account')
+    c
   end
 
 end

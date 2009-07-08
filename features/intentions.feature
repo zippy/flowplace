@@ -5,6 +5,7 @@ Feature: Intentions
 
   Background:
     Given I am logged into my account
+    Given a "MutualCredit" currency "X"
 
   Scenario: Declaring an intention
     When I go to the new intentions page

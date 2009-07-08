@@ -123,3 +123,12 @@ Then /^I should( not)* see the "([^\"]*)" image$/ do |should_not,url|
     has_img.should be_true
   end
 end
+
+Then /^I should( not)* see a tag "([^\"]*)"$/ do |should_not,tag|
+  if should_not
+    response.should_not have_tag(tag)
+  else
+    response.should have_tag(tag)
+  end
+end
+

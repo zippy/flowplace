@@ -53,6 +53,39 @@ class CurrencyAccountsController < ApplicationController
     end
   end
 
+  # POST /my_currencies/join
+  def join
+    currency_account_params = params[:currency_account]
+    # if the current user doesn't have the multi-account preference set then
+    # we assume the name should just be the current user's user name, otherwise
+    # we assume the account name should be prefixed with the user name
+    @currency_account = CurrencyAccount.new
+    if current_user.has_preference('multi_account')
+      @currency_account.name = current_user.user_name+"."+currency_account_params[:name] if !currency_account_params[:name].blank?
+    else
+      @currency_account.name = current_user.user_name
+    end
+    @currency_account.player_class = currency_account_params[:player_class]
+    @currency_account.user_id = current_user.id
+    @currency_account.currency_id = currency_account_params[:currency_id].to_i
+    @currency_account.setup
+    @currency = Currency.find(@currency_account.currency_id) if @currency_account.currency_id != 0
+    respond_to do |format|
+      if @currency_account.save
+        flash[:notice] = "You have joined #{@currency.name}"
+        format.html { redirect_to( my_currencies_path) }
+        format.xml  { render :xml => @currency_account, :status => :created, :location => @currency_account }
+      else
+        format.html {
+          @currency_account.name=currency_account_params[:name]
+          @joinable_currencies = current_user.joinable_currencies
+          render :action => "join_currency" 
+          }
+        format.xml  { render :xml => @currency_account.errors, :status => :unprocessable_entity }
+      end
+    end
+  end
+  
   # GET /currency_accounts/1/edit
   def edit
     @currency_account = CurrencyAccount.find(params[:id])
@@ -61,26 +94,17 @@ class CurrencyAccountsController < ApplicationController
   # POST /currency_accounts
   # POST /currency_accounts.xml
   def create
-    currency_account_params = params[:currency_account]
-    notice = ''
-    @currency = Currency.find(currency_account_params[:currency_id])
-    if currency_account_params[:user_id].blank?
-      notice = "You have joined #{@currency.name}"
-      redirect_url = my_currencies_path
-      currency_account_params[:user_id] = current_user.id
-    else
-      notice = "The currency account was created"
-      redirect_url = currency_accounts_path
-    end
-    @currency_account = CurrencyAccount.new(currency_account_params)
+    @currency_account = CurrencyAccount.new(params[:currency_account])
     @currency_account.setup
     respond_to do |format|
       if @currency_account.save
-        flash[:notice] = notice
-        format.html { redirect_to( redirect_url) }
+        flash[:notice] = "The currency account was created"
+        format.html { redirect_to( currency_accounts_path) }
         format.xml  { render :xml => @currency_account, :status => :created, :location => @currency_account }
       else
-        format.html { render :action => "new" }
+        format.html { 
+          render :action => "new" 
+          }
         format.xml  { render :xml => @currency_account.errors, :status => :unprocessable_entity }
       end
     end

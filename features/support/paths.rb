@@ -32,8 +32,8 @@ module NavigationHelpers
       currency_account_name = $1
       ca = CurrencyAccount.find(:first,:conditions => ['currency_id = ?',CurrencyAccount.find_by_name(currency_account_name)])
       "/currency_accounts/#{ca.id}/play"
-    # Add more page name => path mappings here
-    
+    when /the preferences page/
+      "/users/#{controller.current_user.id}/preferences"
     else
       raise "Can't find mapping from \"#{page_name}\" to a path."
     end

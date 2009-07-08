@@ -45,3 +45,9 @@ Given /^I have "([^\"]*)" privs$/ do |priv_name|
   Given "permissions setup"
   @user.roles << Role.find_by_name(priv_name)
 end
+
+Given /^I have checked the "([^\"]*)" preference$/ do |pref_name|
+  When %Q|I go to the preferences page|
+  And %Q|I check "prefs[#{pref_name}]"|
+  And %Q|I press "Set Preferences"|
+end

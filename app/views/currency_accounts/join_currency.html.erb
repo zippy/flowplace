@@ -4,7 +4,7 @@
 <% if @joinable_currencies.empty?%>
   There are no currencies you can join
 <% else %>
-  <% form_for(@currency_account) do |f| %>
+  <% form_for :currency_account, :url => '/my_currencies/join' do |f| %>
     <%= f.error_messages %>
 
     <p>
@@ -15,14 +15,16 @@
       ) %>
     </p>
 
+    <% if current_user.has_preference('multi_account') %>
     <p>
-      <%= f.label :name %>
-      <%= f.text_field :name %>
+      <%= f.label :name, 'Account Name:' %>
+      <%=current_user.user_name%>.<%= f.text_field :name %>
     </p>
+    <% end %>
 
     <p>
       <%= f.label :player_class %> 
-      <%= f.select(:player_class,[])%>
+      <%= f.select(:player_class, @currency.nil? ? [] : @currency.api_player_classes,:selected =>@currency_account.player_class)%>
     </p>
 
     <p>

@@ -3,11 +3,11 @@ class CurrencyAccount < ActiveRecord::Base
   belongs_to :user
   has_many :plays
   validates_presence_of :currency_id,:user_id,:player_class,:name
-  validates_uniqueness_of :currency_id, :scope => [:name,:player_class]
-  validates_uniqueness_of :name, :scope => [:currency_id,:player_class]
+  validates_uniqueness_of :currency_id, :scope => [:name,:player_class], :message => 'You are allready a member of that currency'
+  validates_uniqueness_of :name, :scope => [:currency_id,:player_class], :message => 'You allready have an account with that name in the currency'
 
   def setup
-    self.state = currency.api_new_player(player_class)
+    self.state = currency.api_new_player(player_class) if currency
   end
 
   def get_state
