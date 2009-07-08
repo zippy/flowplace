@@ -225,7 +225,7 @@ class UsersController < ApplicationController
     u = User.find(params[:id])
     if u
       @to_email = u.email
-      @to_name = u.public_name
+      @to_name = u.full_name
     end
     @subject = params[:subject] if params[:subject]
     @from_email = current_user.email
@@ -243,11 +243,11 @@ class UsersController < ApplicationController
     end
     u = User.find(params[:id])
     if u
-      @to_name = u.public_name
+      @to_name = u.full_name
     end
     @to_email = params[:to_email]
     @from_email = current_user.email
-    @from_name = current_user.public_name
+    @from_name = current_user.full_name
     @subject = params[:subject]
     @body = params[:body]
     unless @to_error || @to_error_bad_format || @body_error  
