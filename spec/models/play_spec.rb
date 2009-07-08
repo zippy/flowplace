@@ -3,7 +3,8 @@ require File.expand_path(File.dirname(__FILE__) + '/../spec_helper')
 describe Play do
   before(:each) do
     @valid_attributes = {
-      :currency_account_id => 1
+      :currency_account_id => 1,
+      :content => "some play data"
     }
   end
 
@@ -18,8 +19,8 @@ describe Play do
   it "should return the currency account " do
     u = create_user
     c = create_currency("Currency")
-    ca = CurrencyAccount.create!(:user_id => u.id,:currency_id=>c.id)
-    p = Play.create!(:currency_account_id => ca.id)
+    ca = CurrencyAccount.create!(:user_id => u.id,:currency_id=>c.id,:name=>'my_account',:player_class=>'member')
+    p = Play.create!(:currency_account_id => ca.id,:content => 'play content')
     p.currency_account.should == ca
   end
   

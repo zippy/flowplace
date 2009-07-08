@@ -140,6 +140,13 @@ class CurrencyAccountsController < ApplicationController
       format.xml  { head :ok }
     end
   end
+
+  # GET /currency_accounts/1/history
+  def history
+    @currency_account = CurrencyAccount.find(params[:id])
+    @currency = @currency_account.currency
+    @plays = @currency_account.plays
+  end
   
   # GET /currency_accounts/1/play
   def play

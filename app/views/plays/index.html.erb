@@ -2,14 +2,19 @@
 
 <table>
   <tr>
-    <th>Currency account</th>
+    <th>Originating Account</th>
+    <th>Currency</th>
     <th>Content</th>
   </tr>
 
-<% for play in @plays %>
+<% for play in @plays 
+  currency_account = play.currency_account
+  currency = currency_account.currency if currency_account
+%>
   <tr>
-    <td><%=h play.currency_account_id %></td>
-    <td><%=h play.content %></td>
+    <td><%= currency_account ? h(currency_account.name) : '<i>unknown account</i>' %></td>
+    <td><%= currency ? h(currency.name) : '<i>unknown currency</i>' %></td>
+    <td><%= currency ? currency.api_render_play(play.content) : '<i>unknown currency</i>' %></td>
     <td><%= link_to 'Show', play %></td>
     <td><%= link_to 'Edit', edit_play_path(play) %></td>
     <td><%= link_to 'Destroy', play, :confirm => 'Are you sure?', :method => :delete %></td>

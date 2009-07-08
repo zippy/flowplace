@@ -3,6 +3,7 @@ ActionController::Routing::Routes.draw do |map|
 
   map.resources :currency_accounts, :member => {
     :play => :get,
+    :history => :get,
     :record_play => :post
   }
   map.my_currencies('/my_currencies', :controller => 'currency_accounts', :action => 'my_currencies')

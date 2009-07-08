@@ -107,6 +107,13 @@ class Currency < ActiveRecord::Base
     summary
   end
   
+  def api_render_play(play)
+    if play.is_a?(String)
+      play = YAML.load(play)
+    end
+    play.inspect
+  end
+  
   def api_new_player(player_class)
     s = Currency::State.new(api_state_fields(player_class).collect {|state| state.keys[0]})
     eval("@#{player_class}_state = s")

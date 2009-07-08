@@ -27,7 +27,10 @@
     <td><%=h humanized_currency_scope(currency) %></td>
     <td><%= currency_account.render_state %></td>
     <td><%=h currency.description %></td>
-    <td><%= link_to 'Leave currency', currency_account, :confirm => 'Are you sure?', :method => :delete %></td>
+    <td>
+      <%= link_to 'History', history_currency_account_url(currency_account) %>
+      <%= link_to 'Leave currency', currency_account, :confirm => 'Are you sure?', :method => :delete %>
+    </td>
   </tr>
 <% end %>
 </table>

@@ -1,0 +1,19 @@
+<% @title='My Currencies '+@currency.name+' History' %>
+<h3>My Currencies: <%=@currency.name%></h3>
+
+Current State: <%= @currency.api_render_account_state(@currency_account)%>
+<br />
+<h4> History </h4>
+<table>
+  <tr>
+    <th>Date</th>
+    <th>Play</th>
+  </tr>
+
+<% for play in @plays %>
+  <tr>
+    <td><%= standard_date_time(play.created_at) %>
+    <td><%= @currency.api_render_play(play.content) %></td>
+  </tr>
+<% end %>
+</table>

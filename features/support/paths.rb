@@ -28,15 +28,25 @@ module NavigationHelpers
       '/users'
     when /the admin page/
       '/admin'
-    when /my currency account "([^\"]*)" play page/
-      currency_account_name = $1
-      ca = CurrencyAccount.find(:first,:conditions => ['currency_id = ?',CurrencyAccount.find_by_name(currency_account_name)])
-      "/currency_accounts/#{ca.id}/play"
+    when /the currency account play page for "([^\"]*)"/
+      currency_accounts_paths(:play,$1)
+    when /the currency account history page for "([^\"]*)"/
+      currency_accounts_paths(:history,$1)
     when /the preferences page/
       "/users/#{controller.current_user.id}/preferences"
     else
       raise "Can't find mapping from \"#{page_name}\" to a path."
     end
+  end
+end
+
+def currency_accounts_paths(kind,locator)
+  ca = CurrencyAccount.find_by_name(locator)
+  case kind
+  when :play
+    "/currency_accounts/#{ca.id}/play"
+  when :history
+    "/currency_accounts/#{ca.id}/history"
   end
 end
 
