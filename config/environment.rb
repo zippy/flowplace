@@ -85,7 +85,7 @@ ActionMailer::Base.smtp_settings = {
   :address  => "mail.harris-braun.com",
   :port  => 25,
   :domain  => "mail.harris-braun.com",
-  :user_name  => "sender@manastats.org",
+  :user_name  => "sender@flowplace.org",
   :password  => 'x3erf5us!',
   :authentication  => :login
     }

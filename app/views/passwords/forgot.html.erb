@@ -3,7 +3,7 @@
 
 Passwords are case-sensitive: uppercase and lowercase matter. If you think you know your password but it's just not working, try changing the case. (Is your Caps Lock on?) Otherwise, request that your password and account name be e-mailed to you. 
 <p>
-Just give us your e-mail address (the one you use for the MANA Statistics Web site) and we'll send you information on how to reset your password in a few minutes. 
+Just give us your e-mail address (the one you use for the Flowplace web site) and we'll send you information on how to reset your password in a few minutes. 
 <p>
 <table cellpadding="0" cellspacing="0" border=0 width=500><tr><td>
 	<% form_tag(forgot_passwords_url) do -%>
@@ -24,11 +24,10 @@ Just give us your e-mail address (the one you use for the MANA Statistics Web si
   <%= text_field_tag(:email,params[:email], :size=>40) %>
 	<br />
 	<span class="smalltext">Very important!  If you type this incorrectly, we will not be able to find your account information or 
-	answer you. If you have multiple e-mail addresses, please be sure to give us the one you used to sign up for the statistics project.</span>
+	answer you. If you have multiple e-mail addresses, please be sure to give us the one you used to sign up for the flowplace.</span>
 </p>
 <%= submit_tag('Request Reset Password E-mail') %>
 </fieldset><% end -%>
 </td></tr></table>
 <p>
-If your problem is more complicated than a simple password/account name request, use the "Contact Us" link at left or send a message to <a href="mailto:support@MANAstats.org">support@MANAstats.org</a> and we'll help you out.   
 
