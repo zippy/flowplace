@@ -34,6 +34,8 @@ module NavigationHelpers
       currency_accounts_paths(:history,$1)
     when /the preferences page/
       "/users/#{controller.current_user.id}/preferences"
+    when /the wallets page/
+      '/wallets'
     else
       raise "Can't find mapping from \"#{page_name}\" to a path."
     end

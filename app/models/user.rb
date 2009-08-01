@@ -9,6 +9,7 @@ class User < ActiveRecord::Base
   has_many :weals_as_requester, :class_name => 'Weal', :foreign_key => :requester_id
   has_many :proposals
   has_many :activities
+  has_many :wallets
 
   Permissions = %w(dev admin assignPrivs createAccounts accessAccounts)
   Preferences = %w(terse enlargeFont)
@@ -127,7 +128,7 @@ class User < ActiveRecord::Base
   # joinable_currencies returns a list of all the currencies the user can join
   def joinable_currencies
     c = Currency.find(:all)
-    c -= currencies if !has_preference('multi_account')
+    c -= currencies if !has_preference('multi_wallet')
     c
   end
 

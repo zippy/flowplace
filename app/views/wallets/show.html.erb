@@ -1,0 +1,17 @@
+<p>
+  <b>Name:</b>
+  <%=h @wallet.name %>
+</p>
+<p>
+  <b>Description:</b>
+  <%=h @wallet.description %>
+</p>
+
+<p>
+  <b>User:</b>
+  <%=h @wallet.user.full_name %>
+</p>
+
+
+<%= link_to 'Edit', edit_wallet_path(@wallet) %> |
+<%= link_to 'Back', wallets_path %>

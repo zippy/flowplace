@@ -3,11 +3,12 @@
 	<li ><%= nav_link 'My Wealth Stream',home_url,"View your wealth stream"%></li>
 	<li><%= nav_link 'Intentions', intentions_url,'Place and manage intentions'%></li>
 	<li><%= nav_link 'Match!', weals_url,'Browse intentions placed as requests'%></li>
-	<li><%= nav_link 'My Currencies', my_currencies_url,'View your currency accounts'%></li>
-
+	<li><%= nav_link 'Currencies', my_currencies_url,'View your currency accounts'%></li>
+	<li><%= nav_link 'Circles',circles_url,'View and manage your circles'%></li>
+  <% if current_user.has_preference('multi_wallet') %>
+	<li><%= nav_link 'Wallets',wallets_url,'View and manage your wallets'%></li>
+  <% end %>
 	<% if current_user.can?(:admin) %>
-	<li><%= nav_link 'Circles',circles_url,'Manage circles'%></li>
-	<li><%= nav_link 'Currencies',currencies_url,'Manage Currencies'%></li>
 	<li><%= nav_link 'Admin',admin_url,'Site Administration Options'%></li>
 	<% end %>
 

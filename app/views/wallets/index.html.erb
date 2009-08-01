@@ -1,0 +1,26 @@
+<% @title='Wallets' %>
+
+<div class="config_box">
+  <%= link_to 'New wallet', new_wallet_path %>
+</div>
+
+<% if @wallets.empty?%>
+  You have not created any wallets
+<% else %>
+  <table>
+    <tr>
+      <th>Name</th>
+      <th>Description</th>
+    </tr>
+
+  <% for wallet in @wallets %>
+    <tr>
+      <td><%= link_to wallet.name, edit_wallet_path(wallet) %></td>
+      <td><%=h wallet.description %></td>
+      <td><%= link_to 'Delete', wallet, :confirm => 'Are you sure?', :method => :delete %></td>
+    </tr>
+  <% end %>
+  </table>
+<% end %>
+<br />
+

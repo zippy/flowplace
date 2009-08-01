@@ -60,8 +60,8 @@ class CurrencyAccountsController < ApplicationController
     # we assume the name should just be the current user's user name, otherwise
     # we assume the account name should be prefixed with the user name
     @currency_account = CurrencyAccount.new
-    if current_user.has_preference('multi_account')
-      @currency_account.name = current_user.user_name+"."+currency_account_params[:name] if !currency_account_params[:name].blank?
+    if current_user.has_preference('multi_wallet')
+      @currency_account.name = currency_account_params[:name]
     else
       @currency_account.name = current_user.user_name
     end

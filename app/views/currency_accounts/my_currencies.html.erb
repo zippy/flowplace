@@ -1,9 +1,14 @@
 <% @title='My Currencies' %>
+<div class="config_box">
+  <li><%= nav_link 'Manage/Create',currencies_url,'Manage and Create Currencies'%></li>
+  <li><%= nav_link 'Join', join_currency_path, 'Join Currencies' %>
+</div>
+
 <h3>My Currencies</h3>
 
 <table>
   <tr>
-    <%if current_user.has_preference('multi_account') %><th>Account</th><%end%>
+    <%if current_user.has_preference('multi_wallet') %><th>Wallet</th><%end%>
     <th colspan=2>Currency</th>
     <th>Type</th>
     <th>Circle</th>
@@ -15,7 +20,7 @@
   currency = currency_account.currency
   %>
   <tr id="currency_account_<%=currency_account.name_as_html_id%>">
-  <%if current_user.has_preference('multi_account') %>
+  <%if current_user.has_preference('multi_wallet') %>
     <td><%= link_to currency_account.name, play_currency_account_url(currency_account) %></td>
     <td><%= render_currency_icon(currency,20) %></td>
     <td><%= h currency.name %> <% if !currency.symbol.blank? %>(<%=currency_account.currency.symbol%>)<%end%> </td>
@@ -34,7 +39,3 @@
   </tr>
 <% end %>
 </table>
-
-<br />
-
-<%= link_to 'Join Currency', join_currency_path %>

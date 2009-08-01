@@ -34,15 +34,15 @@ Feature: my currencies
     Then I should not see "Z"
     And I should see "There are no currencies you can join"
 
-  Scenario: User joins a currency with multi-account pref checked
+  Scenario: User joins a currency with multi wallet pref checked
     When I go to the join currency page
-    Then I should not see "Account Name:"
-    Given I have checked the "multi_account" preference
+    Then I should not see "Wallet:"
+    Given I have checked the "multi_wallet" preference
     When I go to the my currencies page
     Then I should not see a currency account "Anonymous User's Z member account"
     When I follow "Join Currency"
     Then I should be taken to the join currency page
-    Then I should see "Account Name:"
+    Then I should see "Wallet:"
     When I select "Z" from "Currency"
     When I fill in "Player Class" with "member"
     And I fill in "Account Name" with "my_account"

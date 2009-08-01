@@ -1,0 +1,13 @@
+<% @title='Projects' %>
+
+<div id="intention_tag_cloud">
+	Tags: <%= render_weals_tag_cloud(:conditions => ['phase = "project" and (offerer_id = ? or requester_id = ?)',current_user.id,current_user.id])%>
+</div>
+
+<ul class="item_list">
+<% for weal in @weals %>
+<li class="item" style="margin: <%= weal.level==0 ? 5 : 0 %>px 0 0 <%= weal.level*20 %>px;">
+	<%=link_to weal.title,edit_project_path(weal),{:title=>weal.description} %>
+</li>
+	<%end%>
+</ul>

@@ -1,0 +1,12 @@
+<% @title='Edit Wallet' %>
+
+<% form_for(@wallet) do |f| %>
+  <%= f.error_messages %>
+
+ 	<%= render(:partial => 'f', :object => f) %>
+  <p>
+    <%= f.submit "Update" %>
+  </p>
+<% end %>
+
+<%= link_to 'Back', wallets_path %>

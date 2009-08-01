@@ -60,10 +60,8 @@ module ApplicationHelper
     options[:class] = 'active' if case text
     when 'Circles'
       request.path =~ /^\/circles/
-    when 'My Currencies'
-      request.path =~ /^\/my_currencies/
     when 'Currencies'
-      request.path =~ /^\/currencies/
+      request.path =~ /^\/my_currencies/
     when 'My Wealth Stream'
       request.path == '/'
     when 'Intentions'
@@ -74,6 +72,8 @@ module ApplicationHelper
       request.path =~ /^\/users/
     when 'Admin'
       request.path =~ /^\/admin/
+    when 'Wallets'
+      request.path =~ /^\/wallets/
     end
     link_to text,url,options
   end
@@ -96,6 +96,14 @@ module ApplicationHelper
 
   def currencies_list_for_select(currencies)
     currencies.collect {|p| [ p.name, p.id ] }
+  end
+
+  def wallet_list_for_select(user)
+    wallets = [user.user_name]
+    prefix = user.user_name
+    if !user.wallets.empty?
+      wallets + user.wallets.collect {|w| "#{prefix}.#{w.name}" }
+    end
   end
 
   def currency_accounts(currency,opts={})
