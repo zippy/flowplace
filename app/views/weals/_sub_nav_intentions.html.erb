@@ -1,0 +1,10 @@
+<ul id="sub_nav">
+  <li><%= sub_nav_link 'My Intentions', my_intentions_path,'View my intentions'%></li>
+  <li><%= sub_nav_link 'My Proposals', proposed_intentions_path,'View my proposals to match intentions'%></li>
+  <li><%= sub_nav_link 'All Intentions', weals_path,'Browse intentions placed by others'%></li>
+  <li><%= sub_nav_link 'New Intention', new_intention_path,'Declare a new intention'%></li>
+  <%if @weal && !@weal.new_record?%>
+  <li><p><%= @weal.requester == current_user || @weal.offerer == current_user ? 'Edit' : 'Proposal'%></p></li>
+  <%end%>
+</ul>
+<p class="clear">

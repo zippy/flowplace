@@ -1,0 +1,27 @@
+<% @title='Actions: View' %>
+<%= render(:partial => 'sub_nav_actions') %>
+
+<% form_for(@weal,:url => phaseshift_action_path(@weal)) do |f| %>
+  <div id="intention_proposals_box">
+  <p class='box_title'>Phase Shift</p>
+  <p> <%= f.submit "Convert to Asset",:confirm => 'Please confirm that this action is complete and should be converted to an asset.'%></p>
+  </div>
+<% end %>
+
+<p>
+  <b>Title:</b>
+  <%=h @weal.title %>
+</p>
+
+<p>
+  <b>Description:</b>
+  <%=h @weal.description %>
+</p>
+<p>
+ <b>Is a requirement of: </b>
+ <%= p = @weal.parent; h p.nil? ? '-none-' : p.title %>
+<p>
+ <%= render(:partial => 'proposal_form', :locals => { :party => :requester }) %>
+ <%= render(:partial => 'proposal_form', :locals => { :party => :offerer }) %>
+
+<%= link_to 'Back', weals_path %>

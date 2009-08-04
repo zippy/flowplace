@@ -1,8 +1,5 @@
-<% @title='Circle' %>
-
-<h3>Circles</h3>
-
-<%= link_to 'New circle', new_circle_path %>
+<% @title='Circles' %>
+<%= render(:partial => 'sub_nav') %>
 
 <table>
   <tr>
@@ -11,9 +8,8 @@
 
 <% for circle in @circles %>
   <tr>
-    <td><%=h circle.name %></td>
-    <td><%= link_to 'Modify', circle %></td>
-    <td><%= link_to 'Rename', edit_circle_path(circle) %></td>
+    <td><%=link_to circle.name, edit_circle_path(circle)  %></td>
+    <td><%= link_to 'Members', circle %></td>
     <td><%= link_to 'Delete', circle, :confirm => 'Are you sure?', :method => :delete %></td>
   </tr>
 <% end %>

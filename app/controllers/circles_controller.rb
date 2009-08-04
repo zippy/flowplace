@@ -48,7 +48,7 @@ class CirclesController < ApplicationController
       if @circle.save
         CircleActivity.add(current_user,@circle,'created')
         flash[:notice] = 'Circle was successfully created.'
-        format.html { redirect_to(@circle) }
+        format.html { redirect_to edit_circle_path(@circle) }
         format.xml  { render :xml => @circle, :status => :created, :location => @circle }
       else
         format.html { render :action => "new" }
@@ -61,9 +61,20 @@ class CirclesController < ApplicationController
   # PUT /circles/1.xml
   def update
     @circle = Circle.find(params[:id])
-
+    if @circle.user_account.nil? && params[:make_user]
+      if params[:password] != params[:confirmation]
+        @circle.errors.add_to_base("Passwords don't match")
+      else
+        user_name = @circle.name.tr(' ','_').downcase+'_circle'
+        u = User.new({:user_name => user_name, :first_name => @circle.name,:last_name => "Circle",:email=>params[:email]})
+        u.circle = @circle
+        if !(u.create_bolt_identity(:user_name => :user_name,:password => params[:password]) && u.save)
+          @circle.errors.add_to_base("Error creating user: "+ u.errors.full_messages.join('; '))
+        end
+      end
+    end
     respond_to do |format|
-      if @circle.update_attributes(params[:circle])
+      if @circle.errors.empty? && @circle.update_attributes(params[:circle])
         flash[:notice] = 'Circle was successfully updated.'
         format.html { redirect_to circles_path }
         format.xml  { head :ok }

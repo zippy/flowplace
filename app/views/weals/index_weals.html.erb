@@ -1,4 +1,5 @@
-<% @title='Match!' %>
+<% @title='Intentions: Search' %>
+<%= render(:partial => 'sub_nav_intentions') %>
 
 <%
 #Get data ready for search form:
@@ -7,13 +8,13 @@ order_choices = [
   ['Requester','r']
   ]
 select_options = {
-	'main' => [
-		['Any field contains','full'],
-		['Title contains','t_c'],
-		['Descriptions contains','d_c'],
-		["#{@search_params["for_as"].capitalize} name contains",'as_name'],
-		['Show all','all']]
-	}
+  'main' => [
+    ['Any field contains','full'],
+    ['Title contains','t_c'],
+    ['Descriptions contains','d_c'],
+    ["#{@search_params["for_as"].capitalize} name contains",'as_name'],
+    ['Show all','all']]
+  }
 form_pair_info = [{:name => "main", :on => :select, :for => :text_field, :first_focus => true}]
 form_tag(weals_path,:method => :get,:id=>'search') do %>
 
@@ -24,7 +25,7 @@ Match:
 
 <%= select_tag("search[on_main]", options_for_select(select_options['main'],@search_params["on_main"])) %>
 <%val = ''
-	val = @search_params["for_main"] if !['all','',nil].include?(@search_params["on_main"]) 
+  val = @search_params["for_main"] if !['all','',nil].include?(@search_params["on_main"]) 
 %>
 <%= text_field_tag("search[for_main]", val) %>
 
@@ -32,48 +33,48 @@ Order by: <%= select_tag('search[order_current]', options_for_select(order_choic
 
 <%= check_box_tag('search[paginate]','yes',@search_params[:paginate]=='yes') %> Paginate results
   <input id='search[paginate]' name='search[paginate]' type='hidden' value='no' />
-	<%= submit_tag 'Search' %>
+  <%= submit_tag 'Search' %>
 <% end %>
 
 <div id="intention_tag_cloud">
-	Tags: <%= render_weals_tag_cloud%>
+  Tags: <%= render_weals_tag_cloud%>
 </div>
 <table>
 <tr>
-	<th>Intention</th>
-	<th>Created</th>
-	<th>Who</th>
-	<th>Wealth</th>
+  <th>Intention</th>
+  <th>Created</th>
+  <th>Who</th>
+  <th>Currencies</th>
 </tr>
 
 <% for weal in @weals %>
 <tr>
-	<td>
-		<span class="item" style="margin: <%= weal.level==0 ? 5 : 0 %>px 0 0 <%= weal.level*20 %>px;">
-		<%=link_to weal.title,weal_url(weal),{:title=>weal.description} %>
-		<%if (c = weal.proposals.size) > 0%>
-			(<%= pluralize(c,"proposal")%>)
-		<%end%>
-		</span>
-	</td>
-	<td>
-	 <span title="<%=standard_date_time(weal.created_at)%>">	<%=standard_date(weal.created_at)%> </span> 
-	</td>
-	<td>
-		<%= render_name(@search_params["for_as"].to_sym,weal)%>
-	</td>
-	<td>
-		<% if weal.currency_weal_links %>
-			<% for link in weal.currency_weal_links 
-				currency = link.currency
-				currency = Currency.find(currency.id)
-				%>
-				<%= render_currency_icon(currency) %> <%= currency.api_render_value(link.link_spec)%>
-			<% end %>
-		<% else %>
-			<i>none specified</i>
-		<% end %>
-	</td>
+  <td>
+    <span class="item" style="margin: <%= weal.level==0 ? 5 : 0 %>px 0 0 <%= weal.level*20 %>px;">
+    <%=link_to weal.title,intention_url(weal),{:title=>weal.description} %>
+    <%if (c = weal.proposals.size) > 0%>
+      (<%= pluralize(c,"proposal")%>)
+    <%end%>
+    </span>
+  </td>
+  <td>
+   <span title="<%=standard_date_time(weal.created_at)%>">  <%=standard_date(weal.created_at)%> </span> 
+  </td>
+  <td>
+    <%= render_name(@search_params["for_as"].to_sym,weal)%>
+  </td>
+  <td>
+    <% if weal.currency_weal_links %>
+      <% for link in weal.currency_weal_links 
+        currency = link.currency
+        currency = Currency.find(currency.id)
+        %>
+        <%= render_currency_icon(currency) %> <%= currency.api_render_value(link.link_spec)%>
+      <% end %>
+    <% else %>
+      <i>none specified</i>
+    <% end %>
+  </td>
 </tr>
 <% end %>
 </table>

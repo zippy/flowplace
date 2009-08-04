@@ -57,4 +57,13 @@ describe Weal do
     @weal.should be_matched
   end
   
+  it "should have a relation_to_user method to name a users relation to the weal" do
+    @user = create_user
+    @user2 = create_user('bob')
+    @weal  = Weal.create!(:title => "title",:requester_id=>@user.id,:created_by_requester => true)
+    @weal2  = Weal.create!(:title => "title2",:offerer_id=>@user2.id,:created_by_requester => false)
+    @weal.relation_to_user(@user).should == 'requester'
+    @weal2.relation_to_user(@user2).should == 'offerer'
+  end
+  
 end

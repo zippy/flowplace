@@ -1,6 +1,26 @@
-<% @title='Edit Intention' %>
+<% @title='Intentions: Edit' %>
+<%= render(:partial => 'sub_nav_intentions') %>
 
-<h3>Edit Intention</h3>
+<% if !@proposals.empty? %>
+  <% form_for(@weal,:url => phaseshift_intention_path(@weal)) do |f| %>
+    <%= f.hidden_field "#{@other_holding_as}_id" %>
+    <div id="intention_proposals_box">
+    <p class='box_title'>Proposals</p>
+    <% for p in @proposals %>
+      <p class="intention_proposal_source">
+      <%= radio_button_tag 'accepter',1,@weal.attributes["#{@other_holding_as}_id"] == p.user_id, {:onClick => "$('accept_proposal').enable(); $('weal_#{@other_holding_as}_id').value=#{p.user_id}"}%>
+      From <%=h p.user.full_name %>
+      </p>
+      <p class="intention_proposal_description">
+          <%=h p.description %>
+      </p>
+      
+    <% end %>
+    <p> <%= f.submit "Accept Proposal",:confirm => 'Are you sure you want to accept this proposal and convert this intention into an action?', :disabled => true, :id => 'accept_proposal' %></p>
+    </div>
+  <% end %>
+<% end %>
+
 <% form_for(@weal,:url => intention_path(@weal)) do |f| %>
 	<%= render(:partial => 'f', :object => f) %>
 

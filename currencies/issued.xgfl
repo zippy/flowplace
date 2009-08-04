@@ -19,7 +19,7 @@
           <![CDATA[ @issuer_state.volume=0;@issuer_state.in_circulation=0]]>
       </script>
     </play>
-    <play name="payment" player_classes="user">
+    <play name="pay" player_classes="user">
       <fields>
          <field type="player_user" id="from" />
          <field type="player_user" id="to" />
@@ -28,10 +28,15 @@
       </fields>
       <script type="ruby">
         <![CDATA[
-        @play.from['balance'] -= @play.amount
-        @play.from['volume'] += @play.amount.abs
-        @play.to['balance'] += @play.amount
-        @play.to['volume'] += @play.amount.abs
+        if @play.from['balance'] >= @play.amount
+          @play.from['balance'] -= @play.amount
+          @play.to['volume'] += @play.amount.abs
+          @play.to['balance'] += @play.amount
+          @play.from['volume'] += @play.amount.abs
+          true
+        else
+          "Insufficient Funds"
+        end
         ]]>
       </script>
     </play>
@@ -39,7 +44,8 @@
       <fields>
         <field type="player_issuer" id="from" />
         <field type="player_user" id="to" />
-         <field type="string" id="memo" />
+        <field type="integer" id="amount" />
+        <field type="string" id="memo" />
       </fields>
       <script type="ruby">
         <![CDATA[
@@ -47,6 +53,24 @@
         @play.from['volume'] += @play.amount.abs
         @play.to['balance'] += @play.amount
         @play.to['volume'] += @play.amount.abs
+        true
+        ]]>
+      </script>
+    </play>
+    <play name="retire" player_classes="issuer">
+      <fields>
+        <field type="player_issuer" id="from" />
+        <field type="player_user" id="to" />
+        <field type="integer" id="amount" />
+         <field type="string" id="memo" />
+      </fields>
+      <script type="ruby">
+        <![CDATA[
+        @play.from['in_circulation'] -= @play.amount
+        @play.from['volume'] += @play.amount.abs
+        @play.to['balance'] -= @play.amount
+        @play.to['volume'] += @play.amount.abs
+        true
         ]]>
       </script>
     </play>

@@ -2,6 +2,7 @@
   <player_classes>
     <player_class name="member" />
     <player_class name="aggregator" />
+    <player_class name="admin" />
   </player_classes>
   <states>
     <state player_class="member"><integer name="balance" /><integer name="volume" /></state>
@@ -19,7 +20,7 @@
           <![CDATA[ @aggregator_state.volume = 0 ]]>
       </script>
     </play>
-    <play name="payment" player_classes="member">
+    <play name="pay" player_classes="member">
       <fields>
          <field type="player_member" id="from" />
          <field type="player_member" id="to" />
@@ -34,11 +35,12 @@
         @play.to['balance'] += @play.amount
         @play.to['volume'] += @play.amount.abs
         @play.aggregator['volume'] += @play.amount.abs if @play.aggregator
+        true
         ]]>
       </script>
       <play_sentence lang='en'><from /> acknowledges <to /> in the amount of <amount /> for <memo /></play_sentence>
     </play>
-    <play name="reversal" player_classes="member">
+    <play name="reverse" player_classes="admin">
       <fields>
          <field type="play" id="play_to_reverse" />
          <field type="string" id="memo" />

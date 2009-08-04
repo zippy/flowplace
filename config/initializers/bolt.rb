@@ -1,6 +1,6 @@
 Bolt::Initializer.run do |bolt|
-  bolt.application_name = 'TT Free Currencies Project'
-  bolt.email_from = 'TT <eric@harris-braun.com>'
+  bolt.application_name = 'Flowplace'
+  bolt.email_from = 'Flowplace <eric@harris-braun.com>'
   bolt.min_password_length = 4
   bolt.user_name_label = "Account Name"
   bolt.forgery_secret = "kasjdf908klasdjf89asdfkjsdf"

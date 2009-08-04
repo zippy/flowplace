@@ -84,6 +84,44 @@ ul#nav li a:hover {background: gray;}
 ul#nav li a.active {background: white;color:#000000;}
 ul#nav li.last a {margin-right:0;}
 
+	/* ----------Sub NAVIGATION TEXT---------- */
+
+
+#sub_nav {
+	font-size: 9pt;
+	margin:0px 0px 0px 0px;
+	padding:0px;
+	font-weight: normal;
+}
+	
+#sub_nav a:link {
+	color: #ffffff;
+	text-decoration: none;
+	}
+
+#sub_nav a:active {
+	color: #ffffff;
+	}
+
+#sub_nav a:visited {
+	color: #ffffff;
+	text-decoration: none;
+	}
+	
+#sub_nav a:hover {
+	color: white;
+	text-decoration: none;
+	border-color: #70787F;
+	}
+
+ul#sub_nav {display:block;margin-top:0px;list-style:none;}
+ul#sub_nav li {display:block;float:left;background: green;}
+ul#sub_nav li a {display:block;float:left;margin:0px;padding: 0 10px;}
+ul#sub_nav li a:hover {background: gray;}
+ul#sub_nav li a.active {background: blue;color:#ffffff;}
+ul#sub_nav li p {margin:0px 0px 0px 0px;background: blue;color:#ffffff;padding: 0 10px;}  /*active non-clickable item*/
+ul#sub_nav li.last a {margin-right:0;}
+
 #page_content {
 	float:left;
 	width: 950px;

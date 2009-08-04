@@ -15,12 +15,24 @@ When /^I press "([^\"]*)"$/ do |button|
   click_button(button)
 end
 
+When /^I press the "([^\"]*)" form "([^\"]*)"$/ do |form_id,button|
+  within('form#'+form_id) do |scope|
+    click_button(button)
+  end
+end
+
 When /^I follow "([^\"]*)"$/ do |link|
   click_link(link)
 end
 
 When /^I fill in "([^\"]*)" with "([^\"]*)"$/ do |field, value|
   fill_in(field, :with => value) 
+end
+
+When /^I fill in the "([^\"]*)" form "([^\"]*)" with "([^\"]*)"$/ do |form_id,field, value|
+  within('form#'+form_id) do |scope|
+    fill_in(field, :with => value)
+  end
 end
 
 When /^I select "([^\"]*)" from "([^\"]*)"$/ do |value, field|

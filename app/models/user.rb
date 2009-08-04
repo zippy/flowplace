@@ -10,6 +10,7 @@ class User < ActiveRecord::Base
   has_many :proposals
   has_many :activities
   has_many :wallets
+  belongs_to :circle #this is for users that are a circle
 
   Permissions = %w(dev admin assignPrivs createAccounts accessAccounts)
   Preferences = %w(terse enlargeFont)
@@ -29,12 +30,22 @@ class User < ActiveRecord::Base
 
   ##############################################
   def intentions
-    Weal.find(:all,:conditions => ["(offerer_id = ? or requester_id = ? or proposals.user_id = ?) and phase ='intention'",self.id,self.id,self.id],:include =>:proposals,:order => 'lft')
+    Weal.find(:all,:conditions => ["(offerer_id = ? or requester_id = ? ) and phase ='intention'",self.id,self.id],:include =>:proposals,:order => 'lft')
   end
 
   ##############################################
-  def projects
-    Weal.find(:all,:conditions => ["(offerer_id = ? or requester_id = ?) and phase ='project'",self.id,self.id],:order => 'lft')
+  def proposed_intentions
+    Weal.find(:all,:conditions => ["proposals.user_id = ? and phase ='intention'",self.id],:include =>:proposals,:order => 'lft')
+  end
+
+  ##############################################
+  def actions
+    Weal.find(:all,:conditions => ["(offerer_id = ? or requester_id = ?) and phase ='action'",self.id,self.id],:order => 'lft')
+  end
+
+  ##############################################
+  def assets
+    Weal.find(:all,:conditions => ["(offerer_id = ? or requester_id = ?) and phase ='asset'",self.id,self.id],:order => 'lft')
   end
   
   ##############################################
@@ -89,6 +100,12 @@ class User < ActiveRecord::Base
   def acknowledge_tip
     self.tip_type = 'none'
     save
+  end
+  
+  ##############################################
+  # returns true if this user represents a circle
+  def is_circle?
+    return !circle.nil?
   end
   
   ##############################################

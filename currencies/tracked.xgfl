@@ -2,40 +2,43 @@
   <player_classes>
     <player_class name="member" />
     <player_class name="aggregator" />
+    <player_class name="admin" />
   </player_classes>
   <states>
-    <state name="member_state" player_class="member"><integer name="balance" /><integer name="volume" /></state>
-    <state name="aggregate_volume" player_class="aggregator"><integer name="volume" /></state>
+    <state player_class="member"><integer name="balance" /><integer name="volume" /></state>
+    <state player_class="aggregator"><integer name="volume" /></state>
   </states>
 
   <plays>
-    <play name="_new">
+    <play name="_new_member">
       <fields>
         <field type="" id="class" />
       </fields>
       <script type="ruby">
-          <![CDATA[ @member_state.balance = 0 ]]>
+          <![CDATA[ @member_state.balance = 0;@member_state.volume = 0 ]]>
       </script>
     </play>
-    <play name="payment" player_classes="member">
+    <play name="pay" player_classes="member">
       <fields>
-         <field type="player" id="from" />
-         <field type="player" id="to" />
-         <field type="player" id="aggregator" />
+         <field type="player_member" id="from" />
+         <field type="player_member" id="to" />
+         <field type="player_aggregator" id="aggregator" />
          <field type="integer" id="amount" />
          <field type="string" id="memo" />
       </fields>
       <script type="ruby">
         <![CDATA[
-        @from.member_state.balance -= @amount
-        @from.member_state.volume += abs(@amount)
-        @to.member_state.balance += @amount
-        @to.member_state.volume += abs(@amount)
-        @aggregator.aggregate_volume.volume += abs(@amount)
+        abs_amount = @play.amount.abs
+        @play.from['balance'] -= @play.amount
+        @play.from['volume'] += abs_amount
+        @play.to['balance'] += @play.amount
+        @play.to['volume'] += abs_amount
+        @play.aggregator['volume'] += abs_amount if @play.aggregator
+        true
         ]]>
       </script>
     </play>
-    <play name="reversal" player_classes="member">
+    <play name="reverse" player_classes="admin">
       <fields>
          <field type="play" id="play_to_reverse" />
          <field type="string" id="memo" />

@@ -1,0 +1,6 @@
+<ul id="sub_nav">
+  <li><%= sub_nav_link 'My', wallets_path, 'My Wallets' %>
+  <li><%= sub_nav_link 'New',new_wallet_path,'Create Wallet'%></li>
+  <%if @wallet && !@wallet.new_record?%><li><p>Edit</p></li><%end%>
+</ul>
+<p class="clear">

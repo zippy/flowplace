@@ -14,8 +14,9 @@ class Weal < ActiveRecord::Base
   has_many :proposals, :dependent => :destroy
   
   has_many :intention_activities, :as => :activityable
-
-  Phases = %w(intention project)
+  belongs_to :circle
+  
+  Phases = %w(intention action asset)
   def initialize(attrs=nil)
     super(attrs)
     self.phase = 'intention'
@@ -29,6 +30,34 @@ class Weal < ActiveRecord::Base
     requester && offerer ? true : false
   end
   
+  def relation_to_user(user)
+    return 'requester' if requester == user
+    return 'offerer' if offerer == user
+    p = proposals.find(:first,:conditions => ['user_id = ? and weal_id = ?',user.id,self.id])
+    if p
+      created_by_requester ? 'offerer' : 'requester'
+    end
+  end
+
+  def humanize_in_service_of
+    if in_service_of
+      s =  in_service_of.split(/,/)
+      s.collect do |i|
+        if i.to_i == 0
+          i
+        else
+          begin
+            User.find(i).full_name
+          rescue
+            "<unknown user_id: #{i}>"
+          end
+        end
+      end.join('; ')
+    else
+      '-unspecified-'
+    end
+  end
+
   protected
 
   def validate
@@ -39,4 +68,5 @@ class Weal < ActiveRecord::Base
       errors.add_to_base("Must have an offerer if created by requester is false") if offerer_id.blank? && !created_by_requester?
     end
   end
+
 end

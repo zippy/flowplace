@@ -1,20 +1,20 @@
-<% @title='Circle' %>
+<% @title="Circles: #{h @circle.name}" %>
+<%= render(:partial => 'sub_nav') %>
 
-<h3>Circle: <%=h @circle.name %> </h3><%= link_to 'Rename', edit_circle_path(@circle) %>
-
+<h3>Circle: <%=h @circle.name %> </h3>
 
 <% form_tag(set_members_circle_url(@circle.id),:method => :put) do -%>
 <p>
   <b>Members:</b>
 </p>
-	<% if @circle.users.empty? %><i>none</i><%else%>
-		<% for u in @circle.users %>
-		<%= h u.full_name %>
+  <% if @circle.users.empty? %><i>none</i><%else%>
+    <% for u in @circle.users %>
+    <%= h u.full_name %>
           <%= submit_tag "Remove as member",:name=>"remove_#{u.id}" %> <br />
-		<% end %>
-	<% end %>
-	<p> Add <%= users_select(@circle, {:onchange => 'do_change()'}) %>  as a member.</p>
-	<%= submit_tag "Add member", :disabled => true, :id => 'submit_button' %> 
+    <% end %>
+  <% end %>
+  <p> Add <%= users_select(@circle, {:onchange => 'do_change()'}) %>  as a member.</p>
+  <%= submit_tag "Add member", :disabled => true, :id => 'submit_button' %> 
 
 <% end %>
 

@@ -71,7 +71,28 @@ class UsersController < ApplicationController
   # GET /users/new
   def new
     @user = User.new
-    @certifications = []
+  end
+
+  # GET /users/signup
+  def signup
+    @user = User.new
+  end
+  
+  # POST /users/signup
+  def do_signup
+    @user = User.new(params[:user])
+    raise "you can't sign up as circle user!" if @user.user_name =~ /_circle/
+    respond_to do |format|
+      if @user.create_bolt_identity(:user_name => :user_name,:enabled => false) && @user.save
+        @user.activate! {|activation_code| activation_url(activation_code, :user_name=> @user.user_name)}
+        flash[:notice] = "Your accont as been created and you have been sent an activation e-mail!"
+        format.html { redirect_to "/activations/show/"+@user.user_name }
+        format.xml  { head :created, :location => user_url(@user) }
+      else
+        format.html { render :action => "signup" }
+        format.xml  { render :xml => @user.errors.to_xml }
+      end
+    end
   end
 
   # GET /users/1;edit
@@ -83,7 +104,6 @@ class UsersController < ApplicationController
   # POST /users.xml
   def create
     @user = User.new(params[:user])
-    
     respond_to do |format|
       if @user.create_bolt_identity(:user_name => :user_name,:enabled => false) && @user.save
         do_extra_actions

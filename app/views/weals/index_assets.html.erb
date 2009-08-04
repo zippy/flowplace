@@ -1,0 +1,36 @@
+<% @title='My Assets' %>
+<%= render(:partial => 'sub_nav_assets') %>
+
+<div id="intention_tag_cloud">
+	Tags: <%= render_weals_tag_cloud(:conditions => ['phase = "asset" and (offerer_id = ? or requester_id = ?)',current_user.id,current_user.id])%>
+</div>
+
+<% if @weals.empty? %>
+You have no assets.
+<%else%>
+
+<table>
+<tr>
+  <th>&nbsp;</th>
+  <th>Asset</th>
+  <th>In service of</th>
+  <th>Created</th>
+  <th>Currencies</th>
+</tr>
+<% for weal in @weals %>
+<tr class="item" style="margin: <%= weal.level==0 ? 5 : 0 %>px 0 0 <%= weal.level*20 %>px;">
+  <th>&nbsp;</th>
+  <td><%=link_to weal.title,asset_path(weal),{:title=>weal.description} %> </td>
+  <td><%=weal.humanize_in_service_of%></td>
+  <td><%=standard_date(weal.updated_at)%></td>
+  <td><%=humanize_currencies(weal.currencies)%></td>
+  
+  <td>
+  <% if weal.created_by == current_user%>
+    (<%= link_to 'Delete', weal, :confirm => 'Are you sure?'+ (weal.children? ? " Warning: This action has child-actions, deleting it will delete all children." : ''), :method => :delete %>)
+  <%end%>
+  </td>
+</tr>
+<% end %>
+</table>
+<%end%>

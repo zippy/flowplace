@@ -1,0 +1,20 @@
+<% @title='Asset: View' %>
+<%= render(:partial => 'sub_nav_assets') %>
+
+<p>
+  <b>Title:</b>
+  <%=h @weal.title %>
+</p>
+
+<p>
+  <b>Description:</b>
+  <%=h @weal.description %>
+</p>
+<p>
+ <b>Is a requirement of: </b>
+ <%= p = @weal.parent; h p.nil? ? '-none-' : p.title %>
+<p>
+ <%= render(:partial => 'proposal_form', :locals => { :party => :requester }) %>
+ <%= render(:partial => 'proposal_form', :locals => { :party => :offerer }) %>
+
+<%= link_to 'Back', weals_path %>

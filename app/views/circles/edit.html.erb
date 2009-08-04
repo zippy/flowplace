@@ -1,12 +1,22 @@
-<h1>Editing circle</h1>
+<% @title='Circles: Edit' %>
+<%= render(:partial => 'sub_nav') %>
 
 <% form_for(@circle) do |f| %>
   <%= f.error_messages %>
 
   <p>
-    <%= f.label :name %><br />
-    <%= f.text_field :name %>
+    Name: <%=@circle.name%>
   </p>
+  <p>
+    <%= f.label :description %> (this will be WYSIWG soon)<br />
+    <%= f.text_area :description, :cols=>70,:rows => 10 %>
+  </p>
+  
+  <%if @circle.user_account %>
+    User for this circle: <%=@circle.user_account.user_name%>
+  <%else%>
+    <%= render(:partial => 'make_user') %>
+  <%end%>
   <p>
     <%= f.submit "Update" %>
   </p>

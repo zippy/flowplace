@@ -1,8 +1,5 @@
 <% @title='Wallets' %>
-
-<div class="config_box">
-  <%= link_to 'New wallet', new_wallet_path %>
-</div>
+<%= render(:partial => 'sub_nav') %>
 
 <% if @wallets.empty?%>
   You have not created any wallets

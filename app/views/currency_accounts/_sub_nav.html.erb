@@ -1,0 +1,8 @@
+<ul id="sub_nav">
+  <li><%= sub_nav_link 'My', my_currencies_path, 'My Currencies' %>
+  <li><%= sub_nav_link 'Join', join_currency_path, 'Join Currencies' %>
+  <li><%= sub_nav_link 'All',currencies_path,'Browse all currencies'%></li>
+  <li><%= sub_nav_link 'New',new_currency_path,'Create Currencies'%></li>
+  <%if @currency && !@currency.new_record?%><li><p>Edit</p></li><%end%>
+</ul>
+<p class="clear">

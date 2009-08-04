@@ -11,66 +11,66 @@
 
 <table id='holoptiview'>
 <tr>
-	<td class='holoptiview_my'>
-		<div class="holoptiview_box">
-			<p class='holoptiview_box_title'><%=@who%> Wealth</p>
-			<%for account in @currency_accounts_my
-				currency = Currency.find(account.currency.id)
-				%>
-				<%=render_currency_icon(currency)%><%= currency.api_render_account_state(account) %>
-			<% end %>
-		</div>
-	</td>
-	<td>
-		<div class="holoptiview_box">
-			<p class='holoptiview_box_title'>HoloptiWealth</p>
-			<%for currency in @currencies%>
-				<%=render_currency_icon(currency)%><%= currency.api_render_summary %>
-			<% end %>
-		</div>
-	</td>
+  <td class='holoptiview_my'>
+    <div class="holoptiview_box">
+      <p class='holoptiview_box_title'><%=@who%> Wealth</p>
+      <%for account in @currency_accounts_my
+        currency = Currency.find(account.currency.id)
+        %>
+        <%=render_currency_icon(currency)%><%= currency.api_render_account_state(account) %>
+      <% end %>
+    </div>
+  </td>
+  <td>
+    <div class="holoptiview_box">
+      <p class='holoptiview_box_title'>HoloptiWealth</p>
+      <%for currency in @currencies%>
+        <%=render_currency_icon(currency)%><%= currency.api_render_summary %>
+      <% end %>
+    </div>
+  </td>
 </tr>
 <tr>
-	<td class='holoptiview_my'>
-		<div class="holoptiview_box">
-			<p class='holoptiview_box_title'><%=@who%> Projects</p>
-			Projects: <%= @projects_total_my%>
-		</div>
-	</td>
-	<td>
-		<div class="holoptiview_box">
-			<p class='holoptiview_box_title'>Projects</p>
-			Projects: <%= @projects_total%>
-		</div>
-	</td>
+  <td class='holoptiview_my'>
+    <div class="holoptiview_box">
+      <p class='holoptiview_box_title'><%=@who%> Actions</p>
+      <%= link_to('Actions',my_actions_path) %>: <%= @actions_total_my%>
+    </div>
+  </td>
+  <td>
+    <div class="holoptiview_box">
+      <p class='holoptiview_box_title'>Actions</p>
+      <%= link_to('Actions',actions_path) %>: <%= @actions_total%>
+    </div>
+  </td>
 </tr>
 <tr>
-	<td class='holoptiview_my'>
-		<div class="holoptiview_box">
-			<p class='holoptiview_box_title'><%=@who%> Intentions</p>
-			Proposals: <%= @proposals_total_my%><br />
-			<%= link_to('Intentions',intentions_path) %>: <%= @intentions_total_my%>
-		</div>
-	</td>
-	<td>
-		<div class="holoptiview_box">
-			<p class='holoptiview_box_title'>Intentions</p>
-			Proposals: <%= @proposals_total%><br />
-			<%= link_to('Intentions',weals_path) %>: <%= @intentions_total%>
-		</div>
-	</td>
+  <td class='holoptiview_my'>
+    <div class="holoptiview_box">
+      <p class='holoptiview_box_title'><%=@who%> Intentions</p>
+      <%= link_to('Proposals',proposed_intentions_path) %>: <%= @proposals_total_my%><br />
+      <%= link_to('Intentions',my_intentions_path) %>: <%= @intentions_total_my%>
+    </div>
+  </td>
+  <td>
+    <div class="holoptiview_box">
+      <p class='holoptiview_box_title'>Intentions</p>
+      Proposals: <%= @proposals_total%><br />
+      <%= link_to('Intentions',weals_path) %>: <%= @intentions_total%>
+    </div>
+  </td>
 </tr>
 <tr>
-	<td class='holoptiview_my'>
-		<div class="holoptiview_box">
-			<%= render(:partial => 'activities', :locals => { :title => "#{@who} Activities", :conditions=> ['user_id=?',@user.id] }) %>
-		</div>
-	</td>
-	<td>
-		<div class="holoptiview_box">
-			<%= render(:partial => 'activities', :locals => { :title => 'Activities', :conditions=>['user_id!=?',@user.id] }) %>
-		</div>
-	</td>
+  <td class='holoptiview_my'>
+    <div class="holoptiview_box">
+      <%= render(:partial => 'activities', :locals => { :title => "#{@who} Activities", :conditions=> ['user_id=?',@user.id] }) %>
+    </div>
+  </td>
+  <td>
+    <div class="holoptiview_box">
+      <%= render(:partial => 'activities', :locals => { :title => 'Activities', :conditions=>['user_id!=?',@user.id] }) %>
+    </div>
+  </td>
 </tr>
 
 </table>

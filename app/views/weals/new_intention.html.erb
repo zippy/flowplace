@@ -1,6 +1,6 @@
-<% @title='Declare Intention' %>
+<% @title='Intentions: Declare' %>
 
-<h3>Declare Intention</h3>
+<%= render(:partial => 'sub_nav_intentions') %>
 
 <% form_for(@weal,:url => intentions_path) do |f| %>
  	<%= render(:partial => 'f', :object => f) %>

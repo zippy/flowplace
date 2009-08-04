@@ -1,0 +1,16 @@
+<% @title='Flowplace: Signup' %>
+
+<%= error_messages_for :user %>
+
+<% form_for(:user, :url => signup_users_path) do |f| %>
+
+  <table>
+  <tr><td align="left">Account name: </td><td><%= f.text_field :user_name %></td></tr>
+  <tr><td align="left">First name: </td><td><%= f.text_field :first_name %></td></tr>
+  <tr><td align="left">Last name: </td><td><%= f.text_field :last_name %></td></tr>
+  <tr><td align="left">E-mail: </td><td><%= f.text_field :email %></td></tr>
+  </table>
+  <p>
+    <%= submit_tag "Sign up" %>
+  </p>
+<% end %>

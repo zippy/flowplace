@@ -55,28 +55,28 @@ module ApplicationHelper
   def localize_time(the_time)
     standard_time(current_user.localize_time(the_time))
   end
-  def nav_link(text,url,title)
+  
+  def nav_link(text,path,title,active_path = nil)
     options = {:title => title}
-    options[:class] = 'active' if case text
-    when 'Circles'
-      request.path =~ /^\/circles/
-    when 'Currencies'
-      request.path =~ /^\/my_currencies/
-    when 'My Wealth Stream'
-      request.path == '/'
-    when 'Intentions'
-      request.path =~ /^\/intentions/
-    when 'Match!'
-      request.path =~ /^\/weals/
-    when 'Accounts'
-      request.path =~ /^\/users/
-    when 'Admin'
-      request.path =~ /^\/admin/
-    when 'Wallets'
-      request.path =~ /^\/wallets/
+    if active_path.nil?
+      if path =~ /(\/[^\/]+)/
+        active_path = $1
+      end
     end
-    link_to text,url,options
+    if (!active_path.blank? && request.path =~ /^#{active_path}/) || (path == '/' && request.path == '/')
+      options[:class] = 'active' 
+    end
+    link_to text,path,options
   end
+
+  def sub_nav_link(text,path,title)
+    options = {:title => title}
+    if request.path == path
+      options[:class] = 'active' 
+    end
+    link_to text,path,options
+  end
+
   def gravitar_image_tag(user,options={})
     options[:size] ||= 32
     size = options[:size]
@@ -91,11 +91,15 @@ module ApplicationHelper
   end
   
   def render_currency_icon(currency,size=20)
-    image_tag currency.api_icon, :height=>size, :width=>size
+    image_tag currency.api_icon, :height=>size, :width=>size, :title=> "#{currency.name}: #{currency.description}"
+  end
+
+  def humanize_currencies(currencies)
+    currencies.collect {|c| render_currency_icon(c)}.join(' ')
   end
 
   def currencies_list_for_select(currencies)
-    currencies.collect {|p| [ p.name, p.id ] }
+    currencies.collect {|c| [ standard_currency_description(c), c.id ] }
   end
 
   def wallet_list_for_select(user)
@@ -122,29 +126,44 @@ module ApplicationHelper
   end
   
   def render_play_form(currency,currency_account)
+    player_class = currency_account.player_class
     exclude_list = ['from','to']
-    play_name = ''
+    plays = currency.api_plays
     case currency
     when CurrencyMutualCredit
-      play_name = 'payment'
       exclude_list << 'aggregator'
     when CurrencyIssued
-      play_name = 'payment'
     when CurrencySocialCapital
-      play_name = 'rate'
     when CurrencyTracked
-      play_name = 'payment'
+      exclude_list << 'aggregator'
     end
-    <<-EOHTML
-    <fieldset>
-    <legend>
-      <label for="user_id">Make a play with:</label>
-      #{currency_accounts_select(currency,'play[to]',:exclude => currency_account)}
-    </legend>
-      #{currency_play_html(currency,currency_account,play_name,:field_id_prefix=>'play',:exclude=>exclude_list)}
-      #{submit_tag 'Record Play'}
-    </fieldset>
-    EOHTML
+    result = ''
+    plays.keys.each do |play_name|
+      if play_name !~ /^_/ && plays[play_name][:player_classes] == player_class
+        case play_name
+        when 'pay'
+          with_player_class = currency.class == CurrencyIssued ? 'user' : 'member'
+        when 'issue'
+          with_player_class = 'user'
+        when 'retire'
+          with_player_class = 'user'
+        end
+          
+        result += form_tag(record_play_currency_account_path(currency_account),:id => play_name) +
+          <<-EOHTML
+          <fieldset>
+          <legend>
+            <label for="user_id">#{play_name.titleize}: </label>
+            #{currency_accounts_select(currency,'play[to]',:exclude => currency_account,:player_class => with_player_class)}
+          </legend>
+            #{currency_play_html(currency,currency_account,play_name,:field_id_prefix=>'play',:exclude=>exclude_list)}
+            #{submit_tag 'Record Play'}
+          </fieldset>
+          </form>
+          EOHTML
+      end
+    end
+    result
   end
   
   def currency_play_html(currency,currency_account,play,opts={})
@@ -177,6 +196,16 @@ module ApplicationHelper
       end
     end
     results.join('<br />')+%Q|<input type="hidden" name="play_name" value="#{play}">|
+  end
+  
+  def standard_currency_description(currency,include_icon = false)
+    text = "#{currency.name}: #{currency.description}"
+    text = "#{render_currency_icon(currency)} #{text}" if include_icon
+    if block_given?
+      yield text
+    else
+      text
+    end
   end
 
 end

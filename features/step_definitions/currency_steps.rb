@@ -1,4 +1,4 @@
-Given /a "([^\"]*)" currency "([^\"]*)"/ do |currency_type,currency_name|
+Given /an* "([^\"]*)" currency "([^\"]*)"/ do |currency_type,currency_name|
   klass = "Currency#{currency_type}".constantize
   @currency = klass.create!({:type => currency_type, :name => currency_name})
 end

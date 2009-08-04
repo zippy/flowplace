@@ -1,24 +1,55 @@
-<% @title='Intentions' %>
+<% @title= @proposed ? 'My Proposals' : 'My Intentions'%>
+<%= render(:partial => 'sub_nav_intentions') %>
 
 <div id="intention_tag_cloud">
-	Tags: <%= render_weals_tag_cloud(:conditions => ['offerer_id = ? or requester_id = ?',current_user.id,current_user.id])%>
+	Tags: <%= render_weals_tag_cloud(:conditions => ['phase = "intention" and (offerer_id = ? or requester_id = ?)',current_user.id,current_user.id])%>
 </div>
-<p> <%= link_to 'Declare a new intention',new_intention_path %></p>
+<% if @weals.empty? %>
+  <%if @proposed%> You have no proposals. <%else%> You have no declared intentions.<%end%>
+<%else%>
 
-<ul class="item_list">
-<% for weal in @weals %>
-<li class="item" style="margin: <%= weal.level==0 ? 5 : 0 %>px 0 0 <%= weal.level*20 %>px;">
-	<%=link_to weal.title,edit_intention_path(weal),{:title=>weal.description} %>
-	as <%= render_as(weal) %>
-	<%if weal.matched? %>
-		(matched!)
-	<%elsif (c = weal.proposals.size) > 0%>
-		(<%= pluralize(c,"proposal")%>)
-	<%end%>
-	<% if weal.created_by == current_user%>
-		(<%= link_to 'Delete', weal, :confirm => 'Are you sure?'+ (weal.children? ? " Warning: This intention has child-intentions, deleting it will delete all children." : ''), :method => :delete %>)
-	<%end%>
-</ul>
-</li>
-
+View by: <span style="background: #ddd" title="this will be a pop up later to allow viewing by scope and in-service-of">role</span>
+<table>
+<tr>
+  <th>&nbsp;</th>
+  <th>Intention</th>
+  <th>In service of</th>
+  <th>Created</th>
+  <th>Currencies</th>
+  <th>Proposals</th>
+</tr>
+<%
+display_type = ''
+@weals = @weals.sort {|a,b| a.relation_to_user(current_user).to_s <=> b.relation_to_user(current_user).to_s}
+for weal in @weals
+  proposed = weal.offerer != current_user && weal.requester != current_user
+  dt = weal.relation_to_user(current_user)
+  %>
+  <%
+    if display_type != dt && dt
+      display_type = dt %>
+      <tr><td colspan=7 style="background: #ddd">AS <%= dt.upcase%></td></tr>
+  <%end%>
+<tr class="item" style="margin: <%= weal.level==0 ? 5 : 0 %>px 0 0 <%= weal.level*20 %>px;">
+  <th>&nbsp;</th>
+  <td><%=link_to weal.title, proposed ? intention_path(weal) : edit_intention_path(weal),{:title=>weal.description} %> </td>
+  <td><%=weal.humanize_in_service_of%></td>
+  <td><%=standard_date(weal.updated_at)%></td>
+  <td><%=humanize_currencies(weal.currencies)%></td>
+  <td>
+    <%if weal.matched? %>
+      matched!
+    <%elsif (c = weal.proposals.size) > 0%>
+      <%= pluralize(c,"proposal")%>
+    <%end%>
+  </td>
+  
+  <td>
+  <% if weal.created_by == current_user%>
+    (<%= link_to 'Delete', weal, :confirm => 'Are you sure?'+ (weal.children? ? " Warning: This intention has child-intentions, deleting it will delete all children." : ''), :method => :delete %>)
+  <%end%>
+  </td>
+</tr>
 <% end %>
+</table>
+<%end%>

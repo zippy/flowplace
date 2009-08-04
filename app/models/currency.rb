@@ -70,6 +70,13 @@ class Currency < ActiveRecord::Base
     raise "no spec!"
   end
   
+  def api_plays
+    @xgfl ||= Nokogiri::XML.parse(xgfl)
+    plays = {}
+    @xgfl.xpath(%Q|/game/plays/*|).to_a.each{|p| plays[p.attributes['name'].to_s] = {:player_classes => p.attributes['player_classes'].to_s}}
+    plays
+  end
+  
   def api_play_fields(play)
     @play_fields ||= {}
     return @play_fields[play] if @play_fields[play]
@@ -104,7 +111,7 @@ class Currency < ActiveRecord::Base
   end
 
   def api_render_summary
-    summary
+#    summary
   end
   
   def api_render_play(play)
@@ -116,11 +123,15 @@ class Currency < ActiveRecord::Base
   
   def api_new_player(player_class)
     s = Currency::State.new(api_state_fields(player_class).collect {|state| state.keys[0]})
-    eval("@#{player_class}_state = s")
+    prepare_eval('setting state for new player') do
+      eval "@#{player_class}_state = s"
+    end
     
     script = get_play_script("_new_#{player_class}")
     if !script.blank?
-      eval script
+      prepare_eval('new_player') do
+        eval script
+      end
     end
     s.get_state
   end
@@ -146,27 +157,43 @@ class Currency < ActiveRecord::Base
         @play[field_name] = play[field_name]
       when /player_(.*)/
         player_class = $1
-        @play[field_name] = play[field_name].nil? ? nil : play[field_name].get_state
+        @play[field_name] = play[field_name].blank? ? nil : play[field_name].get_state
+      else
+        raise "unknown field type: #{field_type}"
       end
     end
     script = get_play_script(play_name)
-    eval(script)
     
-    CurrencyAccount.transaction do
-      api_play_fields(play_name).each do |field|
-        field_name = field.keys[0]
-        field_type = field.values[0]
-        case field_type
-        when /player_(.*)/
-          player_class = $1
-          a = play[field_name]
-          if a
-            a.state = @play[field_name]
-            a.save
+    return_value = prepare_eval('play') do
+      eval script
+    end
+    if return_value == true
+      CurrencyAccount.transaction do
+        api_play_fields(play_name).each do |field|
+          field_name = field.keys[0]
+          field_type = field.values[0]
+          case field_type
+          when /player_(.*)/
+            player_class = $1
+            a = play[field_name]
+            if a.is_a?(CurrencyAccount)
+              a.state = @play[field_name]
+              a.save
+            end
           end
         end
+        Play.create!(:content=>@play,:currency_account_id => currency_account.id)
       end
-      Play.create!(:content=>@play,:currency_account_id => currency_account.id)
+    else
+      raise return_value
+    end
+  end
+  
+  def prepare_eval(context)
+    begin
+      yield
+    rescue Exception => e
+      raise "error executing #{context}.<br>Type: #{type}<br>#{e.inspect}<br> @play = #{@play.inspect} <br>"
     end
   end
   
@@ -188,6 +215,20 @@ class Currency < ActiveRecord::Base
   
   def humanized_type
     Currency.humanize_type(type)
+  end
+
+  def humanized_scope
+    if global
+      "Global"
+    elsif circle
+      circle.name
+    else
+      ''
+    end
+  end
+  
+  def currency_accounts_total
+    currency_accounts.size
   end
 end
 

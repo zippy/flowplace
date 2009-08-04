@@ -106,10 +106,13 @@ describe Currency do
       @currency.api_state_fields('member').should == [{"balance"=>"integer"}, {"volume"=>"integer"}]
     end
     it "should be able to return the fields for a play" do
-      @currency.api_play_fields('payment').should == [{"from"=>"player_member"}, {"to"=>"player_member"}, {"aggregator"=>"player_aggregator"}, {"amount"=>"integer"}, {"memo"=>"text"}]
+      @currency.api_play_fields('pay').should == [{"from"=>"player_member"}, {"to"=>"player_member"}, {"aggregator"=>"player_aggregator"}, {"amount"=>"integer"}, {"memo"=>"text"}]
     end
     it "should be able to return a list of player classes" do
       @currency.api_player_classes.should == ['member','aggregator']
+    end
+    it "should be able to return a list of plays" do
+      @currency.api_plays.should == {"_new_member"=>{:player_classes=>""}, "reversal"=>{:player_classes=>"member"}, "pay"=>{:player_classes=>"member"}, "_new_aggregator"=>{:player_classes=>""}}
     end
     it "should be able to record a play" do
       @user2 = create_user('u2')
@@ -118,7 +121,7 @@ describe Currency do
       @account.get_state['balance'].should == 0
       @account2.get_state['balance'].should == 0
       Play.find(:all).size.should == 0
-      @currency.api_play('payment',@account,play)
+      @currency.api_play('pay',@account,play)
       @account.get_state['balance'].should == -20
       @account2.get_state['balance'].should == 20
       plays = Play.find(:all)
@@ -126,7 +129,7 @@ describe Currency do
     end
     describe 'utilities' do
       it "get_play_script should return the script of the named play" do
-        @currency.get_play_script('payment').should == "\n        @from.member_state.balance -= @amount\n        @from.member_state.volume += abs(@amount)\n        @to.member_state.balance += @amount\n        @to.member_state.volume += abs(@amount)\n        @aggregator.aggregator_state.volume += abs(@amount)\n        "
+        @currency.get_play_script('pay').should == "\n        @from.member_state.balance -= @amount\n        @from.member_state.volume += abs(@amount)\n        @to.member_state.balance += @amount\n        @to.member_state.volume += abs(@amount)\n        @aggregator.aggregator_state.volume += abs(@amount)\n        "
       end
     end
   end

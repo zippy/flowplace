@@ -30,7 +30,14 @@ ActionController::Routing::Routes.draw do |map|
     :set_mate => :put
     }
 
-  map.resources :intentions, :controller => "weals"
+  map.resources :intentions, :controller => "weals",
+    :member => {:phaseshift => :put},
+    :collection => { :my => :get, :proposed => :get}
+  map.resources :actions, :controller => "weals",
+    :member => {:phaseshift => :put},
+    :collection => { :my => :get }
+  map.resources :assets, :controller => "weals",
+    :collection => { :my => :get }
 
   # The priority is based upon order of creation: first created -> highest priority.
 
@@ -41,6 +48,8 @@ ActionController::Routing::Routes.draw do |map|
 
   map.from_plugin(:bolt)
   map.logged_in_users '/users/logged_in', :controller => 'users', :action => 'logged_in_users'
+  map.signup_users '/users/signup', :controller => 'users', :action => 'signup', :conditions => { :method => :get }
+  map.signup_users '/users/signup', :controller => 'users', :action => 'do_signup', :conditions => { :method => :post }
   map.resources :users, :member => {
     :login_as => :get,
     :permissions => :get, :set_permissions => :put,

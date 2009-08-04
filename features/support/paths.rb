@@ -4,12 +4,18 @@ module NavigationHelpers
     
     when /the login page/
       '/login'
-    when /the my wealth stream page/
+    when /the logout page/
+      '/logout'
+    when /the overview page/
       '/'
     when /the new intentions page/
       '/intentions/new'
     when /the intentions page/
       '/intentions'
+    when /the assets page/
+      '/assets'
+    when /the actions page/
+      '/actions'
     when /the my currencies page/
       '/my_currencies'
     when /the join currency page/

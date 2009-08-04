@@ -33,9 +33,9 @@ describe User do
     it "should be able to return a list of its weals" do
       @user.weals.should == [@weal,@wealf]
     end
-    describe 'intention and projects methods' do
+    describe 'intention and action methods' do
       before(:each) do
-        @wealf.phase = 'project'
+        @wealf.phase = 'action'
         @wealf.save
       end
       
@@ -43,8 +43,8 @@ describe User do
         @user.intentions.should == [@weal]
       end
 
-      it "should return projects" do
-        @user.projects.should == [@wealf]
+      it "should return actions" do
+        @user.actions.should == [@wealf]
       end
 
       it "should also return intentions proposed" do

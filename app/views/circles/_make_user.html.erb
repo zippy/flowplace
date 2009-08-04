@@ -1,0 +1,11 @@
+<p>
+  <%= check_box_tag(:make_user,'1',params[:make_user],:onClick => "$F('make_user') == 1 ? $('make_user_questions').show() : $('make_user_questions').hide()") %> <%= label_tag :make_user,"Create a user account for this circle?" %>
+</p>
+<p id="make_user_questions"<% unless params[:make_user]%> style="display:none"<%end%>>
+  The login name for the circle user account will be: <b> <%= @circle.name.tr(' ','_').downcase%>_circle </b> <br />
+  <%= label_tag :password,"Password:" %><%= password_field_tag(:password)%> <br />
+  <%= label_tag :confirmation,"Confirm Password:" %><%= password_field_tag(:confirmation)%> <br />
+  <%= label_tag :email,"Email:" %><%= text_field_tag(:email, params[:email] ? params[:email] : current_user.email)%>
+
+</p>
+

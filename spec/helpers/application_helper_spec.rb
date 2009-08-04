@@ -35,15 +35,15 @@ describe ApplicationHelper do
     
     describe "currency_play_html" do
       it "should generate input html for a play" do
-        helper.currency_play_html(@lets,'payment').should == 
+        helper.currency_play_html(@lets,'pay').should == 
           "<label for=\"from\">From:</label><select id=\"from\" include_blank=\"true\" name=\"from\"><option value=\"3\">Joe U3</option></select><br /><label for=\"to\">To:</label><select id=\"to\" include_blank=\"true\" name=\"to\"><option value=\"3\">Joe U3</option></select><br /><label for=\"aggregator\">Aggregator:</label><select id=\"aggregator\" include_blank=\"true\" name=\"aggregator\"><option value=\"4\">Joe U4</option></select><br /><label for=\"amount\">Amount:</label><input type=\"text\" id=\"amount name=\"amount\"><br /><label for=\"memo\">Memo:</label><textarea id=\"memo\" name=\"memo\"></textarea>"
       end
       it "should generate input html for a play with a field_prefix" do
-        helper.currency_play_html(@lets,'payment',:field_id_prefix=>'play').should == 
+        helper.currency_play_html(@lets,'pay',:field_id_prefix=>'play').should == 
           "<label for=\"play_from\">From:</label><select id=\"play_from\" include_blank=\"true\" name=\"play[from]\"><option value=\"3\">Joe U3</option></select><br /><label for=\"play_to\">To:</label><select id=\"play_to\" include_blank=\"true\" name=\"play[to]\"><option value=\"3\">Joe U3</option></select><br /><label for=\"play_aggregator\">Aggregator:</label><select id=\"play_aggregator\" include_blank=\"true\" name=\"play[aggregator]\"><option value=\"4\">Joe U4</option></select><br /><label for=\"play_amount\">Amount:</label><input id=\"play_amount\" name=\"play[amount]\" type=\"text\" /><br /><label for=\"play_memo\">Memo:</label><textarea id=\"play[memo]\" name=\"play[memo]\"></textarea>"
       end
       it "should generate input html for a play excluding the specified fiels" do
-        helper.currency_play_html(@lets,'payment',:exclude =>['from','to','aggregator']).should == 
+        helper.currency_play_html(@lets,'pay',:exclude =>['from','to','aggregator']).should == 
           "<label for=\"amount\">Amount:</label><input type=\"text\" id=\"amount name=\"amount\"><br /><label for=\"memo\">Memo:</label><textarea id=\"memo\" name=\"memo\"></textarea>"
       end
     end

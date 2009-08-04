@@ -170,18 +170,25 @@ class CurrencyAccountsController < ApplicationController
         @play[field_name] = @play[field_name].to_i
       when /^player_/
         if @play[field_name]
-          @play[field_name] = CurrencyAccount.find(@play[field_name])
+          begin
+            @play[field_name] = CurrencyAccount.find(@play[field_name])
+          rescue Exception => e
+          end
         end
       end
     end
-    
-    @currency.api_play(@play_name,@currency_account,@play)
+    begin
+      @currency.api_play(@play_name,@currency_account,@play)
+    rescue Exception => e
+      @error = e
+    end
     respond_to do |format|
-      if true
+      if !@error
         flash[:notice] = 'The play was recorded.'
         format.html { redirect_to(my_currencies_path) }
         format.xml  { head :ok }
       else
+        flash[:notice] = "The play could not be recorded. Error: #{@error}"
         format.html { render :action => "play" }
         format.xml  { render :xml => @currency_account.errors, :status => :unprocessable_entity }
       end

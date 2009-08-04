@@ -1,10 +1,5 @@
 <% @title='My Currencies' %>
-<div class="config_box">
-  <li><%= nav_link 'Manage/Create',currencies_url,'Manage and Create Currencies'%></li>
-  <li><%= nav_link 'Join', join_currency_path, 'Join Currencies' %>
-</div>
-
-<h3>My Currencies</h3>
+<%= render(:partial => 'sub_nav') %>
 
 <table>
   <tr>
@@ -28,7 +23,7 @@
     <td><%= render_currency_icon(currency,20) %></td>
     <td><%= link_to currency.name, play_currency_account_url(currency_account) %> <% if !currency.symbol.blank? %>(<%=currency_account.currency.symbol%>)<%end%> </td>
   <%end%>
-    <td><%=h currency.humanized_type %></td>
+    <td><%=h currency.humanized_type %> as <%=h currency_account.player_class %></td>
     <td><%=h humanized_currency_scope(currency) %></td>
     <td><%= currency_account.render_state %></td>
     <td><%=h currency.description %></td>

@@ -1,0 +1,6 @@
+<ul id="sub_nav">
+  <li><%= sub_nav_link 'Browse', circles_path, 'List all circles' %>
+  <li><%= sub_nav_link 'New',new_circle_path,'Create a new circle'%></li>
+  <%if @circle && !@circle.new_record?%><li><p>Edit</p></li><%end%>
+</ul>
+<p class="clear">
