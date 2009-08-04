@@ -3,7 +3,7 @@
     <player_class name="member" />
   </player_classes>
   <states>
-    <state player_class="member"><integer name="average_rating" /><integer name="total_ratings" /></state>
+    <state player_class="member"><integer name="average_rating" /><integer name="ratings_given" /><integer name="ratings_received" /></state>
   </states>
 
   <plays>
@@ -12,21 +12,25 @@
         <field type="" id="class" />
       </fields>
       <script type="ruby">
-          <![CDATA[ @member_state.average_rating = 0 ]]>
+          <![CDATA[ @member_state.average_rating = 0;@member_state.ratings_given = 0;@member_state.ratings_received = 0 ]]>
       </script>
     </play>
     <play name="rate" player_classes="member">
       <fields>
-         <field type="player" id="from" />
-         <field type="player" id="to" />
+         <field type="player_member" id="from" />
+         <field type="player_member" id="to" />
          <field type="integer" id="rating" />
       </fields>
       <script type="ruby">
         <![CDATA[
-        @play.from['average_rating'] = @play.from['average_rating'] + @play.rating/@play.from['total_ratings']
-        @play.from['total_ratings'] += 1
+        cur_rating_count = @play.to['ratings_received']
+        @play.to['average_rating'] = (@play.to['average_rating'] * cur_rating_count + @play.rating)/(cur_rating_count+1)
+        @play.from['ratings_given'] += 1
+        @play.to['ratings_received'] += 1
+        true
         ]]>
       </script>
+      <play_sentence lang='en'><from /> rates <to /> as <rating /></play_sentence>
     </play>
   </plays>
 </game>

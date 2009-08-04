@@ -50,6 +50,7 @@ end
 
 def currency_accounts_paths(kind,locator)
   ca = CurrencyAccount.find_by_name(locator)
+  raise "couldn't find currency account for '#{locator}' while building path" if ca.nil?
   case kind
   when :play
     "/currency_accounts/#{ca.id}/play"
