@@ -37,15 +37,16 @@ for currency_account in @currency_accounts
   <%end%>
   <tr class="<%= i%2 == 0 ? ' odd' : ''%>" id="currency_account_<%=currency_account.name_as_html_id%>">
 
-    <td><%= render_currency_icon(currency,20) %>&nbsp;<%= link_to currency.name, play_currency_account_url(currency_account) %><% if !currency.symbol.blank? %>&nbsp;(<%=currency_account.currency.symbol%>)<%end%></td>
-    <td><%=h currency.humanized_type %></td>
+    <td><nobr><%= render_currency_icon(currency,20) %> <%= link_to currency.name, play_currency_account_url(currency_account) %><% if !currency.symbol.blank? %>&nbsp;(<%=currency_account.currency.symbol%>)<%end%></nobr></td>
+    <td><nobr><%=h currency.humanized_type %></nobr></td>
     <td><%=h currency_account.player_class %></td>
     <td><%=h humanized_currency_scope(currency) %></td>
     <td><%= currency_account.render_state %></td>
     <td><%=h currency.description %></td>
     <td>
+      <%= link_to 'Play', play_currency_account_url(currency_account) %>
       <%= link_to 'History', history_currency_account_url(currency_account) %>
-      <%= link_to 'Leave currency', currency_account, :confirm => 'Are you sure?', :method => :delete %>
+      <%= link_to 'Leave', currency_account, :confirm => 'Are you sure?', :method => :delete %>
     </td>
   </tr>
 <% end %>

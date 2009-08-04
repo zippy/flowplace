@@ -37,6 +37,12 @@
 	float: left;
 }
 
+#header a {
+	margin-right: 5px;
+	float:right;
+	color: #A6AAAB;
+}
+
 #login_stuff {
 	margin-right: 5px;
 	font-size: 8pt;
