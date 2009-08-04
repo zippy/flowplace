@@ -127,7 +127,7 @@ module ApplicationHelper
   
   def render_play_form(currency,currency_account)
     player_class = currency_account.player_class
-    exclude_list = ['from','to']
+    exclude_list = []#['from','to']
     plays = currency.api_plays
     case currency
     when CurrencyMutualCredit
@@ -152,10 +152,6 @@ module ApplicationHelper
         result += form_tag(record_play_currency_account_path(currency_account),:id => play_name) +
           <<-EOHTML
           <fieldset>
-          <legend>
-            <label for="user_id">#{play_name.titleize}: </label>
-            #{currency_accounts_select(currency,'play[to]',:exclude => currency_account,:player_class => with_player_class)}
-          </legend>
             #{currency_play_html(currency,currency_account,play_name,:field_id_prefix=>'play',:exclude=>exclude_list)}
             #{submit_tag 'Record Play'}
           </fieldset>
@@ -166,6 +162,11 @@ module ApplicationHelper
     result
   end
   
+# <legend>
+#   <label for="user_id">#{play_name.titleize}: </label>
+#   #{currency_accounts_select(currency,'play[to]',:exclude => currency_account,:player_class => with_player_class)}
+# </legend>
+  
   def currency_play_html(currency,currency_account,play,opts={})
     options = {
       :field_id_prefix => '',
@@ -175,10 +176,48 @@ module ApplicationHelper
     exclude_list = options[:exclude]
     accounts = currency_accounts(currency).collect {|a| [ a.name, a.id ] }
     results = []
-    currency.api_play_fields(play).each do |field|
-      field_name = field.keys[0]
+    
+    fields = {}
+    currency.api_play_fields(play).each {|f| fields.update(f)}
+    sentence = currency.api_play_sentence(play)
+    sentence = sentence.gsub(/<([^>]+) *\/>/) do |field_name|
+      field_name = $1
       next if exclude_list.include?(field_name)
-      field_type = field.values[0]
+      field_type = fields[field_name]['type']
+      if field_id_prefix.blank?
+        html_id = html_name = field_name
+      else
+        html_id = "#{field_id_prefix}_#{field_name}"
+        html_name = "#{field_id_prefix}[#{field_name}]"
+      end
+      case field_type
+      when 'integer','float'
+        result = text_field_tag(html_name,'',:size=>4)
+      when 'string'
+        result = text_field_tag(html_name,'',:size=>30)
+      when 'range'
+        r = (fields[field_name]['start']..fields[field_name]['end']).to_a
+        result = select_tag(html_name, options_for_select(r), :include_blank => true)
+      when 'text'
+        result = text_area_tag(html_name)
+      when /player_(.*)/
+        if field_name == "from"
+          result = currency_account.name
+        else
+          player_class = $1
+          result = currency_accounts_select(currency,html_name,:exclude=>currency_account,:player_class=>player_class)
+        end
+      else
+        result = "--UNKNOW FIELD TYPE: #{field_type}--"
+      end
+      result
+    end
+    return sentence+%Q|<input type="hidden" name="play_name" value="#{play}">|
+    
+    currency.api_play_fields(play).each do |field|
+      field_name = field['id']
+      next if exclude_list.include?(field_name)
+      field_type = field['type']
       if field_id_prefix.blank?
         html_id = html_name = field_name
       else

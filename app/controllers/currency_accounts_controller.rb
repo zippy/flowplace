@@ -162,11 +162,12 @@ class CurrencyAccountsController < ApplicationController
     @play_name = params[:play_name]
     @play['from'] = @currency_account
     @currency.api_play_fields(@play_name).each do |field|
-      field_name = field.keys[0]
+      field = field.values[0]
+      field_name = field['id']
       next if field_name == 'from'
-      field_type = field.values[0]
+      field_type = field['type']
       case field_type
-      when 'integer'
+      when 'integer','range'
         @play[field_name] = @play[field_name].to_i
       when /^player_/
         if @play[field_name]
@@ -177,11 +178,11 @@ class CurrencyAccountsController < ApplicationController
         end
       end
     end
-    begin
+#    begin
       @currency.api_play(@play_name,@currency_account,@play)
-    rescue Exception => e
-      @error = e
-    end
+#    rescue Exception => e
+#      @error = e
+#    end
     respond_to do |format|
       if !@error
         flash[:notice] = 'The play was recorded.'

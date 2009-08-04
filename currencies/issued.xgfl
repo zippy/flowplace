@@ -39,6 +39,7 @@
         end
         ]]>
       </script>
+      <play_sentence lang='en'><from /> pays <to /> <amount /> for <memo /></play_sentence>
     </play>
     <play name="issue" player_classes="issuer">
       <fields>

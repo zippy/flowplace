@@ -19,7 +19,7 @@
       <fields>
          <field type="player_member" id="from" />
          <field type="player_member" id="to" />
-         <field type="integer" id="rating" />
+         <field type="range" id="rating" start="1" end="4"/>
       </fields>
       <script type="ruby">
         <![CDATA[

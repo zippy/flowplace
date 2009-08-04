@@ -26,7 +26,7 @@
          <field type="player_member" id="to" />
          <field type="player_aggregator" id="aggregator" />
          <field type="integer" id="amount" />
-         <field type="text" id="memo" />
+         <field type="string" id="memo" />
       </fields>
       <script type="ruby">
         <![CDATA[
@@ -38,7 +38,7 @@
         true
         ]]>
       </script>
-      <play_sentence lang='en'><from /> acknowledges <to /> in the amount of <amount /> for <memo /></play_sentence>
+      <play_sentence lang='en'><from /> pays <to /> <amount /> for <memo /></play_sentence>
     </play>
     <play name="reverse" player_classes="admin">
       <fields>

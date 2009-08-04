@@ -81,7 +81,11 @@ class Currency < ActiveRecord::Base
     @play_fields ||= {}
     return @play_fields[play] if @play_fields[play]
     @xgfl ||= Nokogiri::XML.parse(xgfl)
-    @play_fields[play] = @xgfl.xpath(%Q|/game/plays/play[@name= "#{play}"]/fields/*|).to_a.collect{|f| {f.attributes["id"].to_s => f.attributes["type"].to_s}}
+    @play_fields[play] = @xgfl.xpath(%Q|/game/plays/play[@name= "#{play}"]/fields/*|).to_a.collect do |f|
+      attributes = {}
+      f.attributes.each {|k,v| attributes[k] = v.to_s}
+      {f.attributes["id"].to_s => attributes}
+    end
   end
   
   def api_state_fields(player_class)
@@ -108,6 +112,13 @@ class Currency < ActiveRecord::Base
   def api_player_classes
     @xgfl ||= Nokogiri::XML.parse(xgfl)
     @xgfl.xpath(%Q|/game/player_classes/*|).to_a.collect{|c| c.attributes['name'].to_s}
+  end
+  
+  def api_play_sentence(play)
+    @play_sentence ||= {}
+    return @play_sentence[play] if @play_sentence[play]
+    @xgfl ||= Nokogiri::XML.parse(xgfl)
+    @play_sentence[play]  = @xgfl.xpath(%Q|/game/plays/play[@name= "#{play}"]/play_sentence|).first.inner_html
   end
 
   def api_render_summary
@@ -150,10 +161,11 @@ class Currency < ActiveRecord::Base
   def api_play(play_name,currency_account,play)
     @play = Currency::State.new(api_play_fields(play_name).collect {|field| field.keys[0]})
     api_play_fields(play_name).each do |field|
-      field_name = field.keys[0]
-      field_type = field.values[0]
+      field = field.values[0]
+      field_name = field['id']
+      field_type = field['type']
       case field_type
-      when 'integer','string','text'
+      when 'integer','string','text','range'
         @play[field_name] = play[field_name]
       when /player_(.*)/
         player_class = $1
@@ -164,14 +176,15 @@ class Currency < ActiveRecord::Base
     end
     script = get_play_script(play_name)
     
-    return_value = prepare_eval('play') do
+    return_value = #prepare_eval('play') do
       eval script
-    end
+#    end
     if return_value == true
       CurrencyAccount.transaction do
         api_play_fields(play_name).each do |field|
-          field_name = field.keys[0]
-          field_type = field.values[0]
+          field = field.values[0]
+          field_name = field['id']
+          field_type = field['type']
           case field_type
           when /player_(.*)/
             player_class = $1
@@ -185,6 +198,9 @@ class Currency < ActiveRecord::Base
         Play.create!(:content=>@play,:currency_account_id => currency_account.id)
       end
     else
+      if return_value.nil?
+        raise "play script returned nil.  It should return true or an error string."
+      end
       raise return_value
     end
   end

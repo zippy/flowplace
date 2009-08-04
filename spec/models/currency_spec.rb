@@ -106,10 +106,15 @@ describe Currency do
       @currency.api_state_fields('member').should == [{"balance"=>"integer"}, {"volume"=>"integer"}]
     end
     it "should be able to return the fields for a play" do
-      @currency.api_play_fields('pay').should == [{"from"=>"player_member"}, {"to"=>"player_member"}, {"aggregator"=>"player_aggregator"}, {"amount"=>"integer"}, {"memo"=>"text"}]
+      @currency.api_play_fields('pay').should == [
+        {"from"=>{'id'=>'from','type'=>"player_member"}}, {"to"=>{'id'=>'to','type'=>"player_member"}}, {"aggregator"=>{'id'=>'aggregator','type'=>"player_aggregator"}}, {"amount"=>{'id'=>'amount','type'=>"integer"}}, {"memo"=>{'id'=>'memo','type'=>"string"}}
+        ]
     end
     it "should be able to return a list of player classes" do
       @currency.api_player_classes.should == ['member','aggregator']
+    end
+    it "should be able to return a the play sentence" do
+      @currency.api_play_sentence('pay').should == [:from,'pays',:to,:amount,'for',:memo]
     end
     it "should be able to return a list of plays" do
       @currency.api_plays.should == {"_new_member"=>{:player_classes=>""}, "reversal"=>{:player_classes=>"member"}, "pay"=>{:player_classes=>"member"}, "_new_aggregator"=>{:player_classes=>""}}
