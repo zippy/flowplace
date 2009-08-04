@@ -40,6 +40,7 @@ class WealsController < ApplicationController
   # GET /weals/1
   # GET /weals/1.xml
   def show
+    @is_view = true
     @weal = Weal.find(params[:id])
 
     respond_to do |format|
@@ -66,6 +67,7 @@ class WealsController < ApplicationController
 
   # GET /weals/1/edit
   def edit
+    @is_edit = true
     @weal = Weal.find(params[:id])
     @proposals = @weal.proposals
     @currencies = load_currencies
@@ -130,9 +132,15 @@ class WealsController < ApplicationController
     @save_attributes = {}
     case @weal.phase
     when 'intention'
-      @save_attributes['offerer_id'] = params[:weal]['offerer_id'] if params[:weal].has_key?('offerer_id')
-      @save_attributes['requester_id'] = params[:weal]['requester_id'] if params[:weal].has_key?('requester_id')
+      proposer = @save_attributes['offerer_id'] = params[:weal]['offerer_id'] if params[:weal].has_key?('offerer_id')
+      proposer = @save_attributes['requester_id'] = params[:weal]['requester_id'] if params[:weal].has_key?('requester_id')
       @save_attributes['phase'] = 'action'
+      proposer = User.find(proposer)
+      proposal = proposer.proposals.find(:first, :conditions => ['weal_id = ?',@weal.id])
+      notes = @weal.notes
+      notes += "\n" if notes
+      notes ||= ''
+      @save_attributes['notes'] =  notes + "\nAccepted proposal was: #{proposal.description}"
     when 'action'
       @save_attributes['phase'] = 'asset'
     else
@@ -220,6 +228,17 @@ class WealsController < ApplicationController
   end
 
   def load_weals
+    case @phase
+    when :intention
+      @weals = Weal.find(:all,:conditions=>"phase ='intention'")
+      return
+    when :action
+      @weals = Weal.find(:all,:conditions=>"phase ='action'")
+      return
+    when :asset
+      @weals = Weal.find(:all,:conditions=>"phase ='asset'")
+      return
+    end
     def_sort_rules(* [['r','lft,users.last_name,users.first_name,weals.created_at'],['d','lft,weals.created_at']])
 
     def_search_rules(:sql,[['t','title'],['d','description']])

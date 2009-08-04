@@ -1,0 +1,12 @@
+<% @title='Actions: Edit' %>
+<%= render(:partial => 'sub_nav_actions') %>
+
+<% form_for(@weal,:url => action_path(@weal)) do |f| %>
+	<%= render(:partial => 'f', :object => f) %>
+
+  <p>
+    <%= f.submit "Update" %>
+  </p>
+<% end %>
+
+<%= link_to 'Back', actions_path %>

@@ -10,6 +10,12 @@
   <b>Description:</b>
   <%=h @weal.description %>
 </p>
+
+<p>
+  <b>Notes:</b>
+  <%=h @weal.notes %>
+</p>
+
 <p>
  <b>Is a requirement of: </b>
  <%= p = @weal.parent; h p.nil? ? '-none-' : p.title %>

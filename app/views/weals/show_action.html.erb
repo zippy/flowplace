@@ -18,10 +18,15 @@
   <%=h @weal.description %>
 </p>
 <p>
+  <b>Notes:</b>
+  <%=h @weal.notes %>
+</p>
+<p>
  <b>Is a requirement of: </b>
  <%= p = @weal.parent; h p.nil? ? '-none-' : p.title %>
 <p>
  <%= render(:partial => 'proposal_form', :locals => { :party => :requester }) %>
  <%= render(:partial => 'proposal_form', :locals => { :party => :offerer }) %>
 
-<%= link_to 'Back', weals_path %>
+ <%= link_to 'Back', weals_path %>
+ <%= link_to 'Edit', edit_action_path(@weal) %>

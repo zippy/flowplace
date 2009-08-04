@@ -6,7 +6,11 @@
 </p>
 <p>
   <%= f.label :description %> (this will be WYSIWG soon)<br />
-  <%= f.text_area :description, :cols=>70,:rows => 10 %>
+  <%= f.text_area :description, :cols=>70,:rows => 2 %>
+</p>
+<p>
+  <%= f.label :notes %> (this will be WYSIWG soon)<br />
+  <%= f.text_area :notes, :cols=>70,:rows => 5 %>
 </p>
 <p>
   Is a requirement of: 
@@ -41,6 +45,9 @@
     <% end %>
   </p>
 <%end%>
+<% when :action %>
+<p>Requester: <%= @weal.requester.full_name%></p>
+<p>Offerer: <%= @weal.offerer.full_name%></p>
 
 <% when :weals 
   users = User.find(:all)%>

@@ -1,9 +1,9 @@
 <ul id="sub_nav">
   <li><%= sub_nav_link 'My', my_actions_path,'View my actions'%></li>
-  <li><%= sub_nav_link 'All', weals_path,'Browse all actions'%></li>
+  <li><%= sub_nav_link 'All', actions_path,'Browse all actions'%></li>
   <li><%= sub_nav_link 'Create', new_action_path,'Create a new action'%></li>
   <%if @weal && !@weal.new_record?%>
-  <li><p>View</p></li>
+  <li><p><%if @is_view %>View<%end%><%if @is_edit %>Edit<%end%></p></li>
   <%end%>
 </ul>
 <p class="clear">
