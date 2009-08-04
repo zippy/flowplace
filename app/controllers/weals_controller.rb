@@ -130,8 +130,8 @@ class WealsController < ApplicationController
     @save_attributes = {}
     case @weal.phase
     when 'intention'
-      @save_attributes['offerer_id'] = params[:weal] if params[:weal].has_key?('offerer_id')
-      @save_attributes['requester_id'] = params[:weal] if params[:weal].has_key?('requester_id')
+      @save_attributes['offerer_id'] = params[:weal]['offerer_id'] if params[:weal].has_key?('offerer_id')
+      @save_attributes['requester_id'] = params[:weal]['requester_id'] if params[:weal].has_key?('requester_id')
       @save_attributes['phase'] = 'action'
     when 'action'
       @save_attributes['phase'] = 'asset'

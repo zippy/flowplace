@@ -1,5 +1,6 @@
 <% @title='My Currencies '+@currency.name %>
-<h3>My Currencies: <%=@currency.name%></h3>
+<%= render(:partial => 'sub_nav') %>
+<h3>Enter a play in: <%=@currency.name%></h3>
 
 <%= @currency.api_render_account_state(@currency_account)%>
 <div id="make_play">

@@ -152,6 +152,7 @@ class CurrencyAccountsController < ApplicationController
   def play
     @currency_account = CurrencyAccount.find(params[:id])
     @currency = @currency_account.currency
+    @play = true
   end
 
   # POST /currency_accounts/1/record_play

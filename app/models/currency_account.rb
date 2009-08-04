@@ -17,7 +17,7 @@ class CurrencyAccount < ActiveRecord::Base
   end
   
   def render_state
-    currency.api_render_account_state(self)
+    currency.api_render_account_state(self).split(/; /).join('<br/>').gsub(' ','&nbsp;')
   end
 
   def name_as_html_id

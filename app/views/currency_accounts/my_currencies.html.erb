@@ -1,29 +1,45 @@
-<% @title='My Currencies' %>
+<% @title='My Currencies' 
+  @multi_wallet = current_user.has_preference('multi_wallet')
+%>
 <%= render(:partial => 'sub_nav') %>
 
+<%if @multi_wallet %>
+View by: <span style="background: #ddd" title="this will be a pop up later to allow viewing other categories like circles">wallet</span>
+<% end %>
 <table>
   <tr>
-    <%if current_user.has_preference('multi_wallet') %><th>Wallet</th><%end%>
-    <th colspan=2>Currency</th>
+    <th>Currency</th>
     <th>Type</th>
+    <th>Role</th>
     <th>Circle</th>
     <th>Summary</th>
     <th>Description</th>
+    <th>&nbsp;</th>
   </tr>
 
-<% for currency_account in @currency_accounts 
+<% 
+
+display_type = ''
+if @multi_wallet
+  @currency_accounts = @currency_accounts.sort {|a,b| a.name+' '+a.currency.name <=> b.name+' '+b.currency.name}
+end
+i = 0
+for currency_account in @currency_accounts 
+  i += 1
+  dt = currency_account.name
   currency = currency_account.currency
   %>
-  <tr id="currency_account_<%=currency_account.name_as_html_id%>">
-  <%if current_user.has_preference('multi_wallet') %>
-    <td><%= link_to currency_account.name, play_currency_account_url(currency_account) %></td>
-    <td><%= render_currency_icon(currency,20) %></td>
-    <td><%= h currency.name %> <% if !currency.symbol.blank? %>(<%=currency_account.currency.symbol%>)<%end%> </td>
-  <%else%>
-    <td><%= render_currency_icon(currency,20) %></td>
-    <td><%= link_to currency.name, play_currency_account_url(currency_account) %> <% if !currency.symbol.blank? %>(<%=currency_account.currency.symbol%>)<%end%> </td>
+  <%
+    if @multi_wallet && display_type != dt && dt
+      i = 1
+      display_type = dt %>
+      <tr><td colspan=8 style="background: #ddd">WALLET: <%= dt.upcase%></td></tr>
   <%end%>
-    <td><%=h currency.humanized_type %> as <%=h currency_account.player_class %></td>
+  <tr class="<%= i%2 == 0 ? ' odd' : ''%>" id="currency_account_<%=currency_account.name_as_html_id%>">
+
+    <td><%= render_currency_icon(currency,20) %>&nbsp;<%= link_to currency.name, play_currency_account_url(currency_account) %><% if !currency.symbol.blank? %>&nbsp;(<%=currency_account.currency.symbol%>)<%end%></td>
+    <td><%=h currency.humanized_type %></td>
+    <td><%=h currency_account.player_class %></td>
     <td><%=h humanized_currency_scope(currency) %></td>
     <td><%= currency_account.render_state %></td>
     <td><%=h currency.description %></td>

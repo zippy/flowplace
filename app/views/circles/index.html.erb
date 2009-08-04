@@ -4,10 +4,15 @@
 <table>
   <tr>
     <th>Name</th>
+    <th>&nbsp;</th>
+    <th>&nbsp;</th>
   </tr>
 
-<% for circle in @circles %>
-  <tr>
+<% i = 0
+for circle in @circles 
+  i+=1
+%>
+  <tr class="<%= i%2 == 0 ? ' odd' : ''%>">
     <td><%=link_to circle.name, edit_circle_path(circle)  %></td>
     <td><%= link_to 'Members', circle %></td>
     <td><%= link_to 'Delete', circle, :confirm => 'Are you sure?', :method => :delete %></td>

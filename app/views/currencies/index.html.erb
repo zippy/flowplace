@@ -8,10 +8,14 @@
     <th>Scope</th>
     <th>Summary</th>
     <th>Description</th>
+    <th>&nbsp;</th>
   </tr>
 
-<% for currency in @currencies %>
-  <tr>
+<% i = 0
+for currency in @currencies
+  i+=1
+  %>
+  <tr class="<%= i%2 == 0 ? ' odd' : ''%>" >
     <td><%= render_currency_icon(currency,32) %></td>
     <td><%= link_to currency.name, edit_currency_path(currency) %> </td>
     <td><%=h currency.humanized_type %> </td>

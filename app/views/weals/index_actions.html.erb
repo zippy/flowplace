@@ -16,9 +16,13 @@ You have no actions.
   <th>In service of</th>
   <th>Created</th>
   <th>Currencies</th>
+  <th>&nbsp;</th>
 </tr>
-<% for weal in @weals %>
-<tr class="item" style="margin: <%= weal.level==0 ? 5 : 0 %>px 0 0 <%= weal.level*20 %>px;">
+<% i = 0
+for weal in @weals 
+  i += 1
+%>
+<tr class="<%= i%2 == 0 ? ' odd' : ''%>" style="margin: <%= weal.level==0 ? 5 : 0 %>px 0 0 <%= weal.level*20 %>px;">
   <th>&nbsp;</th>
   <td><%=link_to weal.title,action_path(weal),{:title=>weal.description} %> </td>
   <td><%=weal.humanize_in_service_of%></td>

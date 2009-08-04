@@ -17,21 +17,25 @@ View by: <span style="background: #ddd" title="this will be a pop up later to al
   <th>Created</th>
   <th>Currencies</th>
   <th>Proposals</th>
+  <th>&nbsp;</th>
 </tr>
 <%
 display_type = ''
 @weals = @weals.sort {|a,b| a.relation_to_user(current_user).to_s <=> b.relation_to_user(current_user).to_s}
+i = 0;
 for weal in @weals
+  i+=1
   proposed = weal.offerer != current_user && weal.requester != current_user
   dt = weal.relation_to_user(current_user)
   %>
   <%
     if display_type != dt && dt
+      i = 1
       display_type = dt %>
       <tr><td colspan=7 style="background: #ddd">AS <%= dt.upcase%></td></tr>
   <%end%>
-<tr class="item" style="margin: <%= weal.level==0 ? 5 : 0 %>px 0 0 <%= weal.level*20 %>px;">
-  <th>&nbsp;</th>
+<tr class="item<%= i%2 == 0 ? ' odd' : ''%>" style="margin: <%= weal.level==0 ? 5 : 0 %>px 0 0 <%= weal.level*20 %>px;">
+  <td>&nbsp;</th>
   <td><%=link_to weal.title, proposed ? intention_path(weal) : edit_intention_path(weal),{:title=>weal.description} %> </td>
   <td><%=weal.humanize_in_service_of%></td>
   <td><%=standard_date(weal.updated_at)%></td>

@@ -15,14 +15,14 @@
 	padding: 0 0 0 0;
 	margin: 0 0 0 0;
 	border: 1px solid #000066;
-	background-color: #444444;
+	background-color: #000;
 }
 
 
 #header {
 	height: 50px;
 	width: 950px;
-	color: #A3B15A;
+	color: #A6AAAB;
 	font-weight: bold;
 	font-size: 14pt;	
 	font-family: Verdana,Arial,sans serif;
@@ -33,6 +33,10 @@
 #header img {
 	float:right;
 }
+#header img.logo {
+	float: left;
+}
+
 #login_stuff {
 	margin-right: 5px;
 	font-size: 8pt;
@@ -47,7 +51,22 @@
 	float:right;
 }
 
-	/* ----------NAVIGATION TEXT---------- */
+/* ----------STANDARD TABLE---------- */
+
+td {
+	padding: 1px 15px;
+}
+
+tr.odd {
+	background: #f0FFFF;
+}
+
+th {
+	padding: 1px 15px;
+	background: #aaa;
+}
+
+/* ----------NAVIGATION TEXT---------- */
 
 
 #nav {
@@ -118,7 +137,7 @@ ul#sub_nav {display:block;margin-top:0px;list-style:none;}
 ul#sub_nav li {display:block;float:left;background: green;}
 ul#sub_nav li a {display:block;float:left;margin:0px;padding: 0 10px;}
 ul#sub_nav li a:hover {background: gray;}
-ul#sub_nav li a.active {background: blue;color:#ffffff;}
+ul#sub_nav li a.active {background: #02687F;color:#ffffff;}
 ul#sub_nav li p {margin:0px 0px 0px 0px;background: blue;color:#ffffff;padding: 0 10px;}  /*active non-clickable item*/
 ul#sub_nav li.last a {margin-right:0;}
 
@@ -191,7 +210,7 @@ body {
 	font-size: 10pt;
 	color: #000066;
 	margin: 0;
-	background-color: #EEEEEE;
+	background-color: #aaa;
 /*	background-image: url("/images/background.gif");
   	background-repeat: no-repeat;	*/
  }

@@ -17,7 +17,7 @@
       <%for account in @currency_accounts_my
         currency = Currency.find(account.currency.id)
         %>
-        <%=render_currency_icon(currency)%><%= currency.api_render_account_state(account) %>
+        <%=render_currency_icon(currency)%><%= currency.api_render_account_state(account) %><br />
       <% end %>
     </div>
   </td>
@@ -25,7 +25,7 @@
     <div class="holoptiview_box">
       <p class='holoptiview_box_title'>HoloptiWealth</p>
       <%for currency in @currencies%>
-        <%=render_currency_icon(currency)%><%= currency.api_render_summary %>
+        <%=render_currency_icon(currency)%><%= currency.api_render_summary %><br />
       <% end %>
     </div>
   </td>
