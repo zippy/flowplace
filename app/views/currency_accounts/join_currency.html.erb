@@ -15,7 +15,7 @@
       ) %>
     </p>
 
-    <% if current_user.has_preference('multi_wallet') %>
+    <% if current_user.has_preference('multi_wallet') && current_user.wallets.size > 0 %>
     <p>
       <%= f.label :name, 'Wallet:' %>
       <%= f.select(:name, wallet_list_for_select(current_user)) %>
