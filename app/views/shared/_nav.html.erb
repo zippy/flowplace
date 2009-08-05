@@ -9,12 +9,13 @@
   <% if current_user.has_preference('multi_wallet') %>
 	<li><%= nav_link 'Wallets',wallets_path,'View and manage your wallets'%></li>
   <% end %>
-	<% if current_user.can?(:admin) %>
-	<li><%= nav_link 'Admin',admin_path,'Site Administration Options'%></li>
-	<% end %>
 
 	<% if current_user.can?(:accessAccounts) %>
 	<li><%= nav_link 'Accounts',users_path,'Add or modify user accounts'%></li>
+	<% end %>
+
+	<% if current_user.can?(:admin) %>
+	<li><%= nav_link 'Admin',admin_path,'Site Administration Options'%></li>
 	<% end %>
 
 <%end%>

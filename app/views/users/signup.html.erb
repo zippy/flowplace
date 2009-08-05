@@ -8,7 +8,7 @@
   <tr><td align="left">Account name: </td><td><%= f.text_field :user_name %></td></tr>
   <tr><td align="left">First name: </td><td><%= f.text_field :first_name %></td></tr>
   <tr><td align="left">Last name: </td><td><%= f.text_field :last_name %></td></tr>
-  <tr><td align="left">E-mail: </td><td><%= f.text_field :email %></td></tr>
+  <tr><td align="left">E-mail: </td><td><%= f.text_field :email %> (this e-mail will be used to display a <%= link_to 'Gravatar','http://gravatar.com'%>)</td></tr>
   </table>
   <p>
     <%= submit_tag "Sign up" %>

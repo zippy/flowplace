@@ -42,7 +42,7 @@ form_tag('/users',:method => :get) do %>
 <% for i in @users %>
 	<hr>
  
-	<div style="float:left"><%= gravitar_image_tag(i,:size=>32)%></div> <%= i.user_name %>&nbsp;	<%= link_to '[edit account]', edit_user_url(:id => i.id) %>
+	<div style="float:left"><%= gravitar_image_tag(i,:size=>48)%></div> <%= i.user_name %>&nbsp;	<%= link_to '[edit account]', edit_user_url(:id => i.id) %>
 
 
 	<% if current_user.can?(:admin) %> &nbsp;<%= link_to '[sign in as]', login_as_user_url(i.id) %>
