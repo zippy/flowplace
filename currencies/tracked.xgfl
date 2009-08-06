@@ -1,4 +1,10 @@
 <game>
+  <description lang="en">
+    Tracked currencies are used for tracking the flow of some external resource through a community.<br />
+    Player classes: member<br />
+    Summary function: Balance,Volume<br />
+    Member Plays: Transfer(to,amount,memo)<br />
+  </description>
   <player_classes>
     <player_class name="member" />
     <player_class name="aggregator" />
@@ -18,7 +24,7 @@
           <![CDATA[ @member_state.balance = 0;@member_state.volume = 0 ]]>
       </script>
     </play>
-    <play name="pay" player_classes="member">
+    <play name="transfer" player_classes="member">
       <fields>
          <field type="player_member" id="from" />
          <field type="player_member" id="to" />

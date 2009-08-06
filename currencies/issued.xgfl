@@ -1,4 +1,11 @@
 <game>
+  <description lang="en">
+    Issued currencies are used when an issuer would like a community to be able to trade based on a particular set of valuables it can produce.<br />
+    Player classes: issuer, user<br />
+    Issuer Summary function: Balance<br />
+    Issuer Plays: Issue(to_user,amount); Pay(to_user,amount)<br />
+    User Plays: Pay(to_user,amount); Reeem(to_issuer,amount)<br />
+  </description>
   <player_classes>
     <player_class name="issuer" />
     <player_class name="user" />

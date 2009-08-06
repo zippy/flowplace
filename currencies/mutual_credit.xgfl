@@ -1,4 +1,10 @@
 <game>
+  <description lang="en">
+    Mutual credit currencies are a "means of exchange" currency where all members issue currency at the point of transaction.<br />
+    Player classes: member<br />
+    Summary function: Balance,Volume<br />
+    Member Plays: Pay(to,amount,memo)<br />
+  </description>
   <player_classes>
     <player_class name="member" />
     <player_class name="aggregator" />

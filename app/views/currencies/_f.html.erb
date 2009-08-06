@@ -1,5 +1,24 @@
 <%= f.error_messages %>
 <%= hidden_field_tag :currency_params_key, @currency.class.to_s.underscore%>
+
+<%= javascript_tag <<-EOJS
+function do_change(type){
+  var types = {#{Currency.types.collect {|c| "#{c}:'#{escape_javascript(c.constantize.new.api_description)}'" }.join(',')}}
+  if (types[type] == undefined) {
+    return ''
+  }
+  else {
+    return "<fieldset><legend>Currency Description</legend>"+types[type]+"</fieldset>"
+  }
+}
+EOJS
+%>
+<p>
+  <%= f.label :type %> <%= f.select :type,currency_types_list_for_select,{:include_blank => true},{:onchange =>"$('currency_type_descrption').innerHTML = do_change($F('currency_type'))"} %>
+</p>
+
+<div id="currency_type_descrption"></div>
+
 <p>
   <%= f.label :name %><br />
   <%= f.text_field :name %>
@@ -8,11 +27,6 @@
 <p>
   <%= f.label :description %><br />
   <%= f.text_area :description, :rows => 4, :cols => 70 %>
-</p>
-
-<p>
-  <%= f.label :type %><br />
-  <%= f.select :type,currency_types_list_for_select,:include_blank => true %>
 </p>
 
 <p>

@@ -339,7 +339,7 @@ li.item {
 	list-style:none;
 }
 
-/* --------------TAG CLOUT ---------------------*/
+/* --------------TAG CLOUD ---------------------*/
 #intention_tag_cloud {
 	float: right;
 	border: 1px solid #000066;
@@ -351,6 +351,18 @@ li.item {
 .css2 { font-size: 1.0em; }
 .css3 { font-size: 1.3em; }
 .css4 { font-size: 1.6em; }
+
+/* ---------- CURRENCIES ---------- */
+
+#currency_type_descrption fieldset {
+	padding: 10px;
+	background-color: #EEEEEE;
+}
+#currency_type_descrption legend {
+	font-weight: bold;
+}
+
+
 
 /* ----------NOT SURE WHAT THESE ARE FOR---------- */
 
