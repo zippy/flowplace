@@ -183,6 +183,7 @@ module ApplicationHelper
     sentence = sentence.gsub(/<([^>]+) *\/>/) do |field_name|
       field_name = $1
       next if exclude_list.include?(field_name)
+      raise "unknown field '#{field_name}'" if fields[field_name].nil?
       field_type = fields[field_name]['type']
       if field_id_prefix.blank?
         html_id = html_name = field_name

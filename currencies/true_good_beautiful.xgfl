@@ -1,0 +1,42 @@
+<game>
+  <description>
+    True/Good/Beautiful currencies are used for a community members to state an assessment of the Truth, Goodness and Beauty of the community.  Each member can declare their assessment of those qualities of the community.<br />
+    Player classes: member<br />
+    Summary function: TGB--The rating of a member is the average of the ratings given to the member by other members.<br />
+    Plays: Declare(truth,goodness,beauty)
+  </description>
+  <player_classes>
+    <player_class name="member" />
+  </player_classes>
+  <states>
+    <state player_class="member"><integer name="true" /><hash name="good" /><hash name="beautiful" /></state>
+  </states>
+
+  <plays>
+    <play name="_new_member">
+      <fields>
+        <field type="" id="class" />
+      </fields>
+      <script type="ruby">
+        <![CDATA[ @member_state.true = nil;@member_state.good = nil;@member_state.beautiful = nil]]>
+      </script>
+    </play>
+    <play name="declare" player_classes="member">
+      <fields>
+         <field type="player_member" id="from" />
+         <field type="range" id="truth" start="0" end="5"/>
+         <field type="range" id="goodness" start="0" end="5"/>
+         <field type="range" id="beauty" start="0" end="5"/>
+      </fields>
+      <script type="ruby">
+        <![CDATA[
+        @play.from['true'] = @play.truth
+        @play.from['good'] = @play.goodness
+        @play.from['beautiful'] = @play.beauty
+        true
+        ]]>
+      </script>
+      <play_sentence lang='en'><from /> declares truth as <truth /> goodness as <goodness /> and beauty as <beauty /></play_sentence>
+    </play>
+  </plays>
+</game>

@@ -1,0 +1,45 @@
+<game>
+  <description>
+    Mutual ratings currencies are used for a community members to rate each other.  Each member can rate all the other members and change those ratings at will.<br />
+    Player classes: member<br />
+    Summary function: Rating--The rating of a member is the average of the ratings given to the member by other members.<br />
+    Plays: Rate(rating)
+  </description>
+  <player_classes>
+    <player_class name="member" />
+  </player_classes>
+  <states>
+    <state player_class="member"><integer name="rating" /><hash name="ratings_given" /><hash name="ratings_received" /></state>
+  </states>
+
+  <plays>
+    <play name="_new_member">
+      <fields>
+        <field type="" id="class" />
+      </fields>
+      <script type="ruby">
+        <![CDATA[ @member_state.rating = nil;@member_state.ratings_given = {};@member_state.ratings_received = {}]]>
+      </script>
+    </play>
+    <play name="rate" player_classes="member">
+      <fields>
+         <field type="player_member" id="from" />
+         <field type="player_member" id="to" />
+         <field type="range" id="rating" start="1" end="4"/>
+      </fields>
+      <script type="ruby">
+        <![CDATA[        
+        @play.to['ratings_received'][@play.from['_name']] = @play.rating
+        @play.from['ratings_given'][@play.to['_name']] = @play.rating
+        ratings = @play.to['ratings_received']
+        ratings_count= ratings.size
+        if ratings_count > 0
+          @play.to['rating'] = ratings.values.inject( nil ) { |sum,x| sum ? sum+x : x }/ratings_count 
+        end
+        true
+        ]]>
+      </script>
+      <play_sentence lang='en'><from /> rates <to /> as <rating /></play_sentence>
+    </play>
+  </plays>
+</game>

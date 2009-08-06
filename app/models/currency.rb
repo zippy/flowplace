@@ -69,6 +69,11 @@ class Currency < ActiveRecord::Base
   def spec(api_method)
     raise "no spec!"
   end
+
+  def api_description
+    @xgfl ||= Nokogiri::XML.parse(xgfl)
+    @xgfl.xpath(%Q|/game/description|).inner_html
+  end
   
   def api_plays
     @xgfl ||= Nokogiri::XML.parse(xgfl)
@@ -169,7 +174,12 @@ class Currency < ActiveRecord::Base
         @play[field_name] = play[field_name]
       when /player_(.*)/
         player_class = $1
-        @play[field_name] = play[field_name].blank? ? nil : play[field_name].get_state
+        if play[field_name].blank?
+          @play[field_name] = nil
+        else
+          @play[field_name] = play[field_name].get_state
+          @play[field_name]['_name'] = play[field_name].name
+        end
       else
         raise "unknown field type: #{field_type}"
       end
@@ -271,6 +281,24 @@ if File.directory?(XGFLDir)
     end
     EORUBY
     eval new_class,nil,file
+  end
+end
+
+class CurrencyTrueGoodBeautiful
+  def api_render_account_state(account)
+    s = account.get_state
+    if s
+      "T:#{s['true']} G:#{s['good']} B:#{s['beautiful']}"
+    end
+  end
+end
+
+class CurrencyMutualRating
+  def api_render_account_state(account)
+    s = account.get_state
+    if s
+      "My Rating: #{s['rating']}"
+    end
   end
 end
 
