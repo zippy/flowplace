@@ -119,6 +119,9 @@ describe Currency do
     it "should be able to return a list of plays" do
       @currency.api_plays.should == {"_new_member"=>{:player_classes=>""}, "reversal"=>{:player_classes=>"member"}, "pay"=>{:player_classes=>"member"}, "_new_aggregator"=>{:player_classes=>""}}
     end
+    it "should be able to return the game description" do
+      @currency.api_description.should == "Mutual Credit"
+    end
     it "should be able to record a play" do
       @user2 = create_user('u2')
       @account2 = create_currency_account(@user2,@currency)
