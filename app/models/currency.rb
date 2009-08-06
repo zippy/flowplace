@@ -69,11 +69,6 @@ class Currency < ActiveRecord::Base
   def spec(api_method)
     raise "no spec!"
   end
-
-  def api_description
-    @xgfl ||= Nokogiri::XML.parse(xgfl)
-    @xgfl.xpath(%Q|/game/description|).inner_html
-  end
   
   def api_plays
     @xgfl ||= Nokogiri::XML.parse(xgfl)

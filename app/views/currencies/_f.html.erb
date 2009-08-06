@@ -47,3 +47,8 @@ EOJS
   <%= f.label :circle_id %><br />
   <%= f.select(:circle_id, Circle.find(:all).collect {|p| [ p.name, p.id ] }, {:include_blank => '-none-'})%>
 </p>
+
+<p>
+  <%= f.label :agreement %> (this will be WYSIWG soon)<br />
+  <%= f.text_area :agreement, :cols=>70,:rows => 20 %>
+</p>
