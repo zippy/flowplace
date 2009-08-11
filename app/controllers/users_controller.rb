@@ -75,17 +75,19 @@ class UsersController < ApplicationController
 
   # GET /users/signup
   def signup
+    return if !self_signup_ok?
     @user = User.new
   end
   
   # POST /users/signup
   def do_signup
+    return if !self_signup_ok?
     @user = User.new(params[:user])
     raise "you can't sign up as circle user!" if @user.user_name =~ /_circle/
     respond_to do |format|
       if @user.create_bolt_identity(:user_name => :user_name,:enabled => false) && @user.save
         @user.activate! {|activation_code| activation_url(activation_code, :user_name=> @user.user_name)}
-        flash[:notice] = "Your accont as been created and you have been sent an activation e-mail!"
+        flash[:notice] = "Your account as been created and you have been sent an activation e-mail!"
         format.html { redirect_to "/activations/show/"+@user.user_name }
         format.xml  { head :created, :location => user_url(@user) }
       else
@@ -322,5 +324,15 @@ class UsersController < ApplicationController
       end
     end
   end
+  
+  def self_signup_ok?
+    if CONFIG[:new_user_policy] != :self_signup
+      redirect_to home_url
+      false
+    else
+      true
+    end
+  end
+    
 
 end

@@ -423,6 +423,11 @@ img.clickable {
 	display: none;
 }
 
+.bottom_margin_10 {
+	margin-bottom: 10px;
+}
+
+
 /* --------------TAG CLOUD ---------------------*/
 #global_banner {
 	padding: 5px;
