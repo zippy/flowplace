@@ -81,17 +81,6 @@ end
 ActionMailer::Base.delivery_method = :smtp
 ActionMailer::Base.perform_deliveries = true
 ActionMailer::Base.raise_delivery_errors = true
-ActionMailer::Base.smtp_settings = {
-  :address  => "smtp.orange.fr",
-  :port  => 25,
-  :domain  => "smtp.orange.fr",
-  :authentication  => :plain
-#  :password  => 'x3erf5us!',
-#  :authentication  => :login
-#  :address  => "mail.harris-braun.com",
-#  :port  => 25,
-#  :domain  => "mail.harris-braun.com",
-#  :user_name  => "sender@flowplace.org",
-#  :password  => 'x3erf5us!',
-#  :authentication  => :login
-    }
+require 'config/smtp_settings'  #This holds location-specific smtp_settings
+ActionMailer::Base.smtp_settings = SMTP_SETTINGS
+

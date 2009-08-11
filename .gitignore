@@ -10,5 +10,6 @@ public/cache/**/*
 *-bak.*
 db/schema.rb
 config/database.yml
+config/smtp_settings.rb
 tsestate.kbd
 .DS_Store
