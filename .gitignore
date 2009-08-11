@@ -11,5 +11,6 @@ public/cache/**/*
 db/schema.rb
 config/database.yml
 config/smtp_settings.rb
+config/flowplace_config.rb
 tsestate.kbd
 .DS_Store

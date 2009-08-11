@@ -83,4 +83,10 @@ ActionMailer::Base.perform_deliveries = true
 ActionMailer::Base.raise_delivery_errors = true
 require 'config/smtp_settings'  #This holds location-specific smtp_settings
 ActionMailer::Base.smtp_settings = SMTP_SETTINGS
-
+if File.exists?('config/flowplace_config.rb')
+  require 'config/flowplace_config.rb'
+else
+  CONFIG = {
+    :gobal_banner => nil #this is used to display a deploy specific global banner
+  }
+end

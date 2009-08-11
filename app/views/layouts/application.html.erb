@@ -8,6 +8,7 @@
 		</title><%= stylesheet_link_tag 'project', :media => "all" %><%= stylesheet_link_tag 'table', :media => "screen" %><%= stylesheet_link_tag 'project-print', :media => "print" %><%= javascript_include_tag :defaults %>
 	</head>
 	<%= %Q*<body #{"class='enlargeFont'" if current_user.has_preference('enlargeFont')}>* %>
+	  <%if CONFIG[:global_banner]%><div id="global_banner"><%=CONFIG[:global_banner]%></div><%end%>
 			<div id="top_bar">
 				<div id="login_stuff">
 				<% if logged_in? %> 
