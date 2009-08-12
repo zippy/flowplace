@@ -1,5 +1,4 @@
 class CirclesController < ApplicationController
-  require_authorization(:admin) 
   # GET /circles
   # GET /circles.xml
   def index
