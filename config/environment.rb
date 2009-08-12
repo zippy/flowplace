@@ -91,9 +91,7 @@ else
   }
 end
 
-SMTP_SETTINGS ||= {
-  :address  => "localhost"
-}
+SMTP_SETTINGS = {:address  => "localhost"} unless defined? SMTP_SETTINGS
 ActionMailer::Base.smtp_settings = SMTP_SETTINGS
 
 

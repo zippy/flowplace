@@ -1,0 +1,13 @@
+CONFIG = {
+#  :global_banner => "Warning: Do not place any permanent content on this demo site. All content is subject to deletion with each new version of the demo.",
+  :new_user_policy => :self_signup
+}
+
+SMTP_SETTINGS  = {
+  :address  => "mail.myflowplace.com",
+  :port  => 25,
+  :domain  => "myflowplace.com",
+  :user_name  => "no-reply@myflowplace.com",
+  :password  => 'mypassword',
+  :authentication  => :login
+}
