@@ -9,7 +9,7 @@
 
 == Description
 
-The flowplace is a is a tool for individuals, communities and organizations to build wealth together by using free currencies.
+The flowplace is a tool for individuals, communities and organizations to build wealth together by using free currencies.
 
 == Installation
 
@@ -33,4 +33,5 @@ otherwise the nokogiri gem won't install.
 == License
 
 The flowplace is released under the LGPL license.
+
 Copyright (c) 2009 Eric Harris-Braun, Jean-François Noubel, Fernanda Ibarra
