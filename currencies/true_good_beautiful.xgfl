@@ -2,7 +2,7 @@
   <description>
     True/Good/Beautiful currencies are used for a community members to state an assessment of the Truth, Goodness and Beauty of the community.  Each member can declare their assessment of those qualities of the community.<br />
     Player classes: member<br />
-    Summary function: TGB--The rating of a member is the average of the ratings given to the member by other members.<br />
+    Summary function: TGB--The self declaration of the member.<br />
     Plays: Declare(truth,goodness,beauty)
   </description>
   <player_classes>
