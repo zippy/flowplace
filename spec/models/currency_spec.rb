@@ -78,6 +78,30 @@ describe Currency do
     end
   end
   
+  describe "config" do
+    before(:each) do
+      @user = create_user('u1')
+      @currency = create_currency("R1",:klass=>CurrencyMutualRating)
+      @account = create_currency_account(@user,@currency)
+      @configuration = {'rate.rating' => 'good,bad,ugly'}
+    end
+    
+    it "an unititialized configuration should return nil" do
+      @currency.configuration.should == nil
+    end
+
+    it "should automatically serialize and unserialize the configuration" do
+      @currency.configuration = @configuration
+      @currency.configuration.should == @configuration
+      @currency.config.should == @configuration
+      @currency.save
+      c = Currency.find_by_name('R1')
+      c.config.should == @configuration.to_yaml
+      c.configuration.should == @configuration
+    end
+#    describe "MutualRating"
+  end
+  
   describe "API" do
     before(:each) do
       @c = Currency.create!(@valid_attributes)
@@ -109,6 +133,10 @@ describe Currency do
       @currency.api_play_fields('pay').should == [
         {"from"=>{'id'=>'from','type'=>"player_member"}}, {"to"=>{'id'=>'to','type'=>"player_member"}}, {"aggregator"=>{'id'=>'aggregator','type'=>"player_aggregator"}}, {"amount"=>{'id'=>'amount','type'=>"integer"}}, {"memo"=>{'id'=>'memo','type'=>"string"}}
         ]
+    end
+    it "should be able to return a list of the configurable fields" do
+      @cr = create_currency("R1",:klass=>CurrencyMutualRating)
+      @cr.api_configurable_fields.should == {"rate.rating"=>"enumerable_range", "rate.rating.default"=>"poor,average,good,excellent"}
     end
     it "should be able to return a list of player classes" do
       @currency.api_player_classes.should == ['member','aggregator']

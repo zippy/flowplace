@@ -17,7 +17,7 @@ for currency in @currencies
   %>
   <tr class="<%= i%2 == 0 ? ' odd' : ''%>" >
     <td><%= render_currency_icon(currency,32) %></td>
-    <td><%= link_to currency.name, edit_currency_path(currency) %> </td>
+    <td><%= link_to currency.name, edit_currency_path(currency)+'?currency_type='+currency.class.to_s %> </td>
     <td><%=h currency.humanized_type %> </td>
     <td><%=h humanized_currency_scope(currency) %> </td>
     <td><%=h currency.api_render_summary%></td>

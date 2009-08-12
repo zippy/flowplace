@@ -28,6 +28,8 @@ module NavigationHelpers
       '/currencies'
     when /the new currencies page/
       '/currencies/new'
+    when /the new "([^\"]*)" currencies page/
+      '/currencies/new?currency_type=Currency'+$1.tr(' ','')
     when /the match page/
       '/weals'
     when /the accounts page/

@@ -175,6 +175,7 @@ class CurrencyAccountsController < ApplicationController
           begin
             @play[field_name] = CurrencyAccount.find(@play[field_name])
           rescue Exception => e
+            raise "Currency account #{@play[field_name]} not found."
           end
         end
       end

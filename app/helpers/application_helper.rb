@@ -197,7 +197,12 @@ module ApplicationHelper
       when 'string'
         result = text_field_tag(html_name,'',:size=>30)
       when 'range'
-        r = (fields[field_name]['start']..fields[field_name]['end']).to_a
+        case fields[field_name]['configure_with']
+        when 'enumerable_range'
+          r = enumerable_range_to_options_array(currency.configuration["#{play}.#{field_name}"])
+        else
+          r = (fields[field_name]['start']..fields[field_name]['end']).to_a
+        end
         result = select_tag(html_name, options_for_select(r), :include_blank => true)
       when 'text'
         result = text_area_tag(html_name)
@@ -237,6 +242,13 @@ module ApplicationHelper
     end
     results.join('<br />')+%Q|<input type="hidden" name="play_name" value="#{play}">|
   end
+  
+  def enumerable_range_to_options_array(configuration_string)
+    c = configuration_string.split(/\W*,\W*/)
+    i = 0;
+    c.collect {|e| [e,i+=1]}
+  end
+  
   
   def standard_currency_description(currency,include_icon = false)
     text = "#{currency.name}: #{currency.description}"

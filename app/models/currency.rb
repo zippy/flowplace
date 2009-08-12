@@ -100,6 +100,23 @@ class Currency < ActiveRecord::Base
     player_state = @xgfl.xpath(%Q|/game/states/state[@player_class="#{player_class}"]/*|)
     @state_fields[player_class] = player_state.to_a.collect {|s| {s.attributes['name'].to_s => s.name.to_s}}
   end
+  
+  def api_configurable_fields
+    @xgfl ||= Nokogiri::XML.parse(xgfl)
+    configurable_fields = {}
+    @xgfl.xpath(%Q|/game/plays/*|).to_a.each do |play|
+      play_name = play.attributes['name'].to_s
+      play.xpath("fields/*").to_a.each do |f|
+        if c = f.attributes['configure_with']
+          configurable_fields["#{play_name}.#{f.attributes['id'].to_s}"] = c.to_s
+          if d = f.attributes['default']
+            configurable_fields["#{play_name}.#{f.attributes['id'].to_s}.default"] = d.to_s
+          end
+        end
+      end
+    end
+    configurable_fields
+  end
 
   def api_render_value(value)
     value
@@ -256,6 +273,18 @@ class Currency < ActiveRecord::Base
   def currency_accounts_total
     currency_accounts.size
   end
+  
+  def configuration=(c)
+    self.config = c
+  end
+
+  def configuration
+    if self.config.is_a?(String)
+      self.config = YAML.load(self.config)
+    end
+    self.config
+  end
+  
 end
 
 XGFLDir = "#{RAILS_ROOT}/currencies"
@@ -284,6 +313,9 @@ if File.directory?(XGFLDir)
   end
 end
 
+#####################################################
+# Here are flowpace specific overrides of the xgfl currencies
+
 class CurrencyTrueGoodBeautiful
   def api_render_account_state(account)
     s = account.get_state
@@ -297,32 +329,16 @@ class CurrencyMutualRating
   def api_render_account_state(account)
     s = account.get_state
     if s
-      "My Rating: #{s['rating']}"
+      rating = s['rating']
+      if rating
+        c = configuration['rate.rating'].split(/\W*,\W*/)
+        rating = c[rating.round-1]
+      end
+      "My Rating: #{rating}"
     end
   end
 end
 
-class CurrencyUSD < Currency
-  def spec(api_method)
-    {
-      'icon' => '/images/currency_icon_usd.jpg',
-      'symbol' => '$',
-      'text_symbol' => 'USD',
-      'name' => 'Dollar',
-    }[api_method]
-  end
-end
-
-class CurrencyWE < Currency
-  def spec(api_method)
-    {
-      'icon' => '/images/currency_icon_we.jpg',
-      'symbol' => 'WE',
-      'text_symbol' => 'WE',
-      'name' => 'WE',
-    }[api_method]
-  end
-end
 
 class CurrencyStars < Currency
   def api_input_html(field_id_prefix,value=nil)

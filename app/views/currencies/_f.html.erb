@@ -1,23 +1,45 @@
 <%= f.error_messages %>
 <%= hidden_field_tag :currency_params_key, @currency.class.to_s.underscore%>
 
+<%if @currency_type%>
+<p> Currency Type: <%= @currency_type.humanized_type%>
+<div id="currency_type_descrption">
+  <fieldset><legend>Currency Description</legend><%= @currency_type.api_description %></fieldset>
+  <%= hidden_field_tag 'currency[type]', @currency_type.class.to_s%>
+</div>
+  
+<%else%>
 <%= javascript_tag <<-EOJS
 function do_change(type){
   var types = {#{Currency.types.collect {|c| "#{c}:'#{escape_javascript(c.constantize.new.api_description)}'" }.join(',')}}
+  
+  var description;
   if (types[type] == undefined) {
-    return ''
+    description = ''
   }
   else {
-    return "<fieldset><legend>Currency Description</legend>"+types[type]+"</fieldset>"
+    description = "<fieldset><legend>Currency Description</legend>"+types[type]+"</fieldset>"
   }
+  $('currency_type_descrption').innerHTML = description;
+
+  var configs = {#{Currency.types.collect {|c| "#{c}:'#{escape_javascript(configurable_fields_html(c.constantize.new))}'" }.join(',')}}
+  var config;
+  if (configs[type] == undefined || configs[type] == '') {
+    config = ''
+  }
+  else {
+    config = "<fieldset><legend>Configurable Fields</legend>"+configs[type]+"</fieldset>"
+  }
+  $('currency_configurable_fields').innerHTML = config;
 }
 EOJS
 %>
 <p>
-  <%= f.label :type %> <%= f.select :type,currency_types_list_for_select,{:include_blank => true},{:onchange =>"$('currency_type_descrption').innerHTML = do_change($F('currency_type'))"} %>
+  <%= f.label :type %> <%= f.select :type,currency_types_list_for_select,{:include_blank => true},{:onchange =>"do_change($F('currency_type'))"} %>
 </p>
 
 <div id="currency_type_descrption"></div>
+<% end %>
 
 <p>
   <%= f.label :name %><br />
@@ -28,7 +50,11 @@ EOJS
   <%= f.label :description %><br />
   <%= f.text_area :description, :rows => 4, :cols => 70 %>
 </p>
-
+<%if @currency_type%>
+  <fieldset><legend>Configurable Fields</legend> <%= configurable_fields_html(@currency.class == Currency ? @currency_type : @currency)%> </fieldset>
+<%else%>
+<div id="currency_configurable_fields"></div>
+<%end%>
 <p>
   <%= f.label :icon_url %><br />
   <%= f.text_field :icon_url %>

@@ -25,6 +25,7 @@ class CurrenciesController < ApplicationController
   # GET /currencies/new
   # GET /currencies/new.xml
   def new
+    check_for_currency_type
     @currency = Currency.new
 
     respond_to do |format|
@@ -35,6 +36,7 @@ class CurrenciesController < ApplicationController
 
   # GET /currencies/1/edit
   def edit
+    check_for_currency_type
     @currency = Currency.find(params[:id])
   end
 
@@ -51,6 +53,7 @@ class CurrenciesController < ApplicationController
     currency_params = get_currency_params
     @currency = Currency.new(currency_params)
     @currency.type = currency_params[:type]
+    @currency.configuration = params[:config]
     respond_to do |format|
       if @currency.save
         flash[:notice] = 'Currency was successfully created.'
@@ -68,7 +71,8 @@ class CurrenciesController < ApplicationController
   def update
     @currency = Currency.find(params[:id])
     currency_params = get_currency_params
-    @currency.type = currency_params[:type]
+    @currency.configuration = params[:config]
+#    @currency.type = currency_params[:type]  CANT CHANGE THE CURRENCY TYPE!
     respond_to do |format|
       if @currency.update_attributes(currency_params)
         flash[:notice] = 'Currency was successfully updated.'
@@ -96,5 +100,12 @@ class CurrenciesController < ApplicationController
   protected
   def get_currency_params
     params[params[:currency_params_key]]
+  end
+  def check_for_currency_type
+    @currency_type = params[:currency_type]
+    if @currency_type
+      raise "unknown currency type" if !Currency.types.include?(@currency_type)
+      @currency_type = @currency_type.constantize.new
+    end
   end
 end
