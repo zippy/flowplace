@@ -1,0 +1,36 @@
+= flowplace-- a tool for building weal
+
+- http://flowplace.org
+- http://demo.flowplace.org
+- http://github.com/zippy/flowplace
+- http://thetransitioner.org
+- http://metacurrency.org
+- http://newcurrencyfrontiers.com
+
+== Description
+
+The flowplace is a is a tool for individuals, communities and organizations to build wealth together by using free currencies.
+
+== Installation
+
+The flowplace is standard rails app.  It can be installed with:
+
+  git clone git://github.com/zippy/flowplace.git flowplace
+  cd flowplace
+  cp config/database.yml.example config/database.yml
+  cp config/flowplace_config.rb.example config/flowplace_config.rb
+  rake gems:install
+  rake db:migrate
+
+=== Platform Specific Notes:
+
+If you are installing on a Debian based Linux (including Ubuntu) you will need to first run:
+
+  sudo apt-get install libxslt1-dev libxml2-dev
+
+otherwise the nokogiri gem won't install.
+
+== License
+
+The flowplace is released under the LGPL license.
+Copyright (c) 2009 Eric Harris-Braun, Jean-François Noubel, Fernanda Ibarra
