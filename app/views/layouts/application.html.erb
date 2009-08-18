@@ -10,6 +10,7 @@ global_banner = CONFIG[:global_banner] && !session[:banner_closed]
 			flowplace<%= @title ? ": #{@title}" : '' %>
 		</title><%= stylesheet_link_tag 'project', :media => "all" %><%= stylesheet_link_tag 'table', :media => "screen" %><%= stylesheet_link_tag 'project-print', :media => "print" %><%= javascript_include_tag :defaults %>
 	</head>
+	<% if CONFIG[:analytics]%><% CONFIG[:analytics]%><%end%>
 	<%= %Q*<body #{"class='enlargeFont'" if current_user.has_preference('enlargeFont')}>* %>
 	  <%if global_banner%><div id="global_banner"><%if logged_in?%>
 	    <%= image_tag 'close.png', :size =>'16x16',:class=>"clickable float_right", :title => 'Click here to close this box', :onclick => "new Effect.SlideUp($('global_banner'), { duration: .6 });location.href = '/close_banner'"%><%end%>
