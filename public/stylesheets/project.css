@@ -428,10 +428,22 @@ img.clickable {
 }
 
 
-/* --------------TAG CLOUD ---------------------*/
+/* -------------- BANNERS ---------------------*/
 #global_banner {
 	padding: 5px;
 	margin: 0;
-	background-color: #669900;
+	background-color: #570F15;
+	border: 1px solid #af078d;
 	color: #fff;
+}
+#global_banner a {
+	color: #fff;
+}
+
+img.clickable {
+	cursor:pointer;
+}
+.float_right {
+	float: right;
+	clear:both;
 }

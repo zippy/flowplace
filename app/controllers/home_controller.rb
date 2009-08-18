@@ -43,4 +43,9 @@ class HomeController < ApplicationController
   def welcome
   end
   
+  def close_banner
+    session[:banner_closed] = true;
+    redirect_to request.env['HTTP_REFERER']
+  end
+  
 end

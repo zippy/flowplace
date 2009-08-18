@@ -61,6 +61,9 @@ ActionController::Routing::Routes.draw do |map|
 
   map.home('', :controller => 'home', :action => 'home')
   map.version('/version', :controller => 'home', :action => 'version')
+  
+  map.close_banner ('/close_banner', :controller=> 'home', :action => 'close_banner')
+  
 
   # Sample of regular route:
   #   map.connect 'products/:id', :controller => 'catalog', :action => 'view'
