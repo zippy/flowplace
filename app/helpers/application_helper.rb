@@ -180,8 +180,11 @@ module ApplicationHelper
     fields = {}
     currency.api_play_fields(play).each {|f| fields.update(f)}
     sentence = currency.api_play_sentence(play)
-    sentence = sentence.gsub(/<([^>]+) *\/>/) do |field_name|
-      field_name = $1
+    #TODO: we need to make this actually work by XML not strings as this broke once allready when
+    # the nokogiri library converted the play sentence to slightly different XML.
+    sentence = sentence.gsub(/(<([^>]+) *\/>)|(<([^>]+)><\/\4>)/) do |field_name|
+      field_name = $2
+      field_name ||= $4
       next if exclude_list.include?(field_name)
       raise "unknown field '#{field_name}'" if fields[field_name].nil?
       field_type = fields[field_name]['type']
