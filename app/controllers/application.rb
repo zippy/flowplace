@@ -11,6 +11,11 @@ class ApplicationController < ActionController::Base
   # Uncomment this to filter the contents of submitted sensitive data parameters
   # from your application log (in this case, all fields with names like "password"). 
   # filter_parameter_logging :password
+
+  def rescue_action_in_public(exception)
+    @exception = exception.to_s
+    render :file => "#{RAILS_ROOT}/public/500_active.html",:layout=>true, :status => 500
+  end
   
   def current_user_or_can?(permissions = nil,obj = nil)
     the_id = obj ? obj.user_id : params[:id].to_i

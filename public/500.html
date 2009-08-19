@@ -1,33 +1,30 @@
-<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
-       "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
-
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
+    "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
-
-<head>
-  <meta http-equiv="content-type" content="text/html; charset=UTF-8" />
-  <title>We're sorry, but something went wrong (500)</title>
-	<style type="text/css">
-		body { background-color: #fff; color: #666; text-align: center; font-family: arial, sans-serif; }
-		div.dialog {
-			width: 25em;
-			padding: 0 4em;
-			margin: 4em auto 0 auto;
-			border: 1px solid #ccc;
-			border-right-color: #999;
-			border-bottom-color: #999;
-		}
-		h1 { font-size: 100%; color: #f00; line-height: 1.5em; }
-	</style>
-</head>
-
-<body>
-  <!-- This file lives in public/500.html -->
-  <div class="dialog">
-    <h1>We're sorry, but something went wrong.</h1>
-    <p>We've been notified about this issue and we'll take a look at it shortly.</p>
-    <p><small>(If you're the administrator of this website, then please read
-    the log file "<%=h RAILS_ENV %>.log"
-    to find out what went wrong.)</small></p>
-  </div>
-</body>
+  <head>
+    <meta http-equiv="content-type" content="text/html; charset=utf-8" />
+    <title>
+      flowplace: Internal Server Error (500)
+    </title>
+    <link href="/stylesheets/project.css" media="all" rel="stylesheet" type="text/css" />
+    <link href="/stylesheets/table.css" media="screen" rel="stylesheet" type="text/css" />
+  </head>
+  <body>
+    <div id="top_bar">
+      <div class='wrap_to_center'>
+        <div id="header">
+          <img class='logo' src="/images/logo.png" height="50" width="50" alt="logo" /><img class='logo' src="/images/logo_txt.jpg" alt="flowplace" />
+        </div>
+      </div>
+    </div>
+    <div class='wrap_to_center'>
+      <div id="page_content">
+        <h3>We're sorry!  The flowplace experienced and internal error.</h3>
+        <p>The problem has been logged and we should have it fixed soon.</p>
+      </div>
+    </div>
+    <div id="footer">
+      <span class="float_left">The flowplace is released under the GPL license.</span>
+    </div>
+  </body>
 </html>
