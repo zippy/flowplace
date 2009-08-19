@@ -96,4 +96,13 @@ SMTP_SETTINGS = {:address  => "localhost"} unless defined? SMTP_SETTINGS
 ActionMailer::Base.smtp_settings = SMTP_SETTINGS
 
 
+# this is here because sometimes rails doesn't actually save the session object.
+# since we use its updated_at property for session expiration, we have to make sure
+# to force it changed incase all other attributes in the session are the same and
+# rails is trying to optimize away the save.
+class CGI::Session::ActiveRecordStore::Session
+ def before_save
+  self.updated_at = Time.now
+ end
+end
 

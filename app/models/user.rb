@@ -69,7 +69,9 @@ class User < ActiveRecord::Base
 #    Event.create(:user_id=>self.id,:event_type=>'login',:sub_type =>"success",:content => request.remote_ip)
     
     # clean up stale sessions
-#    CGI::Session::ActiveRecordStore.session_class.delete_all(DeleteSessionsSQL)
+    now = Time.now.to_formatted_s(:db)
+    now_less_expiration = (Time.now-SessionExpirationSeconds).to_formatted_s(:db)
+    CGI::Session::ActiveRecordStore.session_class.delete_all("updated_at < '#{now_less_expiration}'")
   end
   
   def deactivated?
