@@ -71,7 +71,7 @@ class User < ActiveRecord::Base
     # clean up stale sessions
     now = Time.now.to_formatted_s(:db)
     now_less_expiration = (Time.now-SessionExpirationSeconds).to_formatted_s(:db)
-    CGI::Session::ActiveRecordStore.session_class.delete_all("updated_at < '#{now_less_expiration}'")
+#    CGI::Session::ActiveRecordStore.session_class.delete_all("updated_at < '#{now_less_expiration}'")
   end
   
   def deactivated?
