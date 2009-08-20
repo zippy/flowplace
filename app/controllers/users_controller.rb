@@ -11,6 +11,8 @@ class UsersController < ApplicationController
 	 OrderPairs = [
      ['a','user_name'],
      ['n','last_name,first_name'],
+     ['ll','last_login desc'],
+     ['c','created_at desc'],
      ['i','id'],
    ]
 

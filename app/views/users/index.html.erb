@@ -11,6 +11,8 @@
 order_choices = [['Name','n'],
                  ['Account name','a'],
                  ['Account ID','i'],
+                 ['Last Login','ll'],
+                 ['Account Created','c'],
                  ['Type','t']]
 select_options = {
     'main' => [['Full name contains','m_c'],
@@ -47,6 +49,8 @@ form_tag('/users',:method => :get) do %>
 
 	<% if current_user.can?(:admin) %> &nbsp;<%= link_to '[sign in as]', login_as_user_url(i.id) %>
 	 <% unless i.activated? %>(not active)<% end %>
+	 <% if i.last_login %>Last login: <%=time_ago_in_words(i.last_login)%> ago<%else%>Never logged in<%end%>; 
+	 Created: <%=standard_date(i.created_at)%>
 	<br>
 	 Full Name: <%= i.full_name %><% end %>
 	<br>
@@ -70,7 +74,7 @@ form_tag('/users',:method => :get) do %>
 		<br />
 	<% end %>
 
-	<% if i.notes %>Notes: <%= i.notes %><% end %>
+	<% if !i.notes.blank? %>Notes: <%= i.notes %><% end %> 
 <% end %>
 <%= will_paginate @users if @search_params[:paginate]=='yes' && !@users.empty? %>
 
