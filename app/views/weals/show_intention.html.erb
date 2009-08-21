@@ -10,11 +10,13 @@
   <%=h @weal.description %>
 </p>
 <p>
-	<b>Is a requirement of: </b>
-	<%= p = @weal.parent; h p.nil? ? '-none-' : p.title %>
+  <b>Is a requirement of: </b>
+  <%= p = @weal.parent; h p.nil? ? '-none-' : p.title %>
 <p>
-	<%= render(:partial => 'proposal_form', :locals => { :party => :requester }) %>
-	<%= render(:partial => 'proposal_form', :locals => { :party => :offerer }) %>
+  <%= render(:partial => 'proposal_form', :locals => { :party => :requester }) %>
+  <%= render(:partial => 'proposal_form', :locals => { :party => :offerer }) %>
+
+<%= render(:partial => 'discussion') %>
 
 <%= link_to 'Back', weals_path %>
 
