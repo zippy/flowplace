@@ -89,8 +89,8 @@ class UsersController < ApplicationController
     respond_to do |format|
       if @user.create_bolt_identity(:user_name => :user_name,:enabled => false) && @user.save
         @user.activate! {|activation_code| activation_url(activation_code, :user_name=> @user.user_name)}
-        flash[:notice] = "Your account as been created and you have been sent an activation e-mail!"
-        format.html { redirect_to "/activations/show/"+@user.user_name }
+        flash[:notice] = "The account #{@user.user_name} has been created and activation instructions were sent to #{@user.email}.  Please check your e-mail and follow the instructions in the activation message."
+        format.html { redirect_to  "/" }  #redirect_to  "/activations/show/"+@user.user_name
         format.xml  { head :created, :location => user_url(@user) }
       else
         format.html { render :action => "signup" }
