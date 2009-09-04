@@ -64,6 +64,7 @@
         true
         ]]>
       </script>
+      <play_sentence lang='en'><from /> issues to <to /> <amount /> for <memo /></play_sentence>
     </play>
     <play name="retire" player_classes="issuer">
       <fields>
@@ -81,6 +82,7 @@
         true
         ]]>
       </script>
+      <play_sentence lang='en'><from /> retires from <to /> <amount /> for <memo /></play_sentence>
     </play>
   </plays>
 </game>
