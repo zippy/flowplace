@@ -11,7 +11,7 @@
 <tr><td align="left">City: </td><td><%= form.text_field :city %></td></tr>
 <tr><td align="left">State: </td><td><%= form.select :state, StateNameOptions %></td></tr>
 <tr><td align="left">Zip/Postal Code: </td><td><%= form.text_field :zip %></td></tr>
-<tr><td align="left">Country: </td><td><%= form.select :country, CountryOptions %></td>
+<tr><td align="left">Country: </td><td><%= form.select :country, country_options_for_select %></td>
 </tr>
 </table>
 
@@ -20,7 +20,7 @@
 <b>Notes:</b> <br />
 <%= form.text_area :notes %>
 </p>
-<p><label for="time_zone">Time zone:</label><%= form.select :time_zone, ActiveSupport::TimeZone.us_zones,:include_blank => true %><% if current_user.can?(:admin) %><br />
+<p><label for="time_zone">Time zone:</label><%= form.time_zone_select(:time_zone, ActiveSupport::TimeZone.us_zones,:include_blank => true) %><% if current_user.can?(:admin) %><br />
 <span class="smalltext">This user's browser reported the last login time as:  <%= @user.time_local ? @user.time_local : '<i>never logged in</i>' %></span><% end %></p>
 
 
