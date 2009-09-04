@@ -268,5 +268,20 @@ module ApplicationHelper
       text
     end
   end
+  
+  def activity_resource_url(activity)
+    resource = activity.activityable
+    if resource.nil?
+      raise "resource doesn't exist"
+    else
+      case activity
+      when IntentionActivity
+        weal = resource
+        weal.created_by == current_user ? edit_intention_url(weal) : intention_url(weal)
+      else
+        polymorphic_url(resource)
+      end
+    end
+  end
 
 end
