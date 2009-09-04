@@ -6,44 +6,51 @@ module Lister
 
   def def_sort_rules(*args)
     @sort_rules = {}
-    args.each{|k| sort_rule(k)}
+    args.each{|k| def_sort_rule(k)}
     yield if block_given?
   end
-  def sort_rule(sort_key,&block)
+  
+  def def_sort_rule(sort_key,proc=nil,&block)  #This was previously just def sort_rule
     if block_given?
       @sort_rules[sort_key] = block
     else
       if sort_key.is_a?(String)
-        @sort_rules[sort_key] = Proc.new do |r|
-          r && r["#{sort_key}"] ? r["#{sort_key}"].downcase : ""
+        if proc
+          @sort_rules[sort_key] = proc
+        else
+          @sort_rules[sort_key] = Proc.new do |r|
+            r && r["#{sort_key}"] ? r["#{sort_key}"].downcase : ""
+          end
         end
-      else
+      else  #This style only works for Rails models & find
         @sort_rules[sort_key[0]] = Proc.new do 
           sort_key[1] ? sort_key[1].downcase : ""
         end
       end
     end
   end
-  def sort_rule_date(sort_key)
+  def def_sort_rule_date(sort_key) #This was previously just def sort_rule_date
     @sort_rules[sort_key] = Proc.new do |r|
-      (r && r[sort_key] && r[sort_key] != '') ? Date.new(*ParseDate.parsedate(r[sort_key])[0..3]) : Date.new
+      (r && r[sort_key] && r[sort_key] != '') ? Time.mktime(*ParseDate.parsedate(r[sort_key])[0..2]) : Time.new
     end
   end
   def apply_sort_rule(r = nil)
     orders = []
-    order_current = @search_params[:order_current]
-    if order_current
-      raise "No sort rule is defined for #{order_current}" if  !@sort_rules[order_current]
-      orders << order_current
-      order_last = @search_params[:order_last]
-      if order_last
-        raise "No sort rule is defined for #{order_last}" if order_last && !@sort_rules[order_last]
-        orders = orders << order_last
+    order = @search_params[:order]
+    if order
+      raise "No sort rule is defined for #{order}" if  !@sort_rules[order]
+      orders << order
+      if @order_second
+        order_second = @order_second.is_a?(Proc) ? @order_second.call(order) : @order_second
+        if order_second
+          raise "No sort rule is defined for #{order_second}" if order_second && !@sort_rules[order_second]
+          orders = orders << order_second
+        end
       end
     end
     orders.map{|order| @sort_rules[order].call(r)} 
   end
- 
+    
   def def_search_rules(kind,pairs)
     @search_rules ||= {}
     @search_rules['all'] = 'dummy value'
@@ -55,14 +62,14 @@ module Lister
         def_search_rule(key+'_is') {|search_for| ["#{field} = ?", search_for]}
         def_search_rule(key+'_not') {|search_for| ["#{field} != ?", search_for]}
       end
-#    when :locate #The search rules generated here will be used for a call to Record.locate, via fill_and_locate_records
+#    when :locate #The search rules generated here will be used for a call to Record.locate
 #      pairs.each do |key,field|
-#        def_search_rule(key+'_b') {|search_for| ":#{field} =~ /^#{search_for}/i"}
-#        def_search_rule(key+'_c') {|search_for| ":#{field} =~ /#{search_for}/i"}
+#        def_search_rule(key+'_b', :regex=>true) {|search_for| ":#{field} =~ /^#{search_for}/i"}
+#        def_search_rule(key+'_c', :regex=>true) {|search_for| ":#{field} =~ /#{search_for}/i"}
 #        def_search_rule(key+'_is') {|search_for| ":#{field} == '#{search_for}'"}
 #        def_search_rule(key+'_not') {|search_for| ":#{field} != '#{search_for}'"}
 #      end
-#    when :search  #The search rules generated here will be used for a call to Record.search via fill_recs
+#    when :search  #The search rules generated here will be used for a call to Record.search
 #      pairs.each do |key,field|
 #        def_search_rule(key+'_b') {|search_for| ":#{field} #{ILIKE} '#{search_for}%'"}
 #        def_search_rule(key+'_c') {|search_for| ":#{field} #{ILIKE} '%#{search_for}%'"}
@@ -71,12 +78,18 @@ module Lister
 #      end
     end
   end
-
+  
   def def_search_rule(key,params={},&block)
     @search_rules ||= {}
-    @search_rules[key] = {:block => block,:params => params}
+    if params.is_a?(Proc)
+      @search_rules[key] = {:block => params}
+    elsif block
+      @search_rules[key] = params.update(:block => block) 
+    else
+      @search_rules[key] = params
+    end
   end
-    
+  
   def generate_search_options(kind)
     case kind
     when :sql
@@ -90,8 +103,8 @@ module Lister
 #      generate_options do |search_rule,search_for|
 #        # searching for something with | in it requires ust to generate the full conditions ored together
 #        c = '('+search_for.split(/\W*\|\W*/).collect {|search_for| search_rule[:block].call(search_for)}.join(' or ')+')'
-#        c = 'not '+c if search_rule[:params][:negate]
-#        search_rule[:params][:meta_condition] ? meta_conditions.push(c) : conditions.push(c)
+#        c = 'not '+c if search_rule[:negate]
+#        search_rule[:meta_condition] ? meta_conditions.push(c) : conditions.push(c)
 #      end
 #      options[:conditions] = conditions.join(' and ') if !conditions.empty?
 #      options[:meta_condition] = meta_conditions.join(' and ') if !meta_conditions.empty?
@@ -118,10 +131,14 @@ module Lister
   end
   
   def apply_search_rules(sql)
-    @filters ||= []
+    filters ||= []
     generate_options do |search_rule,search_for|
-      search_for = Regexp.escape(search_for).gsub('/','\/') unless sql
-      search_for = search_for.split(/\\\||\|/)
+      if search_rule[:regex]
+        search_for = Regexp.escape(search_for).gsub('/','\/') unless sql
+        search_for = search_for.split(/\\\||\|/)
+      else
+        search_for = [search_for]
+      end
       queries = []
       terms = [] if sql
       search_for.map!{|s| search_rule[:block].call(s)}.each do |s|
@@ -138,20 +155,20 @@ module Lister
       else
         search_for = queries.join(' || ')
       end
-      @filters << search_for
+      filters << search_for
     end
     if sql #Combine filters in format sql likes
       conditions = []
       sql_terms = []
-      @filters.each do |f|
+      filters.each do |f|
         sql_terms << f[0]
         conditions = conditions + f[1]
       end
       sql_terms = sql_terms << @search_params[:sql] if (@search_params[:sql] && @search_params[:sql] != '')
-      @filters = [sql_terms.join(" and ")] + conditions if (sql_terms != [] || conditions != [])
+      filters = [sql_terms.join(" and ")] + conditions if (sql_terms != [] || conditions != [])
     end
-    @filters = nil if @filters.empty? 
-    @filters
+    filters = nil if filters.empty? 
+    filters
   end
   
   def field_blank_sql(field)
@@ -159,20 +176,23 @@ module Lister
   end
   
   def set_params(listing_type,use_session,defaults={})  
-    if !params[:search] 
+    @params = params if self.methods.include?('params')
+    @session = session if self.methods.include?('session')
+    if !@params[:search] 
       # if the search params aren't in the actual params from the request
       # then you can look for them in the session, if that's what the page would like
       if use_session
-        @search_params = session[listing_type]
+        @search_params = @session[listing_type]
       end
     else
-      @search_params = params[:search].update({:page => params[:page]})
+      @search_params = @params[:search].update({:page => @params[:page]})
     end
     @search_params ||= {}
-    @search_params[:order_last] = session[listing_type][:order_current] if session[listing_type] && session[listing_type].key?(:order_current)  
+    #This is currently deprecated.  Rewrite in the current listings framework if it is ever necessary:
+    #@search_params[:order_last] = @session[listing_type][:order] if @session[listing_type] && @session[listing_type].key?(:order)  
     #grab order param from session for secondary sort, if it's nontrivial and not the current order
     defaults.each do |param,default|
-      if (!use_session || param = :order_current) && (!@search_params.key?(param) || @search_params[param] == '')
+      if (!use_session || param = :order) && (!@search_params.key?(param) || @search_params[param] == '')
         @search_params[param] = default
       end
     end
@@ -182,22 +202,30 @@ module Lister
         @search_params[matching_params_key] = ''
       end
     end
-    session[listing_type] = @search_params #Store in session in case needed later
+    session[listing_type] = @search_params if self.methods.include?('session')   #Store in session in case needed later
   end
 
   def get_sql_options
     options = {}
-    options[:order] = apply_sort_rule.join(",")
+    sorts = apply_sort_rule.join(",")
+    options[:order] = sorts if !sorts.blank?
     options[:conditions] = generate_search_options(:sql)
     options
   end
   
-  def get_search_form_html(order_choices,form_pair_info,select_options = nil,allow_manual_filters = false)
+  def get_search_form_html(params)
+    order_choices = params[:order_choices]
+    search_pair_info = params[:search_pair_info]
+    select_options = {}
+    params[:select_options].each{|k,v| select_options[k] = v.is_a?(Proc) ? v.call : v } #If the select_option was
+    #set at compile time in a listing, then we may need to run it now to populate the select with current options.
+    allow_manual_filters = params[:allow_manual_filters]
+    allow_manual_filters ||= false
     form_pairs_html = []
-    form_pair_info.each do |pair|
+    search_pair_info.each do |pair|
       first_focus = pair[:first_focus] ? {:class => 'first_focus'} : {}
       this_html = pair[:label] ? pair[:label] : ''
-      this_html << 
+      this_html = this_html + 
         case pair[:on]
         when :select
           select_tag("search[on_#{pair[:name]}]", options_for_select(select_options[pair[:name]],@search_params["on_#{pair[:name]}"])) 
@@ -208,7 +236,7 @@ module Lister
         else
           ''
         end
-      this_html <<
+      this_html = this_html +
         case pair[:for]
         when :select
           select_tag("search[for_#{pair[:name]}]", options_for_select(select_options[pair[:name]],@search_params["for_#{pair[:name]}"]),first_focus) 
@@ -221,12 +249,12 @@ module Lister
         else
           ''
         end
-      this_html << text_field_tag("search[sql]", @search_params[:sql]) if pair[:sql]
+      this_html = this_html + text_field_tag("search[sql]", @search_params[:sql]) if pair[:sql]
       form_pairs_html << this_html
     end
-  	order_select = "Order by:  " + select_tag('search[order_current]', options_for_select(order_choices,@search_params[:order_current]))
+  	order_select = "Order by:  " + select_tag('search[order]', options_for_select(order_choices,@search_params[:order]))
   	mf = %Q|<p>Manual filters: #{ text_field_tag('search[manual_filters]', @search_params[:manual_filters], :size=>60)}</p>| if allow_manual_filters
-    
+  
     html =<<-EOHTML
     <fieldset class='search_box'><legend>Search</legend><p>#{form_pairs_html.join("</p><p>")}</p>
       <p>#{order_select}</p>#{mf}

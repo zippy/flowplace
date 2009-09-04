@@ -32,6 +32,12 @@ module ApplicationHelper
       note.to_s
     end
   end
+  
+  def get_index_form_html(params,url)
+    form_tag(url,:method => :get, :id => 'search_form') do 
+       get_search_form_html(params)
+    end
+  end
 
   def set_prefs_url
     url_for(:controller => 'users', :action => 'preferences', :id => current_user.id)

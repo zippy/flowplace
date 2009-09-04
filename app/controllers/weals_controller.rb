@@ -264,7 +264,6 @@ class WealsController < ApplicationController
     @search_params.update({'on_base' => 'base', 'for_base' => 'dummy','on_as' => 'as'})
     @search_params["for_as"] ||= 'requester'
     sql_options = get_sql_options.update({:include => @search_params[:for_as]})
-#      raise sql_options.inspect
     if sql_options[:conditions] || @display_all
       if @search_params[:paginate]=='yes'
         @weals = Weal.paginate(:all,sql_options.update({:page => @search_params[:page]}))

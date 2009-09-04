@@ -6,32 +6,8 @@
 	<%= link_to 'Add a new account', new_user_url %>
 <p>
 <% end %>
-<% 
-#Get data ready for search form:
-order_choices = [['Name','n'],
-                 ['Account name','a'],
-                 ['Account ID','i'],
-                 ['Last Login','ll'],
-                 ['Account Created','c'],
-                 ['Type','t']]
-select_options = {
-    'main' => [['Full name contains','m_c'],
-		       ['Full name begins with','m_b'],
-		       ['Account name contains','a_c'],
-		       ['Account name begins with','a_b'],
-		       ['E-mail contains','e_c'],
-		       ['E-mail begins with','e_b'],
-		       ['State/province abbrev. is', 's_is'],
-		       ['Notes contain','n_c'],
-		       ['Show all','all']]
-						}
-form_pair_info = [{:name => "main", :on => :select, :for => :text_field, :first_focus => true}]
-if current_user.can?(:admin)
-    form_pair_info << {:sql => '', :label => 'Add optional SQL AND '}
-end
-form_tag('/users',:method => :get) do %>
-    <%= get_search_form_html(order_choices,form_pair_info,select_options) %>
-<% end %>
+
+<% get_index_form_html(@search_form_params,'/users') %>
 
 <% if !@search_params.empty? %>
 <% if @users.empty? %>
