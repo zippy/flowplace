@@ -10,6 +10,8 @@ module NavigationHelpers
       '/'
     when /the new intentions page/
       '/intentions/new'
+    when /the my intentions page/
+      '/intentions/my'
     when /the intentions page/
       '/intentions'
     when /the assets page/

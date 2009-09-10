@@ -11,6 +11,10 @@ Feature: Intentions
     When I go to the new intentions page
     And I fill in "Title" with "intention 1"
     And I fill in "Description" with "intention 1 description"
+    And I check "currencies_1_used"
     And I press "Declare"
-    Then I should be taken to the intentions page
+    Then I should be taken to the my intentions page
     And I should see "intention 1"
+    And I should see an image with title "X: "
+
+  Scenario: Removing a currency from an intention
