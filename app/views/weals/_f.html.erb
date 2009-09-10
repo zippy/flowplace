@@ -69,7 +69,7 @@
     %>
       <tr>
         <td>
-        <%= check_box_tag("currencies[#{currency.id}][used]",'1',exists) %>
+        <%= check_box_tag("currencies[#{currency.id}][used]",'1',exists) %> <%= hidden_field_tag("currencies[#{currency.id}][dummy]",'1')%>
         <%= render_currency_icon(currency) %>
         <%= h currency.name %>
         </td>

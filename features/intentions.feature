@@ -18,3 +18,10 @@ Feature: Intentions
     And I should see an image with title "X: "
 
   Scenario: Removing a currency from an intention
+    Given an intention "intention 1" described as "desc" measuring wealth with "X"
+    When I go to the edit intentions page for "intention 1"
+    And I uncheck "currencies_1_used"
+    And I press "Update"
+    Then I should be taken to the my intentions page
+    And I should not see an image with title "X: "
+  

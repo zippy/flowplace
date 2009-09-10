@@ -14,6 +14,10 @@ module NavigationHelpers
       '/intentions/my'
     when /the intentions page/
       '/intentions'
+    when /the edit intentions page for "([^\"]*)"/
+      title = $1
+      i = Weal.find_by_title(title)
+      "/intentions/#{i.id}/edit"
     when /the assets page/
       '/assets'
     when /the actions page/
