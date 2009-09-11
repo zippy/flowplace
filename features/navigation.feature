@@ -26,11 +26,11 @@ Feature: Navigation feedback
     When I go to the circles page
     Then I should not see "Currencies" as the current tab
     And I should see "Circles" as the current tab
-    When I go to the currencies page
+    When I go to the my currencies page
     Then I should not see "Circles" as the current tab
     And I should see "Currencies" as the current tab
     When I go to the accounts page
-    Then I should not see "Match" as the current tab
+    Then I should not see "Currencies" as the current tab
     And I should see "Accounts" as the current tab
     When I go to the admin page
     Then I should not see "Accounts" as the current tab
