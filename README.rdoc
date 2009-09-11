@@ -3,6 +3,7 @@
 - http://flowplace.org
 - http://demo.flowplace.org
 - http://github.com/zippy/flowplace
+- http://projects.thetransitioner.org/projects/show/flowplace
 - http://thetransitioner.org
 - http://metacurrency.org
 - http://newcurrencyfrontiers.com
