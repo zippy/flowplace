@@ -28,7 +28,7 @@ class Currency < ActiveRecord::Base
   include ActionView::Helpers::FormTagHelper
   include ActionView::Helpers::TagHelper
   include ActionView::Helpers::FormOptionsHelper
-  validates_presence_of :name
+  validates_presence_of :name,:type
   validates_uniqueness_of :name
 
   belongs_to :circle
