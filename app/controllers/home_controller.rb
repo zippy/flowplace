@@ -29,8 +29,10 @@ class HomeController < ApplicationController
   end
 
   def sys_info
-    @version = `/usr/local/bin/git describe`
-    @git_log = `/usr/local/bin/git log -15`
+    git_path = CONFIG[:git_path]
+    git_path ||= '/usr/bin/git'
+    @version = `#{git_path} describe`
+    @git_log = `#{git_path} log -15`
     @current_database = ActiveRecord::Base.connection.current_database if ActiveRecord::Base.connection.respond_to?(:current_database)
   end
 
