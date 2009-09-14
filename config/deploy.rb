@@ -18,6 +18,10 @@ when 'seed.flowplace.org'
   set :user, "ehb"
   set :application, 'flowplace_seed'
   set :ssh_port,22
+when 'learn.flowplace.org'
+  set :user, "ehb"
+  set :application, 'flowplace_learn'
+  set :ssh_port,22
 when 'dev.flowplace.org'
   set :user, "eric"
   set :application, 'flowplace'
