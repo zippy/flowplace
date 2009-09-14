@@ -1,5 +1,4 @@
 class WealsController < ApplicationController
-  require_authorization
   include Lister
   before_filter :determine_weal_phase_from_url
   # GET /weals|intentions|actions|assets

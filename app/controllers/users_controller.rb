@@ -1,4 +1,5 @@
 class UsersController < ApplicationController
+  require_authentication :except => [:signup,:do_signup]
   require_authorization(:createAccounts, :only => [:new,:create]) 
   require_authorization(:accessAccounts, :only => [:edit,:update,:index]) 
   require_authorization(:admin, :only => [:login_as,:destroy,:logged_in_users]) 
