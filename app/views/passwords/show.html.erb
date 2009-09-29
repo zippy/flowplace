@@ -12,17 +12,13 @@
 		<% if @user_name %>
 	  	<%= hidden_field_tag(:login,@user_name) %>
 	  	<%= hidden_field_tag(:user_name,@user_name) %>
+	  	<%= hidden_field_tag(:code,params[:code]) %>
 		<% else %>
     <p>
       <label for="login"><%=Bolt::Config.user_name_label%></label>
       <%= text_field_tag(:login) %>
     </p>
 		<% end %>
-
-    <p>
-      <label for="id">Reset Code:</label>
-      <%= text_field_tag(:id,params[:id],:size => 35) %>
-    </p>
         
     <p>
       <label for="password">Choose a New Password:</label>
