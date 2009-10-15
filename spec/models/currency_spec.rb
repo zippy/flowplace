@@ -29,19 +29,27 @@ describe Currency do
       :icon_url => "/images/my_currency.gif",
       :symbol => "MC"
     }
+    @c = Currency.new(@valid_attributes)
+    @c.type = 'CurrencyMutualCredit'
   end
 
   it "should create a new instance given valid attributes" do
-    c = Currency.create!(@valid_attributes)
+    @c.save!
   end
 
   it "should raise an error given no name attribute" do
-    lambda {Currency.create!}.should raise_error
+    @c.name = nil
+    lambda {@c.save!}.should raise_error
+  end
+
+  it "should raise an error given no type attribute" do
+    @c.type = nil
+    lambda {@c.save!}.should raise_error
   end
   
   it "should be able to report a name suitable for use as an html id" do
-    c = Currency.create!(@valid_attributes)
-    c.name_as_html_id.should == 'my_currency'
+    @c.save!
+    @c.name_as_html_id.should == 'my_currency'
   end
   
   describe "currency autoload" do
@@ -104,7 +112,7 @@ describe Currency do
   
   describe "API" do
     before(:each) do
-      @c = Currency.create!(@valid_attributes)
+      @c.save!
       @user = create_user('u1')
       @currency = create_currency("LETS",:klass=>CurrencyMutualCredit)
       @account = create_currency_account(@user,@currency)
@@ -120,8 +128,22 @@ describe Currency do
       @c.api_name.should == "My Currency"
     end
     it "should be able to initialize a player state" do
-      state = @currency.api_new_player('member')
+      state = @currency.api_initialize_new_player_state('member')
       state.should == {'balance' => 0, 'volume' => 0}
+    end
+    it "should be able to create a new player with default name from the user" do
+      @user2 = create_user('u2')
+      ca = @currency.api_new_player('member',@user2)
+      ca.class.should == CurrencyAccount
+      ca.currency.should == @currency
+      ca.name.should == 'u2'
+    end
+    it "should be able to create a new player with a specified name" do
+      @user2 = create_user('u2')
+      ca = @currency.api_new_player('member',@user2,'x')
+      ca.class.should == CurrencyAccount
+      ca.currency.should == @currency
+      ca.name.should == 'x'
     end
     it "should be able to render the account state" do
       @currency.api_render_account_state(@account).should == "Balance: 0; Volume: 0"
@@ -139,16 +161,16 @@ describe Currency do
       @cr.api_configurable_fields.should == {"rate.rating"=>"enumerable_range", "rate.rating.default"=>"poor,average,good,excellent"}
     end
     it "should be able to return a list of player classes" do
-      @currency.api_player_classes.should == ['member','aggregator']
+      @currency.api_player_classes.should == ['member','aggregator','admin']
     end
     it "should be able to return a the play sentence" do
       @currency.api_play_sentence('pay').should == "<from/> pays <to/> <amount/> for <memo/>"
     end
     it "should be able to return a list of plays" do
-      @currency.api_plays.should == {"_new_member"=>{:player_classes=>""}, "reversal"=>{:player_classes=>"member"}, "pay"=>{:player_classes=>"member"}, "_new_aggregator"=>{:player_classes=>""}}
+      @currency.api_plays.should == {"_new_member"=>{:player_classes=>""}, "reverse"=>{:player_classes=>"admin"}, "pay"=>{:player_classes=>"member"}, "_new_aggregator"=>{:player_classes=>""}}
     end
     it "should be able to return the game description" do
-      @currency.api_description.should == "Mutual Credit"
+      @currency.api_description.should == "\n    Mutual credit currencies are a \"means of exchange\" currency where all members issue currency at the point of transaction.<br/>\n    Player classes: member<br/>\n    Summary function: Balance,Volume<br/>\n    Member Plays: Pay(to,amount,memo)<br/>\n  "
     end
     it "should be able to record a play" do
       @user2 = create_user('u2')
@@ -165,7 +187,7 @@ describe Currency do
     end
     describe 'utilities' do
       it "get_play_script should return the script of the named play" do
-        @currency.get_play_script('pay').should == "\n        @from.member_state.balance -= @amount\n        @from.member_state.volume += abs(@amount)\n        @to.member_state.balance += @amount\n        @to.member_state.volume += abs(@amount)\n        @aggregator.aggregator_state.volume += abs(@amount)\n        "
+        @currency.get_play_script('pay').should == "\n        @play.from['balance'] -= @play.amount\n        @play.from['volume'] += @play.amount.abs\n        @play.to['balance'] += @play.amount\n        @play.to['volume'] += @play.amount.abs\n        @play.aggregator['volume'] += @play.amount.abs if @play.aggregator\n        true\n        "
       end
     end
   end

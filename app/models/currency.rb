@@ -156,7 +156,15 @@ class Currency < ActiveRecord::Base
     play.inspect
   end
   
-  def api_new_player(player_class)
+  def api_new_player(player_class,user,name = nil)
+    opts = {:user_id => user.id,:name => name ? name :user.user_name,:currency_id => self.id,:player_class => player_class}
+    ca = CurrencyAccount.new(opts)
+    ca.setup
+    ca.save
+    ca
+  end
+  
+  def api_initialize_new_player_state(player_class)
     s = Currency::State.new(api_state_fields(player_class).collect {|state| state.keys[0]})
     prepare_eval('setting state for new player') do
       eval "@#{player_class}_state = s"

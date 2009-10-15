@@ -7,7 +7,7 @@ class CurrencyAccount < ActiveRecord::Base
   validates_uniqueness_of :name, :scope => [:currency_id,:player_class], :message => 'You allready have an account with that name in the currency'
 
   def setup
-    self.state = currency.api_new_player(player_class) if currency
+    self.state = currency.api_initialize_new_player_state(player_class) if currency
   end
 
   def get_state

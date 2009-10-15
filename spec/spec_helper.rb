@@ -33,11 +33,7 @@ Spec::Runner.configure do |config|
   end
   
   def create_currency_account(user,currency,player_class = 'member')
-    opts = {:user_id => user.id,:name => user.full_name,:currency_id => currency.id,:player_class => player_class}
-    ca = CurrencyAccount.create!(opts)
-    ca.setup
-    ca.save!
-    ca
+    currency.api_new_player(player_class,user,user.full_name)
   end
 
   # == Fixtures

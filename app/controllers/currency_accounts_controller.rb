@@ -56,22 +56,20 @@ class CurrencyAccountsController < ApplicationController
   # POST /my_currencies/join
   def join
     currency_account_params = params[:currency_account]
+    currency_id = currency_account_params[:currency_id].to_i
+    player_class = currency_account_params[:player_class]
     # if the current user doesn't have the multi-account preference set then
     # we assume the name should just be the current user's user name, otherwise
     # we assume the account name should be prefixed with the user name
-    @currency_account = CurrencyAccount.new
-    if current_user.has_preference('multi_wallet') && current_user.wallets.size > 0
-      @currency_account.name = currency_account_params[:name]
+    name = (current_user.has_preference('multi_wallet') && current_user.wallets.size > 0) ? currency_account_params[:name] : current_user.user_name
+    if Currency.exists?(currency_id)
+      @currency = Currency.find(currency_id)
+      @currency_account = @currency.api_new_player(player_class,current_user,name)
     else
-      @currency_account.name = current_user.user_name
+      @currency_account = CurrencyAccount.new(:name => name,:player_class => player_class,:user_id => current_user.id)
     end
-    @currency_account.player_class = currency_account_params[:player_class]
-    @currency_account.user_id = current_user.id
-    @currency_account.currency_id = currency_account_params[:currency_id].to_i
-    @currency_account.setup
-    @currency = Currency.find(@currency_account.currency_id) if @currency_account.currency_id != 0
     respond_to do |format|
-      if @currency_account.save
+      if @currency_account.valid?
         flash[:notice] = "You have joined #{@currency.name}"
         format.html { redirect_to( my_currencies_path) }
         format.xml  { render :xml => @currency_account, :status => :created, :location => @currency_account }
