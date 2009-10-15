@@ -24,4 +24,10 @@ class CurrencyAccount < ActiveRecord::Base
     name.downcase.gsub(/\s+/,'_').gsub(/\W/,'X')
   end
 
+  protected
+  def validate
+    if currency
+      errors.add("player_class", "#{player_class} does not exist in #{currency.name}") if !currency.api_player_classes.include?(player_class)
+    end
+  end
 end
