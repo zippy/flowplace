@@ -1,7 +1,7 @@
 <% @title='My Currencies '+@currency.name+' History' %>
 <h3>My Currencies: <%=@currency.name%></h3>
 
-Current State: <%= @currency.api_render_account_state(@currency_account)%>
+Current State: <%= @currency.api_render_player_state(@currency_account)%>
 <br />
 <h4> History </h4>
 <table>

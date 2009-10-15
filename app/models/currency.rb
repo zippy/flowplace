@@ -122,7 +122,7 @@ class Currency < ActiveRecord::Base
     value
   end
 
-  def api_render_account_state(account)
+  def api_render_player_state(account)
     s = account.get_state
     if s
       state = []
@@ -206,6 +206,7 @@ class Currency < ActiveRecord::Base
         else
           @play[field_name] = play[field_name].get_state
           @play[field_name]['_name'] = play[field_name].name
+          @play[field_name]['_currency_account'] = play[field_name]
         end
       else
         raise "unknown field type: #{field_type}"
@@ -327,7 +328,7 @@ end
 # Here are flowpace specific overrides of the xgfl currencies
 
 class CurrencyTrueGoodBeautiful
-  def api_render_account_state(account)
+  def api_render_player_state(account)
     s = account.get_state
     if s
       "T:#{s['true']} G:#{s['good']} B:#{s['beautiful']}"
@@ -336,7 +337,7 @@ class CurrencyTrueGoodBeautiful
 end
 
 class CurrencyMutualRating
-  def api_render_account_state(account)
+  def api_render_player_state(account)
     s = account.get_state
     if s
       rating = s['rating']

@@ -146,7 +146,7 @@ describe Currency do
       ca.name.should == 'x'
     end
     it "should be able to render the account state" do
-      @currency.api_render_account_state(@account).should == "Balance: 0; Volume: 0"
+      @currency.api_render_player_state(@account).should == "Balance: 0; Volume: 0"
     end
     it "should be able to return state fields for a player_class" do
       @currency.api_state_fields('member').should == [{"balance"=>"integer"}, {"volume"=>"integer"}]

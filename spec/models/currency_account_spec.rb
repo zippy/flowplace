@@ -45,7 +45,7 @@ describe CurrencyAccount do
       ca.errors.full_messages.should == ['Player class doggy does not exist in LETS']
     end
     it "should be able to render the account state" do
-      @account.render_state.should == @currency.api_render_account_state(@account)
+      @account.render_state.should == @currency.api_render_player_state(@account)
     end
     it "should get the state of an account" do
       @account.get_state.should == {'balance' => 0, 'volume' => 0}

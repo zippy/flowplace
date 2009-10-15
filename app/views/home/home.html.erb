@@ -17,7 +17,7 @@
       <%for account in @currency_accounts_my
         currency = Currency.find(account.currency.id)
         %>
-        <%=render_currency_icon(currency)%><%= currency.api_render_account_state(account) %><br />
+        <%=render_currency_icon(currency)%><%= currency.api_render_player_state(account) %><br />
       <% end %>
     </div>
   </td>
