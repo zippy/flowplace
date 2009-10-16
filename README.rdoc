@@ -14,12 +14,9 @@ The flowplace is a tool for individuals, communities and organizations to build 
 
 == Installation
 
-The flowplace is standard rails app. So first you will need to install the required gems:
+The flowplace is a standard rails app.  It requires some gems, and some of it's plugins are stored in the repository as submodules.  Here are the installation instructions that should get you up and running assuming sqlite3 for your database (which is the default in the database.yml):
 
   sudo gem install sqlite3-ruby nokogiri gravtastic
-
-The app itself can be installed with:
-
   git clone git://github.com/zippy/flowplace.git flowplace
   cd flowplace
   git submodule init
