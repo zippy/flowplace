@@ -9,14 +9,11 @@
   </tr>
 
 <% i = 0
-for circle in @circles 
+for circle in @membranes 
   i+=1
 %>
   <tr class="<%= i%2 == 0 ? ' odd' : ''%>">
-    <td><%=link_to circle.name, edit_circle_path(circle)  %></td>
-    <td><%= link_to 'Members', circle %></td>
-    <td><%= link_to 'Delete', circle, :confirm => 'Are you sure?', :method => :delete %></td>
+    <td><%= render_currency_icon(circle,24) %> <%=link_to circle.name, @is_gatekeeper[circle] ? edit_circle_path(circle) : circle_path(circle)  %></td>
   </tr>
 <% end %>
 </table>
-

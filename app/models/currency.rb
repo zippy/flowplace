@@ -157,7 +157,7 @@ class Currency < ActiveRecord::Base
   end
   
   def api_new_player(player_class,user,name = nil)
-    opts = {:user_id => user.id,:name => name ? name :user.user_name,:currency_id => self.id,:player_class => player_class}
+    opts = {:user_id => user.id,:name => name ? name : user.user_name,:currency_id => self.id,:player_class => player_class}
     ca = CurrencyAccount.new(opts)
     ca.setup
     ca.save
@@ -197,8 +197,10 @@ class Currency < ActiveRecord::Base
       field_name = field['id']
       field_type = field['type']
       case field_type
-      when 'integer','string','text','range'
+      when 'integer','string','text','range','currency'
         @play[field_name] = play[field_name]
+      when 'user'
+        @play[field_name] = User.find_by_user_name(play[field_name])
       when /player_(.*)/
         player_class = $1
         if play[field_name].blank?
@@ -346,6 +348,22 @@ class CurrencyMutualRating
         rating = c[rating.round-1]
       end
       "My Rating: #{rating}"
+    end
+  end
+end
+
+class CurrencyMembrane
+  def api_render_player_state(account)
+    s = account.get_state
+    if s
+      permissions = s['permissions']
+      p = ""
+      if permissions
+        permissions.collect {|k,v| p+= "#{k}[#{v.keys.join('; ')}]"}.join(', ')
+        "Perms: #{p}"
+      else
+        ''
+      end
     end
   end
 end

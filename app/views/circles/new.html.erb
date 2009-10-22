@@ -1,7 +1,7 @@
 <% @title='Circles: New' %>
 <%= render(:partial => 'sub_nav') %>
 
-<% form_for(@circle) do |f| %>
+<% form_for :circle, :url => { :action => "create" }  do |f| %>
   <%= f.error_messages %>
 
   <p>
@@ -11,6 +11,10 @@
   <p>
     <%= f.label :description %> (this will be WYSIWG soon)<br />
     <%= f.text_area :description, :cols=>70,:rows => 10 %>
+  </p>
+  <p>
+    <%= f.label :icon_url %><br />
+    <%= f.text_field :icon_url %>
   </p>
   <p>
     <%= f.submit "Create" %>

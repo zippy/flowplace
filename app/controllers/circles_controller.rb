@@ -3,7 +3,9 @@ class CirclesController < ApplicationController
   # GET /circles.xml
   def index
     @circles = Circle.find(:all)
-
+    @membranes = Currency.find(:all,:conditions => "type = 'CurrencyMembrane'",:include => :currency_accounts)
+    @is_gatekeeper = {}
+    @membranes.each {|m| m.currency_accounts.each {|a| @is_gatekeeper[m] = true if a.user == current_user && a.player_class == 'gatekeeper'}}
     respond_to do |format|
       format.html # index.html.erb
       format.xml  { render :xml => @circles }
@@ -13,7 +15,7 @@ class CirclesController < ApplicationController
   # GET /circles/1
   # GET /circles/1.xml
   def show
-    @circle = Circle.find(params[:id])
+    @circle = Currency.find(params[:id])
 
     respond_to do |format|
       format.html # show.html.erb
@@ -24,7 +26,7 @@ class CirclesController < ApplicationController
   # GET /circles/new
   # GET /circles/new.xml
   def new
-    @circle = Circle.new
+    @circle = Currency.new
 
     respond_to do |format|
       format.html # new.html.erb
@@ -34,22 +36,29 @@ class CirclesController < ApplicationController
 
   # GET /circles/1/edit
   def edit
-    @circle = Circle.find(params[:id])
+    @circle = Currency.find(params[:id])
   end
 
   # POST /circles
   # POST /circles.xml
   def create
     Activity
-    @circle = Circle.new(params[:circle])
+    @circle = Currency.new(params[:circle])
+    @circle.type = 'CurrencyMembrane'
 
     respond_to do |format|
       if @circle.save
-        CircleActivity.add(current_user,@circle,'created')
-        flash[:notice] = 'Circle was successfully created.'
-        format.html { redirect_to edit_circle_path(@circle) }
-        format.xml  { render :xml => @circle, :status => :created, :location => @circle }
-      else
+        ca = @circle.api_new_player('gatekeeper',current_user)
+        if ca.valid?
+          CircleActivity.add(current_user,@circle,'created')
+          flash[:notice] = 'Circle was successfully created.'
+          format.html { redirect_to circles_path } #edit_circle_path(@circle) }
+          format.xml  { render :xml => @circle, :status => :created, :location => @circle }
+        else
+          @circle.errors.add_to_base(ca.errors.full_messages.join('; '))
+        end
+      end
+      if !@circle.valid?
         format.html { render :action => "new" }
         format.xml  { render :xml => @circle.errors, :status => :unprocessable_entity }
       end
@@ -59,19 +68,19 @@ class CirclesController < ApplicationController
   # PUT /circles/1
   # PUT /circles/1.xml
   def update
-    @circle = Circle.find(params[:id])
-    if @circle.user_account.nil? && params[:make_user]
-      if params[:password] != params[:confirmation]
-        @circle.errors.add_to_base("Passwords don't match")
-      else
-        user_name = @circle.name.tr(' ','_').downcase+'_circle'
-        u = User.new({:user_name => user_name, :first_name => @circle.name,:last_name => "Circle",:email=>params[:email]})
-        u.circle = @circle
-        if !(u.create_bolt_identity(:user_name => :user_name,:password => params[:password]) && u.save)
-          @circle.errors.add_to_base("Error creating user: "+ u.errors.full_messages.join('; '))
-        end
-      end
-    end
+    @circle = Currency.find(params[:id])
+#    if @circle.user_account.nil? && params[:make_user]
+#      if params[:password] != params[:confirmation]
+#        @circle.errors.add_to_base("Passwords don't match")
+#      else
+#        user_name = @circle.name.tr(' ','_').downcase+'_circle'
+#        u = User.new({:user_name => user_name, :first_name => @circle.name,:last_name => "Circle",:email=>params[:email]})
+#        u.circle = @circle
+#        if !(u.create_bolt_identity(:user_name => :user_name,:password => params[:password]) && u.save)
+#          @circle.errors.add_to_base("Error creating user: "+ u.errors.full_messages.join('; '))
+#        end
+#      end
+#    end
     respond_to do |format|
       if @circle.errors.empty? && @circle.update_attributes(params[:circle])
         flash[:notice] = 'Circle was successfully updated.'
@@ -87,7 +96,7 @@ class CirclesController < ApplicationController
   # DELETE /circles/1
   # DELETE /circles/1.xml
   def destroy
-    @circle = Circle.find(params[:id])
+    @circle = Currency.find(params[:id])
     @circle.destroy
 
     respond_to do |format|

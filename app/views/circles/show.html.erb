@@ -2,31 +2,13 @@
 <%= render(:partial => 'sub_nav') %>
 
 <h3>Circle: <%=h @circle.name %> </h3>
-
-<% form_tag(set_members_circle_url(@circle.id),:method => :put) do -%>
 <p>
-  <b>Members:</b>
+Description: <%=h @circle.description %>
 </p>
-  <% if @circle.users.empty? %><i>none</i><%else%>
-    <% for u in @circle.users %>
-    <%= h u.full_name %>
-          <%= submit_tag "Remove as member",:name=>"remove_#{u.id}" %> <br />
-    <% end %>
-  <% end %>
-  <p> Add <%= users_select(@circle, {:onchange => 'do_change()'}) %>  as a member.</p>
-  <%= submit_tag "Add member", :disabled => true, :id => 'submit_button' %> 
+<p>
+Members:
 
+<% for a in @circle.currency_accounts %>
+  <br />&nbsp;&nbsp;&nbsp;<%= h a.user.full_name %> (<%= h a.name %>) <%= a.player_class == 'gatekeeper' ? '-- admin' : ''%> 
 <% end %>
-
-<%= javascript_tag <<-EOJS
-function do_change(){
-    if($('user_id').getValue() =='') {
-        $('submit_button').disable();
-        $$(".account_name").invoke("update",'(select account)');
-    }else{
-        $('submit_button').enable();
-        $$(".account_name").invoke("update",$("user_id").options[$("user_id").selectedIndex].text);  
-    }
-}
-EOJS
-%>
+</p>

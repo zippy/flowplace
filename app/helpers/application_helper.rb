@@ -212,11 +212,18 @@ module ApplicationHelper
         else
           r = (fields[field_name]['start']..fields[field_name]['end']).to_a
         end
-        result = select_tag(html_name, options_for_select(r), :include_blank => true)
+        
+        result = select_tag(html_name, options_for_select([nil].concat(r)))
       when 'text'
         result = text_area_tag(html_name)
+      when 'currency'
+        r = [nil].concat Currency.all.map(&:name)
+        result = select_tag(html_name, options_for_select(r))        
+      when 'user'
+        r = [nil].concat User.all.map(&:user_name)
+        result = select_tag(html_name, options_for_select(r))        
       when /player_(.*)/
-        if field_name == "from"
+        if field_name == "from"  #from is allways hard-coded to be current user and gets set in currency_accounts_controller when the play is made.
           result = currency_account.name
         else
           player_class = $1

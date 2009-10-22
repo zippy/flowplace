@@ -1,0 +1,93 @@
+<game>
+  <description>
+    Membrane currencies are used to establish circles and to set permissions in the circles, i.e. to associate allowable currency player classes with members of the circle.<br />
+    Player classes: member, gatekeeper<br />
+    Member Summary function: Permissions--The list of permissions a member has.<br />
+    Gatekeeper Plays:
+      Name(from,user,name)  # adds a creates a new player in the circle for the user with the given name.
+      Grant(from,to,currency,player_class)  # adds a member to currency with the given player_class.
+      Revoke(from,to,currency,player_class)
+  </description>
+  <player_classes>
+    <player_class name="member" />
+    <player_class name="gatekeeper" />
+  </player_classes>
+  <states>
+    <state player_class="member"><hash name="permissions" /></state>
+  </states>
+
+  <plays>
+    <play name="_new_member">
+      <fields>
+        <field type="" id="class" />
+      </fields>
+      <script type="ruby">
+        <![CDATA[ @member_state.permissions = {};]]>
+      </script>
+    </play>
+    <play name="name" player_classes="gatekeeper">
+      <fields>
+         <field type="player_gatekeeper" id="from" />
+         <field type="user" id="user" />
+         <field type="string" id="name" />
+      </fields>
+      <script type="ruby">
+        <![CDATA[
+          ca = self.api_new_player('member',@play.user,@play.name)
+          if ca.valid?
+            true
+          else
+            ca.errors.full_messages.join('; ')
+          end
+         ]]>
+      </script>
+      <play_sentence lang='en'><from /> names <user /> as <name /></play_sentence>
+    </play>
+    <play name="grant" player_classes="gatekeeper">
+      <fields>
+         <field type="player_gatekeeper" id="from" />
+         <field type="player_member" id="to" />
+         <field type="currency" id="currency" />
+         <field type="string" id="player_class" />
+      </fields>
+      <script type="ruby">
+        <![CDATA[
+         c = Currency.find_by_name(@play.currency)
+         if c
+           to = @play.to['_currency_account']
+           ca = c.api_new_player(@play.player_class,to.user,to.name)
+           if ca.valid?
+             perms = @play.to['permissions']
+             perms[@play.currency] ||= {}
+             perms[@play.currency][@play.player_class] = true
+             true
+           else
+             ca.errors.full_messages.join('; ')
+           end
+         else
+           "Could not find the currency: "+@play.currency
+         end
+         ]]>
+      </script>
+      <play_sentence lang='en'><from /> grants <to /> access to <currency /> as <player_class /></play_sentence>
+    </play>
+    <play name="revoke" player_classes="gatekeeper">
+      <fields>
+         <field type="player_gatekeeper" id="from" />
+         <field type="player_member" id="to" />
+         <field type="currency" id="currency" />
+         <field type="string" id="player_class" />
+      </fields>
+      <script type="ruby">
+        <![CDATA[
+        perms = @play.to['permissions']
+        perms[@play.currency] ||= {}
+        perms[@play.currency].delete(@play.player_class)
+        perms.delete(@play.currency) if perms[@play.currency].size == 0
+        true
+        ]]>
+      </script>
+      <play_sentence lang='en'><from /> revokes <to />'s <player_class /> access to <currency /></play_sentence>
+    </play>
+  </plays>
+</game>
