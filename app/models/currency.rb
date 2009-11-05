@@ -189,6 +189,14 @@ class Currency < ActiveRecord::Base
     end
     script
   end
+
+  def api_user_accounts(user,player_class)
+    CurrencyAccount.find(:all,:conditions => ["user_id = ? and currency_id = ? and player_class = ?",user.id,self.id,player_class])
+  end
+  
+  def api_user_isa?(user,player_class)
+    !api_user_accounts(user,player_class).empty?
+  end
   
   def api_play(play_name,currency_account,play)
     @play = Currency::State.new(api_play_fields(play_name).collect {|field| field.keys[0]})

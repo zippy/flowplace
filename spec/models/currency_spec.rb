@@ -185,6 +185,17 @@ describe Currency do
       plays = Play.find(:all)
       plays.size.should == 1
     end
+    it "should be able to answer if a user is a given player class in the currency" do
+      @account2 = create_currency_account(@user,@currency,'admin')
+      @currency.api_user_accounts(@user,'member').should == [@account]
+      @currency.api_user_accounts(@user,'admin').should == [@account2]
+      @currency.api_user_isa?(@user,'member').should == true
+      @currency.api_user_isa?(@user,'admin').should == true
+      @currency.api_user_isa?(@user,'fish').should == false
+      @user2 = create_user('u2')
+      @currency.api_user_isa?(@user2,'member').should == false
+      @currency.api_user_accounts(@user2,'member').should == []
+    end
     describe 'utilities' do
       it "get_play_script should return the script of the named play" do
         @currency.get_play_script('pay').should == "\n        @play.from['balance'] -= @play.amount\n        @play.from['volume'] += @play.amount.abs\n        @play.to['balance'] += @play.amount\n        @play.to['volume'] += @play.amount.abs\n        @play.aggregator['volume'] += @play.amount.abs if @play.aggregator\n        true\n        "
