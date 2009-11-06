@@ -324,7 +324,7 @@ if File.directory?(XGFLDir)
     new_class = <<-EORUBY
     class #{klass} < Currency
       def xgfl 
-        <<-EOXGFL
+        <<-'EOXGFL'
 #{file_contents}
         EOXGFL
       end
