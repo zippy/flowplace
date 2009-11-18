@@ -33,6 +33,7 @@ puts "*** Domain: \033[1;41m #{domain} \033[0m"
 ssh_options[:port] = ssh_port
 
 set :repository,  "git://github.com/zippy/flowplace.git"
+set :branch, ENV['BRANCH'] if ENV['BRANCH']
 
 set :gems_for_project, %w(gravtastic) # list of gems to be installed
 
