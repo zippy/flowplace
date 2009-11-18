@@ -65,6 +65,11 @@ class ApplicationController < ActionController::Base
     end
   end
 
+  def access_denied
+    flash[:notice] = :not_allowed
+    redirect_to(home_url)
+  end
+
   private
 
   ################################################################################

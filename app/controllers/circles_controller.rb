@@ -94,12 +94,14 @@ class CirclesController < ApplicationController
   # GET /circles/1/namescape
   def namescape
     @circle = Currency.find(params[:id])
+    access_denied and return unless @circle.api_user_isa?(current_user,'matrice')
     setup_namescape_users
   end
   
   # PUT /circles/1/namescape
   def set_namescape
     @circle = Currency.find(params[:id])
+    access_denied and return unless @circle.api_user_isa?(current_user,'matrice')
     player_class = params[:player_class]
     if player_class.blank?
       @circle.errors.add_to_base('You must choose a role!')

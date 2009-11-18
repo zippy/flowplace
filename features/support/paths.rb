@@ -6,6 +6,8 @@ module NavigationHelpers
       '/login'
     when /the logout page/
       '/logout'
+    when /the home page/
+      '/'
     when /the overview page/
       '/'
     when /the new intentions page/
