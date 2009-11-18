@@ -10,7 +10,7 @@ class User < ActiveRecord::Base
   has_many :proposals
   has_many :activities
   has_many :wallets
-  belongs_to :circle #this is for users that are a circle
+  belongs_to :circle, :class_name => 'Currency' #this is for users that are a circle
 
   Permissions = %w(dev admin assignPrivs createAccounts accessAccounts)
   Preferences = %w(terse enlargeFont)
@@ -140,6 +140,22 @@ class User < ActiveRecord::Base
   # currencies returns a list of all the currencies the user has joined
   def currencies
     currency_accounts.collect {|ca| ca.currency}
+  end
+
+  ##############################################
+  # checks whether user is a member of the given currency
+  def has_joined?(currency)
+    currencies.include?(currency)
+  end
+
+  ##############################################
+  # returns a list of player classes that a user is, in the given currency
+  def player_clasess_in(currency)
+    if currencies.include?(currency)
+      currency_accounts.collect {|ca| ca.currency == currency ? ca.player_class : nil}.compact
+    else
+      []
+    end
   end
   
   ##############################################

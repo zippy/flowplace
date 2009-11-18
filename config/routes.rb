@@ -20,8 +20,8 @@ ActionController::Routing::Routes.draw do |map|
     :player_classes => :get
   }
 
-  map.resources :circles
   map.resources :circles, :member => {
+    :namescape => :get, :set_namescape => :put,
     :members => :get, :set_members => :put
     }
 
@@ -62,7 +62,7 @@ ActionController::Routing::Routes.draw do |map|
   map.home('', :controller => 'home', :action => 'home')
   map.version('/version', :controller => 'home', :action => 'version')
   
-  map.close_banner ('/close_banner', :controller=> 'home', :action => 'close_banner')
+  map.close_banner('/close_banner', :controller=> 'home', :action => 'close_banner')
   
 
   # Sample of regular route:

@@ -71,8 +71,8 @@ describe Currency do
       @user1 = create_user('u1')
       @user2 = create_user('u2')
       @user3 = create_user('u3')
-      @account1 = create_currency_account(@user1,@usd)
-      @account2 = create_currency_account(@user2,@usd)
+      @account1 = create_currency_account(@user1,@usd,'user')
+      @account2 = create_currency_account(@user2,@usd,'user')
     end
 
     it "should have many users" do
@@ -108,6 +108,20 @@ describe Currency do
       c.configuration.should == @configuration
     end
 #    describe "MutualRating"
+  end
+  
+  describe "membrane currency helper stuff" do
+    before(:each) do
+      @user = create_user('u1')
+    end
+    it "should create a circle with associated user and self and matrice players" do
+      @circle = CurrencyMembrane.create(@user,{:circle=>{:name => 'a circle'},:password=>'password',:confirmation=>'password',:email=>'test@test.com'})
+      @circle.class.should == CurrencyMembrane
+      @circle.errors.should be_empty
+      @circle.circle_user_name.should == 'a_circle_circle'
+      @circle.api_user_isa?(User.find_by_user_name('a_circle_circle'),'self').should == true
+      @circle.api_user_isa?(@user,'matrice').should == true
+    end
   end
   
   describe "API" do

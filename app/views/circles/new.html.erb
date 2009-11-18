@@ -16,6 +16,14 @@
     <%= f.label :icon_url %><br />
     <%= f.text_field :icon_url %>
   </p>
+  
+  <p>
+    The login name for the circle user account will be: <b> [live-update-from-name-goes-here]_cricle </b> <br />
+    <%= label_tag :password,"Password:" %><%= password_field_tag(:password)%> <br />
+    <%= label_tag :confirmation,"Confirm Password:" %><%= password_field_tag(:confirmation)%> <br />
+    <%= label_tag :email,"Email:" %><%= text_field_tag(:email, params[:email] ? params[:email] : current_user.email)%>
+  </p>
+  
   <p>
     <%= f.submit "Create" %>
   </p>

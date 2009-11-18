@@ -26,6 +26,10 @@ Given /I have an account( as "([^\"]*)")*/ do |dummy,user|
   create_user(user)
 end
 
+Given /A user "([^\"]*)"/ do |user|
+  create_user(user)
+end
+
 Then "I $should be logged in" do |should|
   controller.send(shouldify(should), be_logged_in)
 end

@@ -61,7 +61,7 @@ describe User do
   describe 'users and currency' do
     before(:each) do
       @user = create_user
-      @usd = create_currency("USD")
+      @usd = create_currency("USD",:klass=>CurrencyTracked)
     end
     it "should return the user's currency accounts" do
       @user.currency_accounts.should == []
@@ -72,6 +72,18 @@ describe User do
     end
     it "should be able to return a list of currencies a user can join" do
       @user.joinable_currencies.should == [@usd]
+    end
+    it "should be able to test if a user has joined a given currency" do
+      @user.has_joined?(@usd).should be_false
+      @user.currency_accounts << CurrencyAccount.new(:currency => @usd)
+      @user.has_joined?(@usd).should be_true
+    end
+    it "should be able to return a list of the user's player classes in a given currency" do
+      @user.player_clasess_in(@usd).should == []
+      @user.currency_accounts << CurrencyAccount.new(:currency => @usd,:player_class =>'member')
+      @user.player_clasess_in(@usd).should == ['member']
+      @user.currency_accounts << CurrencyAccount.new(:currency => @usd,:player_class =>'friend')
+      @user.player_clasess_in(@usd).should == ['member','friend']
     end
   end
   

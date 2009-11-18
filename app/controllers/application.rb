@@ -1,5 +1,37 @@
 # Filters added to this controller apply to all controllers in the application.
 # Likewise, all the methods added will be available for all controllers.
+include Lister
+
+SearchPairs = [['a','user_name'],['m',SQL_FULL_NAME],['f','first_name'], ['l','last_name'], ['e','email'],['s','state'],['n','notes']]
+OrderPairs = [
+  ['a','user_name'],
+  ['n','last_name,first_name'],
+  ['ll','last_login desc'],
+  ['c','created_at desc'],
+  ['i','id']
+]
+SearchFormParams = {
+  :order_choices => [
+    ['Name','n'],
+    ['Account name','a'],
+    ['Account ID','i'],
+    ['Last Login','ll'],
+    ['Account Created','c']
+    ],
+  :select_options => {
+    'main' => [
+      ['Full name contains','m_c'],
+      ['Full name begins with','m_b'],
+      ['Account name contains','a_c'],
+      ['Account name begins with','a_b'],
+      ['E-mail contains','e_c'],
+      ['E-mail begins with','e_b'],
+      ['State/province abbrev. is', 's_is'],
+      ['Notes contain','n_c'],
+      ['Show all','all']]
+    },
+  :search_pair_info => [{:name => "main", :on => :select, :for => :text_field, :first_focus => true}]
+}
 
 class ApplicationController < ActionController::Base
   require_authentication

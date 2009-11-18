@@ -4,8 +4,6 @@ class CirclesController < ApplicationController
   def index
     @circles = Circle.find(:all)
     @membranes = Currency.find(:all,:conditions => "type = 'CurrencyMembrane'",:include => :currency_accounts)
-    @is_gatekeeper = {}
-    @membranes.each {|m| m.currency_accounts.each {|a| @is_gatekeeper[m] = true if a.user == current_user && a.player_class == 'gatekeeper'}}
     respond_to do |format|
       format.html # index.html.erb
       format.xml  { render :xml => @circles }
@@ -43,22 +41,15 @@ class CirclesController < ApplicationController
   # POST /circles.xml
   def create
     Activity
-    @circle = Currency.new(params[:circle])
-    @circle.type = 'CurrencyMembrane'
+    @circle = CurrencyMembrane.create(current_user,params)
 
     respond_to do |format|
-      if @circle.save
-        ca = @circle.api_new_player('gatekeeper',current_user)
-        if ca.valid?
-          CircleActivity.add(current_user,@circle,'created')
-          flash[:notice] = 'Circle was successfully created.'
-          format.html { redirect_to circles_path } #edit_circle_path(@circle) }
-          format.xml  { render :xml => @circle, :status => :created, :location => @circle }
-        else
-          @circle.errors.add_to_base(ca.errors.full_messages.join('; '))
-        end
-      end
-      if !@circle.valid?
+      if @circle.errors.empty?
+        CircleActivity.add(current_user,@circle,'created')
+        flash[:notice] = 'Circle was successfully created.'
+        format.html { redirect_to circles_path } #edit_circle_path(@circle) }
+        format.xml  { render :xml => @circle, :status => :created, :location => @circle }
+      else
         format.html { render :action => "new" }
         format.xml  { render :xml => @circle.errors, :status => :unprocessable_entity }
       end
@@ -69,18 +60,7 @@ class CirclesController < ApplicationController
   # PUT /circles/1.xml
   def update
     @circle = Currency.find(params[:id])
-#    if @circle.user_account.nil? && params[:make_user]
-#      if params[:password] != params[:confirmation]
-#        @circle.errors.add_to_base("Passwords don't match")
-#      else
-#        user_name = @circle.name.tr(' ','_').downcase+'_circle'
-#        u = User.new({:user_name => user_name, :first_name => @circle.name,:last_name => "Circle",:email=>params[:email]})
-#        u.circle = @circle
-#        if !(u.create_bolt_identity(:user_name => :user_name,:password => params[:password]) && u.save)
-#          @circle.errors.add_to_base("Error creating user: "+ u.errors.full_messages.join('; '))
-#        end
-#      end
-#    end
+
     respond_to do |format|
       if @circle.errors.empty? && @circle.update_attributes(params[:circle])
         flash[:notice] = 'Circle was successfully updated.'
@@ -97,8 +77,9 @@ class CirclesController < ApplicationController
   # DELETE /circles/1.xml
   def destroy
     @circle = Currency.find(params[:id])
+    circle_user = User.find_by_user_name(circle_user_name(@circle.name))
+    circle_user.destroy if !circle_user.nil?
     @circle.destroy
-
     respond_to do |format|
       format.html { redirect_to(circles_url) }
       format.xml  { head :ok }
@@ -108,6 +89,37 @@ class CirclesController < ApplicationController
   # GET /circles/1;members
   def members
     @circle = Circle.find(params[:id])
+  end
+
+  # GET /circles/1/namescape
+  def namescape
+    @circle = Currency.find(params[:id])
+    setup_namescape_users
+  end
+  
+  # PUT /circles/1/namescape
+  def set_namescape
+    @circle = Currency.find(params[:id])
+    player_class = params[:player_class]
+    if player_class.blank?
+      @circle.errors.add_to_base('You must choose a role!')
+    end
+    if !params[:users]
+      @circle.errors.add_to_base('You must choose some users!')
+    end
+    if @circle.errors.empty?
+      params[:users].keys.each do |user_id|
+        user = User.find(user_id)
+        @circle.add_player_to_circle(player_class,user)
+      end
+      flash[:notice] = 'Circle was successfully updated.'
+      redirect_to(namescape_circle_url(@circle)+'?use_session=true&set=true')
+    else
+      params[:set] = true
+      params[:use_session] = true
+      setup_namescape_users
+      render :action => 'namescape'
+    end
   end
 
   # PUT /users/1;set_members
@@ -126,4 +138,12 @@ class CirclesController < ApplicationController
       format.xml  { head :ok }
     end
   end
+  private
+  def setup_namescape_users
+    @users = perform_search(OrderPairs,SearchPairs,SearchFormParams,User)
+    if (params[:set] && @users.empty?) || (!params[:set] && !params[:search])
+      @users = @circle.users.uniq
+    end
+  end
+  
 end

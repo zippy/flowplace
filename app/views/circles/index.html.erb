@@ -3,6 +3,7 @@
 
 <table>
   <tr>
+    <th></th>
     <th>Name</th>
     <th>&nbsp;</th>
     <th>&nbsp;</th>
@@ -11,9 +12,17 @@
 <% i = 0
 for circle in @membranes 
   i+=1
+  is_matrice = circle.api_user_isa?(current_user,'matrice')
 %>
   <tr class="<%= i%2 == 0 ? ' odd' : ''%>">
-    <td><%= render_currency_icon(circle,24) %> <%=link_to circle.name, @is_gatekeeper[circle] ? edit_circle_path(circle) : circle_path(circle)  %></td>
+    <td><%= render_currency_icon(circle,20) %></td>
+    <td> <%=link_to circle.name, is_matrice ? edit_circle_path(circle) : circle_path(circle)  %></td>
+    <td> <% if is_matrice %>
+      <%= link_to 'Namescape', "/circles/#{circle.id}/namescape"%>
+      &nbsp;&nbsp;
+      <%= link_to 'Delete', "/circles/#{circle.id}", :confirm => 'Are you sure?', :method => :delete %>
+      <%else%>&nbsp;<%end%>
+    </td>
   </tr>
 <% end %>
 </table>

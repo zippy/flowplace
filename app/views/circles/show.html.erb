@@ -9,6 +9,6 @@ Description: <%=h @circle.description %>
 Members:
 
 <% for a in @circle.currency_accounts %>
-  <br />&nbsp;&nbsp;&nbsp;<%= h a.user.full_name %> (<%= h a.name %>) <%= a.player_class == 'gatekeeper' ? '-- admin' : ''%> 
+  <br />&nbsp;&nbsp;&nbsp;<%= h a.user.full_name %> (<%= h a.name %>) <%= a.player_class == 'matrice' ? '-- matrice' : ''%> 
 <% end %>
 </p>

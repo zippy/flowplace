@@ -30,6 +30,8 @@ module NavigationHelpers
       '/currency_accounts'
     when /the circles page/
       '/circles'
+    when /the new circles page/
+      '/circles/new'
     when /the edit circle page for "([^\"]*)"/
       circle = $1
       i = Currency.find_by_name(circle)
@@ -38,6 +40,10 @@ module NavigationHelpers
       circle = $1
       i = Currency.find_by_name(circle)
       "/circles/#{i.id}"
+    when /the namescape page for "([^\"]*)"/
+      circle = $1
+      i = Currency.find_by_name(circle)
+      "/circles/#{i.id}/namescape"
     when /the currencies page/
       '/currencies'
     when /the new currencies page/

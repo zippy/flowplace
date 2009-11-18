@@ -1,0 +1,35 @@
+<% @title="Namescape for #{h @circle.name}" %>
+<%= render(:partial => 'sub_nav') %>
+
+<% get_index_form_html(@search_form_params,namescape_circle_url(@circle)) %>
+
+<%if @users.empty?%>No accounts found
+<%else%>
+  <% form_tag(set_namescape_circle_url(@circle), :method=>:put) do -%>
+  <table>
+  <tr>
+    <th>User</th>
+    <th>Role</th>
+  </tr>
+  <% for user in @users%>
+    <tr>
+      <td>
+      <%= check_box_tag("users[#{user.id}]") %>
+      <%=  label_tag "users_#{user.id}","#{user.full_name} (#{user.user_name})"%></td>
+    <% if user.has_joined?(@circle)%>
+      <td><%= h user.player_clasess_in(@circle).join(', ') %></td>
+    <% else %>
+      <td>--</td>
+    <% end %>
+    </tr>
+  <% end %>
+  </table>
+  <%= will_paginate @users if @search_params[:paginate]=='yes' && !@users.empty? %>
+  <%= error_messages_for('circle') %>
+    <p>
+      Add selected users to circle as 
+      <%= pc=@circle.api_player_classes; pc.delete('self'); pc.insert(0,""); select_tag(:player_class, options_for_select(pc)) %>
+      <%= submit_tag('Submit') %>
+    </p>
+  <%end%>
+<% end %>

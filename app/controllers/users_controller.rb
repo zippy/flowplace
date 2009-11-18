@@ -4,38 +4,6 @@ class UsersController < ApplicationController
   require_authorization(:accessAccounts, :only => [:edit,:update,:index]) 
   require_authorization(:admin, :only => [:login_as,:destroy,:logged_in_users]) 
   require_authorization(:assignPrivs, :only => [:permissions,:set_permissions]) 
-  include Lister
-
-  SearchPairs = [['a','user_name'],['m',SQL_FULL_NAME],['f','first_name'], ['l','last_name'], ['e','email'],['s','state'],['n','notes']]
-  OrderPairs = [
-    ['a','user_name'],
-    ['n','last_name,first_name'],
-    ['ll','last_login desc'],
-    ['c','created_at desc'],
-    ['i','id']
-  ]
-  SearchFormParams = {
-    :order_choices => [
-      ['Name','n'],
-      ['Account name','a'],
-      ['Account ID','i'],
-      ['Last Login','ll'],
-      ['Account Created','c'],
-      ['Type','t']],
-    :select_options => {
-      'main' => [
-        ['Full name contains','m_c'],
-        ['Full name begins with','m_b'],
-        ['Account name contains','a_c'],
-        ['Account name begins with','a_b'],
-        ['E-mail contains','e_c'],
-        ['E-mail begins with','e_b'],
-        ['State/province abbrev. is', 's_is'],
-        ['Notes contain','n_c'],
-        ['Show all','all']]
-      },
-    :search_pair_info => [{:name => "main", :on => :select, :for => :text_field, :first_focus => true}]
-  }
 
 	def logged_in_users
 		current_time = Time.now
@@ -67,27 +35,7 @@ class UsersController < ApplicationController
   # GET /users
   # GET /users.xml
   def index
-    @search_form_params = SearchFormParams
-#    @search_form_params
-#    form_pair_info = [{:name => "main", :on => :select, :for => :text_field, :first_focus => true}]
-#    if current_user.can?(:admin)
-#        form_pair_info << {:sql => '', :label => 'Add optional SQL AND '}
-#    end
-    
-    def_sort_rules(*OrderPairs)
-    def_search_rules(:sql,SearchPairs)
-
-    set_params(:user,params[:use_session])
-    sql_options = get_sql_options
-    sql_options ||= {}
-    if sql_options[:conditions] || @display_all
-      if @search_params[:paginate]=='yes'
-        @users = User.paginate(:all,sql_options.update({:page => @search_params[:page]}))
-      else
-        @users = User.find(:all,sql_options)
-      end
-    end
-    @users ||= []
+    @users = perform_search(OrderPairs,SearchPairs,SearchFormParams,User)
     respond_to do |format|
       format.html # index.rhtml
       format.xml  { render :xml => @users.to_xml }

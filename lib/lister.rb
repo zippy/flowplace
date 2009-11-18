@@ -1,5 +1,5 @@
 # You can also use them in controllers with "include Lister"
-
+require 'sql.rb'
 ILIKE = UsingPostgres ? 'ilike' : 'like'
 
 module Lister
@@ -265,4 +265,25 @@ module Lister
     </fieldset>
     EOHTML
   end
+  
+  def perform_search(order_pairs,search_pairs,search_form_params,model)
+    @search_form_params = search_form_params
+    def_sort_rules(*order_pairs)
+    def_search_rules(:sql,search_pairs)
+
+    set_params(:user,params[:use_session])
+    sql_options = get_sql_options
+    sql_options ||= {}
+    results = nil
+    if sql_options[:conditions] || @display_all
+      if @search_params[:paginate]=='yes'
+        results = model.paginate(:all,sql_options.update({:page => @search_params[:page]}))
+      else
+        results = model.find(:all,sql_options)
+      end
+    end
+    results ||= []
+    results
+  end
+  
 end

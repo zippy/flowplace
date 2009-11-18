@@ -285,6 +285,9 @@ module ApplicationHelper
       when IntentionActivity
         weal = resource
         weal.created_by == current_user ? edit_intention_url(weal) : intention_url(weal)
+      when CircleActivity
+        circle = resource
+        circle_path(circle)
       else
         polymorphic_url(resource)
       end

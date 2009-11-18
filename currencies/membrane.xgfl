@@ -1,22 +1,40 @@
 <game>
   <description>
-    Membrane currencies are used to establish circles and to set permissions in the circles, i.e. to associate allowable currency player classes with members of the circle.<br />
-    Player classes: member, gatekeeper<br />
+    Membrane currencies are used to establish circles by forming a context that names currencies and users, and then assigning users to roles (player_classes) in the circle's currencies.<br />
+    Player classes: self (represents the circle as a whole), member (users names in the circle), matrice (the stewards responsible for adding users and currencies to the circle)<br />
+    Self Summary functions: Currencies--The list of currencies used by the circle<br />
+    Self Plays:
+      -- none yet --
     Member Summary function: Permissions--The list of permissions a member has.<br />
-    Gatekeeper Plays:
-      Name(from,user,name)  # adds a creates a new player in the circle for the user with the given name.
-      Grant(from,to,currency,player_class)  # adds a member to currency with the given player_class.
+    Member Plays:
+      -- none yet --
+    Matrice Summary Function: none
+    Matrice Plays:
+      name_currency(from,to,currency,name,meta)  # adds a currency to the circle to be known as name.
+      remove_currency(from,to,currency,name)  # adds a currency to the circle to be known as name.
+      name_user(from,user,name)  # names a new member player into the circle as for a user.
+      Grant(from,to,currency,player_class)  # adds a member of the circle to a currency as a given player_class.
       Revoke(from,to,currency,player_class)
   </description>
   <player_classes>
     <player_class name="member" />
-    <player_class name="gatekeeper" />
+    <player_class name="matrice" />
+    <player_class name="self" />
   </player_classes>
   <states>
     <state player_class="member"><hash name="permissions" /></state>
+    <state player_class="self"><hash name="currencies" /></state>
   </states>
 
   <plays>
+    <play name="_new_self">
+      <fields>
+        <field type="" id="class" />
+      </fields>
+      <script type="ruby">
+        <![CDATA[ @self_state.currencies = {};]]>
+      </script>
+    </play>
     <play name="_new_member">
       <fields>
         <field type="" id="class" />
@@ -25,9 +43,28 @@
         <![CDATA[ @member_state.permissions = {};]]>
       </script>
     </play>
-    <play name="name" player_classes="gatekeeper">
+    <play name="name_currency" player_classes="matrice">
       <fields>
-         <field type="player_gatekeeper" id="from" />
+         <field type="player_matrice" id="from" />
+         <field type="player_self" id="to" />
+         <field type="currency" id="currency" />
+         <field type="string" id="name" />
+         <field type="hash" id="meta" />
+      </fields>
+      <script type="ruby">
+        <![CDATA[
+         c = Currency.find_by_name(@play.currency)
+         return "Could not find the currency: "+@play.currency if c.nil?
+         return "Currency #{@play.currency} is not global or part of this circle" if !c.global? || (c.circle_id != self.id)
+         currencies =  @play.to['currencies']
+         currencies[@play.currency] = @play.name
+         ]]>
+      </script>
+      <play_sentence lang='en'><from /> declares in <to /> than <currency /> shall be called <currency /></play_sentence>
+    </play>
+    <play name="name_user" player_classes="matrice">
+      <fields>
+         <field type="player_matrice" id="from" />
          <field type="user" id="user" />
          <field type="string" id="name" />
       </fields>
@@ -43,9 +80,9 @@
       </script>
       <play_sentence lang='en'><from /> names <user /> as <name /></play_sentence>
     </play>
-    <play name="grant" player_classes="gatekeeper">
+    <play name="grant" player_classes="matrice">
       <fields>
-         <field type="player_gatekeeper" id="from" />
+         <field type="player_matrice" id="from" />
          <field type="player_member" id="to" />
          <field type="currency" id="currency" />
          <field type="string" id="player_class" />
@@ -71,9 +108,9 @@
       </script>
       <play_sentence lang='en'><from /> grants <to /> access to <currency /> as <player_class /></play_sentence>
     </play>
-    <play name="revoke" player_classes="gatekeeper">
+    <play name="revoke" player_classes="matrice">
       <fields>
-         <field type="player_gatekeeper" id="from" />
+         <field type="player_matrice" id="from" />
          <field type="player_member" id="to" />
          <field type="currency" id="currency" />
          <field type="string" id="player_class" />

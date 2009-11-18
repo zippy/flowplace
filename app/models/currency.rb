@@ -361,6 +361,46 @@ class CurrencyMutualRating
 end
 
 class CurrencyMembrane
+  def self.create(matrice_user,params)
+    circle = CurrencyMembrane.new(params[:circle])
+    circle.type = 'CurrencyMembrane'
+    
+    if params[:password] != params[:confirmation]
+      circle.errors.add_to_base("Passwords don't match")
+    else
+      circle_user = User.new({:user_name => circle.circle_user_name, :first_name => circle.name,:last_name => "Circle",:email=>params[:email]})
+      circle_user.circle = circle
+      if !(circle_user.create_bolt_identity(:user_name => :user_name,:password => params[:password]) && circle_user.save)
+        circle.errors.add_to_base("Error creating circle user: "+ circle_user.errors.full_messages.join('; '))
+      end
+    end
+    if circle.errors.empty? && circle.save
+      self_player = circle.add_player_to_circle('self',circle_user)
+      matrice_player = circle.add_player_to_circle('matrice',matrice_user) if self_player
+    end
+    if !circle.errors.empty?
+      self_player.destroy if self_player
+      matrice_player.destroy if matrice_player
+      circle_user.destroy if circle_user
+      circle.destroy
+    end
+    circle
+  end
+
+  def circle_user_name
+    name.tr(' ','_').downcase+'_circle'
+  end
+
+  def add_player_to_circle(player_class,user)
+    player = api_new_player(player_class,user)
+    if player.valid?
+      player
+    else
+      self.errors.add_to_base("Error creating #{player_class} player for #{user.user_name}:"+player.errors.full_messages.join('; '))
+      nil
+    end
+  end
+
   def api_render_player_state(account)
     s = account.get_state
     if s
