@@ -35,6 +35,7 @@ class CirclesController < ApplicationController
   # GET /circles/1/edit
   def edit
     @circle = Currency.find(params[:id])
+    return if am_not_matrice?
   end
 
   # POST /circles
@@ -60,6 +61,7 @@ class CirclesController < ApplicationController
   # PUT /circles/1.xml
   def update
     @circle = Currency.find(params[:id])
+    return if am_not_matrice?
 
     respond_to do |format|
       if @circle.errors.empty? && @circle.update_attributes(params[:circle])
@@ -77,6 +79,7 @@ class CirclesController < ApplicationController
   # DELETE /circles/1.xml
   def destroy
     @circle = Currency.find(params[:id])
+    return if am_not_matrice?
     circle_user = User.find_by_user_name(circle_user_name(@circle.name))
     circle_user.destroy if !circle_user.nil?
     @circle.destroy
@@ -89,14 +92,14 @@ class CirclesController < ApplicationController
   # GET /circles/1/players
   def players
     @circle = Currency.find(params[:id])
-    access_denied and return unless @circle.api_user_isa?(current_user,'matrice')
+    return if am_not_matrice?
     setup_players_users
   end
   
   # PUT /circles/1/players
   def set_players
     @circle = Currency.find(params[:id])
-    access_denied and return unless @circle.api_user_isa?(current_user,'matrice')
+    return if am_not_matrice?
     player_class = params[:player_class]
     if player_class.blank?
       @circle.errors.add_to_base('You must choose a role!')
@@ -122,6 +125,8 @@ class CirclesController < ApplicationController
   # GET /circles/1;currencies
   def currencies
     @circle = Currency.find(params[:id])
+    return if am_not_matrice?
+    @currencies = []
   end
 
   # PUT /users/1;set_members
@@ -145,6 +150,14 @@ class CirclesController < ApplicationController
     @users = perform_search(OrderPairs,SearchPairs,SearchFormParams,User)
     if (params[:set] && @users.empty?) || (!params[:set] && !params[:search])
       @users = @circle.users.uniq
+    end
+  end
+  def am_not_matrice?
+    if @circle.api_user_isa?(current_user,'matrice')
+      false
+    else
+      access_denied
+      true
     end
   end
   

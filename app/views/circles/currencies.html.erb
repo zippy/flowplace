@@ -1,2 +1,8 @@
 <% @title="Currencies in #{h @circle.name}" %>
 <%= render(:partial => 'sub_nav') %>
+<% if @currencies.empty?%>
+  There are no currencies in this circle.
+<% else %>
+  <% for currency in @currencies %>
+  <% end %>
+<% end %>

@@ -58,10 +58,16 @@ Feature: circles
     And I follow "the circle"
     Then I should see "a very cool circle"
 
-  Scenario: a non-matrice user tries to go to a circle's players page and fails
+  Scenario: a non-matrice user tries to go to a circle's players,edit and currency pages and fails
     When I go to the logout page
     And I am logged into my "new" account
     When I go to the players page for "the circle"
+    Then I should be taken to the home page
+    And I should see "You don't have permission to do that."
+    When I go to the edit circle page for "the circle"
+    Then I should be taken to the home page
+    And I should see "You don't have permission to do that."
+    When I go to the currencies page for "the circle"
     Then I should be taken to the home page
     And I should see "You don't have permission to do that."
 
@@ -137,6 +143,7 @@ Feature: circles
     Then I should see "Currencies" as the active sub-tab
     And I should see "Players" as a sub-tab
     And I should see "Edit" as a sub-tab
+    And I should see "There are no currencies in this circle."
 
   Scenario: matrice can delete a circle but a non-matrice cannot
     When I go to the circles page

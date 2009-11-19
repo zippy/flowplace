@@ -391,6 +391,17 @@ class CurrencyMembrane
     name.tr(' ','_').downcase+'_circle'
   end
 
+  # TODO we really ought to be adding members using the membrane 'name_user' play!!
+  #if player_class == 'member'
+  #  matrice_currency_account = @circle.api_user_accounts(current_user,'matrice')[0]
+  #  play = {
+  #    'from' => matrice_currency_account,
+  #    'user' => user,
+  #    'name' => user.user_name
+  #  }
+  #  @circle.api_play('name_user',matrice_currency_account,play)
+  #else
+  #end
   def add_player_to_circle(player_class,user)
     player = api_new_player(player_class,user)
     if player.valid?
