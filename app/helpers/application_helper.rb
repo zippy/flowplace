@@ -295,7 +295,7 @@ module ApplicationHelper
   end
 
   def subtab(tab,path)
-    if request.path =~ /#{path}/
+    if request.path == path
       "<p>#{tab}</p>"
     else
       link_to tab, path

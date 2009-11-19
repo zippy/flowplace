@@ -14,7 +14,7 @@ class CirclesController < ApplicationController
   # GET /circles/1.xml
   def show
     @circle = Currency.find(params[:id])
-
+    matrice?
     respond_to do |format|
       format.html # show.html.erb
       format.xml  { render :xml => @circle }
@@ -153,12 +153,15 @@ class CirclesController < ApplicationController
     end
   end
   def am_not_matrice?
-    if @circle.api_user_isa?(current_user,'matrice')
+    if matrice?
       false
     else
       access_denied
       true
     end
+  end
+  def matrice?
+    @current_user_is_matrice = @circle.api_user_isa?(current_user,'matrice')
   end
   
 end

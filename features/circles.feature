@@ -14,6 +14,7 @@ Feature: circles
     Then I should see "the circle"
     When I follow "the circle"
     Then I should be taken to the show circle page for "the circle"
+    And I should see "View" as the active sub-tab
 
   Scenario: user creates a circle and sees it in the circles page and user is matrice so can edit the circle and a user should be created for the circle
     When I go to the circles page
@@ -51,6 +52,7 @@ Feature: circles
     When I go to the circles page
     And I follow "the circle"
     Then I should see "Edit" as the active sub-tab
+    And I should see "View" as a sub-tab
     And I should see "Players" as a sub-tab
     And I should see "Currencies" as a sub-tab
     When I fill in "description" with "a very cool circle"
@@ -75,6 +77,7 @@ Feature: circles
     When I go to the circles page
     And I follow "Players" within "table"
     And I should see "Players" as the active sub-tab
+    And I should see "View" as a sub-tab
     And I should see "Currencies" as a sub-tab
     And I should see "Edit" as a sub-tab
     And I should see a table with 3 rows
@@ -142,6 +145,7 @@ Feature: circles
     And I follow "Currencies" within "table"
     Then I should see "Currencies" as the active sub-tab
     And I should see "Players" as a sub-tab
+    And I should see "View" as a sub-tab
     And I should see "Edit" as a sub-tab
     And I should see "There are no currencies in this circle."
 
