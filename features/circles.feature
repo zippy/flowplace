@@ -50,7 +50,10 @@ Feature: circles
     Given I am a "matrice" of currency "the circle"
     When I go to the circles page
     And I follow "the circle"
-    And I fill in "description" with "a very cool circle"
+    Then I should see "Edit" as the active sub-tab
+    And I should see "Players" as a sub-tab
+    And I should see "Currencies" as a sub-tab
+    When I fill in "description" with "a very cool circle"
     And I press "Update"
     And I follow "the circle"
     Then I should see "a very cool circle"
@@ -63,7 +66,8 @@ Feature: circles
     And I should see "You don't have permission to do that."
 
   Scenario: matrice views her circle's players
-    When I go to the players page for "the circle"
+    When I go to the circles page
+    And I follow "Players" within "table"
     And I should see "Players" as the active sub-tab
     And I should see "Currencies" as a sub-tab
     And I should see "Edit" as a sub-tab
@@ -126,10 +130,19 @@ Feature: circles
     And I press "Submit"
     Then I should see "You must choose a role!"
     Then I should see "You must choose some users!"
+    
+  Scenario: matrice views her circle's currencies
+    When I go to the circles page
+    And I follow "Currencies" within "table"
+    Then I should see "Currencies" as the active sub-tab
+    And I should see "Players" as a sub-tab
+    And I should see "Edit" as a sub-tab
 
   Scenario: matrice can delete a circle but a non-matrice cannot
     When I go to the circles page
-    Then I should not see "Delete"
-    Given I am a "matrice" of currency "the circle"
+    And I should see a table with 1 rows
+    And I should see "Delete" in row 0 column 3
+    When I go to the logout page
+    And I am logged into my "new" account
     When I go to the circles page
-    Then I should see "Delete"
+    Then I should not see "Delete" in row 0 column 3
