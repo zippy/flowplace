@@ -1,6 +1,12 @@
+<% existing = @circle && !@circle.new_record?%>
 <ul id="sub_nav">
   <li><%= sub_nav_link 'Browse', circles_path, 'List all circles' %>
   <li><%= sub_nav_link 'New',new_circle_path,'Create a new circle'%></li>
-  <%if @circle && !@circle.new_record?%><li><p><%if request.path =~ /namescape/%>Namescape<%else%>Edit<%end%></p></li><%end%>
+  <%if existing %>
+  <li><%= subtab('Players',players_circle_path(@circle)) %></li>
+  <li><%= subtab('Edit',edit_circle_path(@circle)) %></li>
+  <li><%= subtab('Currencies',currencies_circle_path(@circle)) %></li>
+  <%end%>
 </ul>
 <p class="clear">
+<%if existing %><h4>Circle: <%=h @circle.name%></h4><%end%>

@@ -21,4 +21,12 @@ Then /^I should( not)* see "([^\"]*)" as a sub-tab$/ do |should_not,tab_name|
     end
   end
 end
+
+Then /^I should see "([^\"]*)" as the active sub-tab$/ do |tab_name|
+  within('#sub_nav') do |scope|
+    within('p') do |s|
+      should contain(tab_name)
+    end
+  end
+end
     

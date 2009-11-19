@@ -1,11 +1,11 @@
-<% @title="Namescape for #{h @circle.name}" %>
+<% @title="Players in #{h @circle.name}" %>
 <%= render(:partial => 'sub_nav') %>
 
-<% get_index_form_html(@search_form_params,namescape_circle_url(@circle)) %>
+<% get_index_form_html(@search_form_params,players_circle_url(@circle)) %>
 
 <%if @users.empty?%>No accounts found
 <%else%>
-  <% form_tag(set_namescape_circle_url(@circle), :method=>:put) do -%>
+  <% form_tag(set_players_circle_url(@circle), :method=>:put) do -%>
   <table>
   <tr>
     <th>User</th>

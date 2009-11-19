@@ -86,20 +86,15 @@ class CirclesController < ApplicationController
     end
   end
 
-  # GET /circles/1;members
-  def members
-    @circle = Circle.find(params[:id])
-  end
-
-  # GET /circles/1/namescape
-  def namescape
+  # GET /circles/1/players
+  def players
     @circle = Currency.find(params[:id])
     access_denied and return unless @circle.api_user_isa?(current_user,'matrice')
-    setup_namescape_users
+    setup_players_users
   end
   
-  # PUT /circles/1/namescape
-  def set_namescape
+  # PUT /circles/1/players
+  def set_players
     @circle = Currency.find(params[:id])
     access_denied and return unless @circle.api_user_isa?(current_user,'matrice')
     player_class = params[:player_class]
@@ -115,13 +110,18 @@ class CirclesController < ApplicationController
         @circle.add_player_to_circle(player_class,user)
       end
       flash[:notice] = 'Circle was successfully updated.'
-      redirect_to(namescape_circle_url(@circle)+'?use_session=true&set=true')
+      redirect_to(players_circle_url(@circle)+'?use_session=true&set=true')
     else
       params[:set] = true
       params[:use_session] = true
-      setup_namescape_users
-      render :action => 'namescape'
+      setup_players_users
+      render :action => 'players'
     end
+  end
+
+  # GET /circles/1;currencies
+  def currencies
+    @circle = Currency.find(params[:id])
   end
 
   # PUT /users/1;set_members
@@ -141,7 +141,7 @@ class CirclesController < ApplicationController
     end
   end
   private
-  def setup_namescape_users
+  def setup_players_users
     @users = perform_search(OrderPairs,SearchPairs,SearchFormParams,User)
     if (params[:set] && @users.empty?) || (!params[:set] && !params[:search])
       @users = @circle.users.uniq

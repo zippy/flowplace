@@ -18,7 +18,7 @@ for circle in @membranes
     <td><%= render_currency_icon(circle,20) %></td>
     <td> <%=link_to circle.name, is_matrice ? edit_circle_path(circle) : circle_path(circle)  %></td>
     <td> <% if is_matrice %>
-      <%= link_to 'Namescape', "/circles/#{circle.id}/namescape"%>
+      <%= link_to 'Players', players_circle_path(circle)%>
       &nbsp;&nbsp;
       <%= link_to 'Delete', "/circles/#{circle.id}", :confirm => 'Are you sure?', :method => :delete %>
       <%else%>&nbsp;<%end%>

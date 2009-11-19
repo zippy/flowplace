@@ -55,16 +55,18 @@ Feature: circles
     And I follow "the circle"
     Then I should see "a very cool circle"
 
-  Scenario: a non-matrice user tries to go to a circle's namescape page and fails
+  Scenario: a non-matrice user tries to go to a circle's players page and fails
     When I go to the logout page
     And I am logged into my "new" account
-    When I go to the namescape page for "the circle"
+    When I go to the players page for "the circle"
     Then I should be taken to the home page
     And I should see "You don't have permission to do that."
 
-  Scenario: matrice views her circle's namescape
-    When I go to the namescape page for "the circle"
-    And I should see "Namescape" as a sub-tab
+  Scenario: matrice views her circle's players
+    When I go to the players page for "the circle"
+    And I should see "Players" as the active sub-tab
+    And I should see "Currencies" as a sub-tab
+    And I should see "Edit" as a sub-tab
     And I should see a table with 3 rows
     And I should see "User" in row 0 column 0
     And I should see "Role" in row 0 column 1
@@ -75,25 +77,25 @@ Feature: circles
   
   Scenario: matrice searches for a user not in a circle
     Given A user "user1"
-    When I go to the namescape page for "the circle"
+    When I go to the players page for "the circle"
     Then I should not see "user1"
     When I select "Account name contains" from "search_on_main"
     And I fill in "search_for_main" with "user1"
     And I press "Search"
-    Then I should be taken to the namescape page for "the circle"
+    Then I should be taken to the players page for "the circle"
     And I should see "user1" in row 1 column 0
     And I should see "--" in row 1 column 1
 
   Scenario: matrice searches for a non existent user
-    When I go to the namescape page for "the circle"
+    When I go to the players page for "the circle"
     And I fill in "search_for_main" with "user1"
     And I press "Search"
-    Then I should be taken to the namescape page for "the circle"
+    Then I should be taken to the players page for "the circle"
     And I should see "No accounts found"
 
   Scenario: matrice adds a new user as member to a circle
     Given A user "joe"
-    When I go to the namescape page for "the circle"
+    When I go to the players page for "the circle"
     When I select "Account name contains" from "search_on_main"
     And I fill in "search_for_main" with "joe"
     And I press "Search"
@@ -105,12 +107,13 @@ Feature: circles
     Then I should see "Circle was successfully updated."
     And I should see "joe" in row 1 column 0
     And I should see "member" in row 1 column 1
+    And There should be a play in my currencies history that reflects this
 
-#this scenario also tests that when the user is redirected back to the namescape page
+#this scenario also tests that when the user is redirected back to the players page
 # that the default set of users (i.e. the ones in the circle) are rendered, instead of
 # the ones in the session from a search.
   Scenario: matrice adds existing user as member to a circle
-    When I go to the namescape page for "the circle"
+    When I go to the players page for "the circle"
     When I check "users_1"
     When I select "member" from "player_class"
     And I press "Submit"
@@ -119,7 +122,7 @@ Feature: circles
     And I should see "matrice, member" in row 2 column 1
   
   Scenario: matrice sees errors when not choosing user or player class when attempting to add to a circle
-    When I go to the namescape page for "the circle"
+    When I go to the players page for "the circle"
     And I press "Submit"
     Then I should see "You must choose a role!"
     Then I should see "You must choose some users!"

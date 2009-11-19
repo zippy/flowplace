@@ -1,10 +1,6 @@
 <% @title='Circles: Edit' %>
 <%= render(:partial => 'sub_nav') %>
 
-<p>
-  Name: <%=@circle.name%>
-</p>
-
 <% form_for :circle, :url => { :action => "update", :id => @circle.id },:html => { :method => :put}  do |f| %>
   <%= f.error_messages %>
 
