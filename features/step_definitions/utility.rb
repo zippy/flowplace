@@ -2,10 +2,10 @@ def parse_table(table_scope)
   table = table_scope.dom.to_s.gsub(/\n/,'')
   table =~ /<table[^>]*>(.*)<\/table>/
   table_contents = $1
-  rows = table_contents.scan(/<tr>(.*?)<\/tr>/m).collect {|r| r[0]}
+  rows = table_contents.scan(/<tr[^>]*>(.*?)<\/tr>/m).collect {|r| r[0]}
   cols = []
   rows.each do |row|
-    cols.push row.scan(/<t[dh]>(.*?)<\/t[dh]>/m).collect {|r| r[0]}
+    cols.push row.scan(/<t[dh][^>]*>(.*?)<\/t[dh]>/m).collect {|r| r[0]}
   end
   [rows,cols]
 end
