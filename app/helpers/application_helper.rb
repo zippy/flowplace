@@ -131,10 +131,12 @@ module ApplicationHelper
     select_tag(id, options_for_select(currency_accounts(currency,opts).collect {|a| [ a.name, a.id ] }), :include_blank => true)
   end
   
-  def render_play_form(currency,currency_account)
+  def render_play_form(currency,currency_account,play_name)
     player_class = currency_account.player_class
     exclude_list = []#['from','to']
     plays = currency.api_plays
+    raise "#{play_name} doesn't exist" if !plays.has_key?(play_name)
+    raise "#{player_class} cannot make the #{play_name} play" if plays[play_name][:player_classes] != player_class
     case currency
     when CurrencyMutualCredit
       exclude_list << 'aggregator'
@@ -143,29 +145,23 @@ module ApplicationHelper
     when CurrencyTracked
       exclude_list << 'aggregator'
     end
-    result = ''
-    plays.keys.each do |play_name|
-      if play_name !~ /^_/ && plays[play_name][:player_classes] == player_class
-        case play_name
-        when 'pay'
-          with_player_class = currency.class == CurrencyIssued ? 'user' : 'member'
-        when 'issue'
-          with_player_class = 'user'
-        when 'retire'
-          with_player_class = 'user'
-        end
-          
-        result += form_tag(record_play_currency_account_path(currency_account),:id => play_name) +
-          <<-EOHTML
-          <fieldset>
-            #{currency_play_html(currency,currency_account,play_name,:field_id_prefix=>'play',:exclude=>exclude_list)}
-            #{submit_tag 'Record Play'}
-          </fieldset>
-          </form>
-          EOHTML
-      end
+    case play_name
+    when 'pay'
+      with_player_class = currency.class == CurrencyIssued ? 'user' : 'member'
+    when 'issue'
+      with_player_class = 'user'
+    when 'retire'
+      with_player_class = 'user'
     end
-    result
+      
+    form_tag(record_play_currency_account_path(currency_account),:id => play_name) +
+      <<-EOHTML
+      <fieldset>
+        #{currency_play_html(currency,currency_account,play_name,:field_id_prefix=>'play',:exclude=>exclude_list)}
+        #{submit_tag 'Record Play'}
+      </fieldset>
+      </form>
+      EOHTML
   end
   
 # <legend>
