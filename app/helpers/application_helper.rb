@@ -297,4 +297,12 @@ module ApplicationHelper
       link_to tab, path
     end
   end
+  def playtab(play_name,currency_account)
+    path = play_currency_account_path(currency_account)+"?name=#{play_name}"
+    if play_name == @play_name
+      "<p>#{play_name.titleize}</p>"
+    else
+      link_to play_name.titleize, path
+    end
+  end
 end

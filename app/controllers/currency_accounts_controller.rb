@@ -150,10 +150,12 @@ class CurrencyAccountsController < ApplicationController
   def play
     @currency_account = CurrencyAccount.find(params[:id])
     @currency = @currency_account.currency
+
+    player_class = @currency_account.player_class
+    @play_names = @currency.api_plays.collect {|name,attrs| (!(name =~ /^_/) && attrs[:player_classes] == player_class) ? name : nil}.compact
     @play_name = params[:name]
     if @play_name.blank?
-      player_class = @currency_account.player_class
-      @currency.api_plays.each {|name,attrs| @play_name = name and break if !(name =~ /^_/) && attrs[:player_classes] == player_class}
+      @play_name = @play_names[0]
     end
     @play = true
   end
