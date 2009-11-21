@@ -186,6 +186,7 @@ ul#play_names li p {margin:0px 0px 0px 0px;background: blue;color:#ffffff;paddin
 ul#play_names li.last a {margin-right:0;}
 
 #page_content {
+  min-height: 500px;
 	float:left;
 	width: 950px;
 	margin-top: 0px;
@@ -193,6 +194,7 @@ ul#play_names li.last a {margin-right:0;}
 	padding-right: 6px;
 	background-color:  #FFFFFF;	
 }
+
 #footer {
 	color: #aaa;
 	margin-top: 10px;
