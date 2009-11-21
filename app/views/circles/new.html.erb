@@ -6,7 +6,7 @@
 
   <p>
     <%= f.label :name %><br />
-    <%= f.text_field :name %>
+    <%= f.text_field :name, :onchange=>"$('circle_user_name').innerHTML=$('circle_name').value.gsub(' ','_').toLowerCase()+'_circle'" %>
   </p>
   <p>
     <%= f.label :description %> (this will be WYSIWG soon)<br />
@@ -18,7 +18,7 @@
   </p>
   
   <p>
-    The login name for the circle user account will be: <b> [live-update-from-name-goes-here]_cricle </b> <br />
+    The login name for the circle user account will be: <b id="circle_user_name">_circle</b> <br />
     <%= label_tag :password,"Password:" %><%= password_field_tag(:password)%> <br />
     <%= label_tag :confirmation,"Confirm Password:" %><%= password_field_tag(:confirmation)%> <br />
     <%= label_tag :email,"Email:" %><%= text_field_tag(:email, params[:email] ? params[:email] : current_user.email)%>
