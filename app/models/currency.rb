@@ -198,6 +198,16 @@ class Currency < ActiveRecord::Base
     !api_user_accounts(user,player_class).empty?
   end
   
+  def setup_model(model,field_value)
+    if field_value.is_a?(model)
+      field_value
+    else
+      v = yield(field_value)
+      raise "Unknown #{model.to_s.downcase}: #{c}" if v.nil?
+      v
+    end
+  end
+  
   def api_play(play_name,currency_account,play)
     @play = Currency::State.new(api_play_fields(play_name).collect {|field| field.keys[0]})
     api_play_fields(play_name).each do |field|
@@ -205,10 +215,12 @@ class Currency < ActiveRecord::Base
       field_name = field['id']
       field_type = field['type']
       case field_type
-      when 'integer','string','text','range','currency'
+      when 'integer','string','text','range'
         @play[field_name] = play[field_name]
+      when 'currency'
+        @play[field_name] = setup_model(Currency,play[field_name]) { |name| Currency.find_by_name(name)}
       when 'user'
-        @play[field_name] = User.find_by_user_name(play[field_name])
+        @play[field_name] = setup_model(User,play[field_name]) { |name| User.find_by_user_name(name)}
       when /player_(.*)/
         player_class = $1
         if play[field_name].blank?
@@ -222,6 +234,7 @@ class Currency < ActiveRecord::Base
         raise "unknown field type: #{field_type}"
       end
     end
+    
     script = get_play_script(play_name)
     
     return_value = #prepare_eval('play') do
@@ -410,6 +423,12 @@ class CurrencyMembrane
       self.errors.add_to_base("Error creating #{player_class} player for #{user.user_name}:"+player.errors.full_messages.join('; '))
       nil
     end
+  end
+
+  def currencies
+    @self = CurrencyAccount.find(:first, :conditions => ["name = ? and player_class = 'self'",circle_user_name])
+    raise "Couldn't find self currency account for #{name}" if @self.nil?
+    Currency.find(:all, :conditions => ['id in (?)',@self.get_state['currencies'].keys])
   end
 
   def api_render_player_state(account)

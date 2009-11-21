@@ -14,12 +14,14 @@ Feature: membrane currency
     And I should see "the circle: grant"
     And I should see "Grant" as the active play
     And I should see "Revoke" as a possible play
+    And I should see "Bind Currency" as a possible play
 
   Scenario: Matrice makes a bind currency play
-    When I go to the my currencies page
-    And I follow "the circle"
-    When I select "Joe User's WE user account" from "play_to"
-    And I fill in "play_amount" with "20"
-    And I fill in "play[memo]" with "leg waxing"
+    Given a "MutualCredit" currency "MC"
+    When I go to the "bind_currency" play page for my "matrice" account in "the circle"
+    And I select "MC" from "play[currency]"
     And I press "Record Play"
+    When I go to the currencies page for "the circle"
+    Then I should see a table with 1 rows
+    And I should see "MC" in row 0 column 0
     

@@ -42,6 +42,7 @@ class CirclesController < ApplicationController
   # POST /circles.xml
   def create
     Activity
+    Currency
     @circle = CurrencyMembrane.create(current_user,params)
 
     respond_to do |format|
@@ -126,7 +127,7 @@ class CirclesController < ApplicationController
   def currencies
     @circle = Currency.find(params[:id])
     return if am_not_matrice?
-    @currencies = []
+    @currencies = @circle.currencies
   end
 
   # PUT /users/1;set_members

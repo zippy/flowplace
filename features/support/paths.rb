@@ -66,6 +66,11 @@ module NavigationHelpers
       currency_accounts_paths(:play,$1)
     when /the currency account history page for "([^\"]*)"/
       currency_accounts_paths(:history,$1)
+    when /the "([^\"]*)" play page for my "([^\"]*)" account in "([^\"]*)"/
+      (play_name,player_class,currency) = [$1,$2,$3]
+      currency = Currency.find_by_name(currency)
+      currency_account = CurrencyAccount.find(:first,:conditions => ["user_id = ? and player_class = ? and currency_id = ?",@user.id,player_class,currency.id])
+      "/currency_accounts/#{currency_account.id}/play?name=#{play_name}"
     when /the preferences page/
       "/users/#{controller.current_user.id}/preferences"
     when /the wallets page/

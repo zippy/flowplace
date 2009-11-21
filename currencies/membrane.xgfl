@@ -10,11 +10,11 @@
       -- none yet --
     Matrice Summary Function: none
     Matrice Plays:
-      name_currency(from,to,currency,name,meta)  # adds a currency to the circle to be known as name.
-      remove_currency(from,to,currency,name)  # adds a currency to the circle to be known as name.
+      bind_currency(from,to,currency,name,meta)  # adds a currency to the circle to be known as name.
+      unbind_currency(from,to,currency,name)  # adds a currency to the circle to be known as name.
       name_user(from,user,name)  # names a new member player into the circle as for a user.
-      Grant(from,to,currency,player_class)  # adds a member of the circle to a currency as a given player_class.
-      Revoke(from,to,currency,player_class)
+      grant(from,to,currency,player_class)  # adds a member of the circle to a currency as a given player_class.
+      revoke(from,to,currency,player_class)
   </description>
   <player_classes>
     <player_class name="member" />
@@ -43,24 +43,24 @@
         <![CDATA[ @member_state.permissions = {};]]>
       </script>
     </play>
-    <play name="name_currency" player_classes="matrice">
+    <play name="bind_currency" player_classes="matrice">
       <fields>
          <field type="player_matrice" id="from" />
          <field type="player_self" id="to" />
          <field type="currency" id="currency" />
          <field type="string" id="name" />
-         <field type="hash" id="meta" />
       </fields>
       <script type="ruby">
         <![CDATA[
-         c = Currency.find_by_name(@play.currency)
-         return "Could not find the currency: "+@play.currency if c.nil?
-         return "Currency #{@play.currency} is not global or part of this circle" if !c.global? || (c.circle_id != self.id)
          currencies =  @play.to['currencies']
-         currencies[@play.currency] = @play.name
+         return "Currency must be specified" unless @play.currency.is_a?(Currency)
+         name = @play.name
+         name ||= @play.currency.name
+         currencies[@play.currency.id] = name
+         true
          ]]>
       </script>
-      <play_sentence lang='en'><from /> declares in <to /> than <currency /> shall be called <currency /></play_sentence>
+      <play_sentence lang='en'> <from /> binds <currency /> to <to /> as <name /></play_sentence>
     </play>
     <play name="name_user" player_classes="matrice">
       <fields>

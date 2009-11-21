@@ -3,6 +3,9 @@
 <% if @currencies.empty?%>
   There are no currencies in this circle.
 <% else %>
+<table>
   <% for currency in @currencies %>
+  <tr><td><%=currency.name%></td></tr>
   <% end %>
+</table>
 <% end %>
