@@ -185,11 +185,11 @@ class CurrencyAccountsController < ApplicationController
         end
       end
     end
-#    begin
+    begin
       @currency.api_play(@play_name,@currency_account,@play)
-#    rescue Exception => e
-#      @error = e
-#    end
+    rescue Exception => e
+      @error = e
+    end
     respond_to do |format|
       if !@error
         flash[:notice] = 'The play was recorded.'
