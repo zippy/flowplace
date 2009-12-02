@@ -66,7 +66,7 @@ Feature: my currencies
     When I go to the my currencies page
     And I follow "X"
     Then I should be taken to the currency account play page for "Anonymous User's X member account"
-    And I should see "Enter a play in: X"
+    And I should see "X: Pay"
     And I should see "Balance: 0"
     When I select "Joe User's X member account" from "play_to"
     And I fill in "play_amount" with "20"
