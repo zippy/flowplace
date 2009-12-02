@@ -25,5 +25,9 @@ describe Proposal do
     @valid_attributes.delete(:as)
     lambda {Proposal.create!(@valid_attributes)}.should raise_error("Validation failed: As can't be blank")
   end
+  it "should fail to create a new instance without a description" do
+    @valid_attributes.delete(:description)
+    lambda {Proposal.create!(@valid_attributes)}.should raise_error("Validation failed: Description can't be blank")
+  end
 
 end

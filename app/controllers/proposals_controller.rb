@@ -50,7 +50,14 @@ class ProposalsController < ApplicationController
         format.html { redirect_after_save }
         format.xml  { render :xml => @proposal, :status => :created, :location => @proposal }
       else
-        format.html { render :action => "new" }
+        format.html do
+          if params[:source]
+            flash[:notice] = "Please enter the text of your proposal!"
+            redirect_to(params[:source])
+          else
+            render :action => "new"
+          end
+        end
         format.xml  { render :xml => @proposal.errors, :status => :unprocessable_entity }
       end
     end
@@ -60,15 +67,20 @@ class ProposalsController < ApplicationController
   # PUT /proposals/1.xml
   def update
     @proposal = Proposal.find(params[:id])
-
-    respond_to do |format|
-      if @proposal.update_attributes(params[:proposal])
-        flash[:notice] = 'Proposal was successfully updated.'
-        format.html { redirect_after_save }
-        format.xml  { head :ok }
-      else
-        format.html { render :action => "edit" }
-        format.xml  { render :xml => @proposal.errors, :status => :unprocessable_entity }
+    if params['commit'] == "Withdraw Proposal"
+      @proposal.destroy
+      flash[:notice] = 'Proposal was withdrawn.'
+      redirect_after_save
+    else
+      respond_to do |format|
+        if @proposal.update_attributes(params[:proposal])
+          flash[:notice] = 'Proposal was successfully updated.'
+          format.html { redirect_after_save }
+          format.xml  { head :ok }
+        else
+          format.html { render :action => "edit" }
+          format.xml  { render :xml => @proposal.errors, :status => :unprocessable_entity }
+        end
       end
     end
   end

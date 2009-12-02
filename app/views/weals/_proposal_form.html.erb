@@ -22,19 +22,24 @@
   <% if other_user != current_user%>
     <%  my_proposal ||= Proposal.new(:as => party.to_s, :user_id => current_user.id, :weal_id => @weal.id)
     form_for(my_proposal) do |f| %>
-  
-    <b> My proposal to be <%= party.to_s %>: </b>
-    <%if !my_proposal.new_record?%>
-      (originally proposed: <%= standard_date_time(my_proposal.created_at) %><%if my_proposal.created_at != my_proposal.updated_at%> and updated: <%= standard_date_time(my_proposal.updated_at) %><%end%>)
-    <%end%>
-    <br />
-    <%= f.text_area :description, :cols=>70,:rows => 3 %>
-    <%= f.hidden_field(:as)%>
-    <%= f.hidden_field(:user_id)%>
-    <%= f.hidden_field(:weal_id)%>
-    <%= hidden_field_tag(:redirect,'/weals')%>
-    <br />
-    <%= f.submit(my_proposal.new_record? ? "Submit Proposal" : "Update Proposal") %>
+      <b> <label for="description">My proposal to be <%= party.to_s %>:</label> </b>
+      <%if !my_proposal.new_record?%>
+        (originally proposed: <%= standard_date_time(my_proposal.created_at) %><%if my_proposal.created_at != my_proposal.updated_at%> and updated: <%= standard_date_time(my_proposal.updated_at) %><%end%>)
+      <%end%>
+      <br />
+      <%= f.text_area :description, :cols=>70,:rows => 3 %>
+      <%= f.hidden_field(:as)%>
+      <%= f.hidden_field(:user_id)%>
+      <%= f.hidden_field(:weal_id)%>
+      <%= hidden_field_tag(:redirect,'/weals')%>
+      <%= hidden_field_tag(:source,"/intentions/#{@weal.id}")%>
+      <br />
+      <% if my_proposal.new_record? %>
+        <%= f.submit("Submit Proposal") %>
+      <% else %>
+        <%= f.submit("Update Proposal") %>
+        <%= f.submit("Withdraw Proposal") %>
+      <% end %>
     <% end %>
   <% end %>
   <% if !proposals.empty? %>
