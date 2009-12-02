@@ -1,5 +1,5 @@
 <% @title='Edit Currency' %>
-<%= render(:partial => 'currency_accounts/sub_nav') %>
+<%= render(:partial => 'sub_nav') %>
 
 <% form_for(@currency,:url=>{ :action => "update" },:method => "put") do |f| %>
 	<%= render(:partial => 'f', :object => f) %>

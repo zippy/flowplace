@@ -22,6 +22,9 @@ Feature: Navigation feedback
     And I should see "Assets" as the current tab
     When I go to the my currencies page
     Then I should not see "Assets" as the current tab
+    And I should see "My Currencies" as the current tab
+    When I go to the currencies page
+    Then I should not see "My Currencies" as the current tab
     And I should see "Currencies" as the current tab
     When I go to the circles page
     Then I should not see "Currencies" as the current tab
