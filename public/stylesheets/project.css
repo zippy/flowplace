@@ -16,10 +16,15 @@
 	margin: 0 0 0 0;
 	background-color: #000;
 }
+#flowplace_bar {
+	padding: 0 0 0 0;
+	margin: 0 0 0 0;
+	background-color: #80F;
+}
 
 
 #header {
-	height: 50px;
+	height: 30px;
 	width: 950px;
 	color: #A6AAAB;
 	font-weight: bold;
@@ -32,8 +37,8 @@
 #header img {
 	float:right;
 }
-#header img.logo {
-	float: left;
+#flowplace_bar img.logo {
+	float: right;
 }
 
 #header a {
@@ -43,7 +48,9 @@
 }
 
 #login_stuff {
+	background: #555;
 	margin-right: 5px;
+	padding-left: 5px;
 	font-size: 8pt;
 	float:right;
 	color:white;
@@ -107,6 +114,44 @@ ul#nav li a {display:block;float:left;margin:0px;padding: 0 10px;}
 ul#nav li a:hover {background: gray;}
 ul#nav li a.active {background: white;color:#000000;}
 ul#nav li.last a {margin-right:0;}
+
+/* ----------FLOWPLACE NAVIGATION TEXT---------- */
+
+
+#flowplace_nav {
+	font-size: 8pt;
+	margin:0px 0px 0px 0px;
+	padding:0px;
+	font-weight: normal;
+}
+	
+#flowplace_nav a:link {
+	color: #ffffff;
+	text-decoration: none;
+	}
+
+#flowplace_nav a:active {
+	color: #ffffff;
+	}
+
+#flowplace_nav a:visited {
+	color: #ffffff;
+	text-decoration: none;
+	}
+	
+#flowplace_nav a:hover {
+	color: white;
+	text-decoration: none;
+	border-color: #70787F;
+	}
+
+ul#flowplace_nav {float:right;display:block;margin-top:7px;list-style:none;}
+ul#flowplace_nav li {display:block;float:left;}
+ul#flowplace_nav li a {display:block;float:left;margin:0px;padding: 0 10px;}
+ul#flowplace_nav li a:hover {background: gray;}
+ul#flowplace_nav li a.active {background: white;color:#000000;}
+ul#flowplace_nav li.last a {margin-right:0;}
+
 
 	/* ----------Sub NAVIGATION TEXT---------- */
 

@@ -1,0 +1,17 @@
+<ul id="flowplace_nav">
+<% if logged_in? %>
+
+  <% if current_user.can?(:admin) %>
+  <li><%= nav_link 'Currencies', currencies_path,'Create an manage currencies'%></li>
+  <li><%= nav_link 'Circles',circles_path,'View and manage circles'%></li>
+  <%end%>
+	<% if current_user.can?(:accessAccounts) %>
+	<li><%= nav_link 'Accounts',users_path,'Add or modify user accounts'%></li>
+	<% end %>
+
+	<% if current_user.can?(:admin) %>
+	<li><%= nav_link 'Admin',admin_path,'Site Administration Options'%></li>
+	<% end %>
+
+<%end%>
+</ul>

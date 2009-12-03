@@ -5,19 +5,5 @@
   <li><%= nav_link 'Intentions', my_intentions_path,'Declare, search, and manage intentions'%></li>
   <li><%= nav_link 'Actions', my_actions_path,'Create, search and manage actions'%></li>
   <li><%= nav_link 'Assets', my_assets_path,'Create, search and manage assets'%></li>
-  <li><%= nav_link 'Currencies', currencies_path,'Create an manage currencies'%></li>
-  <li><%= nav_link 'Circles',circles_path,'View and manage your circles'%></li>
-  <% if current_user.has_preference('multi_wallet') %>
-	<li><%= nav_link 'Wallets',wallets_path,'View and manage your wallets'%></li>
-  <% end %>
-
-	<% if current_user.can?(:accessAccounts) %>
-	<li><%= nav_link 'Accounts',users_path,'Add or modify user accounts'%></li>
-	<% end %>
-
-	<% if current_user.can?(:admin) %>
-	<li><%= nav_link 'Admin',admin_path,'Site Administration Options'%></li>
-	<% end %>
-
 <%end%>
 </ul>
