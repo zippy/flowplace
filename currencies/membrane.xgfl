@@ -12,7 +12,7 @@
     Matrice Plays:
       bind_currency(from,to,currency,name,meta)  # adds a currency to the circle to be known as name.
       unbind_currency(from,to,currency,name)  # adds a currency to the circle to be known as name.
-      name_user(from,user,name)  # names a new member player into the circle as for a user.
+      name_member(from,user,name)  # names a new member player into the circle as for a user.
       grant(from,to,currency,player_class)  # adds a member of the circle to a currency as a given player_class.
       revoke(from,to,currency,player_class)
   </description>
@@ -62,7 +62,7 @@
       </script>
       <play_sentence lang='en'> <from /> binds <currency /> to <to /> as <name /></play_sentence>
     </play>
-    <play name="name_user" player_classes="matrice">
+    <play name="name_member" player_classes="matrice">
       <fields>
          <field type="player_matrice" id="from" />
          <field type="user" id="user" />
