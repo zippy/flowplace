@@ -9,6 +9,7 @@ ActionController::Routing::Routes.draw do |map|
     :record_play => :post
   }
   map.my_currencies('/my_currencies', :controller => 'currency_accounts', :action => 'my_currencies')
+  map.dashboard('/dashboard', :controller => 'currency_accounts', :action => 'dashboard')
   map.join_currency('/my_currencies/join', :controller => 'currency_accounts', :action => 'join_currency', :conditions => { :method => :get })
   map.connect('/my_currencies/join', :controller => 'currency_accounts', :action => 'join', :conditions => { :method => :post })
 

@@ -8,7 +8,9 @@ module NavigationHelpers
       '/logout'
     when /the home page/
       '/'
-    when /the overview page/
+    when /the dashboard page/
+      '/dashboard'
+    when /the holoptiview page/
       '/'
     when /the new intentions page/
       '/intentions/new'

@@ -1,0 +1,13 @@
+<% @title='Dashboard' %>
+<%= render(:partial => 'sub_nav') %>
+
+
+<% for currency_account in @currency_accounts 
+  currency = currency_account.currency
+%>
+  <div id="<%= currency.name_as_html_id%>" title="<%=h currency.description%>">
+  <%= render_currency_icon(currency,20) %> <%= link_to currency.name, play_currency_account_url(currency_account) %><% if !currency.symbol.blank? %>&nbsp;(<%=currency_account.currency.symbol%>)<%end%>
+   : <%= currency_account.render_state %>
+   <%= link_to 'History', history_currency_account_url(currency_account) %>
+  </div>
+<% end %>

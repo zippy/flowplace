@@ -21,6 +21,17 @@ class CurrencyAccountsController < ApplicationController
     end
   end
 
+  # GET /dashboard
+  # GET /dashboard.xml
+  def dashboard
+    @currency_accounts = current_user.currency_accounts
+
+    respond_to do |format|
+      format.html # index.html.erb
+      format.xml  { render :xml => @currency_accounts }
+    end
+  end
+
   # GET /currency_accounts/1
   # GET /currency_accounts/1.xml
   def show

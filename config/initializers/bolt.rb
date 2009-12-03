@@ -11,4 +11,5 @@ Bolt::Initializer.run do |bolt|
   bolt.password_change_notice = :password_changed
   bolt.session_expiration_time = SessionExpirationSeconds
   bolt.session_expiration_notice = :session_expired
+  bolt.after_login_url  = '/dashboard'
 end

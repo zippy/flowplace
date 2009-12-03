@@ -1,12 +1,12 @@
 <ul id="nav">
 <% if logged_in? %>
-	<li ><%= nav_link 'Overview',home_path,"View your wealth stream"%></li>
-	<li><%= nav_link 'Intentions', my_intentions_path,'Declare, search, and manage intentions'%></li>
-	<li><%= nav_link 'Actions', my_actions_path,'Create, search and manage actions'%></li>
-	<li><%= nav_link 'Assets', my_assets_path,'Create, search and manage assets'%></li>
-	<li><%= nav_link 'My Currencies', my_currencies_path,'View your currency accounts'%></li>
-	<li><%= nav_link 'Currencies', currencies_path,'Create an manage currencies'%></li>
-	<li><%= nav_link 'Circles',circles_path,'View and manage your circles'%></li>
+  <li><%= nav_link 'Dashboard', dashboard_path,'Take action'%></li>
+  <li ><%= nav_link 'Holoptiview',home_path,"View your wealth stream"%></li>
+  <li><%= nav_link 'Intentions', my_intentions_path,'Declare, search, and manage intentions'%></li>
+  <li><%= nav_link 'Actions', my_actions_path,'Create, search and manage actions'%></li>
+  <li><%= nav_link 'Assets', my_assets_path,'Create, search and manage assets'%></li>
+  <li><%= nav_link 'Currencies', currencies_path,'Create an manage currencies'%></li>
+  <li><%= nav_link 'Circles',circles_path,'View and manage your circles'%></li>
   <% if current_user.has_preference('multi_wallet') %>
 	<li><%= nav_link 'Wallets',wallets_path,'View and manage your wallets'%></li>
   <% end %>
