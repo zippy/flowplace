@@ -85,6 +85,15 @@ describe User do
       @user.currency_accounts << CurrencyAccount.new(:currency => @usd,:player_class =>'friend')
       @user.player_clasess_in(@usd).should == ['member','friend']
     end
+    it "should be able to list a users membership in membrane currencies" do
+      @circle = CurrencyMembrane.create(@user,{:circle=>{:name => 'a circle'},:password=>'password',:confirmation=>'password',:email=>'test@test.com'})
+      @user.circle_memberships.should == []
+      @circle.add_player_to_circle('member',@user)
+      @user.reload
+      @user.currency_accounts.size.should == 2
+      @user.circle_memberships.should == [@circle]
+    end
+      
   end
   
 end

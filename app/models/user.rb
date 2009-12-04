@@ -165,5 +165,13 @@ class User < ActiveRecord::Base
     c -= currencies if !has_preference('multi_wallet') || wallets.size == 0
     c
   end
+  
+  ##############################################
+  # list of circles in which user is a member
+  def circle_memberships
+    result = []
+    currency_accounts.each {|ca| result.push(ca.currency) if ca.currency.is_a?(CurrencyMembrane) && ca.player_class == 'member'}
+    result
+  end
 
 end
