@@ -34,7 +34,7 @@ global_banner = CONFIG[:global_banner] && !session[:banner_closed]
 				<div id="header">
 				  <%if @current_circle.nil? %>
 			      <img class='logo' src="/images/logo.png" height="35" width="35" alt="logo"><img height="35" src="/images/logo_txt.jpg" alt="flowplace">
-			      <% if logged_in? %> Jump to: <%= my_circles_jump_select(true) %> <%end%>
+			      <% if logged_in? %> <div style="float: right">Jump to: <%= my_circles_jump_select(true) %></div><%end%>
 				  <%else%>
 				    <%= render_currency_icon(@current_circle,35)%> <%= my_circles_jump_select %>
 					  <%= render(:partial => 'shared/nav') %>
