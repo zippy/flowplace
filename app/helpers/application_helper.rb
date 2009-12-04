@@ -96,6 +96,16 @@ module ApplicationHelper
     options_for_select([['-','']] + users.collect{|u| [u.full_name,u.id]})
   end
   
+  def my_circles_jump_select(include_blank = false)
+    select_tag('current_circle',options_for_select(my_circles_for_select(include_blank),@current_circle))
+  end
+  def my_circles_for_select(include_blank = false)
+    @my_circles ||= current_user.circle_memberships
+    result = @my_circles.collect {|c| [c.name,c.id]}
+    result = [['-',nil]].concat(result) if include_blank
+    result
+  end
+  
   def render_currency_icon(currency,size=20)
     image_tag currency.api_icon, :height=>size, :width=>size, :title=> "#{currency.name}: #{currency.description}"
   end

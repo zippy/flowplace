@@ -1,4 +1,5 @@
 class CurrencyAccountsController < ApplicationController
+  before_filter :set_current_circle
   # GET /currency_accounts
   # GET /currency_accounts.xml
   def index

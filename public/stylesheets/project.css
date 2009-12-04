@@ -10,16 +10,18 @@
   width: 950px;
 }
 
+#flowplace_bar {
+	padding: 0 0 0 0;
+	margin: 0 0 0 0;
+	background-color: #000;
+	height: 28px;
+	border-bottom: 1px solid #AAAAAA;
+}
 
 #top_bar {
 	padding: 0 0 0 0;
 	margin: 0 0 0 0;
-	background-color: #000;
-}
-#flowplace_bar {
-	padding: 0 0 0 0;
-	margin: 0 0 0 0;
-	background-color: #80F;
+	height: 35px;
 }
 
 
@@ -28,14 +30,13 @@
 	width: 950px;
 	color: #A6AAAB;
 	font-weight: bold;
-	font-size: 14pt;	
 	font-family: Verdana,Arial,sans serif;
 }
 #header p {
 	float:left;
 }
 #header img {
-	float:right;
+	float:left;
 }
 #flowplace_bar img.logo {
 	float: right;
@@ -49,14 +50,15 @@
 
 #login_stuff {
 	background: #555;
-	margin-right: 5px;
+	margin: 0px;
 	padding-left: 5px;
+	padding-right: 5px;
 	font-size: 8pt;
 	float:right;
 	color:white;
 }
 #login_stuff a {
-	font-size: 8pt;
+	font-size: 7pt;
 	color:white;
 }
 #login_stuff img {
@@ -108,7 +110,7 @@ th {
 	border-color: #70787F;
 	}
 
-ul#nav {float:right;display:block;margin-top:35px;list-style:none;}
+ul#nav {float:right;display:block;margin-top:20px;list-style:none;}
 ul#nav li {display:block;float:left;}
 ul#nav li a {display:block;float:left;margin:0px;padding: 0 10px;}
 ul#nav li a:hover {background: gray;}

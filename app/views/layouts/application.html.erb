@@ -18,7 +18,7 @@ global_banner = CONFIG[:global_banner] && !session[:banner_closed]
 		  <div id="flowplace_bar">
   			<div id="login_stuff">
   				<% if logged_in? %> 
-  				<%= gravitar_image_tag(current_user,:size=>22) %>
+  				<%= gravitar_image_tag(current_user,:size=>20) %>
   				<%= link_to 'Preferences',set_prefs_url,{:title =>'Choose how the site works for you'}%><br />
   				<%= link_to 'Log Out',logout_url,{:title => 'End your session'}%>
   				<% else %>
@@ -26,13 +26,19 @@ global_banner = CONFIG[:global_banner] && !session[:banner_closed]
   				<% end %>
   			</div>
 				<%= render(:partial => 'shared/nav_flowplace') %>
-				<img class='logo' src="/images/logo.png" height="30" width="30" alt="logo"><img height="30" class='logo' src="/images/logo_txt.jpg" alt="flowplace">
+				<img class='logo' src="/images/logo.png" height="28" width="28" alt="logo"><img height="28" class='logo' src="/images/logo_txt.jpg" alt="flowplace">
 		  </div>
 
 			<div id="top_bar">
 				<div class='wrap_to_center'>
 				<div id="header">
-					<%= render(:partial => 'shared/nav') %>
+				  <%if @current_circle.nil? %>
+			      <img class='logo' src="/images/logo.png" height="35" width="35" alt="logo"><img height="35" src="/images/logo_txt.jpg" alt="flowplace">
+			      <% if logged_in? %> Jump to: <%= my_circles_jump_select(true) %> <%end%>
+				  <%else%>
+				    <%= render_currency_icon(@current_circle,35)%> <%= my_circles_jump_select %>
+					  <%= render(:partial => 'shared/nav') %>
+				  <%end%>
 				</div>
 				</div>
 			</div>
@@ -68,4 +74,8 @@ global_banner = CONFIG[:global_banner] && !session[:banner_closed]
 			%>
 		</p>
 	</body>
+	<%= observe_field :current_circle,
+  	:frequency => 0.5,
+  	:function => 'location = "/dashboard?current_circle="+$F("current_circle")'
+  %>
 </html>

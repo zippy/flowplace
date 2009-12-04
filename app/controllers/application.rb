@@ -71,6 +71,17 @@ class ApplicationController < ActionController::Base
   end
 
   private
+  
+  def set_current_circle
+    if params[:current_circle]
+      @current_circle = Currency.find(params[:current_circle])
+      session[:current_circle] = @current_circle.id
+    elsif session[:current_circle]
+      @current_circle = Currency.find(session[:current_circle])
+    end
+    @my_circles = current_user.circle_memberships
+    @current_circle ||= @my_circles[0]
+  end
 
   ################################################################################
   include(Bolt::BoltControllerMethods)

@@ -1,4 +1,5 @@
 class HomeController < ApplicationController
+  before_filter :set_current_circle,:only => :home
   helper :activities
   require_authentication :except => [:logged_out,:home]
   require_authorization :admin,:only => :version
