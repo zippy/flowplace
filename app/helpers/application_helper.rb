@@ -97,7 +97,12 @@ module ApplicationHelper
   end
   
   def my_circles_jump_select(include_blank = false)
-    select_tag('current_circle',options_for_select(my_circles_for_select(include_blank),@current_circle))
+    circles = my_circles_for_select(include_blank)
+    if circles.size > 1
+      "Jump to: " + select_tag('current_circle',options_for_select(circles,@current_circle))
+    else
+      ''
+    end
   end
   def my_circles_for_select(include_blank = false)
     @my_circles ||= current_user.circle_memberships
