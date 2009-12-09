@@ -24,8 +24,9 @@ ActionController::Routing::Routes.draw do |map|
   map.resources :circles, :member => {
     :players => :get, :set_players => :put,
     :currencies => :get, :set_currencies => :put,
-    :members => :get, :set_members => :put
-    }
+    :set_members => :put
+    },
+    :collection => { :members => :get}
 
   map.resources :weals
   map.resources :weals, :member => {

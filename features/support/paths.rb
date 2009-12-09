@@ -50,6 +50,8 @@ module NavigationHelpers
       circle = $1
       i = Currency.find_by_name(circle)
       "/circles/#{i.id}"
+    when /the current circle members page/
+      "/circles/members"
     when /the players page for "([^\"]*)"/
       circle = $1
       i = Currency.find_by_name(circle)

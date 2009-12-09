@@ -1,4 +1,5 @@
 class CirclesController < ApplicationController
+  before_filter :set_current_circle,:only => :members
   # GET /circles
   # GET /circles.xml
   def index
@@ -146,6 +147,12 @@ class CirclesController < ApplicationController
       format.xml  { head :ok }
     end
   end
+  
+  #GET /circles/members
+  def members
+    @users = @current_circle.api_user_accounts('member').collect{|ca| ca.user}.uniq
+  end
+  
   private
   def setup_players_users
     @users = perform_search(OrderPairs,SearchPairs,SearchFormParams,User)

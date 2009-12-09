@@ -190,12 +190,17 @@ class Currency < ActiveRecord::Base
     script
   end
 
-  def api_user_accounts(user,player_class)
-    CurrencyAccount.find(:all,:conditions => ["user_id = ? and currency_id = ? and player_class = ?",user.id,self.id,player_class])
+  def api_user_accounts(player_class,user = nil)
+    opts = ["currency_id = ? and player_class = ?",self.id,player_class]
+    if !user.nil?
+      opts[0]+= " and user_id = ?"
+      opts.push user.id
+    end
+    CurrencyAccount.find(:all,:conditions => opts)
   end
   
   def api_user_isa?(user,player_class)
-    !api_user_accounts(user,player_class).empty?
+    !api_user_accounts(player_class,user).empty?
   end
   
   def setup_model(model,field_value)
@@ -406,7 +411,7 @@ class CurrencyMembrane
 
   # TODO we really ought to be adding members using the membrane 'name_user' play!!
   #if player_class == 'member'
-  #  matrice_currency_account = @circle.api_user_accounts(current_user,'matrice')[0]
+  #  matrice_currency_account = @circle.api_user_accounts('matrice',current_user)[0]
   #  play = {
   #    'from' => matrice_currency_account,
   #    'user' => user,

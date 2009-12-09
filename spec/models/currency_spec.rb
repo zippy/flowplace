@@ -217,16 +217,29 @@ describe Currency do
       plays = Play.find(:all)
       plays.size.should == 1
     end
-    it "should be able to answer if a user is a given player class in the currency" do
-      @account2 = create_currency_account(@user,@currency,'admin')
-      @currency.api_user_accounts(@user,'member').should == [@account]
-      @currency.api_user_accounts(@user,'admin').should == [@account2]
-      @currency.api_user_isa?(@user,'member').should == true
-      @currency.api_user_isa?(@user,'admin').should == true
-      @currency.api_user_isa?(@user,'fish').should == false
-      @user2 = create_user('u2')
-      @currency.api_user_isa?(@user2,'member').should == false
-      @currency.api_user_accounts(@user2,'member').should == []
+    
+    describe 'api_user_accounts' do
+      before(:each) do
+        @account2 = create_currency_account(@user,@currency,'admin')
+        @user2 = create_user('u2')
+      end
+      it "should be able to return a list of all the accounts of a given player class in a currency" do
+        @account3 = create_currency_account(@user2,@currency,'member')
+        @currency.api_user_accounts('admin').should == [@account2]
+        accounts = @currency.api_user_accounts('member')
+        accounts.should == [@account,@account3]
+        accounts = @currency.api_user_accounts('admin')
+        accounts.should == [@account2]
+      end
+      it "should be able to answer if a user is a given player class in the currency" do
+        @currency.api_user_accounts('member',@user).should == [@account]
+        @currency.api_user_accounts('admin',@user).should == [@account2]
+        @currency.api_user_isa?(@user,'member').should == true
+        @currency.api_user_isa?(@user,'admin').should == true
+        @currency.api_user_isa?(@user,'fish').should == false
+        @currency.api_user_isa?(@user2,'member').should == false
+        @currency.api_user_accounts('member',@user2).should == []
+      end
     end
     describe 'utilities' do
       it "get_play_script should return the script of the named play" do

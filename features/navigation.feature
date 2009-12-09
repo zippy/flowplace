@@ -5,6 +5,13 @@ Feature: Navigation feedback
 
   Background:
     Given I am logged into my account
+    Given a circle "the circle"
+    When I go to the players page for "the circle"
+    When I select "Show all" from "search_on_main"
+    And I press "Search"
+    And I check "users_1"
+    When I select "member" from "player_class"
+    And I press "Submit"
     Given I have "admin" privs
     Given I have "accessAccounts" privs
 
@@ -22,6 +29,9 @@ Feature: Navigation feedback
     When I go to the assets page
     Then I should not see "Actions" as the current tab
     And I should see "Assets" as the current tab
+    When I go to the current circle members page
+    Then I should see "Members" as the current tab
+    And I should not see "Assets" as the current tab
     When I go to the currencies page
     And I should see "Currencies" as the current tab
     When I go to the circles page

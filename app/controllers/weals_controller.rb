@@ -1,5 +1,4 @@
 class WealsController < ApplicationController
-  before_filter :set_current_circle
   include Lister
   before_filter :determine_weal_phase_from_url,:set_current_circle
   # GET /weals|intentions|actions|assets
