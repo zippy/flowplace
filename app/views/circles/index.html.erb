@@ -10,7 +10,7 @@ for circle in @membranes
   is_matrice = circle.api_user_isa?(current_user,'matrice')
 %>
   <tr class="<%= i%2 == 0 ? ' odd' : ''%>">
-    <td><%= render_currency_icon(circle,20) %></td>
+    <td><%= render_currency_icon(circle) %></td>
     <td> <%=link_to circle.name, is_matrice ? edit_circle_path(circle) : circle_path(circle)  %></td>
     <td> <% if is_matrice %>
       <%= link_to 'Players', players_circle_path(circle)%>

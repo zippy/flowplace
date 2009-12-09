@@ -26,18 +26,12 @@
 
 
 #header {
-	height: 30px;
-	width: 950px;
-	color: #A6AAAB;
+	width: 960px;
+	color: #fff;
 	font-weight: bold;
 	font-family: Verdana,Arial,sans serif;
 }
-#header p {
-	float:left;
-}
-#header img {
-	float:left;
-}
+
 #flowplace_bar img.logo {
 	float: right;
 }
@@ -46,6 +40,23 @@
 	margin-right: 5px;
 	float:right;
 	color: #A6AAAB;
+}
+
+#circle_name {
+	float:left;
+}
+#circle_logo {
+	float:left;
+}
+#circle_name {
+	margin-left: 10px;
+	padding-top: 4px;
+	font-size: 16pt;
+}
+#circle_jump_select {
+	font-size: 10pt;
+	font-weight: normal;
+	float:right;
 }
 
 #login_stuff {

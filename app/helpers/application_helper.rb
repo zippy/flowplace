@@ -106,8 +106,11 @@ module ApplicationHelper
     result
   end
   
-  def render_currency_icon(currency,size=20)
-    image_tag currency.api_icon, :height=>size, :width=>size, :title=> "#{currency.name}: #{currency.description}"
+  def render_currency_icon(currency,options = {:size=>20})
+    opts = {:height=>options[:size], :width=>options[:size], :title=> "#{currency.name}: #{currency.description}"}
+    options.delete(:size)
+    opts.update(options)
+    image_tag currency.api_icon, opts
   end
 
   def humanize_currencies(currencies)
