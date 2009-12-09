@@ -83,6 +83,7 @@ ActionMailer::Base.delivery_method = :smtp
 ActionMailer::Base.perform_deliveries = true
 ActionMailer::Base.raise_delivery_errors = true
 
+require 'lib/country_select'
 if File.exists?('config/flowplace_config.rb')
   require 'config/flowplace_config.rb'
 else

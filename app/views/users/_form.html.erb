@@ -11,7 +11,7 @@
 <tr><td align="left">City: </td><td><%= form.text_field :city %></td></tr>
 <tr><td align="left">State: </td><td><%= form.select :state, StateNameOptions %></td></tr>
 <tr><td align="left">Zip/Postal Code: </td><td><%= form.text_field :zip %></td></tr>
-<tr><td align="left">Country: </td><td><%= form.select :country, country_options_for_select %></td>
+<tr><td align="left">Country: </td><td><%= form.country_select :country %></td>
 </tr>
 </table>
 
