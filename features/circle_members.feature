@@ -5,17 +5,7 @@ Feature: circle members
 
   Background:
     Given I am logged into my account
-    And a circle "the circle"
-    Given A user "joe"
-    Given A user "jane"
-    When I go to the players page for "the circle"
-    When I select "Show all" from "search_on_main"
-    And I press "Search"
-    And I check "users_1"
-    And I check "users_3"
-    And I check "users_4"
-    When I select "member" from "player_class"
-    And I press "Submit"
+    Given a circle "the circle" with members "joe,jane"
     And I go to the logout page
 
   Scenario: User goes to the members tab of a circle

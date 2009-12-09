@@ -114,7 +114,7 @@ Feature: circles
     And I press "Search"
     And I should see "joe" in row 1 column 0
     And I should see "--" in row 1 column 1
-    When I check "users_3"
+    When I check the box for "joe"
     When I select "member" from "player_class"
     And I press "Submit"
     Then I should see "Circle was successfully updated."
@@ -127,7 +127,7 @@ Feature: circles
 # the ones in the session from a search.
   Scenario: matrice adds existing user as member to a circle
     When I go to the players page for "the circle"
-    When I check "users_1"
+    When I check the box for "anonymous"
     When I select "member" from "player_class"
     And I press "Submit"
     Then I should see "Circle was successfully updated."

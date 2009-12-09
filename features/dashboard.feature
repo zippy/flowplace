@@ -12,9 +12,12 @@ Feature: dashboard
     Given a "MutualCredit" currency "Z"
     Given I go to the logout page
 
-  Scenario: User looks at their currencies
+  Scenario: User looks at their dashboard and sees the currencies in their circle
     When I log in as "anonymous"
     Then I should be taken to the dashboard page
+    And I should see "X"
+    And I should see "Y"
+    And I should not see "Z"
 
   Scenario: Users makes a play in a currency
     Given "Joe" is a "member" of currency "X"

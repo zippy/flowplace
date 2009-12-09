@@ -9,7 +9,7 @@ Feature: Navigation feedback
     When I go to the players page for "the circle"
     When I select "Show all" from "search_on_main"
     And I press "Search"
-    And I check "users_1"
+    And I check the box for "anonymous"
     When I select "member" from "player_class"
     And I press "Submit"
     Given I have "admin" privs
