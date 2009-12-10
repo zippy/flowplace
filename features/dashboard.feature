@@ -4,20 +4,22 @@ Feature: dashboard
   I want to be able coordinate all my action from one place
 
   Background:
-    Given I am logged into my account
     Given a "MutualCredit" currency "X"
-    Given I am a "member" of currency "X"
+    Given "joe" is a "member" of currency "X"
     Given a "MutualCredit" currency "Y"
-    Given I am a "member" of currency "Y"
+    Given "joe" is a "member" of currency "Y"
     Given a "MutualCredit" currency "Z"
+    Given I am logged into my account
+    And a circle "the circle" with members "joe,jane,jacob"
     Given I go to the logout page
 
   Scenario: User looks at their dashboard and sees the currencies in their circle
-    When I log in as "anonymous"
+    When I log in as "joe"
     Then I should be taken to the dashboard page
-    And I should see "X"
-    And I should see "Y"
-    And I should not see "Z"
+    And I should see "Dashboard" as the current tab
+    And I should see an "X" dashboard item
+    And I should see a "Y" dashboard item
+    And I should not see a "Z" dashboard item
 
   Scenario: Users makes a play in a currency
     Given "Joe" is a "member" of currency "X"

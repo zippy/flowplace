@@ -13,9 +13,10 @@ Given /^I am an* "([^\"]*)" of currency "([^\"]*)"/ do |player_class,currency_na
 end
 
 Given /^"([^\"]*)" is an* "([^\"]*)" of currency "([^\"]*)"/ do |user,player_class,currency_name|
-  joe = create_user(user)
+  @user = User.find_by_user_name(user)
+  create_user(user) if @user.nil?
   c = Currency.find_by_name(currency_name)
-  @currency_account = CurrencyAccount.create!({:user => joe,:name => "#{@user.full_name}'s #{c.name} #{player_class} account", :currency => c, :player_class => player_class})
+  @currency_account = CurrencyAccount.create!({:user => @user,:name => "#{@user.full_name}'s #{c.name} #{player_class} account", :currency => c, :player_class => player_class})
   if c.respond_to?(:xgfl)
     @currency_account.setup
     @currency_account.save
