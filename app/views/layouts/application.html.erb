@@ -25,8 +25,7 @@ global_banner = CONFIG[:global_banner] && !session[:banner_closed]
   					<%= link_to 'Log In',login_url,{:title => 'Log in'}%>
   				<% end %>
   			</div>
-				<%= render(:partial => 'shared/nav_flowplace') %>
-				<img class='logo' src="/images/logo.png" height="28" width="28" alt="logo"><img height="28" class='logo' src="/images/logo_txt.jpg" alt="flowplace">
+				<a href="/dashboard?current_circle="><img class='logo' src="/images/logo.png" height="28" width="28" alt="logo"><img height="28" class='logo' src="/images/logo_txt.jpg" alt="flowplace"></a>
 		  </div>
 
 			<div id="top_bar">
@@ -34,7 +33,10 @@ global_banner = CONFIG[:global_banner] && !session[:banner_closed]
 				<div id="header">
 				  <%if @current_circle.nil? %>
 			       <div id='circle_header'><img id='circle_logo' src="/images/logo.png" height="35" width="35" alt="logo"><div id='circle_name'>Flowplace</div></div>
-			      <% if logged_in? %> <div id="circle_jump_select"><%= my_circles_jump_select(true) %></div><%end%>
+			      <% if logged_in? %>
+			      <div id="circle_jump_select"><%= my_circles_jump_select(true) %></div>
+    				<%= render(:partial => 'shared/nav_flowplace') %>
+			      <%end%>
 				  <%else%>
 				    <div id='circle_header'><%= render_currency_icon(@current_circle,:size =>35,:id=>"circle_logo")%><div id='circle_name'><%=@current_circle.name%></div></div> <div id="circle_jump_select"><%= my_circles_jump_select %> </div>
 					  <%= render(:partial => 'shared/nav') %>

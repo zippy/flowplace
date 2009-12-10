@@ -40,9 +40,6 @@ class HomeController < ApplicationController
   def logged_out
   end
 
-  def admin
-  end
-
   def welcome
   end
   

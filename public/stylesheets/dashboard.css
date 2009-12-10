@@ -1,0 +1,25 @@
+.dashboard_item {
+	display: block;
+	margin: 5px;
+	margin-bottom: 10px;
+	margin-top: 10px;
+	padding: 5px;
+	background: #eee;
+	border: 1px solid #999;
+}
+
+.dashboard_title {
+	margin-top: 10px;
+	margin-bottom: 2px;
+}
+.dashboard_explanation {
+	margin-left: 30px;
+}
+
+.dashboard_note {
+	font-style: italic;
+}
+
+#dashboard_content ul {
+	margin-top:5px;
+}

@@ -1,7 +1,8 @@
-<ul id="flowplace_nav">
+<ul id="nav">
 <% if logged_in? %>
 
-  <li><%= nav_link 'Circles',circles_path,'View and manage circles'%></li>
+  <li><%= nav_link 'Dashboard', '/dashboard?current_circle=','Take action', '/dashboard'%></li>
+  <li><%= nav_link 'Circles',circles_path,'Join, create and manage circles'%></li>
   <% if current_user.can?(:admin) %>
   <li><%= nav_link 'Currencies', currencies_path,'Create an manage currencies'%></li>
   <%end%>

@@ -1,6 +1,6 @@
-<% @title='Dashboard' %>
-<%= render(:partial => 'sub_nav') %>
+<% @title= h(@current_circle.name) +' Dashboard' %>
 
+<%= render(:partial => 'sub_nav') %>
 
 <% for currency_account in @currency_accounts 
   currency = currency_account.currency

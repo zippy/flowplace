@@ -1,0 +1,65 @@
+<% @title='Flowplace Dashboard' %>
+<%= stylesheet_link_tag 'dashboard' %>
+
+<%if @my_circles.size == 0%>
+<div class="dashboard_item" id="dashboard_welcome">
+  <p class="dashboard_title">Welcome!</p>
+  You are not yet part of any circles.  Please click on circles below to begin exploring the communities in the flowplace.
+</div>
+<%end%>
+
+<div class="dashboard_item"id="dashboard_circles">
+  <p class="dashboard_title"><%= link_to 'Circles', circles_url%> </p>
+  <% unless current_user.has_preference('terse') %>
+  <div class="dashboard_explanation">
+    Browse circles, request to join them, <% if current_user.can?(:admin) %> create new ones,<%end%> etc...
+  </div>
+  <% end %> 
+</div>
+
+<div class="dashboard_item"id="dashboard_currencies">
+  <p class="dashboard_title"><%= link_to 'Currencies', circles_url%> </p>
+  <% unless current_user.has_preference('terse') %>
+  <div class="dashboard_explanation">
+    Browse currencies, and create new ones.
+  </div>
+  <% end %> 
+</div>
+
+<% if current_user.can?(:accessAccounts) %>
+  <div class="dashboard_item" id="dashboard_accounts">
+  <p class="dashboard_title"><%= link_to 'Accounts', users_url%> </p>
+  <% unless current_user.has_preference('terse') %>
+    <% if current_user.can?(:admin) %>
+        <div class="dashboard_explanation">
+        Add new accounts, change account privileges, delete accounts, etc.
+      </div>  
+      <% else %>
+      <div class="dashboard_explanation">
+        Look up accounts, update their info, etc.
+      </div>  
+      <% end %>
+  <% end %> 
+</div>
+<% end %>
+
+<% if current_user.can?(:admin) %>
+<div class="dashboard_item" id="dashboard_admin">
+  <p class="dashboard_title first_focus">Administrator Features</p>
+  <ul>
+    <li><%= link_to 'Logged-in users',logged_in_users_url %></li>
+  </ul>
+  <ul>
+    <li><%= link_to 'All Activities',activities_url %></li>
+  </ul>
+  </div>
+<% end %>
+
+<% if current_user.can?(:dev) %>
+<div class="dashboard_item" id="dashboard_dev">
+  <p class="dashboard_title">Developer Features</p>
+  <ul>
+    <li><%= link_to 'System Info',sys_info_url()%></li>
+  </ul>  
+</div>
+<% end %>

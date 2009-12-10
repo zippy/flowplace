@@ -73,13 +73,17 @@ class ApplicationController < ActionController::Base
   private
   
   def set_current_circle
+    @my_circles = current_user.circle_memberships
     if params[:current_circle]
+      if !Currency.exists?(params[:current_circle])
+        @current_circle = session[:current_circle] = nil
+        return
+      end
       @current_circle = Currency.find(params[:current_circle])
       session[:current_circle] = @current_circle.id
     elsif session[:current_circle]
       @current_circle = Currency.find(session[:current_circle])
     end
-    @my_circles = current_user.circle_memberships
     @current_circle ||= @my_circles[0]
   end
 
