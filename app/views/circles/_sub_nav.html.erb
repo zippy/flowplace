@@ -1,7 +1,9 @@
 <% existing = @circle && !@circle.new_record?%>
 <ul id="sub_nav">
   <li><%= sub_nav_link 'Browse', circles_path, 'List all circles' %>
+  <% if current_user.can?(:admin) %>
   <li><%= sub_nav_link 'New',new_circle_path,'Create a new circle'%></li>
+  <% end %>
   <%if existing %>
     <li><%= subtab('View',circle_path(@circle)) %></li>
     <%if @current_user_is_matrice%>

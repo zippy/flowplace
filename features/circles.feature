@@ -1,17 +1,19 @@
 Feature: circles
-  In order to create boundaries between integral systems
+  In order to participate in the constellation of integral systems
   As a user
-  I want to be a part of, and be able to create circles
+  I want to be able to see and request admission to circles
   
   Background:
     Given I am logged into my account
     And a circle "the circle"
-
-  Scenario: a new user can see this list of circles on the system and can get more info about them
     When I go to the logout page
-    And I am logged into my "new" account
-    When I go to on the circles page
-    Then I should see "the circle"
+
+  Scenario: a new user sees a list of circles on the system and can get more info about them
+    When I am logged into my "new" account
+    Then I should be taken to the circles page
+    And I should see "Circles" as the current tab
+    And I should see "Browse" as the active sub-tab
+    And I should see "the circle"
     When I follow "the circle"
     Then I should be taken to the show circle page for "the circle"
     And I should see "View" as the active sub-tab

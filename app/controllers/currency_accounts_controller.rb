@@ -25,11 +25,15 @@ class CurrencyAccountsController < ApplicationController
   # GET /dashboard
   # GET /dashboard.xml
   def dashboard
-    @currency_accounts = current_user.currency_accounts
+    if @current_circle.nil?
+      redirect_to(circles_path)
+    else
+      @currency_accounts = current_user.currency_accounts
 
-    respond_to do |format|
-      format.html # index.html.erb
-      format.xml  { render :xml => @currency_accounts }
+      respond_to do |format|
+        format.html # index.html.erb
+        format.xml  { render :xml => @currency_accounts }
+      end
     end
   end
 
