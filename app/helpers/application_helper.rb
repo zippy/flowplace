@@ -310,7 +310,7 @@ module ApplicationHelper
 
   def subtab(tab,path)
     if request.path == path
-      "<p>#{tab}</p>"
+      %Q|<p class="active">#{tab}</p>|
     else
       link_to tab, path
     end

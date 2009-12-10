@@ -24,7 +24,7 @@ end
 
 Then /^I should see "([^\"]*)" as the active sub-tab$/ do |tab_name|
   within('#sub_nav') do |scope|
-    within('p') do |s|
+    within('.active') do |s|
       s.should contain(tab_name)
     end
   end
