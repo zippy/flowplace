@@ -10,9 +10,5 @@
 	<li><%= nav_link 'Accounts',users_path,'Add or modify user accounts'%></li>
 	<% end %>
 
-	<% if current_user.can?(:admin) %>
-	<li><%= nav_link 'Admin',admin_path,'Site Administration Options'%></li>
-	<% end %>
-
 <%end%>
 </ul>

@@ -140,44 +140,6 @@ ul#nav li a:hover {background: gray;}
 ul#nav li a.active {background: white;color:#000000;}
 ul#nav li.last a {margin-right:0;}
 
-/* ----------FLOWPLACE NAVIGATION TEXT---------- */
-
-
-#flowplace_nav {
-	font-size: 8pt;
-	margin:0px 0px 0px 0px;
-	padding:0px;
-	font-weight: normal;
-}
-	
-#flowplace_nav a:link {
-	color: #ffffff;
-	text-decoration: none;
-	}
-
-#flowplace_nav a:active {
-	color: #ffffff;
-	}
-
-#flowplace_nav a:visited {
-	color: #ffffff;
-	text-decoration: none;
-	}
-	
-#flowplace_nav a:hover {
-	color: white;
-	text-decoration: none;
-	border-color: #70787F;
-	}
-
-ul#flowplace_nav {float:right;display:block;margin-top:7px;list-style:none;}
-ul#flowplace_nav li {display:block;float:left;}
-ul#flowplace_nav li a {display:block;float:left;margin:0px;padding: 0 10px;}
-ul#flowplace_nav li a:hover {background: gray;}
-ul#flowplace_nav li a.active {background: white;color:#000000;}
-ul#flowplace_nav li.last a {margin-right:0;}
-
-
 	/* ----------Sub NAVIGATION TEXT---------- */
 
 
