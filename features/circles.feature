@@ -8,9 +8,9 @@ Feature: circles
     And a circle "the circle"
     When I go to the logout page
 
-  Scenario: a new user sees a list of circles on the system and can get more info about them
+  Scenario: a new user explores the list of circles on the system and gets more info about them
     When I am logged into my "new" account
-    Then I should be taken to the circles page
+    And I go to the circles page
     And I should see "Circles" as the current tab
     And I should see "Browse" as the active sub-tab
     And I should see "the circle"
