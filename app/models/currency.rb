@@ -432,7 +432,24 @@ class CurrencyMembrane
 
   def currencies
     @self = CurrencyAccount.find(:first, :conditions => ["name = ? and player_class = 'self'",circle_user_name])
-    raise "Couldn't find self currency account for #{name}" if @self.nil?
+    
+    ####TODO remove this code!!  It's here to add in a self-player to circles that didn't have one
+    # by accident
+    if @self.nil?
+      circle_user = User.find_by_user_name(self.circle_user_name)
+      if circle_user.nil?
+        circle_user = User.new({:user_name => self.circle_user_name, :first_name => self.name,:last_name => "Circle",:email=>'dummy@email.com'})
+        circle_user.circle = self
+        if !(circle_user.create_bolt_identity(:user_name => :user_name,:password => 'password') && circle_user.save)
+          raise ("Error creating circle user: "+ circle_user.errors.full_messages.join('; '))
+        end
+      end
+      @self = self.add_player_to_circle('self',circle_user)
+    end
+    ########
+    
+    #RESTORE THIS LINE
+    #raise "Couldn't find self currency account for #{name}" if @self.nil?  
     Currency.find(:all, :conditions => ['id in (?)',@self.get_state['currencies'].keys])
   end
 
