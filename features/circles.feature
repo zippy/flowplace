@@ -5,7 +5,7 @@ Feature: circles
   
   Background:
     Given I am logged into my account
-    And a circle "the circle"
+    Given a circle "the circle" with members "joe,jane"
     When I go to the logout page
 
   Scenario: a new user explores the list of circles on the system and gets more info about them
@@ -18,4 +18,21 @@ Feature: circles
     Then I should be taken to the show circle page for "the circle"
     And I should see "View" as the active sub-tab
 
+  Scenario: a new user who hasn't joined a circle doesn't see the jump pop-up
+    When I am logged into my "new" account
+    And I go to the flowplace dashboard page
+    Then I should not see "Jump to"
+    When I go to the dashboard page
+    Then I should not see "Jump to"
 
+  Scenario: a user navigates between their circles and the flowplace
+    When I am logged into my "joe" account
+    And I go to the flowplace dashboard page
+    And I should see "Jump to"
+    Then I select "Flowplace" from "Jump to"
+    And I select "the circle" from "Jump to"
+    When I go to the dashboard page
+    Then I should see "Jump to"
+    And I select "Flowplace" from "Jump to"
+    And I select "the circle" from "Jump to"
+    

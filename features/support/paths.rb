@@ -10,6 +10,8 @@ module NavigationHelpers
       '/'
     when /the dashboard page/
       '/dashboard'
+    when /the flowplace dashboard page/
+      '/dashboard?current_circle='
     when /the holoptiview page/
       '/'
     when /the new intentions page/

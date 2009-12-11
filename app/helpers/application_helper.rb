@@ -96,18 +96,18 @@ module ApplicationHelper
     options_for_select([['-','']] + users.collect{|u| [u.full_name,u.id]})
   end
   
-  def my_circles_jump_select(include_blank = false)
-    circles = my_circles_for_select(include_blank)
+  def my_circles_jump_select(include_flowplace = true)
+    circles = my_circles_for_select(include_flowplace)
     if circles.size > 1
-      "Jump to: " + select_tag('current_circle',options_for_select(circles,@current_circle))
+      label_tag('current_circle', 'Jump to:') + select_tag('current_circle',options_for_select(circles,@current_circle ? @current_circle.id : nil))
     else
       ''
     end
   end
-  def my_circles_for_select(include_blank = false)
+  def my_circles_for_select(include_flowplace = true)
     @my_circles ||= current_user.circle_memberships
     result = @my_circles.collect {|c| [c.name,c.id]}
-    result = [['-',nil]].concat(result) if include_blank
+    result = [['Flowplace',nil]].concat(result) if include_flowplace
     result
   end
   
