@@ -7,6 +7,9 @@
   currency = currency_account.currency
 %>
   <div class="dashboard_item" id="dashboard_<%= currency.name_as_html_id%>" title="<%=h currency.description%>">
+    <div class="dashboard_play">
+      <%= render(:partial => 'play', :object => currency_account) %>
+    </div>
     <p class="dashboard_title">
       <%= render_currency_icon(currency) %> <%= link_to currency.name, play_currency_account_url(currency_account) %><% if !currency.symbol.blank? %>&nbsp;(<%=currency_account.currency.symbol%>)<%end%>
     </p>

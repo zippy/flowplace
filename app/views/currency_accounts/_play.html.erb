@@ -1,0 +1,18 @@
+<% currency_account = play
+currency = currency_account.currency;
+player_class = currency_account.player_class
+play_names = currency.api_plays.collect {|name,attrs| (!(name =~ /^_/) && attrs[:player_classes] == player_class) ? name : nil}.compact
+play_name = play_names[0]
+%>
+<% if play_name %>
+<ul id="play_names">
+  <% for name in play_names%>
+    <li><%= playtab(name,currency_account) %></li>
+  <% end %>
+</ul>
+<div id="play_form">
+  <%= render_play_form(currency,currency_account,play_name)%>
+</div>
+<% else %>
+  No plays available in this currency
+<% end %>

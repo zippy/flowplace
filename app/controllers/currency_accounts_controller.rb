@@ -205,7 +205,7 @@ class CurrencyAccountsController < ApplicationController
     respond_to do |format|
       if !@error
         flash[:notice] = 'The play was recorded.'
-        format.html { redirect_to(my_currencies_path) }
+        format.html { redirect_to(dashboard_path) }
         format.xml  { head :ok }
       else
         flash[:notice] = "The play could not be recorded. Error: #{@error}"

@@ -222,7 +222,7 @@ module ApplicationHelper
       when 'range'
         case fields[field_name]['configure_with']
         when 'enumerable_range'
-          r = enumerable_range_to_options_array(currency.configuration["#{play}.#{field_name}"])
+          r = enumerable_range_to_options_array(currency.configuration ? currency.configuration["#{play}.#{field_name}"] : "")
         else
           r = (fields[field_name]['start']..fields[field_name]['end']).to_a
         end

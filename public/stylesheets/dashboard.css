@@ -23,3 +23,15 @@
 #dashboard_content ul {
 	margin-top:5px;
 }
+
+.dashboard_play {
+	float: right;
+	background: #FFF;
+	border: 1px solid #999;
+	padding: 10px;
+}
+
+.dashboard_play h3 {
+	margin: 0px;
+	font-size: 10pt;
+}
