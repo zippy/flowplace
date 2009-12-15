@@ -8,8 +8,9 @@ Feature: circle matrice
     And a circle "the circle"
 
   Scenario: user creates a circle and sees it in the circles page and user is matrice so can edit the circle and a user should be created for the circle
+    Given I have "admin" privs
     When I go to the circles page
-    And I follow "New circle"
+    And I follow "New"
     And I fill in "name" with "my circle"
     And I fill in "password" with "password"
     And I fill in "confirmation" with "password"
@@ -28,8 +29,9 @@ Feature: circle matrice
     And I should see "self"
 
   Scenario: user tries to create a circle but enters mismatched password
+    Given I have "admin" privs
     When I go to the circles page
-    And I follow "New circle"
+    And I follow "New"
     And I fill in "name" with "my circle"
     And I fill in "password" with "password"
     And I fill in "confirmation" with "xxx"

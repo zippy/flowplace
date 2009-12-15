@@ -46,13 +46,11 @@ img
 	color: #A6AAAB;
 }
 
-#circle_name {
-	float:left;
-}
 #circle_logo {
 	float:left;
 }
-#circle_name {
+#circle_header_name {
+	float:left;
 	margin-left: 10px;
 	padding-top: 4px;
 	font-size: 16pt;
