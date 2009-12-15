@@ -8,10 +8,13 @@ module NavigationHelpers
       '/logout'
     when /the home page/
       '/'
-    when /the dashboard page/
+    when /^the dashboard page$/
       '/dashboard'
     when /the flowplace dashboard page/
       '/dashboard?current_circle='
+    when /the dashboard page for "([^\"]*)"/
+      i = Currency.find_by_name($1)
+      '/dashboard?current_circle='+i.id.to_s
     when /the holoptiview page/
       '/'
     when /the new intentions page/
@@ -74,14 +77,17 @@ module NavigationHelpers
       '/users'
     when /the admin page/
       '/admin'
-    when /the currency account play page for "([^\"]*)"/
+    when /^the currency account play page for "([^\"]*)$"/
       currency_accounts_paths(:play,$1)
-    when /the currency account history page for "([^\"]*)"/
+    when /^the currency account history page for "([^\"]*)$"/
       currency_accounts_paths(:history,$1)
     when /the "([^\"]*)" play page for my "([^\"]*)" account in "([^\"]*)"/
-      (play_name,player_class,currency) = [$1,$2,$3]
-      currency = Currency.find_by_name(currency)
-      currency_account = CurrencyAccount.find(:first,:conditions => ["user_id = ? and player_class = ? and currency_id = ?",@user.id,player_class,currency.id])
+      user = controller.current_user
+      (play_name,player_class,currency_name) = [$1,$2,$3]
+      currency = Currency.find_by_name(currency_name)
+      raise "couldn't find currency '#{currency_name}' while building path" if currency.nil?
+      currency_account = CurrencyAccount.find(:first,:conditions => ["user_id = ? and player_class = ? and currency_id = ?",user.id,player_class,currency.id])
+      raise "couldn't find a currency account for #{user.user_name} as #{player_class} while building path" if currency_account.nil?
       "/currency_accounts/#{currency_account.id}/play?name=#{play_name}"
     when /the preferences page/
       "/users/#{controller.current_user.id}/preferences"
@@ -95,6 +101,7 @@ end
 
 def currency_accounts_paths(kind,locator)
   ca = CurrencyAccount.find_by_name(locator)
+  raise CurrencyAccount.all.collect(&:name).inspect
   raise "couldn't find currency account for '#{locator}' while building path" if ca.nil?
   case kind
   when :play

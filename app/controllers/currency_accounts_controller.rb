@@ -25,7 +25,10 @@ class CurrencyAccountsController < ApplicationController
   # GET /dashboard
   # GET /dashboard.xml
   def dashboard
-    @currency_accounts = current_user.currency_accounts
+    if !@current_circle.nil?
+      currencies_in_circle = @current_circle.currencies
+      @currency_accounts = current_user.currency_accounts.find_all {|ca| currencies_in_circle.include?(ca.currency) || ca.currency==@current_circle}
+    end
 
     respond_to do |format|
       format.html { render :template => 'currency_accounts/dashboard_flowplace' if @current_circle.nil?}

@@ -6,7 +6,7 @@
 <% for currency_account in @currency_accounts 
   currency = currency_account.currency
 %>
-  <div class="dashboard_item" id="dashboard_<%= currency.name_as_html_id%>" title="<%=h currency.description%>">
+  <div class="dashboard_item" id="dashboard_<%= currency.name_as_html_id%>_<%=currency_account.player_class%>" title="<%=h currency.description%>">
     <div class="dashboard_play">
       <%= render(:partial => 'play', :object => currency_account) %>
     </div>

@@ -139,6 +139,15 @@ Feature: circle matrice
     And I should see "View" as a sub-tab
     And I should see "Edit" as a sub-tab
     And I should see "There are no currencies in this circle."
+  
+  Scenario: matrice binds a currency to a circle
+    Given a "MutualCredit" currency "X"
+    When I go to the "bind_currency" play page for my "matrice" account in "the circle"
+    And I select "X" from "play_currency"
+    And I select "the_circle_circle" from "play_to"
+    And I fill in "play_name" with "X"
+    And I press "Record Play"
+    Then I should see "The play was recorded."
 
   Scenario: matrice can delete a circle but a non-matrice cannot
     When I go to the circles page
