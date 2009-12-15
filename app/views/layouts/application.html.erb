@@ -40,7 +40,7 @@ global_banner = CONFIG[:global_banner] && !session[:banner_closed]
     				<%= render(:partial => 'shared/nav_flowplace') %>
 			      <%end%>
 				  <%else%>
-				    <div id='circle_header'><%= render_currency_icon(@current_circle,:size =>35,:id=>"circle_logo")%><div id='circle_heaer_name'><%=@current_circle.name%></div></div> <div id="circle_jump_select"><%= my_circles_jump_select %> </div>
+				    <div id='circle_header'><%= render_currency_icon(@current_circle,:size =>35,:id=>"circle_logo")%><div id='circle_header_name'><%=@current_circle.name%></div></div> <div id="circle_jump_select"><%= my_circles_jump_select %> </div>
 					  <%= render(:partial => 'shared/nav') %>
 				  <%end%>
 				</div>
