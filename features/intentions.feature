@@ -4,12 +4,20 @@ Feature: Intentions
   I want to be able to declare and manage my intentions in the system
 
   Background:
-    Given I am logged into my account
     Given a "MutualCredit" currency "X"
+    And a "MutualCredit" currency "Y"
+    Given I am logged into my "matrice" account
+    And a circle "the circle" with members "joe,jane,jacob"
+    And I bind "X" to "the circle"
+    And I grant "joe" role "member" in "X" for "the circle"
+    And I go to the logout page
+    Given I am logged into my "joe" account
 
   Scenario: Declaring an intention
     When I go to the new intentions page
-    And I fill in "Title" with "intention 1"
+    Then I should see "X" within "#intention_currency_list"
+    And I should not see "Y" within "#intention_currency_list"
+    When I fill in "Title" with "intention 1"
     And I fill in "Description" with "intention 1 description"
     And I check "currencies_1_used"
     And I press "Declare"

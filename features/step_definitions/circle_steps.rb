@@ -41,3 +41,11 @@ Given /^I bind "([^\"]*)" to "([^\"]*)"$/ do |currency_name, circle_name|
   And %Q|I press "Record Play"|
   Then %Q|I should see "The play was recorded."|
 end
+
+And /^I grant "([^\"]*)" role "([^\"]*)" in "([^\"]*)" for "([^\"]*)"$/ do |user_name, player_class, currency_name,circle_name|
+  And %Q|I go to the "grant" play page for my "matrice" account in "#{circle_name}"|
+  And %Q|I select "#{user_name}" from "play_to"|
+  And %Q|I select "#{currency_name}" from "play_currency"|
+  And %Q|I fill in "play_player_class" with "#{player_class}"|
+  And %Q|I press "Record Play"|
+end
