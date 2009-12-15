@@ -151,7 +151,11 @@ class Currency < ActiveRecord::Base
   
   def api_render_play(play)
     if play.is_a?(String)
-      play = YAML.load(play)
+      begin
+        play = YAML.load(play)
+      rescue
+        play = {"corrupted_play"=>play}
+      end
     end
     play.inspect
   end
@@ -251,12 +255,17 @@ class Currency < ActiveRecord::Base
           field = field.values[0]
           field_name = field['id']
           field_type = field['type']
+          # save out the players state as it will have been updated by the play
+          # but remove the spurious fields added in...
           case field_type
           when /player_(.*)/
             player_class = $1
             a = play[field_name]
             if a.is_a?(CurrencyAccount)
-              a.state = @play[field_name]
+              p = @play[field_name]
+              p.delete('_name')
+              p.delete('_currency_account')
+              a.state = p
               a.save
             end
           end

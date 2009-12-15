@@ -10,7 +10,11 @@ end
 
 Given /^a circle "([^\"]*)" with members "([^\"]*)"$/ do |circle_name,member_list|
   Given %Q|a circle "#{circle_name}"| if Currency.find_by_name(circle_name).nil?
-  members = member_list.split(/, */)
+  Given %Q|I make "#{member_list}" a "member" of "#{circle_name}"|
+end
+
+Given /^I make "([^\"]*)" a "([^\"]*)" of "([^\"]*)"$/ do |users, role, circle_name|
+  members = users.split(/, */)
   save_user = @user
   members.each {|m| create_user(m) if User.find_by_user_name(m).nil?}
   @user = save_user
@@ -21,7 +25,7 @@ Given /^a circle "([^\"]*)" with members "([^\"]*)"$/ do |circle_name,member_lis
   members.each do |m|
     When %Q|I check the box for "#{m}"|
   end
-  When %Q|I select "member" from "player_class"|
+  When %Q|I select "#{role}" from "player_class"|
   When %Q|I press "Submit"|
 end
 

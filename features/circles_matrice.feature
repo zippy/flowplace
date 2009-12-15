@@ -151,6 +151,17 @@ Feature: circle matrice
     And I press "Record Play"
     Then I should see "The play was recorded."
 
+  Scenario: matrice grants a user a role in a currency
+    Given a "MutualCredit" currency "X"
+    And A user "joe"
+    When I make "joe" a "member" of "the circle"
+    And I go to the "grant" play page for my "matrice" account in "the circle"
+    And I select "joe" from "play_to"
+    And I select "X" from "play_currency"
+    And I fill in "play_player_class" with "member"
+    And I press "Record Play"
+    Then I should see "The play was recorded."
+
   Scenario: matrice can delete a circle but a non-matrice cannot
     When I go to the circles page
     And I should see a table with 1 rows

@@ -89,21 +89,17 @@
       </fields>
       <script type="ruby">
         <![CDATA[
-         c = Currency.find_by_name(@play.currency)
-         if c
+          currency = @play.currency
            to = @play.to['_currency_account']
-           ca = c.api_new_player(@play.player_class,to.user,to.name)
+           ca = currency.api_new_player(@play.player_class,to.user,to.name)
            if ca.valid?
              perms = @play.to['permissions']
-             perms[@play.currency] ||= {}
-             perms[@play.currency][@play.player_class] = true
+             perms[currency] ||= {}
+             perms[currency][@play.player_class] = true
              true
            else
              ca.errors.full_messages.join('; ')
            end
-         else
-           "Could not find the currency: "+@play.currency
-         end
          ]]>
       </script>
       <play_sentence lang='en'><from /> grants <to /> access to <currency /> as <player_class /></play_sentence>

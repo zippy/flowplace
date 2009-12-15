@@ -12,7 +12,11 @@ class CurrencyAccount < ActiveRecord::Base
 
   def get_state
     s = self.state
-    self.state = YAML.load(s) if s.class == String
+    begin
+      self.state = YAML.load(s) if s.class == String
+    rescue
+      return {"corrupted state"=>s}
+    end
     self.state
   end
   
