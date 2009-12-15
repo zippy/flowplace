@@ -6,7 +6,7 @@ Feature: Proposals
   Background:
     Given a "MutualCredit" currency "X"
     And I am logged into my "intender" account
-    And an intention "intention 1" described as "desc" measuring wealth with "X"
+    And I declare "intention 1" described as "desc" measuring wealth with "X"
     And I go to the logout page
     Given I am logged into my account
 

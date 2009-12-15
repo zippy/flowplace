@@ -18,14 +18,6 @@
 <p>
 <% case @phase
   when :intention %>
-  <p>
-    <% if @weal && !@weal.in_service_of.blank?
-      @states_selected = @weal.in_service_of.split(/,/).collect {|x| i = x.to_i; i != 0 ? i : x}
-    end %>
-
-    <label for="weal_in_service_of">This intention is in service of: </label><br/>
-    <%= select_tag 'weal[in_service_of][]', options_for_select(options_for_select_in_service_of, @states_selected), { :multiple => true, :size =>5, :id => "weal_in_service_of" } %>
-  </p>
 
 <%if @weal.matched? %>
   <p>

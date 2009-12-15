@@ -24,18 +24,26 @@ class User < ActiveRecord::Base
   @@per_page = 10
   
   ##############################################
-  def weals
-    Weal.find(:all,:conditions => ['offerer_id = ? or requester_id = ? or proposals.user_id = ?',self.id,self.id,self.id],:include =>:proposals,:order => 'lft')
+  def weals(circle=nil)
+    _find_weals(['offerer_id = ? or requester_id = ? or proposals.user_id = ?',self.id,self.id,self.id],circle)
   end
 
   ##############################################
-  def intentions
-    Weal.find(:all,:conditions => ["(offerer_id = ? or requester_id = ? ) and phase ='intention'",self.id,self.id],:include =>:proposals,:order => 'lft')
+  def intentions(circle=nil)
+    _find_weals(["(offerer_id = ? or requester_id = ? ) and phase ='intention'",self.id,self.id],circle)
   end
 
   ##############################################
-  def proposed_intentions
-    Weal.find(:all,:conditions => ["proposals.user_id = ? and phase ='intention'",self.id],:include =>:proposals,:order => 'lft')
+  def proposed_intentions(circle=nil)
+    _find_weals(["proposals.user_id = ? and phase ='intention'",self.id],circle)
+  end
+  
+  def _find_weals(conditions,circle=nil)
+    if circle
+      conditions[0] += ' and circle_id = ?'
+      conditions.push circle.id
+    end  
+    Weal.find(:all,:conditions => conditions,:include =>:proposals,:order => 'lft')
   end
 
   ##############################################

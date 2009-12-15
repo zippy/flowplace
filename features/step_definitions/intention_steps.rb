@@ -2,7 +2,7 @@ Then /^I should see the declare button$/ do
   response.should contain(%Q|<input id="weal_submit" name="commit" type="submit" value="Declare" />|)
 end
 
-Given /^an intention "([^\"]*)" described as "([^\"]*)" measuring wealth with "([^\"]*)"/ do |title,description,currencies|
+Given /^I declare "([^\"]*)" described as "([^\"]*)" measuring wealth with "([^\"]*)"/ do |title,description,currencies|
   When %Q|I go to the new intentions page|
   And %Q|I fill in "Title" with "#{title}"|
   And %Q|I fill in "Description" with "#{description}"|

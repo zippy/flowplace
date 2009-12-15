@@ -89,6 +89,7 @@ class WealsController < ApplicationController
     Activity
     setup_save_attributes
     @weal = Weal.new(@save_attributes)
+    @weal.circle = @current_circle
     prepare_for_save 
     respond_to do |format|
       if @weal.save
@@ -177,7 +178,6 @@ class WealsController < ApplicationController
     @save_parent_id =  @save_attributes.has_key?(:parent_id)
     @parent_id = @save_attributes[:parent_id]
     @save_attributes.delete(:parent_id)
-    @save_attributes[:in_service_of] = @save_attributes[:in_service_of].join(',')
     
     if params[:as]
       @save_attributes[:offerer_id] = (params[:as]  == 'offerer') ? current_user.id : nil
@@ -216,11 +216,11 @@ class WealsController < ApplicationController
   def load_my_weals
     case @phase
     when :intention
-      @weals = current_user.intentions
+      @weals = current_user.intentions(@current_circle)
     when :action
-      @weals = current_user.actions
+      @weals = current_user.actions(@current_circle)
     when :asset
-      @weals = current_user.assets
+      @weals = current_user.assets(@current_circle)
     else
       raise "unknown weal phase!"
     end
@@ -229,13 +229,13 @@ class WealsController < ApplicationController
   def load_weals
     case @phase
     when :intention
-      @weals = Weal.find(:all,:conditions=>"phase ='intention'")
+      @weals = Weal.find(:all,:conditions=>["phase ='intention' and circle_id = ?",@current_circle.id])
       return
     when :action
-      @weals = Weal.find(:all,:conditions=>"phase ='action'")
+      @weals = Weal.find(:all,:conditions=>["phase ='action' and circle_id = ?",@current_circle.id])
       return
     when :asset
-      @weals = Weal.find(:all,:conditions=>"phase ='asset'")
+      @weals = Weal.find(:all,:conditions=>["phase ='asset' and circle_id = ?",@current_circle.id])
       return
     end
     def_sort_rules(* [['r','lft,users.last_name,users.first_name,weals.created_at'],['d','lft,weals.created_at']])
@@ -243,6 +243,9 @@ class WealsController < ApplicationController
     def_search_rules(:sql,[['t','title'],['d','description']])
     def_search_rule 'base' do |search_for|
       ["phase = 'intention'"]
+    end
+    def_search_rule 'circle' do |search_for|
+      ["circle_id = ?",search_for]
     end
     def_search_rule 'full' do |search_for|
       s = "%#{search_for}%"
@@ -260,8 +263,10 @@ class WealsController < ApplicationController
       end
     end
     set_params(:user,params[:use_session],:order_current => 'd',:paginate => 'yes')
-    @search_params.update({'on_base' => 'base', 'for_base' => 'dummy','on_as' => 'as'})
+    @search_params.update({'on_base' => 'base', 'for_base' => 'dummy','on_as' => 'as','on_circle'=>'circle'})
     @search_params["for_as"] ||= 'requester'
+    @search_params["for_circle"] = @search_params["for_circle"].to_i if @search_params["for_circle"].to_i > 0
+    @search_params["for_circle"] ||= @current_circle.id if @current_circle
     sql_options = get_sql_options.update({:include => @search_params[:for_as]})
     if sql_options[:conditions] || @display_all
       if @search_params[:paginate]=='yes'

@@ -14,7 +14,8 @@ class Weal < ActiveRecord::Base
   has_many :proposals, :dependent => :destroy
   
   has_many :intention_activities, :as => :activityable
-  belongs_to :circle
+  Currency
+  belongs_to :circle, :class_name => 'CurrencyMembrane'
   
   Phases = %w(intention action asset)
   def initialize(attrs=nil)

@@ -15,6 +15,7 @@ select_options = {
     ["#{@search_params["for_as"].capitalize} name contains",'as_name'],
     ['Show all','all']]
   }
+
 form_pair_info = [{:name => "main", :on => :select, :for => :text_field, :first_focus => true}]
 form_tag(weals_path,:method => :get,:id=>'search') do %>
 
@@ -28,7 +29,7 @@ Match:
   val = @search_params["for_main"] if !['all','',nil].include?(@search_params["on_main"]) 
 %>
 <%= text_field_tag("search[for_main]", val) %>
-
+Circle: <%= select_tag("search[for_circle]", options_for_select(my_circles_for_select,@search_params["for_circle"])) %>
 Order by: <%= select_tag('search[order_current]', options_for_select(order_choices,@search_params[:order_current]))%>
 
 <%= check_box_tag('search[paginate]','yes',@search_params[:paginate]=='yes') %> Paginate results
