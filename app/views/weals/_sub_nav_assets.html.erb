@@ -1,7 +1,7 @@
 <ul id="sub_nav">
   <li><%= sub_nav_link 'My', my_assets_path,'View my assets'%></li>
   <li><%= sub_nav_link 'All', assets_path,'Browse all assets'%></li>
-  <li><%= sub_nav_link 'Record', new_asset_path,'Record a new asset'%></li>
+  <li><%= sub_nav_link 'New', new_asset_path,'Record a new asset'%></li>
   <%if @weal && !@weal.new_record?%>
   <li><p><%if @is_view %>View<%end%><%if @is_edit %>Edit<%end%></p></li>
   <%end%>

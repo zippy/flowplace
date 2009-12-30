@@ -47,13 +47,13 @@ class User < ActiveRecord::Base
   end
 
   ##############################################
-  def actions
-    Weal.find(:all,:conditions => ["(offerer_id = ? or requester_id = ?) and phase ='action'",self.id,self.id],:order => 'lft')
+  def actions(circle=nil)
+    _find_weals(["(offerer_id = ? or requester_id = ?) and phase ='action'",self.id,self.id],circle)
   end
 
   ##############################################
-  def assets
-    Weal.find(:all,:conditions => ["(offerer_id = ? or requester_id = ?) and phase ='asset'",self.id,self.id],:order => 'lft')
+  def assets(circle=nil)
+    _find_weals(["(offerer_id = ? or requester_id = ?) and phase ='asset'",self.id,self.id],circle)
   end
   
   ##############################################
