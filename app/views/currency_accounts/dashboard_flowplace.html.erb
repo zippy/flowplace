@@ -17,14 +17,16 @@
   <% end %> 
 </div>
 
+<% if current_user.can?(:admin) %>
 <div class="dashboard_item"id="dashboard_currencies">
-  <p class="dashboard_title"><%= link_to 'Currencies', circles_url%> </p>
+  <p class="dashboard_title"><%= link_to 'Currencies', currencies_url%> </p>
   <% unless current_user.has_preference('terse') %>
   <div class="dashboard_explanation">
     Browse currencies, and create new ones.
   </div>
   <% end %> 
 </div>
+<% end %>
 
 <% if current_user.can?(:accessAccounts) %>
   <div class="dashboard_item" id="dashboard_accounts">
