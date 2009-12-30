@@ -33,6 +33,8 @@ module NavigationHelpers
       "/intentions/#{i.id}"
     when /the all intentions page/
       '/weals'
+    when /the my proposals page/
+      '/intentions/proposed'
     when /the assets page/
       '/assets'
     when /the actions page/

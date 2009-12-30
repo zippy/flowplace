@@ -27,7 +27,7 @@ class WealsController < ApplicationController
   # GET /intentions/proposed
   def proposed
     @proposed = true
-    @weals = current_user.proposed_intentions
+    @weals = current_user.proposed_intentions(@current_circle)
     respond_to do |format|
       format.html do
         render :template => "weals/index_#{@phase}s"
