@@ -70,6 +70,16 @@ describe User do
       @user.currency_accounts[0].currency.should == @usd
       @user.currencies.should == [@usd]
     end
+    it "should return the user's currency accounts in a given circle" do
+      @circle = CurrencyMembrane.create(@user,{:circle=>{:name => 'a circle'},:password=>'password',:confirmation=>'password',:email=>'test@test.com'})
+      @user.reload
+      @user.currency_accounts << CurrencyAccount.new(:currency => @usd)
+      @user.currency_accounts.size.should == 2
+      @user.circle_memberships.should == [@circle]
+      @circle.add_player_to_circle('member',@user)
+      @user.currency_accounts << CurrencyAccount.new(:currency => @usd)
+      @user.currency_accounts_in_circle(@circle).should == [@user.currency_accounts[0]]
+    end
     it "should be able to return a list of currencies a user can join" do
       @user.joinable_currencies.should == [@usd]
     end

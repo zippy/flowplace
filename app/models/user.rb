@@ -151,6 +151,13 @@ class User < ActiveRecord::Base
   end
 
   ##############################################
+  # currencies returns a list of all the currencies the user has joined in a particular circle
+  def currency_accounts_in_circle(circle)
+    currencies_in_circle = circle.currencies
+    self.currency_accounts.find_all {|ca| currencies_in_circle.include?(ca.currency) || ca.currency==circle}
+  end
+
+  ##############################################
   # checks whether user is a member of the given currency
   def has_joined?(currency)
     currencies.include?(currency)

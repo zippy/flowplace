@@ -7,12 +7,12 @@
     </div>    
 <%= javascript_tag "$('hide_me_with_js').hide();" %>
 <%= gravitar_image_tag(@user,:size=>64) %>
-
+<div style="float: right;background-color:#c7c;padding: 5px;border: 1px;width: 400px">Note: This page is not complete. Eventually it will be different for every circle to give a custom holoptical picture of that circle.</div>
 <table id='holoptiview'>
 <tr>
   <td class='holoptiview_my'>
     <div class="holoptiview_box">
-      <p class='holoptiview_box_title'><%=@who%> Wealth</p>
+      <p class='holoptiview_box_title'><%=@who%> Wealth in <%=@current_circle.name%></p>
       <%for account in @currency_accounts_my
         currency = Currency.find(account.currency.id)
         %>

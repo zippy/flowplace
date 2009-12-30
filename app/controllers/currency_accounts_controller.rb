@@ -26,8 +26,7 @@ class CurrencyAccountsController < ApplicationController
   # GET /dashboard.xml
   def dashboard
     if !@current_circle.nil?
-      currencies_in_circle = @current_circle.currencies
-      @currency_accounts = current_user.currency_accounts.find_all {|ca| currencies_in_circle.include?(ca.currency) || ca.currency==@current_circle}
+      @currency_accounts = current_user.currency_accounts_in_circle(@current_circle)
     end
 
     respond_to do |format|
