@@ -2,11 +2,13 @@
 <%= render(:partial => 'sub_nav') %>
 <% if @currencies.empty?%>
   There are no currencies in this circle.
-  <p>To add a currency to a circle for now you have to use the matrice Bind Currency play from your <%=link_to 'Dashboard',dashboard_path %>
 <% else %>
+<p>These are currencies that have been bound to <%= h @circle.name%>:</p>
 <table>
+  <tr><th>Name</th><th>Description</th></tr>
   <% for currency in @currencies %>
-  <tr><td><%=currency.name%></td></tr>
+  <tr><td><%=currency.name%></td><td><%=currency.description%></td></tr>
   <% end %>
 </table>
 <% end %>
+<p>To add a currency to a circle for now you have to use the matrice Bind Currency play from your <%=link_to 'Dashboard',dashboard_path %>
