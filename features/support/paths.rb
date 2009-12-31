@@ -95,6 +95,13 @@ module NavigationHelpers
       "/users/#{controller.current_user.id}/preferences"
     when /the wallets page/
       '/wallets'
+    when /the configurations page/
+      '/configurations'
+    when /the edit configurations page for "([^\"]*)"/
+      config_name = $1
+      c = Configuration.find_by_name(config_name)
+      raise "couldn't find configuration '#{config_name}' while building path" if c.nil?
+      "/configurations/#{c.id}/edit"
     else
       raise "Can't find mapping from \"#{page_name}\" to a path."
     end

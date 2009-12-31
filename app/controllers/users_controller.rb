@@ -300,7 +300,7 @@ class UsersController < ApplicationController
   end
   
   def self_signup_ok?
-    if CONFIG[:new_user_policy] != :self_signup
+    if Configuration.get(:new_user_policy) != 'self_signup'
       redirect_to home_url
       false
     else

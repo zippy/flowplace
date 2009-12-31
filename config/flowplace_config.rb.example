@@ -1,6 +1,5 @@
 CONFIG = {
-#  :global_banner => "Warning: Do not place any permanent content on this demo site. All content is subject to deletion with each new version of the demo.",
-  :new_user_policy => :self_signup
+  :git_path => '/usr/local/bin/git'  #set a path for git so the sys_info command will return a git log
 }
 
 SMTP_SETTINGS  = {

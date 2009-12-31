@@ -1,0 +1,21 @@
+--- 
+configurations_4: 
+  name: analytics
+  value: 
+  configuration_type: string
+  description: Google Analytics html block.
+configurations_1: 
+  name: global_banner
+  value: 
+  configuration_type: text
+  description: This html text will appear across the top of the site and is dismissable once you log-in.  Used for demo/dev site warinings.
+configurations_2: 
+  name: new_user_policy
+  value: admin_create
+  configuration_type: options(self_signup,admin_create)
+  description: The site policy on how new users are added to the system
+configurations_3: 
+  name: welcome_text
+  value: <h1>Welcome to the Flowplace!</h1>
+  configuration_type: text
+  description: HTML that shows up on the home-page if no-one is logged in.

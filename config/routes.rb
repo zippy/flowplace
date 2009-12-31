@@ -1,6 +1,6 @@
 ActionController::Routing::Routes.draw do |map|
+  map.resources :configurations
   map.resources :wallets
-
   map.resources :plays
 
   map.resources :currency_accounts, :member => {

@@ -6,9 +6,12 @@
   <% if current_user.can?(:admin) %>
   <li><%= nav_link 'Currencies', currencies_path,'Create an manage currencies'%></li>
   <%end%>
-	<% if current_user.can?(:accessAccounts) %>
-	<li><%= nav_link 'Accounts',users_path,'Add or modify user accounts'%></li>
-	<% end %>
+  <% if current_user.can?(:accessAccounts) %>
+  <li><%= nav_link 'Accounts',users_path,'Add or modify user accounts'%></li>
+  <% end %>
+  <% if current_user.can?(:admin) %>
+  <li><%= nav_link 'Config', configurations_path,'Configure this flowplace'%></li>
+  <%end%>
 
 <%end%>
 </ul>

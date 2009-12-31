@@ -1,0 +1,17 @@
+<%@title="Configurations" %>
+
+<table>
+  <tr>
+    <th width='150'>Name</th>
+    <th>Value</th>
+    <th>Description</th>
+  </tr>
+
+<% for configuration in @configurations %>
+  <tr>
+    <td><%= link_to configuration.name.titleize, edit_configuration_path(configuration) %></td>
+    <td><%=h configuration.value.to_s[0..50] %> <%= '...' if configuration.value.to_s.size>50 %></td>
+    <td><%=h configuration.description %></td>
+  </tr>
+<% end %>
+</table>

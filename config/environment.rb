@@ -88,9 +88,7 @@ if File.exists?('config/flowplace_config.rb')
   require 'config/flowplace_config.rb'
 else
   CONFIG = {
-    :git_path => nil, #specify the path to your installed version of git for sys_info command to work
-    :gobal_banner => nil, #this is used to display a deploy specific global banner
-    :new_user_policy => :admin_create  # choose :self_signup or :admin_create
+    :git_path => nil #specify the path to your installed version of git for sys_info command to work
   }
 end
 

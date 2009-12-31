@@ -323,4 +323,8 @@ module ApplicationHelper
       link_to play_name.titleize, path
     end
   end
+  
+  def configuration_text(config)
+    Configuration.get(config)
+  end
 end

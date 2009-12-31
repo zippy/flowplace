@@ -1,12 +1,8 @@
 <% @title='Flowplace: Welcome' %>
 
-<h1>Welcome to the Flowplace!</h1>
+<%= configuration_text(:welcome_text) %>
 
-<%if CONFIG[:welcome_text]%>
-<%=CONFIG[:welcome_text]%>
-<%end%>
-
-<% if CONFIG[:new_user_policy] == :self_signup %>
+<% if Configuration.get(:new_user_policy) == 'self_signup' %>
 <p>To start playing <%= link_to 'Sign Up!',signup_users_url,{:title => 'Sign Up'}%> or <%= link_to 'Log In',login_path,{:title => 'Log In'}%></p>
 <% else %>
 <%= render(:partial => 'shared/login')%>
