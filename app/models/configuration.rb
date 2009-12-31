@@ -7,7 +7,8 @@ class Configuration < ActiveRecord::Base
   
   def Configuration.load_defaults
     config = YAML::load(IO.read(File.dirname(__FILE__) + '/configuration_defaults.yml'))
-    config.each do |name,values|
+    config.keys.sort.each do |name|
+      values = config[name]
       c = Configuration.new(values)
       c.save!
     end
