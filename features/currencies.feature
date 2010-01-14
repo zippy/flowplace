@@ -6,7 +6,7 @@ Feature: currencies
   Background:
     Given I am logged into my account
     And a circle "the circle"
-    And an "Issued" currency "WE"
+    And an "Issued" currency "THEM"
 
   Scenario: user creates a new currency
     When I go to the new currencies page
@@ -32,6 +32,6 @@ Feature: currencies
 
   Scenario: looks at the list of currencies and doesn't see membrane currencies
     When I go to the currencies page
-    Then I should see "WE" within "#currency_list"
+    Then I should see "THEM" within "#currency_list"
     Then I should not see "the circle" within "#currency_list"
 
