@@ -6,7 +6,7 @@ Feature: Intentions
   Background:
     Given a "MutualCredit" currency "X"
     And a "MutualCredit" currency "Y"
-    Given I am logged into my "matrice" account
+    Given I am logged into my "namer" account
     And a circle "this circle" with members "joe,jane,jacob"
     And a circle "that circle" with members "joe,herbert,jacob"
     And I bind "X" to "this circle"

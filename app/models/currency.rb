@@ -388,7 +388,7 @@ class CurrencyMutualRating
 end
 
 class CurrencyMembrane
-  def self.create(matrice_user,params)
+  def self.create(namer_user,params)
     circle = CurrencyMembrane.new(params[:circle])
     circle.type = 'CurrencyMembrane'
     
@@ -403,11 +403,11 @@ class CurrencyMembrane
     end
     if circle.errors.empty? && circle.save
       self_player = circle.add_player_to_circle('self',circle_user)
-      matrice_player = circle.add_player_to_circle('matrice',matrice_user) if self_player
+      namer_player = circle.add_player_to_circle('namer',namer_user) if self_player
     end
     if !circle.errors.empty?
       self_player.destroy if self_player
-      matrice_player.destroy if matrice_player
+      namer_player.destroy if namer_player
       circle_user.destroy if circle_user
       circle.destroy
     end
@@ -420,13 +420,13 @@ class CurrencyMembrane
 
   # TODO we really ought to be adding members using the membrane 'name_user' play!!
   #if player_class == 'member'
-  #  matrice_currency_account = @circle.api_user_accounts('matrice',current_user)[0]
+  #  namer_currency_account = @circle.api_user_accounts('namer',current_user)[0]
   #  play = {
-  #    'from' => matrice_currency_account,
+  #    'from' => namer_currency_account,
   #    'user' => user,
   #    'name' => user.user_name
   #  }
-  #  @circle.api_play('name_user',matrice_currency_account,play)
+  #  @circle.api_play('name_user',namer_currency_account,play)
   #else
   #end
   def add_player_to_circle(player_class,user)

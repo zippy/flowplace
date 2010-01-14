@@ -15,7 +15,7 @@ class CirclesController < ApplicationController
   # GET /circles/1.xml
   def show
     @circle = Currency.find(params[:id])
-    matrice?
+    namer?
     respond_to do |format|
       format.html # show.html.erb
       format.xml  { render :xml => @circle }
@@ -36,7 +36,7 @@ class CirclesController < ApplicationController
   # GET /circles/1/edit
   def edit
     @circle = Currency.find(params[:id])
-    return if am_not_matrice?
+    return if am_not_namer?
   end
 
   # POST /circles
@@ -63,7 +63,7 @@ class CirclesController < ApplicationController
   # PUT /circles/1.xml
   def update
     @circle = Currency.find(params[:id])
-    return if am_not_matrice?
+    return if am_not_namer?
 
     respond_to do |format|
       if @circle.errors.empty? && @circle.update_attributes(params[:circle])
@@ -81,7 +81,7 @@ class CirclesController < ApplicationController
   # DELETE /circles/1.xml
   def destroy
     @circle = Currency.find(params[:id])
-    return if am_not_matrice?
+    return if am_not_namer?
     circle_user = User.find_by_user_name(circle_user_name(@circle.name))
     circle_user.destroy if !circle_user.nil?
     @circle.destroy
@@ -94,14 +94,14 @@ class CirclesController < ApplicationController
   # GET /circles/1/players
   def players
     @circle = Currency.find(params[:id])
-    return if am_not_matrice?
+    return if am_not_namer?
     setup_players_users
   end
   
   # PUT /circles/1/players
   def set_players
     @circle = Currency.find(params[:id])
-    return if am_not_matrice?
+    return if am_not_namer?
     player_class = params[:player_class]
     if player_class.blank?
       @circle.errors.add_to_base('You must choose a role!')
@@ -127,7 +127,7 @@ class CirclesController < ApplicationController
   # GET /circles/1;currencies
   def currencies
     @circle = Currency.find(params[:id])
-    return if am_not_matrice?
+    return if am_not_namer?
     @currencies = @circle.currencies
   end
 
@@ -160,16 +160,16 @@ class CirclesController < ApplicationController
       @users = @circle.users.uniq
     end
   end
-  def am_not_matrice?
-    if matrice?
+  def am_not_namer?
+    if namer?
       false
     else
       access_denied
       true
     end
   end
-  def matrice?
-    @current_user_is_matrice = @circle.api_user_isa?(current_user,'matrice')
+  def namer?
+    @current_user_is_namer = @circle.api_user_isa?(current_user,'namer')
   end
   
 end

@@ -11,6 +11,6 @@ Agreement: <%=h @circle.agreement %>
 Members:
 
 <% for a in @circle.currency_accounts %>
-  <br />&nbsp;&nbsp;&nbsp;<%= h a.user.full_name %> (<%= h a.name %>) <%= a.player_class == 'matrice' ? '-- matrice' : ''%> 
+  <br />&nbsp;&nbsp;&nbsp;<%= h a.user.full_name %> (<%= h a.name %>) <%= a.player_class == 'namer' ? '-- namer' : ''%> 
 <% end %>
 </p>

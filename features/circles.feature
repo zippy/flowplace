@@ -4,7 +4,7 @@ Feature: circles
   I want to be able to see and request admission to circles
   
   Background:
-    Given I am logged into my "matrice" account
+    Given I am logged into my "namer" account
     Given a circle "the circle" with members "joe,jane"
     When I go to the logout page
 
@@ -36,8 +36,8 @@ Feature: circles
     And I select "Flowplace" from "Jump to"
     And I select "the circle" from "Jump to"
     
-  Scenario: a matrice navigates between her circles and the flowplace
-    Given I am logged into my "matrice" account
+  Scenario: a namer navigates between her circles and the flowplace
+    Given I am logged into my "namer" account
     And I go to the flowplace dashboard page
     And I should see "Jump to"
     Then I select "Flowplace" from "Jump to"

@@ -115,27 +115,27 @@ describe Currency do
       @user = create_user('u1')
       @circle = CurrencyMembrane.create(@user,{:circle=>{:name => 'a circle'},:password=>'password',:confirmation=>'password',:email=>'test@test.com'})
     end
-    it "should create a circle with associated user and self and matrice players" do
+    it "should create a circle with associated user and self and namer players" do
       @circle.class.should == CurrencyMembrane
       @circle.errors.should be_empty
       @circle.circle_user_name.should == 'a_circle_circle'
       @circle.api_user_isa?(User.find_by_user_name('a_circle_circle'),'self').should == true
-      @circle.api_user_isa?(@user,'matrice').should == true
+      @circle.api_user_isa?(@user,'namer').should == true
     end
     describe "binding" do
       it "should return a list of currencies bound to the membrane" do
         @mc = create_currency("MC",:klass=>CurrencyMutualCredit)
         @self = User.find_by_user_name('a_circle_circle').currency_accounts[0]
-        @matrice = @user.currency_accounts[0]
+        @namer = @user.currency_accounts[0]
         
         play = {
-          'from' => @matrice,
+          'from' => @namer,
           'to' => @self,
           'currency' => @mc
         }
         @self.get_state['currencies'].should == {}
         @circle.currencies.should == []
-        @circle.api_play('bind_currency',@matrice,play).class.should == Play
+        @circle.api_play('bind_currency',@namer,play).class.should == Play
         @self.get_state['currencies'].should == {@mc.id => @mc.name}
         @circle.currencies.should == [@mc]
       end

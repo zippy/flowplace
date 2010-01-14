@@ -1,15 +1,15 @@
 <game>
   <description>
     Membrane currencies are used to establish circles by forming a context that names currencies and users, and then assigning users to roles (player_classes) in the circle's currencies.<br />
-    Player classes: self (represents the circle as a whole), member (users names in the circle), matrice (the stewards responsible for adding users and currencies to the circle)<br />
+    Player classes: self (represents the circle as a whole), member (users names in the circle), namer (the stewards responsible for adding users and currencies to the circle)<br />
     Self Summary functions: Currencies--The list of currencies used by the circle<br />
     Self Plays:
       -- none yet --
     Member Summary function: Permissions--The list of permissions a member has.<br />
     Member Plays:
       -- none yet --
-    Matrice Summary Function: none
-    Matrice Plays:
+    Namer Summary Function: none
+    Namer Plays:
       bind_currency(from,to,currency,name,meta)  # adds a currency to the circle to be known as name.
       unbind_currency(from,to,currency,name)  # adds a currency to the circle to be known as name.
       name_member(from,user,name)  # names a new member player into the circle as for a user.
@@ -18,7 +18,7 @@
   </description>
   <player_classes>
     <player_class name="member" />
-    <player_class name="matrice" />
+    <player_class name="namer" />
     <player_class name="self" />
   </player_classes>
   <states>
@@ -43,9 +43,9 @@
         <![CDATA[ @member_state.permissions = {};]]>
       </script>
     </play>
-    <play name="bind_currency" player_classes="matrice">
+    <play name="bind_currency" player_classes="namer">
       <fields>
-         <field type="player_matrice" id="from" />
+         <field type="player_namer" id="from" />
          <field type="player_self" id="to" />
          <field type="currency" id="currency" />
          <field type="string" id="name" />
@@ -62,9 +62,9 @@
       </script>
       <play_sentence lang='en'> <from /> binds <currency /> to <to /> as <name /></play_sentence>
     </play>
-    <play name="name_member" player_classes="matrice">
+    <play name="name_member" player_classes="namer">
       <fields>
-         <field type="player_matrice" id="from" />
+         <field type="player_namer" id="from" />
          <field type="user" id="user" />
          <field type="string" id="name" />
       </fields>
@@ -78,11 +78,11 @@
           end
          ]]>
       </script>
-      <play_sentence lang='en'><from /> names <user /> as <name /></play_sentence>
+      <play_sentence lang='en'><from /> dubs <user /> as <name /></play_sentence>
     </play>
-    <play name="grant" player_classes="matrice">
+    <play name="grant" player_classes="namer">
       <fields>
-         <field type="player_matrice" id="from" />
+         <field type="player_namer" id="from" />
          <field type="player_member" id="to" />
          <field type="currency" id="currency" />
          <field type="string" id="player_class" />
@@ -104,9 +104,9 @@
       </script>
       <play_sentence lang='en'><from /> grants <to /> access to <currency /> as <player_class /></play_sentence>
     </play>
-    <play name="revoke" player_classes="matrice">
+    <play name="revoke" player_classes="namer">
       <fields>
-         <field type="player_matrice" id="from" />
+         <field type="player_namer" id="from" />
          <field type="player_member" id="to" />
          <field type="currency" id="currency" />
          <field type="string" id="player_class" />

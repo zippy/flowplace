@@ -11,7 +11,7 @@ Feature: dashboard
     Given "joe" is a "member" of currency "Y"
     Given "herbert" is a "member" of currency "Y"
     Given a "MutualCredit" currency "Z"
-    Given I am logged into my "matrice" account
+    Given I am logged into my "namer" account
     And a circle "this circle" with members "joe,jane,jacob"
     And I bind "X" to "this circle"
     And a circle "that circle" with members "joe,herbert,jacob"
@@ -26,18 +26,18 @@ Feature: dashboard
     And I should not see a "Y" "member" dashboard item
     And I should not see a "Z" "member" dashboard item
 
-  Scenario: Matrices looks at a circle's dashboard and sees the circle's membrane currency
-    When I log in as "matrice"
+  Scenario: Namers looks at a circle's dashboard and sees the circle's membrane currency
+    When I log in as "namer"
     Then I should be taken to the dashboard page
     And I should see "Dashboard" as the current tab
-    And I should see a "this circle" "matrice" dashboard item
-    And I should not see a "that circle" "matrice" dashboard item
+    And I should see a "this circle" "namer" dashboard item
+    And I should not see a "that circle" "namer" dashboard item
     And I should not see a "X" "member" dashboard item
     And I should not see a "Y" "member" dashboard item
     And I should not see a "Z" "member" dashboard item
     When I go to the dashboard page for "that circle"
-    Then I should see a "that circle" "matrice" dashboard item
-    And I should not see a "this circle" "matrice" dashboard item
+    Then I should see a "that circle" "namer" dashboard item
+    And I should not see a "this circle" "namer" dashboard item
     And I should not see a "X" "member" dashboard item
     And I should not see a "Y" "member" dashboard item
     And I should not see a "Z" "member" dashboard item
