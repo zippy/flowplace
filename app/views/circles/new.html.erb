@@ -16,6 +16,10 @@
     <%= f.label :icon_url %><br />
     <%= f.text_field :icon_url %>
   </p>
+  <p>
+    <%= f.label :agreement %> (this will be WYSIWG soon)<br />
+    <%= f.text_area :agreement, :cols=>70,:rows => 10 %>
+  </p>
   
   <p>
     The login name for the circle user account will be: <b id="circle_user_name">_circle</b> <br />

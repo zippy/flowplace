@@ -12,6 +12,10 @@
     <%= f.label :icon_url %><br />
     <%= f.text_field :icon_url %>
   </p>
+  <p>
+    <%= f.label :agreement %> (this will be WYSIWG soon)<br />
+    <%= f.text_area :agreement, :cols=>70,:rows => 10 %>
+  </p>
 
   <p>
     <%= f.submit "Update" %>
