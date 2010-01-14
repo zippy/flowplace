@@ -2,7 +2,7 @@ class CurrenciesController < ApplicationController
   # GET /currencies
   # GET /currencies.xml
   def index
-    @currencies = Currency.find(:all)
+    @currencies = Currency.find(:all,:conditions=>"type != 'CurrencyMembrane'")
 
     respond_to do |format|
       format.html # index.html.erb

@@ -1,6 +1,6 @@
 module CurrenciesHelper
-  def currency_types_list_for_select
-    Currency.types.collect {|t| [Currency.humanize_type(t),t]}
+  def currency_types_list_for_select(exclude_list = [])
+    (Currency.types-exclude_list).collect {|t| [Currency.humanize_type(t),t]}
   end
   def humanized_currency_scope(currency)
     result = ""

@@ -35,7 +35,7 @@ function do_change(type){
 EOJS
 %>
 <p>
-  <%= f.label :type %> <%= f.select :type,currency_types_list_for_select,{:include_blank => true},{:onchange =>"do_change($F('currency_type'))"} %>
+  <%= f.label :type %> <%= f.select :type,currency_types_list_for_select(['CurrencyMembrane']),{:include_blank => true},{:onchange =>"do_change($F('currency_type'))"} %>
 </p>
 
 <div id="currency_type_descrption"></div>

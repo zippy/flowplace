@@ -5,6 +5,8 @@ Feature: currencies
 
   Background:
     Given I am logged into my account
+    And a circle "the circle"
+    And an "Issued" currency "WE"
 
   Scenario: user creates a new currency
     When I go to the new currencies page
@@ -22,3 +24,14 @@ Feature: currencies
     And I fill in "Icon url" with "/images/currency_icon_we.jpg"
     And I press "Create"
     Then I should see "Type can't be blank"
+  
+  Scenario: user examines the currency types pop-up
+    When I go to the new currencies page
+    Then I should see "Mutual Credit" as a "Type" option
+    Then I should not see "Membrane" as a "Type" option
+
+  Scenario: looks at the list of currencies and doesn't see membrane currencies
+    When I go to the currencies page
+    Then I should see "WE" within "#currency_list"
+    Then I should not see "the circle" within "#currency_list"
+
