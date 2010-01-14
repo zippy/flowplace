@@ -2,15 +2,6 @@ module CurrenciesHelper
   def currency_types_list_for_select(exclude_list = [])
     (Currency.types-exclude_list).collect {|t| [Currency.humanize_type(t),t]}
   end
-  def humanized_currency_scope(currency)
-    result = ""
-    result << currency.circle.name if currency.circle
-    if currency.global
-      result << '--' if !result.blank?
-      result << "Global"
-    end
-    result
-  end
   def configurable_fields_html(currency)
     fields = currency.api_configurable_fields
     result = []

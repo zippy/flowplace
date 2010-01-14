@@ -31,7 +31,6 @@ class Currency < ActiveRecord::Base
   validates_presence_of :name,:type
   validates_uniqueness_of :name
 
-  belongs_to :circle
   has_many :currency_weal_links, :dependent => :destroy
   has_many :weals, :through => :currency_weal_links
   has_many :currency_accounts, :dependent => :destroy
@@ -308,16 +307,6 @@ class Currency < ActiveRecord::Base
     Currency.humanize_type(type)
   end
 
-  def humanized_scope
-    if global
-      "Global"
-    elsif circle
-      circle.name
-    else
-      ''
-    end
-  end
-  
   def currency_accounts_total
     currency_accounts.size
   end

@@ -3,7 +3,6 @@ class CirclesController < ApplicationController
   # GET /circles
   # GET /circles.xml
   def index
-    @circles = Circle.find(:all)
     @membranes = Currency.find(:all,:conditions => "type = 'CurrencyMembrane'",:include => :currency_accounts)
     respond_to do |format|
       format.html # index.html.erb
@@ -131,23 +130,6 @@ class CirclesController < ApplicationController
     @currencies = @circle.currencies
   end
 
-  # PUT /users/1;set_members
-  def set_members
-    @circle = Circle.find(params[:id])
-    respond_to do |format|
-      removal = params.keys.grep(/^remove_(.*)/) {|x| $1}
-      if removal.empty?
-        l = CircleUserLink.new(:user_id => params[:user_id], :circle_id => @circle.id)
-        l.save
-      else
-        l = CircleUserLink.find(:first, :conditions => ['user_id = ? and circle_id = ?', removal[0], @circle.id])
-        l.destroy
-      end
-      format.html { redirect_to(circle_url(@circle)) }
-      format.xml  { head :ok }
-    end
-  end
-  
   #GET /circles/members
   def members
     @users = @current_circle.api_user_accounts('member').collect{|ca| ca.user}.uniq

@@ -8,4 +8,7 @@ describe CirclesHelper do
     included_modules.should include(CirclesHelper)
   end
   
+  it "should define users_select" do
+  end
+  
 end

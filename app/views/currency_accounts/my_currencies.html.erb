@@ -11,7 +11,6 @@ View by: <span style="background: #ddd" title="this will be a pop up later to al
     <th>Currency</th>
     <th>Type</th>
     <th>Role</th>
-    <th>Circle</th>
     <th>Summary</th>
     <th>Description</th>
     <th>&nbsp;</th>
@@ -40,7 +39,6 @@ for currency_account in @currency_accounts
     <td><nobr><%= render_currency_icon(currency) %> <%= link_to currency.name, play_currency_account_url(currency_account) %><% if !currency.symbol.blank? %>&nbsp;(<%=currency_account.currency.symbol%>)<%end%></nobr></td>
     <td><nobr><%=h currency.humanized_type %></nobr></td>
     <td><%=h currency_account.player_class %></td>
-    <td><%=h humanized_currency_scope(currency) %></td>
     <td><%= currency_account.render_state %></td>
     <td><%=h currency.description %></td>
     <td>

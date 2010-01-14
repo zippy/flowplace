@@ -7,6 +7,9 @@
     </div>    
 <%= javascript_tag "$('hide_me_with_js').hide();" %>
 <%= gravitar_image_tag(@user,:size=>64) %>
+<%if @current_circle.nil?%>
+   You aren't a member of any circles...
+<% else %>
 <div style="float: right;background-color:#c7c;padding: 5px;border: 1px;width: 400px">Note: This page is not complete. Eventually it will be different for every circle to give a custom holoptical picture of that circle.</div>
 <table id='holoptiview'>
 <tr>
@@ -73,3 +76,4 @@
 </tr>
 
 </table>
+<%end%>

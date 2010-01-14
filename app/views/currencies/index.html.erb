@@ -5,7 +5,6 @@
   <tr>
     <th colspan=2>Name</th>
     <th>Type</th>
-    <th>Scope</th>
     <th>Summary</th>
     <th>Description</th>
     <th>&nbsp;</th>
@@ -19,7 +18,6 @@ for currency in @currencies
     <td><%= render_currency_icon(currency,:size=>32) %></td>
     <td><%= link_to currency.name, edit_currency_path(currency)+'?currency_type='+currency.class.to_s %> </td>
     <td><%=h currency.humanized_type %> </td>
-    <td><%=h humanized_currency_scope(currency) %> </td>
     <td><%=h currency.api_render_summary%></td>
     <td><%=h currency.description%></td>
     <td><%= link_to 'Remove', currency_path(currency), :confirm => 'Are you sure?', :method => :delete %></td>
