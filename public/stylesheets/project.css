@@ -433,6 +433,27 @@ li.item {
 	font-weight: bold;
 }
 
+/* ----------- CIRCLES ----------- */
+#circle_players {
+	float: right;
+	padding: 4px;
+	width: 450px;
+}
+#circle_users_search_results {
+	float: left;
+	padding: 4px;
+	width: 450px;
+}
+#circle_currencies {
+	float: right;
+	padding: 4px;
+	width: 300px;
+}
+#circle_currencies_search_results {
+	float: left;
+	padding: 4px;
+	width: 600px;
+}
 
 
 /* ----------NOT SURE WHAT THESE ARE FOR---------- */

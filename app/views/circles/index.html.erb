@@ -13,9 +13,9 @@ for circle in @membranes
     <td><%= render_currency_icon(circle) %></td>
     <td> <%=link_to circle.name, is_namer ? edit_circle_path(circle) : circle_path(circle)  %></td>
     <td> <% if is_namer %>
-      <%= link_to 'Players', players_circle_path(circle)%>
+      <%= link_to 'Add Players', players_circle_path(circle)%>
       &nbsp;&nbsp;
-      <%= link_to 'Currencies', currencies_circle_path(circle)%>
+      <%= link_to 'Add Currencies', currencies_circle_path(circle)%>
       &nbsp;&nbsp;
       <%= link_to 'Delete', "/circles/#{circle.id}", :confirm => 'Are you sure?', :method => :delete %>
       <%else%>&nbsp;<%end%>

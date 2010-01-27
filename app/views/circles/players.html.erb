@@ -1,35 +1,54 @@
 <% @title="Players in #{h @circle.name}" %>
 <%= render(:partial => 'sub_nav') %>
 
-<% get_index_form_html(@search_form_params,players_circle_url(@circle)) %>
+  <% form_tag(players_circle_url(@circle),:method => :get, :id => 'search_form') do -%>
+    <%= text_field_tag('search[key]',@search_params['key'])%>
+    <%= submit_tag('Search') %>
+  <% end %>
 
-<%if @users.empty?%>No accounts found
+<div id="circle_players">
+    <b>Players in <%=h @circle.name %>:</b>
+    <table>
+    <tr>
+      <th>Player</th>
+    </tr>
+    <% for user in @players%>
+      <tr>
+        <td>
+          <b><%= h user.full_name+' ('+user.player_clasess_in(@circle).join(', ')+')' %></b>          
+        </td>
+      </tr>
+    <% end %>
+    </table>
+    <%= will_paginate @players if @paginate_players%>
+</div>
+
+<%if @users.empty?%>
+  No users found
 <%else%>
+  Search found <%= @users.size%> <%= pluralize("user", @users.size) %>
+  <%= error_messages_for('circle') %>
   <% form_tag(set_players_circle_url(@circle), :method=>:put) do -%>
+  <p>
+    Add selected users to circle as 
+    <%= pc=@circle.api_player_classes; pc.delete('self'); pc.insert(0,""); select_tag(:player_class, options_for_select(pc)) %>
+    <%= submit_tag('Add >>') %>
+  </p>
+  <div id="circle_users_search_results">
   <table>
   <tr>
     <th>User</th>
-    <th>Role</th>
   </tr>
   <% for user in @users%>
     <tr>
       <td>
       <%= check_box_tag("users[#{user.id}]") %>
       <%=  label_tag "users_#{user.id}","#{user.full_name} (#{user.user_name})"%></td>
-    <% if user.has_joined?(@circle)%>
-      <td><%= h user.player_clasess_in(@circle).join(', ') %></td>
-    <% else %>
-      <td>--</td>
-    <% end %>
     </tr>
   <% end %>
   </table>
-  <%= will_paginate @users if @search_params[:paginate]=='yes' && !@users.empty? %>
-  <%= error_messages_for('circle') %>
-    <p>
-      Add selected users to circle as 
-      <%= pc=@circle.api_player_classes; pc.delete('self'); pc.insert(0,""); select_tag(:player_class, options_for_select(pc)) %>
-      <%= submit_tag('Submit') %>
-    </p>
+  <%= will_paginate @users,:per_page => 5%>
+  </div>
   <%end%>
 <% end %>
+

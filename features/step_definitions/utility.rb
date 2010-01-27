@@ -10,14 +10,14 @@ def parse_table(table_scope)
   [rows,cols]
 end
 
-Then /^I should see a table with ([0-9]+) rows$/ do |count|
+def count_table_rows(count)
   within('table') do |scope|
     (rows,cols) = parse_table(scope)
     rows.size.should == count.to_i
   end
 end
 
-Then /^I should( not)* see "(.*)" in row (\d*)( column (\d*))*$/ do |should_not,text,index,dummy,column_index|
+def examine_table_row_column(should_not,text,index,column_index)
   text = text.gsub('(','\\(')
   text = text.gsub(')','\\)')
   text = text.gsub(']','\\]')
@@ -30,5 +30,25 @@ Then /^I should( not)* see "(.*)" in row (\d*)( column (\d*))*$/ do |should_not,
     else
       rows[index.to_i].should =~ /#{text}/
     end
+  end
+end
+
+Then /^I should see a table with ([0-9]+) rows$/ do |count|
+  count_table_rows(count)
+end
+
+Then /^I should see a table with ([0-9]+) rows within "([^\"]*)"$/ do |count,selector|
+  within(selector) do |outside|
+    count_table_rows(count)
+  end
+end
+
+Then /^I should( not)* see "(.*)" in row (\d*)( column (\d*))*$/ do |should_not,text,index,dummy,column_index|
+  examine_table_row_column(should_not,text,index,column_index)
+end
+
+Then /^I should( not)* see "(.*)" in row (\d*)( column (\d*))* within "([^\"]*)"$/ do |should_not,text,index,dummy,column_index,selector|
+  within(selector) do |outside|
+    examine_table_row_column(should_not,text,index,column_index)
   end
 end

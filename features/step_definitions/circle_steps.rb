@@ -3,9 +3,14 @@ Given /^a circle "([^\"]*)"$/ do |circle_name|
   CurrencyMembrane.create(@user,{:circle=>{:name => circle_name},:password=>'password',:confirmation=>'password',:email => 'test@test.com'})
 end
 
-When /^I check the box for "([^\"]*)"$/ do |user_name|
+When /^I check the box for user "([^\"]*)"$/ do |user_name|
   user = User.find_by_user_name(user_name)
   When %Q|I check "users_#{user.id}"|
+end
+
+When /^I check the box for currency "([^\"]*)"$/ do |currency_name|
+  currency = Currency.find_by_name(currency_name)
+  When %Q|I check "currencies_#{currency.id}"|
 end
 
 Given /^a circle "([^\"]*)" with members "([^\"]*)"$/ do |circle_name,member_list|
@@ -20,13 +25,11 @@ Given /^I make "([^\"]*)" a "([^\"]*)" of "([^\"]*)"$/ do |users, role, circle_n
   @user = save_user
   When %Q|I go to the players page for "#{circle_name}"|
   Then %Q|I should be taken to the players page for "#{circle_name}"|
-  When %Q|I select "Show all" from "search_on_main"|
-  When %Q|I press "Search"|
   members.each do |m|
-    When %Q|I check the box for "#{m}"|
+    When %Q|I check the box for user "#{m}"|
   end
   When %Q|I select "#{role}" from "player_class"|
-  When %Q|I press "Submit"|
+  When %Q|I press "Add >>"|
 end
 
 Given /^"([^\"]*)" is bound to "([^\"]*)"$/ do |currency_name, circle_name|

@@ -327,4 +327,15 @@ module ApplicationHelper
   def configuration_text(config)
     Configuration.get(config)
   end
+  
+  def pluralize(text,count)
+    case 
+    when count == 0
+      "no #{text.pluralize}"
+    when count == 1
+      text
+    else
+      text.pluralize
+    end
+  end
 end

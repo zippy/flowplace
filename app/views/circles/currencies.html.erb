@@ -1,14 +1,56 @@
 <% @title="Currencies in #{h @circle.name}" %>
 <%= render(:partial => 'sub_nav') %>
-<% if @currencies.empty?%>
-  There are no currencies in this circle.
-<% else %>
-<p>These are currencies that have been bound to <%= h @circle.name%>:</p>
-<table>
-  <tr><th>Name</th><th>Description</th></tr>
-  <% for currency in @currencies %>
-  <tr><td><%=currency.name%></td><td><%=currency.description%></td></tr>
-  <% end %>
-</table>
+
+<% form_tag(currencies_circle_url(@circle),:method => :get, :id => 'search_form') do -%>
+  <%= text_field_tag('search[key]',@search_params['key'])%>
+  <%= submit_tag('Search') %>
 <% end %>
-<p>To add a currency to a circle for now you have to use the namer Bind Currency play from your <%=link_to 'Dashboard',dashboard_path %>
+
+<div id="circle_currencies">
+  <% if @bound_currencies.empty?%>
+    <b> There are no currencies in this circle.</b>
+  <% else %>
+    <b>Currencies in <%=h @circle.name %>:</b>
+    <table>
+    <tr>
+      <th>Currency</th>
+    </tr>
+    <% for currency in @bound_currencies%>
+      <tr>
+        <td title="<%=currency.description%>"><%= h currency.name %></td>
+      </tr>
+    <% end %>
+    </table>
+    <%= will_paginate @bound_currencies if @paginate_bound_currencies%>
+  <% end %>
+</div>
+
+<%if @currencies.empty?%>
+  No currencies found
+<%else%>
+  Search found <%= @currencies.size%> <%= pluralize("currency", @currencies.size) %>
+  <%= error_messages_for('circle') %>
+  <% form_tag(set_currencies_circle_url(@circle), :method=>:put) do -%>
+  <p>
+    Bind selected currencies to circle
+    <%= submit_tag('Add >>') %>
+  </p>
+  <div id="circle_currencies_search_results">
+  <table>
+  <tr>
+    <th>Currency</th>
+    <th>Description</th>
+  </tr>
+  <% for currency in @currencies%>
+    <tr>
+      <td>
+      <%= check_box_tag("currencies[#{currency.id}]") %>
+      <%=  label_tag "currencies_#{currency.id}","#{currency.name} (#{currency.humanized_type})"%></td>
+      <td> <%= h currency.description%></td>
+    </tr>
+  <% end %>
+  </table>
+  <%= will_paginate @currencies%>
+  </div>
+  <%end%>
+<% end %>

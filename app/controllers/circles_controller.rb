@@ -114,34 +114,86 @@ class CirclesController < ApplicationController
         @circle.add_player_to_circle(player_class,user)
       end
       flash[:notice] = 'Circle was successfully updated.'
-      redirect_to(players_circle_url(@circle)+'?use_session=true&set=true')
+      redirect_to(players_circle_url(@circle))
     else
-      params[:set] = true
-      params[:use_session] = true
       setup_players_users
       render :action => 'players'
     end
   end
 
-  # GET /circles/1;currencies
+  # GET /circles/1/currencies
   def currencies
     @circle = Currency.find(params[:id])
     return if am_not_namer?
-    @currencies = @circle.currencies
+    setup_bound_currencies
   end
-
+  
+  # PUT /circles/1/currencies
+  def set_currencies
+    @circle = Currency.find(params[:id])
+    return if am_not_namer?
+    if !params[:currencies]
+      @circle.errors.add_to_base('You must choose some currencies!')
+    end
+    if @circle.errors.empty?
+      params[:currencies].keys.each do |currency_id|
+        currency = Currency.find(currency_id)
+        self_account = User.find_by_user_name(@circle.circle_user_name).currency_accounts[0]
+        #TODO, this needs updating if the same user can have multiple accounts in the same currency as namer
+        namer_account = @circle.api_user_accounts('namer',current_user)[0]
+        
+        play = {
+          'from' => namer_account,
+          'to' => self_account,
+          'currency' => currency
+        }
+        @circle.api_play('bind_currency',namer_account,play)
+      end
+      flash[:notice] = 'Circle was successfully updated.'
+      redirect_to(currencies_circle_url(@circle))
+    else
+      setup_players_users
+      render :action => 'currencies'
+    end
+  end
   #GET /circles/members
   def members
     @users = @current_circle.api_user_accounts('member').collect{|ca| ca.user}.uniq
   end
   
   private
-  def setup_players_users
-    @users = perform_search(OrderPairs,SearchPairs,SearchFormParams,User)
-    if (params[:set] && @users.empty?) || (!params[:set] && !params[:search])
-      @users = @circle.users.uniq
+  def setup_bound_currencies
+    set_params(:circle_currencies,true)
+    key = @search_params['key']
+    if key.blank?
+      @currencies = Currency.find(:all,:conditions=> "type != 'CurrencyMembrane'")
+    else
+      key = '%'+key+'%'
+      @currencies = Currency.find(:all,:conditions=>["type != 'CurrencyMembrane' and (name #{ILIKE} ?)",key])
     end
+    @bound_currencies = @circle.currencies
+    @currencies = @currencies - @bound_currencies
+    @currencies = @currencies.paginate(:page => @search_params[:page])
+    @paginate_bound_currencies = false # !@bound_currencies.empty?
   end
+  def setup_players_users
+    set_params(:circle_users,true)
+#    @users = perform_search(OrderPairs,SearchPairs,SearchFormParams,User)
+    key = @search_params['key']
+    if key.blank?
+      @users = User.find(:all)
+    else
+      key = '%'+key+'%'
+      @users = User.find(:all,:conditions=>["#{SQL_FULL_NAME} #{ILIKE} ? or user_name #{ILIKE} ?",key,key])
+    end
+    @total_users = User.count
+    @users = @users.reject {|u| u.user_name == @circle.circle_user_name}
+    @users ||=[]
+    @users = @users.paginate(:page => @search_params[:page])
+    @players = @circle.users.uniq.reject {|u| u.user_name == @circle.circle_user_name}
+    @paginate_players = false # !@players.empty?
+  end
+  
   def am_not_namer?
     if namer?
       false

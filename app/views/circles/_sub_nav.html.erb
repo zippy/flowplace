@@ -8,8 +8,8 @@
     <li><%= subtab('View',circle_path(@circle)) %></li>
     <%if @current_user_is_namer%>
   <li><%= subtab('Edit',edit_circle_path(@circle)) %></li>
-  <li><%= subtab('Players',players_circle_path(@circle)) %></li>
-  <li><%= subtab('Currencies',currencies_circle_path(@circle)) %></li>
+  <li><%= subtab('Add Players',players_circle_path(@circle)) %></li>
+  <li><%= subtab('Add Currencies',currencies_circle_path(@circle)) %></li>
     <% end %>
   <%end%>
 </ul>

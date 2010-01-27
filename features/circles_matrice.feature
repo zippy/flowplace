@@ -68,51 +68,47 @@ Feature: circle namer
 
   Scenario: namer views her circle's players
     When I go to the circles page
-    And I follow "Players" within "table"
-    And I should see "Players" as the active sub-tab
+    And I follow "Add Players" within "table"
+    And I should see "Add Players" as the active sub-tab
     And I should see "View" as a sub-tab
     And I should see "Currencies" as a sub-tab
     And I should see "Edit" as a sub-tab
-    And I should see a table with 3 rows
-    And I should see "User" in row 0 column 0
-    And I should see "Role" in row 0 column 1
-    And I should see "the_circle_circle" in row 1 column 0
-    And I should see "self" in row 1 column 1
-    And I should see "Anonymous User (anonymous)" in row 2 column 0
-    And I should see "namer" in row 2 column 1
+    And I should see a table with 2 rows within "#circle_players"
+    And I should see "Player" in row 0 column 0 within "#circle_players"
+    And I should see "Anonymous User (namer)" in row 1 column 0 within "#circle_players"
+    And I should see "namer" in row 1 column 1 within "#circle_players"
   
-  Scenario: namer searches for a user not in a circle
-    Given A user "user1"
+  Scenario: namer searches for a users to add
+    Given A user "jeff"
+    Given A user "fred"
     When I go to the players page for "the circle"
-    Then I should not see "user1"
-    When I select "Account name contains" from "search_on_main"
-    And I fill in "search_for_main" with "user1"
+    Then I should see "Search found 3 users"
+    And I should see "Search"
+    And I fill in "search_key" with "jeff"
     And I press "Search"
     Then I should be taken to the players page for "the circle"
-    And I should see "user1" in row 1 column 0
-    And I should see "--" in row 1 column 1
+    And I should see "jeff" in row 1 column 0 within "#circle_users_search_results"
+    And I should see "Search found 1 user"
+    When I fill in "search_key" with "f"
+    And I press "Search"
+    Then I should see "Search found 2 users"
 
   Scenario: namer searches for a non existent user
     When I go to the players page for "the circle"
-    And I fill in "search_for_main" with "user1"
+    And I fill in "search_key" with "userx"
     And I press "Search"
     Then I should be taken to the players page for "the circle"
-    And I should see "No accounts found"
+    And I should see "No users found"
 
   Scenario: namer adds a new user as member to a circle
     Given A user "joe"
     When I go to the players page for "the circle"
-    When I select "Account name contains" from "search_on_main"
-    And I fill in "search_for_main" with "joe"
-    And I press "Search"
-    And I should see "joe" in row 1 column 0
-    And I should see "--" in row 1 column 1
-    When I check the box for "joe"
+    When I check the box for user "joe"
     When I select "member" from "player_class"
-    And I press "Submit"
+    And I press "Add >>"
     Then I should see "Circle was successfully updated."
-    And I should see "joe" in row 1 column 0
-    And I should see "member" in row 1 column 1
+    And I should see "Joe User (member)" in row 2 column 0 within "#circle_players"
+    And I should see "member" in row 2 column 1 within "#circle_players"
     And There should be a play in my currencies history that reflects this
 
 #this scenario also tests that when the user is redirected back to the players page
@@ -120,23 +116,24 @@ Feature: circle namer
 # the ones in the session from a search.
   Scenario: namer adds existing user as member to a circle
     When I go to the players page for "the circle"
-    When I check the box for "anonymous"
+    When I check the box for user "anonymous"
     When I select "member" from "player_class"
-    And I press "Submit"
+    And I press "Add >>"
     Then I should see "Circle was successfully updated."
-    And I should see "anonymous" in row 2 column 0
-    And I should see "namer, member" in row 2 column 1
+    And I should see "Anonymous User (namer, member)" in row 1 column 0 within "#circle_players"
+    And I should see "namer, member" in row 1 column 1 within "#circle_players"
   
   Scenario: namer sees errors when not choosing user or player class when attempting to add to a circle
     When I go to the players page for "the circle"
-    And I press "Submit"
+    And I press "Add >>"
     Then I should see "You must choose a role!"
     Then I should see "You must choose some users!"
     
   Scenario: namer views her circle's currencies
     When I go to the circles page
-    And I follow "Currencies" within "table"
-    Then I should see "Currencies" as the active sub-tab
+    And I follow "Add Currencies" within "table"
+    Then I should be taken to the currencies page for "the circle"
+    And I should see "Add Currencies" as the active sub-tab
     And I should see "Players" as a sub-tab
     And I should see "View" as a sub-tab
     And I should see "Edit" as a sub-tab
@@ -144,17 +141,23 @@ Feature: circle namer
   
   Scenario: namer binds a currency to a circle
     Given a "MutualCredit" currency "X"
-    When I go to the "bind_currency" play page for my "namer" account in "the circle"
-    And I select "X" from "play_currency"
-    And I select "the_circle_circle" from "play_to"
-    And I fill in "play_name" with "X"
-    And I press "Record Play"
-    Then I should see "The play was recorded."
+    When I go to the currencies page for "the circle"
+    When I check the box for currency "X"
+    And I press "Add >>"
+    Then I should be taken to the currencies page for "the circle"
+    And I should see "Circle was successfully updated."
+    And I should not see "There are no currencies in this circle."
+    And I should see "X" in row 1 column 0 within "#circle_currencies"
+    And There should be a play in my currencies history that reflects this
 
   Scenario: namer grants a user a role in a currency
     Given a "MutualCredit" currency "X"
     And A user "joe"
     When I make "joe" a "member" of "the circle"
+    And I go to the players page for "the circle"
+    And I check the box for user "joe" within "#circle_players"
+
+
     And I go to the "grant" play page for my "namer" account in "the circle"
     And I select "joe" from "play_to"
     And I select "X" from "play_currency"
