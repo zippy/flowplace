@@ -1,6 +1,7 @@
 log/*.log
 log/call_graph.html
 tmp/**/*
+tmp/
 doc/api
 doc/app
 doc/plugins
