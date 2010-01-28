@@ -454,7 +454,10 @@ li.item {
 	padding: 4px;
 	width: 600px;
 }
-
+#circle_users_search_results li, #circle_currencies li {
+	padding-left: 30px;
+	list-style: none;
+}
 
 /* ----------NOT SURE WHAT THESE ARE FOR---------- */
 

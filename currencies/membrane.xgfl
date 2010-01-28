@@ -95,6 +95,7 @@
            if ca.valid?
              perms = @play.to['permissions']
              perms[currency] ||= {}
+             puts "PERMS"+perms.inspect
              perms[currency][@play.player_class] = true
              true
            else

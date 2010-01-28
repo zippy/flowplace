@@ -23,6 +23,7 @@ ActionController::Routing::Routes.draw do |map|
 
   map.resources :circles, :member => {
     :players => :get, :set_players => :put,
+    :link_players => :get, :set_link_players => :put,
     :currencies => :get, :set_currencies => :put
     },
     :collection => { :members => :get}

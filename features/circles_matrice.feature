@@ -134,7 +134,7 @@ Feature: circle namer
     And I follow "Add Currencies" within "table"
     Then I should be taken to the currencies page for "the circle"
     And I should see "Add Currencies" as the active sub-tab
-    And I should see "Players" as a sub-tab
+    And I should see "Add Players" as a sub-tab
     And I should see "View" as a sub-tab
     And I should see "Edit" as a sub-tab
     And I should see "There are no currencies in this circle."
@@ -150,20 +150,40 @@ Feature: circle namer
     And I should see "X" in row 1 column 0 within "#circle_currencies"
     And There should be a play in my currencies history that reflects this
 
+  Scenario: namer looks at users to be linked to currencies
+    Given a "MutualCredit" currency "X"
+    And I bind "X" to "the circle"    
+    And A user "joe"
+    And A user "jane"
+    And A user "jack"
+    When I make "joe" a "member" of "the circle"
+    When I make "jane" a "member" of "the circle"
+    When I go to the circles page
+    And I follow "Link Players to Currencies" within "table"
+    Then I should be taken to the link players page for "the circle"
+    And I should see "Link Players to Currencies" as the active sub-tab
+    And I should see "Add Players" as a sub-tab
+    And I should see "View" as a sub-tab
+    And I should see "Edit" as a sub-tab
+    And I should see "Joe User" within "#circle_users_search_results"
+    And I should see "Jane User" within "#circle_users_search_results"
+    And I should not see "Jack User" within "#circle_users_search_results"
+    And I should see "X" within "#circle_currencies"
+    And I should see "member" within "#circle_currencies"
+
   Scenario: namer grants a user a role in a currency
     Given a "MutualCredit" currency "X"
+    And I bind "X" to "the circle"
     And A user "joe"
     When I make "joe" a "member" of "the circle"
-    And I go to the players page for "the circle"
-    And I check the box for user "joe" within "#circle_players"
-
-
-    And I go to the "grant" play page for my "namer" account in "the circle"
-    And I select "joe" from "play_to"
-    And I select "X" from "play_currency"
-    And I fill in "play_player_class" with "member"
-    And I press "Record Play"
-    Then I should see "The play was recorded."
+    And I go to the link players page for "the circle"
+    And I check the box for user "joe"
+    #if webrat wasn't whack this should be, but in this test case it is unambiguous.
+    #And I check "Member" within "#currency_x"
+    And I check "currencies[2][member]"
+    And I press "Apply"
+    Then I should be taken to the link players page for "the circle"
+    And I should see "member" within "#joe"
 
   Scenario: namer can delete a circle but a non-namer cannot
     When I go to the circles page

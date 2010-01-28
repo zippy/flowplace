@@ -52,3 +52,7 @@ Then /^I should( not)* see "(.*)" in row (\d*)( column (\d*))* within "([^\"]*)"
     examine_table_row_column(should_not,text,index,column_index)
   end
 end
+
+Then /^what$/ do
+  save_and_open_page
+end

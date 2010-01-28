@@ -1,0 +1,65 @@
+<% @title="Link Players in #{h @circle.name}" %>
+<%= render(:partial => 'sub_nav') %>
+
+<% form_tag(link_players_circle_url(@circle),:method => :get, :id => 'search_form') do -%>
+  <%= text_field_tag('search[key]',@search_params['key'])%>
+  <%= submit_tag('Search') %>
+<% end %>
+
+
+
+<%if @users.empty?%>
+  No users found
+<%else%>
+  Search found <%= @users.size %> <%= pluralize("user", @users.size) %>
+  <%= error_messages_for('circle') %>
+  <% form_tag(set_link_players_circle_url(@circle), :method=>:put) do -%>
+
+  <div id="circle_currencies">  
+  <% @circle.currencies.collect do |c| %>
+      <p id="currency_<%=c.name_as_html_id%>">
+      <%= render_currency_icon(c,:size=>16)%> 
+      <%= c.name %>
+      <% c.api_player_classes.each do |pc| %>
+        <li><%= the_id = "currencies[#{c.id}][#{pc}]"; check_box_tag(the_id) %> <%= label_tag the_id,pc %> </li>
+      <% end %>
+      </p>
+    <%end%>
+  </div>
+
+  <p>
+    <%= submit_tag('Apply') %>
+  </p>
+  <div id="circle_users_search_results">
+  <table>
+  <tr>
+    <th>Player</th>
+  </tr>
+  <% for user in @users%>
+    <tr>
+      <td id="<%=user.user_name%>">
+      <%= check_box_tag("users[#{user.id}]") %>
+      <%=  label_tag "users_#{user.id}","#{user.full_name} (#{user.user_name})" %>
+      <% 
+        h = {}
+        user.currency_accounts_in_circle(@circle).each do |ca|
+          h[ca.currency] ||= []
+          h[ca.currency] << ca
+        end      
+      %>
+      
+      <% @circle.currencies.each do |c| %>
+        <% if h[c] %>
+          <li>
+            <%= render_currency_icon(c,:size=>16)%>  <% c.name %>: (<%= h[c].collect{|ca| ca.player_class}.join(', ') %>)
+          </li>
+        <% end %>
+      <% end %>
+      </td>
+    </tr>
+  <% end %>
+  </table>
+  <%= will_paginate @users,:per_page => 5%>
+  </div>
+  <%end%>
+<% end %>

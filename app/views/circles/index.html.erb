@@ -17,6 +17,8 @@ for circle in @membranes
       &nbsp;&nbsp;
       <%= link_to 'Add Currencies', currencies_circle_path(circle)%>
       &nbsp;&nbsp;
+      <%= link_to 'Link Players to Currencies', link_players_circle_path(circle)%>
+      &nbsp;&nbsp;
       <%= link_to 'Delete', "/circles/#{circle.id}", :confirm => 'Are you sure?', :method => :delete %>
       <%else%>&nbsp;<%end%>
     </td>

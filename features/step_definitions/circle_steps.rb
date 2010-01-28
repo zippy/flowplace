@@ -32,9 +32,6 @@ Given /^I make "([^\"]*)" a "([^\"]*)" of "([^\"]*)"$/ do |users, role, circle_n
   When %Q|I press "Add >>"|
 end
 
-Given /^"([^\"]*)" is bound to "([^\"]*)"$/ do |currency_name, circle_name|
-end
-
 Given /^I bind "([^\"]*)" to "([^\"]*)"$/ do |currency_name, circle_name|
   circle = Currency.find_by_name(circle_name)
   When %Q|I go to the "bind_currency" play page for my "namer" account in "#{circle_name}"|

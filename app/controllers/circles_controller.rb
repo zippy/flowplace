@@ -121,6 +121,51 @@ class CirclesController < ApplicationController
     end
   end
 
+  # GET /circles/1/link_players
+  def link_players
+    @circle = Currency.find(params[:id])
+    return if am_not_namer?
+    setup_players_users
+    #FIXME we should parameterize setup_players_users
+    @users = @players.paginate(:page => @search_params[:page])
+    
+  end
+  
+  # PUT /circles/1/set_link_players
+  def set_link_players
+    @circle = Currency.find(params[:id])
+    currencies = params[:currencies]
+    return if am_not_namer?
+    if @circle.errors.empty?
+      #TODO, this needs updating if the same user can have multiple accounts in the same currency as namer
+      namer_account = @circle.api_user_accounts('namer',current_user)[0]
+      params[:users].keys.each do |user_id|
+        user = User.find(user_id)
+        self_account = User.find_by_user_name(@circle.circle_user_name).currency_accounts[0]
+        
+        currencies.keys.each do |currency_id|
+          currency = Currency.find(currency_id)
+          currencies[currency_id].keys.each do |pc|
+            to_account = @circle.api_user_accounts('member',user).first
+            play = {
+              'from' => namer_account,
+              'to' => to_account,
+              'currency' => currency,
+              'player_class' => pc
+            }
+            @circle.api_play('grant',namer_account,play)
+          end
+        end
+      end
+      flash[:notice] = 'Users were successfully applied.'
+      redirect_to(link_players_circle_url(@circle))
+    else
+      setup_players_users
+      render :action => 'link_players'
+    end
+    
+  end
+
   # GET /circles/1/currencies
   def currencies
     @circle = Currency.find(params[:id])
