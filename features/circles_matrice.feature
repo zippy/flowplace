@@ -174,6 +174,8 @@ Feature: circle namer
   Scenario: namer grants a user a role in a currency
     Given a "MutualCredit" currency "X"
     And I bind "X" to "the circle"
+    Given a "MutualCredit" currency "Y"
+    And I bind "Y" to "the circle"
     And A user "joe"
     When I make "joe" a "member" of "the circle"
     And I go to the link players page for "the circle"
@@ -181,9 +183,11 @@ Feature: circle namer
     #if webrat wasn't whack this should be, but in this test case it is unambiguous.
     #And I check "Member" within "#currency_x"
     And I check "currencies[2][member]"
-    And I press "Apply"
+    And I press "Link"
     Then I should be taken to the link players page for "the circle"
     And I should see "member" within "#joe"
+
+  Scenario: namber grants a role forgetting to check a user
 
   Scenario: namer can delete a circle but a non-namer cannot
     When I go to the circles page

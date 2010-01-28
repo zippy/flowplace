@@ -90,13 +90,13 @@
       <script type="ruby">
         <![CDATA[
           currency = @play.currency
+            
            to = @play.to['_currency_account']
            ca = currency.api_new_player(@play.player_class,to.user,to.name)
            if ca.valid?
              perms = @play.to['permissions']
-             perms[currency] ||= {}
-             puts "PERMS"+perms.inspect
-             perms[currency][@play.player_class] = true
+             perms[currency.name] ||= {}
+             perms[currency.name][@play.player_class] = true
              true
            else
              ca.errors.full_messages.join('; ')

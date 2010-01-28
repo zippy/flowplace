@@ -12,11 +12,12 @@ class CurrencyAccount < ActiveRecord::Base
 
   def get_state
     s = self.state
-    begin
+   begin
       self.state = YAML.load(s) if s.class == String
-    rescue
-      return {"corrupted state"=>s}
-    end
+   rescue Exception => e
+     raise "Err in CA #{self.id}: #{e.message}"
+     # return {"corrupted state"=>s}
+   end
     self.state
   end
   
