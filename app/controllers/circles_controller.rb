@@ -136,6 +136,9 @@ class CirclesController < ApplicationController
     @circle = Currency.find(params[:id])
     currencies = params[:currencies]
     return if am_not_namer?
+    if !params[:users]
+      @circle.errors.add_to_base('You must choose some players!')
+    end
     if @circle.errors.empty?
       #TODO, this needs updating if the same user can have multiple accounts in the same currency as namer
       namer_account = @circle.api_user_accounts('namer',current_user)[0]
@@ -153,11 +156,15 @@ class CirclesController < ApplicationController
               'currency' => currency,
               'player_class' => pc
             }
-            @circle.api_play('grant',namer_account,play)
+            begin
+              @circle.api_play('grant',namer_account,play)
+            rescue Exception => e
+              raise e unless e.to_s =~ /You are allready a member of that currency/
+            end
           end
         end
       end
-      flash[:notice] = 'Users were successfully applied.'
+      flash[:notice] = 'Players were successfully linked.'
       redirect_to(link_players_circle_url(@circle))
     else
       setup_players_users

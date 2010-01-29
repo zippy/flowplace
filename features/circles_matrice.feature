@@ -187,7 +187,29 @@ Feature: circle namer
     Then I should be taken to the link players page for "the circle"
     And I should see "member" within "#joe"
 
-  Scenario: namber grants a role forgetting to check a user
+  Scenario: namer grants a role forgetting to check a user
+    Given a "MutualCredit" currency "X"
+    And I bind "X" to "the circle"
+    And A user "joe"
+    When I make "joe" a "member" of "the circle"
+    And I go to the link players page for "the circle"
+    And I check "currencies[2][member]"
+    And I press "Link"
+    And I should see "You must choose some players!"
+
+  Scenario: namer re-grants a role forgetting to check a user
+    Given a "MutualCredit" currency "X"
+    And I bind "X" to "the circle"
+    And A user "joe"
+    When I make "joe" a "member" of "the circle"
+    And I go to the link players page for "the circle"
+    And I check the box for user "joe"
+    And I check "currencies[2][member]"
+    And I press "Link"
+    And I check the box for user "joe"
+    And I check "currencies[2][member]"
+    And I press "Link"
+    And I should see "member" within "#joe"
 
   Scenario: namer can delete a circle but a non-namer cannot
     When I go to the circles page
