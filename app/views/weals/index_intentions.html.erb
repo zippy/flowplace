@@ -44,7 +44,7 @@ for weal in @weals
     <%if weal.matched? %>
       matched!
     <%elsif (c = weal.proposals.size) > 0%>
-      <%= pluralize(c,"proposal")%>
+      <%= pluralize("proposal",c)%>
     <%end%>
   </td>
   

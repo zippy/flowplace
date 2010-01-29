@@ -333,9 +333,9 @@ module ApplicationHelper
     when count == 0
       "no #{text.pluralize}"
     when count == 1
-      text
+      "1 "+text
     else
-      text.pluralize
+      "#{count} #{text.pluralize}"
     end
   end
 end

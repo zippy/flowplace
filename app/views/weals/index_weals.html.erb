@@ -57,7 +57,7 @@ for weal in @weals
     <span class="item" style="margin: <%= weal.level==0 ? 5 : 0 %>px 0 0 <%= weal.level*20 %>px;">
     <%=link_to weal.title, weal.created_by == current_user ? edit_intention_url(weal) : intention_url(weal),{:title=>weal.description} %>
     <%if (c = weal.proposals.size) > 0%>
-      (<%= pluralize(c,"proposal")%>)
+      (<%= pluralize("proposal",c)%>)
     <%end%>
     </span>
   </td>

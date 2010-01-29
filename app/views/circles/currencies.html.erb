@@ -28,7 +28,7 @@
 <%if @currencies.empty?%>
   No currencies found
 <%else%>
-  Search found <%= @currencies.size%> <%= pluralize("currency", @currencies.size) %>
+  Search found <%= pluralize("currency", @currencies.size) %>
   <%= error_messages_for('circle') %>
   <% form_tag(set_currencies_circle_url(@circle), :method=>:put) do -%>
   <p>
