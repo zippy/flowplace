@@ -1,27 +1,29 @@
 <% @title='Circles' %>
 <%= render(:partial => 'sub_nav') %>
 
-<table>
-
-
-<% i = 0
-for circle in @membranes 
-  i+=1
-  is_namer = circle.api_user_isa?(current_user,'namer')
-%>
-  <tr class="<%= i%2 == 0 ? ' odd' : ''%>">
-    <td><%= render_currency_icon(circle) %></td>
-    <td> <%=link_to circle.name, is_namer ? edit_circle_path(circle) : circle_path(circle)  %></td>
-    <td> <% if is_namer %>
-      <%= link_to 'Add Players', players_circle_path(circle)%>
-      &nbsp;&nbsp;
-      <%= link_to 'Add Currencies', currencies_circle_path(circle)%>
-      &nbsp;&nbsp;
-      <%= link_to 'Link Players to Currencies', link_players_circle_path(circle)%>
-      &nbsp;&nbsp;
-      <%= link_to 'Delete', "/circles/#{circle.id}", :confirm => 'Are you sure?', :method => :delete %>
-      <%else%>&nbsp;<%end%>
-    </td>
-  </tr>
-<% end %>
-</table>
+<%if  @membranes.empty?%>
+  There are no circles defined, create one!
+<%else%>
+  <table>
+  <% i = 0
+  for circle in @membranes 
+    i+=1
+    is_namer = circle.api_user_isa?(current_user,'namer')
+  %>
+    <tr class="<%= i%2 == 0 ? ' odd' : ''%>">
+      <td><%= render_currency_icon(circle) %></td>
+      <td> <%=link_to circle.name, is_namer ? edit_circle_path(circle) : circle_path(circle)  %></td>
+      <td> <% if is_namer %>
+        <%= link_to 'Add Players', players_circle_path(circle)%>
+        &nbsp;&nbsp;
+        <%= link_to 'Add Currencies', currencies_circle_path(circle)%>
+        &nbsp;&nbsp;
+        <%= link_to 'Link Players to Currencies', link_players_circle_path(circle)%>
+        &nbsp;&nbsp;
+        <%= link_to 'Delete', "/circles/#{circle.id}", :confirm => 'Are you sure?', :method => :delete %>
+        <%else%>&nbsp;<%end%>
+      </td>
+    </tr>
+  <% end %>
+  </table>
+<%end%>
