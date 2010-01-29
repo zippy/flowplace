@@ -27,8 +27,11 @@ class Rating < Sol
       }
     end
     
+    # what will be set up when this is called:
+    # @substrate with instance of RatingSubstrate
+    # @who, @what, @rating from paramaters
     def influx
-      s = sol.substrate
+      s = @substrate
       s.rating[@what] ||= {}
       s.rating[@what][@who.id] = @rating
       s.average_rating[@what] = (
