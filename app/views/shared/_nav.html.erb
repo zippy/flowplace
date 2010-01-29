@@ -6,5 +6,8 @@
   <li><%= nav_link 'Actions', my_actions_path,'Create, search and manage actions'%></li>
   <li><%= nav_link 'Assets', my_assets_path,'Create, search and manage assets'%></li>
   <li><%= nav_link 'Members', members_circles_path,'View the members of the circle'%></li>
+  <% if @current_circle.api_user_isa?(current_user,'namer')%>
+  <li><%= nav_link 'Setup', players_circle_path(@current_circle),'Configure members and currencies in a circle'%></li>
+  <% end %>
 <%end%>
 </ul>
