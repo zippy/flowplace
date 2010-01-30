@@ -83,9 +83,9 @@ module NavigationHelpers
       '/users'
     when /the admin page/
       '/admin'
-    when /^the currency account play page for "([^\"]*)$"/
+    when /^the currency account play page for "([^\"]*)"$/
       currency_accounts_paths(:play,$1)
-    when /^the currency account history page for "([^\"]*)$"/
+    when /^the currency account history page for "([^\"]*)"$/
       currency_accounts_paths(:history,$1)
     when /the "([^\"]*)" play page for my "([^\"]*)" account in "([^\"]*)"/
       user = controller.current_user
@@ -114,7 +114,6 @@ end
 
 def currency_accounts_paths(kind,locator)
   ca = CurrencyAccount.find_by_name(locator)
-  raise CurrencyAccount.all.collect(&:name).inspect
   raise "couldn't find currency account for '#{locator}' while building path" if ca.nil?
   case kind
   when :play
