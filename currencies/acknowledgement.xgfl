@@ -1,0 +1,72 @@
+<game>
+  <description lang="en">
+    Acknowledgment currencies are used for a community members to send each other acknowledgements like thank-yous, or flowers.<br />
+    Player classes: member<br />
+    Summary function: <br />
+    Member Plays: acknowledge(to,ack,memo)<br />
+  </description>
+  <player_classes>
+    <player_class name="member" />
+  </player_classes>
+  <states>
+    <state player_class="member"><hash name="acknowledgements_given" /><hash name="acknowledgements_received" /><integer name="total_given" /><integer name="total_received" /></state>
+  </states>
+
+  <plays>
+    <play name="_new_member">
+      <script type="ruby">
+          <![CDATA[ 
+            @member_state.acknowledgements_given = {}
+            @member_state.acknowledgements_received = {}
+            @member_state.total_given = 0
+            @member_state.total_received = 0
+            ]]>
+      </script>
+    </play>
+    <play name="acknowledge" player_classes="member">
+      <fields>
+         <field type="player_member" id="from" />
+         <field type="player_member" id="to" />
+         <field type="range" id="ack" configure_with="enumerable_range" default="1,2,3,4,5"/>
+         <field type="string" id="memo" />
+      </fields>
+      <script type="ruby">
+        <![CDATA[
+        to_give =  @play.ack
+        today = Time.now.to_s(:db)[0..9]
+        given = @play.from['acknowledgements_given'][today]
+        given ||= {'_total'=>0}
+        if given['_total']+to_give > 20
+          return_value = "You can only give 20 #{name.downcase} per day"
+        end
+        if !return_value
+          to = @play.to['_name']
+          given[to] ||= 0
+          if given[to]+to_give > 5
+            return_value = "You can only give 5 #{name.downcase} per person per day"
+          end
+          if !return_value
+            given[to]+= to_give
+            given['_total']+= to_give
+            @play.from['total_given'] += to_give
+            @play.to['total_received'] += to_give
+        
+            received = @play.to['acknowledgements_received'][today]
+            received ||= {'_total'=>0}
+            received['_total']+= to_give
+            from = @play.from['_name']
+            received[from] ||= 0
+            received[from]+= to_give
+        
+            @play.from['acknowledgements_given'][today] = given
+            @play.to['acknowledgements_received'][today] = received
+            return_value = true
+          end
+        end
+        return_value
+        ]]>
+      </script>
+      <play_sentence lang='en'><from /> acknowledges <to /> <ack /> for <memo /></play_sentence>
+    </play>
+  </plays>
+</game>

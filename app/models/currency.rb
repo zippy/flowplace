@@ -376,6 +376,17 @@ class CurrencyMutualRating
   end
 end
 
+class CurrencyAcknowledgement
+  def api_render_player_state(account)
+    s = account.get_state
+    if s
+      given = s['total_given']
+      received = s['total_received']
+      "#{name} Given: #{given}; Total Received: #{received} #{s.inspect}"
+    end
+  end
+end
+
 class CurrencyMembrane
   def self.create(namer_user,params)
     circle = CurrencyMembrane.new(params[:circle])
