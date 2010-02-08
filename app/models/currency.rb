@@ -114,6 +114,14 @@ class Currency < ActiveRecord::Base
         end
       end
     end
+    @xgfl.xpath(%Q|/game/states/state[@player_class="_"]/*|).to_a.each do |state|
+      state_name = state.attributes['name'].to_s
+      configurable_fields["_.#{state_name}"] = state.attributes['configure_with'].to_s
+      if d = state.attributes['default']
+        configurable_fields["_.#{state_name}.default"] = d.to_s
+      end
+    end
+    
     configurable_fields
   end
 
@@ -312,12 +320,36 @@ class Currency < ActiveRecord::Base
   end
   
   def configuration=(c)
-    self.config = c
+    self.config = configuration
+    if c
+      cf = api_configurable_fields
+      c.keys.each do |field|
+        if c[field].blank?
+          config[field] = cf[field+".default"]
+        else
+          case cf[field]
+          when 'integer'
+            config[field] = c[field].to_i
+          else
+            config[field] = c[field]
+          end
+        end
+      end
+    end
   end
 
   def configuration
-    if self.config.is_a?(String)
+    case self.config
+    when String
       self.config = YAML.load(self.config)
+    when nil
+      self.config = {}
+      cf = api_configurable_fields
+      cf.keys.each do |field|
+        next if field =~ /\.default$/
+        config[field] = cf[field+".default"]
+        config[field] = config[field].to_i if cf[field] == 'integer'
+      end
     end
     self.config
   end

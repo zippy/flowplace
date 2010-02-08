@@ -50,8 +50,7 @@ class CurrenciesController < ApplicationController
   def create
     params_key = params[:currency_params_key]
     currency_params = get_currency_params
-    @currency = Currency.new(currency_params)
-    @currency.type = currency_params[:type]
+    @currency = currency_params[:type].constantize.new(currency_params)
     @currency.configuration = params[:config]
     respond_to do |format|
       if @currency.save

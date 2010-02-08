@@ -11,16 +11,21 @@ Feature: acknowledgement currency
     Then I should be taken to the new "Acknowledgement" currencies page
     When I fill in "Name" with "Flowers"
     And I fill in "config_acknowledge.ack" with "1,2,3"
+    And I fill in "config__.max_per_day" with "9"
+    And I fill in "config__.max_per_person_per_day" with "5"
     And I press "Create"
     Then I should be taken to the currencies page
     And I should see "Flowers"
     And I bind "Flowers" to "the circle"
     And A user "joe"
     And A user "jane"
+    And A user "jill"
     When I make "joe" a "member" of "the circle"
     When I make "jane" a "member" of "the circle"
+    When I make "jill" a "member" of "the circle"
     Given "joe" is a "member" of currency "Flowers"
     Given "jane" is a "member" of currency "Flowers"
+    Given "jill" is a "member" of currency "Flowers"
     Given I go to the logout page
     Given I log in as "joe"
 
@@ -40,7 +45,7 @@ Feature: acknowledgement currency
     And I should see /Flowers.*?Given:.*0/ within "#dashboard_flowers_member"
     And I should see /Flowers.*?Received:.*2/ within "#dashboard_flowers_member"
 
-  Scenario: Joe tries to give Jane 10 flowers and fails because the limit to an individual is 5 per day
+  Scenario: Joe tries to give more flowers than the limits allow
     When I go to the dashboard page
     And I select "3" from "play_ack"
     When I select "Jane User's Flowers member account" from "play_to"
@@ -57,3 +62,14 @@ Feature: acknowledgement currency
     And I fill in "play_memo" with "the great things you did"
     And I press "Record Play"
     Then I should see "You can only give 5 flowers per person per day"
+    When I select "3" from "play_ack"
+    When I select "Jill User's Flowers member account" from "play_to"
+    And I fill in "play_memo" with "flowers for jill"
+    And I press "Record Play"
+    Then I should see /Flowers.*?Given:.*8/ within "#dashboard_flowers_member"
+    When I select "2" from "play_ack"
+    When I select "Jill User's Flowers member account" from "play_to"
+    And I fill in "play_memo" with "flowers for jill"
+    And I press "Record Play"
+    Then I should see "You can only give 9 flowers per day"
+    

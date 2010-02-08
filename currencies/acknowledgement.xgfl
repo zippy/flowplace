@@ -10,6 +10,7 @@
   </player_classes>
   <states>
     <state player_class="member"><hash name="acknowledgements_given" /><hash name="acknowledgements_received" /><integer name="total_given" /><integer name="total_received" /></state>
+    <state player_class="_"><integer name="max_per_day" configure_with="integer" default="20"/><integer name="max_per_person_per_day" configure_with="integer" default="5" /></state>
   </states>
 
   <plays>
@@ -32,18 +33,20 @@
       </fields>
       <script type="ruby">
         <![CDATA[
+        max_per_day = self.configuration['_.max_per_day']
         to_give =  @play.ack
         today = Time.now.to_s(:db)[0..9]
         given = @play.from['acknowledgements_given'][today]
         given ||= {'_total'=>0}
-        if given['_total']+to_give > 20
-          return_value = "You can only give 20 #{name.downcase} per day"
+        if given['_total']+to_give > max_per_day
+          return_value = "You can only give #{max_per_day} #{name.downcase} per day"
         end
         if !return_value
           to = @play.to['_name']
           given[to] ||= 0
-          if given[to]+to_give > 5
-            return_value = "You can only give 5 #{name.downcase} per person per day"
+          max_per_person_per_day = self.configuration['_.max_per_person_per_day']
+          if given[to]+to_give > max_per_person_per_day
+            return_value = "You can only give #{max_per_person_per_day} #{name.downcase} per person per day"
           end
           if !return_value
             given[to]+= to_give
