@@ -33,6 +33,7 @@ Feature: acknowledgement currency
     Then I should be taken to the dashboard page
     And I should see /Flowers.*?Given:.*2/ within "#dashboard_flowers_member"
     And I should see /Flowers.*?Received:.*0/ within "#dashboard_flowers_member"
+    And I should see /2.*?to.*?Jane.*?User's.*?Flowers.*?member.*?account/ within "#dashboard_flowers_member"
     When I go to the logout page
     And I log in as "jane"
     And I go to the dashboard page

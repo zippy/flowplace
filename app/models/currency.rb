@@ -382,8 +382,29 @@ class CurrencyAcknowledgement
     if s
       given = s['total_given']
       received = s['total_received']
-      "#{name} Given: #{given}; Total Received: #{received} #{s.inspect}"
+      names = name.pluralize
+      result = "Total #{names} Given: #{given}"
+      recent_given = get_recent(s['acknowledgements_given'],"to")
+      result << "<br>Recent #{names} Given: #{recent_given}" if !recent_given.blank?
+      result << "<br>Total #{names} Received: #{received}"
+      recent_received = get_recent(s['acknowledgements_received'],"from")
+      result << "<br>Recent #{names} Received: #{recent_received}" if !recent_received.blank?
+      result
     end
+  end
+  def get_recent(acks,direction)
+    result = ""
+    a_week_ago = Time.now - 7.days
+    acks.keys.sort.reverse.each do |d|
+      break if d.to_time < a_week_ago
+      result << "<i>#{d}:</i> "
+      acks[d].each do |to,acks|
+        if to !~ /^_/
+          result << "#{acks} #{direction} #{to}; "
+        end
+      end
+    end
+    result
   end
 end
 
