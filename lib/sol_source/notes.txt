@@ -1,0 +1,25 @@
+"Secret Agency"
+
+Some souls should be able to create other sols, some not.
+capacity to create sub-souls should be visible in DNA.
+
+
+mc_sol
+mc_sol+nads < mc_sol
+
+# archiving
+like archive.org; it would be possible to archive all the flows
+perhaps all state-changing flows.
+done in distributed "seti-like" manner,
+anyone could volunteer to be an archival node
+then just need a managament service to balance replicaton/redundancy
+
+# routing
+using mc_sol as router- breath of "can you pass this along"
+
+
+# sol 'forking' or 'inheritance'
+rather than inheriting from parent sols through the ruby class mechanism,
+sols should perform a fork or inherit operation from a live sol on the network.  
+this allows for a 'fingerprinting' operation that signs what sol we forked from 
+and who did the instantiation.
