@@ -9,17 +9,17 @@ describe McLib do
 
       it "loads breaths" do
         @dna[:breath].should == [
-          Breath::Base, Breath::Namasca, Breath::Namaste
+          Breath::Namasca, Breath::Namaste,Breath::WhoAreYou
         ]
       end
     
       it "loads substrate" do
-        @dna[:substrate].should == [Substrate::Base]
+        @dna[:substrate].should == Substrate::McSol
       end
     
       it "loads transforms" do
         @dna[:transform].should == [
-          Transform::Base, Transform::Breather, Transform::Namasca, 
+          Transform::Breather, Transform::Namasca, 
           Transform::Namaste
         ]
       end
@@ -27,9 +27,9 @@ describe McLib do
   end
   
   describe "#classes_for" do
-    it "should load some files" do
+    it "should load from files" do
       McLib.send(:classes_for, :mc_sol, :breath).should == [
-        Breath::Base, Breath::Namasca, Breath::Namaste
+        Breath::Namasca, Breath::Namaste,Breath::WhoAreYou
       ]
     end
   end
