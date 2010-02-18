@@ -1,0 +1,3 @@
+class SolLink
+  
+end
