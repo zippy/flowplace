@@ -1,3 +1,4 @@
+require 'active_support'
 module McLib
   extend self
   
@@ -6,6 +7,7 @@ module McLib
     [ :breath, :substrate, :transform ].each do |dim|
       dna[dim] = classes_for sol, dim
     end
+    dna[:substrate] = dna[:substrate].first
     dna
   end
   
@@ -14,7 +16,7 @@ module McLib
     Dir["#{SOL_DIR}/#{sol}/#{dim}/*.rb"].map do |file|
       name = file.gsub!(/.*\/([^\/]*).rb$/, '\1')
       # FIXME: need better than capitalize
-      Object.const_get(dim.to_s.capitalize).const_get(name.to_s.capitalize)
+      Object.const_get(dim.to_s.camelize).const_get(name.to_s.camelize)
     end
   end
 end
