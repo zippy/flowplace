@@ -107,7 +107,7 @@ module ApplicationHelper
   def my_circles_for_select(include_flowplace = true)
     @my_circles ||= current_user.circle_memberships
     result = @my_circles.collect {|c| [c.name,c.id]}
-    result = [['Flowplace',nil]].concat(result) if include_flowplace
+    result = [[configuration_text(:site_name),nil]].concat(result) if include_flowplace
     result
   end
   

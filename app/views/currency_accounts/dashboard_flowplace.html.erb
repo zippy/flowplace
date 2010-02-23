@@ -1,10 +1,10 @@
-<% @title='Flowplace Dashboard' %>
+<% @title= ' Dashboard' %>
 <%= stylesheet_link_tag 'dashboard' %>
 
 <%if @my_circles.size == 0%>
 <div class="dashboard_item" id="dashboard_welcome">
   <p class="dashboard_title">Welcome!</p>
-  You are not yet part of any circles.  Please click on circles below to begin exploring the communities in the flowplace.
+  You are not yet part of any circles.  Please click on circles below to begin exploring the communities in the <%= configuration_text(:site_name)%>.
 </div>
 <%end%>
 

@@ -3,7 +3,7 @@
 <html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
 <head>
   	<meta http-equiv="content-type" content="text/html;charset=UTF-8" />
-	<title>Flowplace<%= @title ? ": #{@title}" : '' %></title>
+	<title><%=configuration_text(:site_name)%><%= @title ? ": #{@title}" : '' %></title>
 	  <%= stylesheet_link_tag 'mana' %>
 	  <%= javascript_include_tag :defaults %>
 </head>

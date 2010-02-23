@@ -3,7 +3,7 @@
 
 Passwords are case-sensitive: uppercase and lowercase matter. If you think you know your password but it's just not working, try changing the case. (Is your Caps Lock on?) Otherwise, request that your password and account name be e-mailed to you. 
 <p>
-Just give us your e-mail address (the one you use for the Flowplace web site) and we'll send you information on how to reset your password in a few minutes. 
+Just give us your e-mail address (the one you use for the <%=configuration_text(:site_name)%> web site) and we'll send you information on how to reset your password in a few minutes. 
 <p>
 <table cellpadding="0" cellspacing="0" border=0 width=500><tr><td>
 	<% form_tag(forgot_passwords_url) do -%>
@@ -24,7 +24,7 @@ Just give us your e-mail address (the one you use for the Flowplace web site) an
   <%= text_field_tag(:email,params[:email], :size=>40) %>
 	<br />
 	<span class="smalltext">Very important!  If you type this incorrectly, we will not be able to find your account information or 
-	answer you. If you have multiple e-mail addresses, please be sure to give us the one you used to sign up for the flowplace.</span>
+	answer you. If you have multiple e-mail addresses, please be sure to give us the one you used to sign up for the <%=configuration_text(:site_name)%>.</span>
 </p>
 <%= submit_tag('Request Reset Password E-mail') %>
 </fieldset><% end -%>

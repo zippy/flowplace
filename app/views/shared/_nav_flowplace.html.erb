@@ -10,7 +10,7 @@
   <li><%= nav_link 'Accounts',users_path,'Add or modify user accounts'%></li>
   <% end %>
   <% if current_user.can?(:admin) %>
-  <li><%= nav_link 'Config', configurations_path,'Configure this flowplace'%></li>
+  <li><%= nav_link 'Config', configurations_path,"Configure the #{configuration_text(:site_name)}"%></li>
   <%end%>
 
 <%end%>

@@ -1,9 +1,9 @@
 <% @title='My Wealth Stream' %>
 <div id="hide_me_with_css">
-    <p class="errortext">This site requires the use of CSS (cascading style sheets).  Your browser is currently not allowing the use of CSS.  In order to use the Flowplace, you will need to change this setting or disable plug-in software that is blocking style sheets.
+    <p class="errortext">This site requires the use of CSS (cascading style sheets).  Your browser is currently not allowing the use of CSS.  In order to use the <%= configuration_text(:site_name)%>, you will need to change this setting or disable plug-in software that is blocking style sheets.
 </p></div>
 <div id="hide_me_with_js">
-    <p class="errortext">This site requires the use of Javascript.  Your browser is currently not allowing the use of Javascript.  In order to use the Flowplace, you will need to change this setting in your browser.</p>
+    <p class="errortext">This site requires the use of Javascript.  Your browser is currently not allowing the use of Javascript.  In order to use the <%= configuration_text(:site_name)%>, you will need to change this setting in your browser.</p>
     </div>    
 <%= javascript_tag "$('hide_me_with_js').hide();" %>
 <%= gravitar_image_tag(@user,:size=>64) %>

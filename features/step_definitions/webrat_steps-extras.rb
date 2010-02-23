@@ -34,3 +34,7 @@ Then /^I should not see "([^\"]*)" as a "([^\"]*)" option$/ do |value, field|
   lambda {select(value, :from => field)}.should raise_error
 end
 
+Then /^I should see link with title "([^\"]*)"$/ do |title|
+  response.should have_tag('a','title'=>title)
+end
+

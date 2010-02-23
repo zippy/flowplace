@@ -8,7 +8,7 @@ left_banner = !Configuration.get(:left_banner).blank? && !session[:left_banner_c
 	<head>
 		<meta http-equiv="content-type" content="text/html; charset=utf-8" />
 		<title>
-			flowplace<%= @title ? ": #{@title}" : '' %>
+			<%=configuration_text(:site_name)%><%= @title ? ": #{@title}" : '' %>
 		</title><%= stylesheet_link_tag 'project', :media => "all" %><%= stylesheet_link_tag 'table', :media => "screen" %><%= stylesheet_link_tag 'project-print', :media => "print" %><%= javascript_include_tag :defaults %>
 	</head>
 	<% if Configuration.get(:analytics)%><%= Configuration.get(:analytics)%><%end%>
@@ -28,14 +28,14 @@ left_banner = !Configuration.get(:left_banner).blank? && !session[:left_banner_c
   					<%= link_to 'Log In',login_url,{:title => 'Log in'}%>
   				<% end %>
   			</div>
-				<a href="/dashboard?current_circle="><img class='logo' src="/images/logo.png" height="28" width="28" alt="logo"><img height="28" class='logo' src="/images/logo_txt.jpg" alt="flowplace"></a>
+				<a href="/dashboard?current_circle="><img class='logo' src="/images/logo.png" height="28" width="28" alt="logo"><img height="28" class='logo' src="/images/logo_txt.jpg" alt="<%=configuration_text(:site_name)%>"></a>
 		  </div>
 
 			<div id="top_bar">
 				<div class='wrap_to_center'>
 				<div id="header">
 				  <%if @current_circle.nil? %>
-			       <div id='circle_header'><img id='circle_logo' src="/images/logo.png" height="35" width="35" alt="logo"><div id='circle_header_name'>Flowplace</div></div>
+			       <div id='circle_header'><img id='circle_logo' src="/images/logo.png" height="35" width="35" alt="logo"><div id='circle_header_name'><%=configuration_text(:site_name)%></div></div>
 			      <% if logged_in? %>
 			      <div id="circle_jump_select"><%= my_circles_jump_select %></div>
     				<%= render(:partial => 'shared/nav_flowplace') %>

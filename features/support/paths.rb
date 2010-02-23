@@ -6,6 +6,10 @@ module NavigationHelpers
       '/login'
     when /the logout page/
       '/logout'
+    when /the sign up page/
+      '/users/signup'
+    when /the forgot password page/
+      '/passwords/forgot'
     when /the home page/
       '/'
     when /^the dashboard page$/
