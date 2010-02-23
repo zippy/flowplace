@@ -9,8 +9,26 @@ describe Configuration do
     @configuration.should be_valid
   end
   
-  it "should be able to load defaults" do
-    Configuration.load_defaults
-    Configuration.all.size.should == 4
+  it "should be able to restore defaults" do
+    Configuration.restore_defaults
+    config_yaml = YAML::load(IO.read(RAILS_ROOT + '/app/models/configuration_defaults.yml'))
+    Configuration.all.size.should == config_yaml.size
+    Configuration.restore_defaults
+    Configuration.all.size.should == config_yaml.size
+  end
+  
+  it "merges in new configurations automatically" do
+    Configuration.create({
+      'name' => 'site_name',
+      'value' => 'Cool Site',
+      'sequence' => '2',
+      'configuration_type' => 'string'
+    })
+    Configuration.merge_defaults
+    c = Configuration.find_by_name('site_name')
+    c.value.should == 'Cool Site'
+    c.sequence.should == '1'
+    config_yaml = YAML::load(IO.read(RAILS_ROOT + '/app/models/configuration_defaults.yml'))
+    Configuration.all.size.should == config_yaml.size
   end
 end

@@ -3,7 +3,7 @@ class ConfigurationsController < ApplicationController
   # GET /configurations
   # GET /configurations.xml
   def index
-    @configurations = Configuration.find(:all)
+    @configurations = Configuration.find(:all,:order=>'sequence')
 
     respond_to do |format|
       format.html # index.html.erb

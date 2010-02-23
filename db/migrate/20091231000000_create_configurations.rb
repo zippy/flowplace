@@ -8,7 +8,7 @@ class CreateConfigurations < ActiveRecord::Migration
 
       t.timestamps
     end
-    Configuration.load_defaults
+    Configuration.restore_defaults
   end
 
   def self.down
