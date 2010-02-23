@@ -16,3 +16,4 @@ config/smtp_settings.rb
 config/flowplace_config.rb
 tsestate.kbd
 .DS_Store
+.ackrc
