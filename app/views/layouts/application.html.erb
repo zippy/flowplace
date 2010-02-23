@@ -55,7 +55,7 @@ left_banner = !Configuration.get(:left_banner).blank? && !session[:left_banner_c
           <%= yield  %>
         </div>
 				<div id="footer">
-					<span class="float_left">The flowplace is released under the GPL license.</span>
+					<span class="float_left"><%= Configuration.get(:footer)%></span>
 				</div>
 			</div>
 		<p>

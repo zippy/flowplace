@@ -16,10 +16,18 @@ Feature: configuration
     And I should see "New User Policy"
     And I should see "Welcome Text"
     And I should see "Analytics"
+    And I should see "Footer"
 
   Scenario: non-admin user tries to look at configuration options
     When I go to the logout page
     And I am logged into my "user" account
     And I go to the configurations page
     Then I should be taken to the dashboard page
+
+  Scenario: admin changes the footer configuration
+    When I go to the configurations page
+    And I follow "Footer"
+    And fill in "configuration_value" with "Powered by the Flowplace!"
+    And I press "Update"
+    Then I should see "Powered by the Flowplace!" within "#footer"
   

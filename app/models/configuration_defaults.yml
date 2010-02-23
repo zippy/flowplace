@@ -19,3 +19,8 @@ configurations_4:
   value: 
   configuration_type: string
   description: Google Analytics html block.
+configurations_4: 
+  name: footer
+  value: The Flowplace is licensed under the <a href="http://www.gnu.org/licenses/gpl.html">GPL</a>
+  configuration_type: text
+  description: HTML block for the footer.
