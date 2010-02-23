@@ -1,3 +1,4 @@
+rerun.txt
 log/*.log
 log/call_graph.html
 tmp/**/*
