@@ -8,6 +8,9 @@
   <p>
     <% if @configuration.configuration_type == 'text' %>
       <br /><%= f.text_area :value, :cols=>90 %>
+    <% elsif @configuration.configuration_type == 'yaml'  %>
+      (Enter YAML)<br /><%= f.text_area :value, :cols=>90 %>
+    
     <% elsif @configuration.configuration_type =~ /options\((.*)\)/ %>
       <%= f.select :value, $1.split(/,/) %>
     <% else %>

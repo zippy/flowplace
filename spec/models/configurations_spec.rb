@@ -9,6 +9,13 @@ describe Configuration do
     @configuration.should be_valid
   end
   
+  it "should validate that yaml configurations are valid yaml" do
+    c = Configuration.new(:name => 'x',:configuration_type => 'yaml')
+    c.should be_valid
+    c.value = " : "
+    c.should_not be_valid
+  end
+  
   it "should be able to restore defaults" do
     Configuration.restore_defaults
     config_yaml = YAML::load(IO.read(RAILS_ROOT + '/app/models/configuration_defaults.yml'))

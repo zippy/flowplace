@@ -1,6 +1,15 @@
 class Configuration < ActiveRecord::Base
   validates_uniqueness_of :name
-  Types = %w(options string text)
+  Types = %w(options string text yaml)
+
+  def validate
+    begin
+      YAML.load(value) if !value.blank?
+    rescue
+      errors.add(:value,"must be valid YAML")
+    end
+  end
+
   def Configuration.get(config_name)
     c = Configuration.find_by_name(config_name.to_s)
     c.value if c
