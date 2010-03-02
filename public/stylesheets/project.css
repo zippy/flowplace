@@ -249,7 +249,12 @@ ul#play_names li.last a {margin-right:0;}
 	margin-bottom: 10px;
 	background-color: #A3B15A;
 }
-
+#action_error {
+	border: 1px solid #F00;
+	padding: 4px;
+	margin-bottom: 10px;
+	background-color: #FF00FF;
+}
 #tip {
 	background-color: #A399FF;
 	border: 2px solid #000066;

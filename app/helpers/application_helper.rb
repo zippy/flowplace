@@ -33,6 +33,10 @@ module ApplicationHelper
     end
   end
   
+  def action_error(msg)
+    msg.to_s
+  end
+  
   def get_index_form_html(params,url)
     form_tag(url,:method => :get, :id => 'search_form') do 
        get_search_form_html(params)
