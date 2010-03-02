@@ -47,4 +47,13 @@ Feature: configuration
     When I go to the forgot password page
     Then I should see "the one you use for the Cool Site web site"
     And I should see "please be sure to give us the one you used to sign up for the Cool Site"
+
+  Scenario: admin merges new defaults
+    Given all configurations are deleted
+    When I go to the configurations page
+    Then I should see a table with 1 row
+    When I go to the merge default configurations page
+    And I go to the configurations page
+    Then I should see a table with 8 rows
+    
   

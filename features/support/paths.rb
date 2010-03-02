@@ -105,6 +105,8 @@ module NavigationHelpers
       '/wallets'
     when /the configurations page/
       '/configurations'
+    when /the merge default configurations page/
+      '/configurations/merge_defaults'
     when /the edit configurations page for "([^\"]*)"/
       config_name = $1
       c = Configuration.find_by_name(config_name)

@@ -49,4 +49,11 @@ class ConfigurationsController < ApplicationController
     end
   end
 
+  # GET /configurations/merge_defaults
+  def merge_defaults
+    Configuration.merge_defaults
+    flash[:notice] = 'Default configurations merged.'
+    redirect_to(configurations_url)
+  end
+
 end

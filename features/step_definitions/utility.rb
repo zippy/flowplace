@@ -33,7 +33,7 @@ def examine_table_row_column(should_not,text,index,column_index)
   end
 end
 
-Then /^I should see a table with ([0-9]+) rows$/ do |count|
+Then /^I should see a table with ([0-9]+) rows*$/ do |count|
   count_table_rows(count)
 end
 

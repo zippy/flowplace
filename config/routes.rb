@@ -1,5 +1,5 @@
 ActionController::Routing::Routes.draw do |map|
-  map.resources :configurations
+  map.resources :configurations, :collection => { :merge_defaults => :get }
   map.resources :wallets
   map.resources :plays
 
