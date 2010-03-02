@@ -308,6 +308,11 @@ a:visited {color: #333399;}
 	text-align: center;
 }
 
+#footer a {
+	color: #aaa;
+}
+
+
 .float_right {
 	float: right;
 	clear:both;
