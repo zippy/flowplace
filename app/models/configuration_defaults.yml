@@ -29,3 +29,8 @@ configurations_6:
   value: 
   configuration_type: string
   description: Google Analytics html block.
+configurations_7: 
+  name: autojoin
+  value: 
+  configuration_type: yaml
+  description: Autojoin yaml specification.

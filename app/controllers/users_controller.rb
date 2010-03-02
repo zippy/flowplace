@@ -269,6 +269,29 @@ class UsersController < ApplicationController
   end
 
   def do_extra_actions
+    if current_user.can?(:admin)
+      if params[:autojoin]
+        begin
+          autojoin = Configuration.get(:autojoin)
+          if autojoin.blank?
+            flash[:action_error] = 'autojoin configuration is empty (<a href="/configurations">configure</a>)'
+          else
+            autojoin = YAML.load(autojoin)
+            circles = autojoin['circles'].split(/\W*,\W*/) if autojoin['circles'].is_a?(String)
+            circles = autojoin['circles'] if autojoin['circles'].is_a?(Array)
+            circles.each do |name|
+              c = Currency.find_by_name(name)
+              raise "circle #{name} not found!" if c.nil? || !c.is_a?(CurrencyMembrane)
+              c.add_player_to_circle('member',@user)
+            end
+            flash[:notice] = "autojoined #{@user.full_name} (#{autojoin.inspect})"
+          end
+        rescue Exception => e
+          flash[:action_error] = "autojoin configuration was invalid (configuration: #{autojoin.inspect}; error: #{e.to_s})"
+        end
+      end
+    end
+    
     if current_user.can?(:createAccounts)
       flash[:notice_param] = @user
       if params[:activate_account] && @user.deactivated?
