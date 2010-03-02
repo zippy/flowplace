@@ -3,7 +3,9 @@ require ENV['DEPREC_PATH'] ? ENV['DEPREC_PATH'] : 'deprec'
 subdomain = ENV['CAP_DOMAIN']
 
 
-if subdomain && subdomain != ''
+if subdomain == 'oww'
+  set :domain, "dev.onlinewritingworkshop.com"
+elsif subdomain && subdomain != ''
   set :domain, subdomain+'.flowplace.org'
 else
   set :domain, "dev.flowplace.org"
@@ -25,6 +27,10 @@ when 'learn.flowplace.org'
 when 'dev.flowplace.org'
   set :user, "eric"
   set :application, 'flowplace'
+  set :ssh_port,22
+when 'dev.onlinewritingworkshop.com'
+  set :user, "eric"
+  set :application, 'oww'
   set :ssh_port,22
 end
 
