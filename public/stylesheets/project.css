@@ -258,11 +258,55 @@ ul#play_names li.last a {margin-right:0;}
 }
 
 fieldset {
-	border: 1px solid #777;
-	margin:0em 0em 0em 0em;
+	border: 1px solid #4C3366;
+	margin:0em 0em 2em 0em;
 	padding:0px 10px 0px 10px;
+	.padding:  10px;
 	display:inline;
 }
+
+.aligned_label label {
+	display:block;
+	float:left;
+	margin-right:0.5em;
+	text-align:right;
+}
+.aligned_label label.left_indent {
+	margin-left:1em;
+}
+
+.aligned_label.simple_fieldset {
+	display:block;
+	border: 0px;
+}
+
+.aligned_label.simple_fieldset label {
+	width:12em;
+}
+.aligned_label.login label {
+	width:7em;
+}
+
+.aligned_label.new_user_contact_info {
+	width: 480px;
+}
+
+.aligned_label.new_user_contact_info label {
+	width:  8em;
+	text-align: left;
+}
+
+fieldset.new_user_contact_info p{
+    float: left;
+    clear:both;
+    margin-bottom: 0px;
+    margin-top: 3px;
+    width: 480px;
+}	
+fieldset.new_user_contact_info p.bottom{
+    margin-bottom: 10px;
+}	
+
 /* ---------- Fieldset (used in login) --------- */
 #log_in_content fieldset label {
 	display:block;

@@ -4,7 +4,7 @@
 
 <% form_for(:user, :url => users_path) do |f| %>
 
-  <b>Account Name:</b> <%= f.text_field :user_name %><br />
+  <p><%= f.label :user_name, 'Account Name:'%> <%= f.text_field :user_name %></p>
 
   <%= render(:partial => 'form', :object => f) %>
 

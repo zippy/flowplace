@@ -1,20 +1,16 @@
-<b>Contact Information:</b><br />
-
-<table>
-<tr><td align="left">First name: </td><td><%= form.text_field :first_name %></td></tr>
-<tr><td align="left">Last name: </td><td><%= form.text_field :last_name %></td></tr>
-<tr><td align="left">E-mail: </td><td><%= form.text_field :email %> (this e-mail will be used to display a <%= link_to 'Gravatar','http://gravatar.com'%>)</td></tr>
-<tr><td align="left">Phone: </td><td><%= form.text_field :phone %></td></tr>
-<tr><td align="left">Phone 2: </td><td><%= form.text_field :phone2 %></td></tr>
-<tr><td align="left">Address 1: </td><td><%= form.text_field :address1 %></td></tr>
-<tr><td align="left">Address 2: </td><td><%= form.text_field :address2 %></td></tr>
-<tr><td align="left">City: </td><td><%= form.text_field :city %></td></tr>
-<tr><td align="left">State: </td><td><%= form.select :state, StateNameOptions %></td></tr>
-<tr><td align="left">Zip/Postal Code: </td><td><%= form.text_field :zip %></td></tr>
-<tr><td align="left">Country: </td><td><%= form.country_select :country %></td>
-</tr>
-</table>
-
+<fieldset class="new_user_contact_info aligned_label">
+<legend>Contact Information</legend>
+<p><%= form.label :first_name,"First name:"%> <%= form.text_field :first_name, :size => 50 %></p>
+<p><%= form.label :last_name,"Last name:"%> <%= form.text_field :last_name, :size => 50 %></p>
+<p><%= form.label :email,"Email:"%> <%= form.text_field :email, :size => 50%></p>
+<p><%= form.label :phone,"Phone:"%> <%= form.text_field :phone, :size => 50 %></p>
+<p><%= form.label :phone2,"Phone 2:"%> <%= form.text_field :phone2, :size => 50 %></p>
+<p><%= form.label :address1,"Address 1:"%> <%= form.text_field :address1, :size => 50%></p>
+<p><%= form.label :address2,"Address 2:"%> <%= form.text_field :address2, :size => 50 %></p>
+<p><%= form.label :city,"City:"%> <%= form.text_field :city, :size => 50 %></p>
+<p><%= form.label :state,"State:"%> <%= form.select :state, StateNameOptions %></p>
+<p><%= form.label :zip,"Zip/Postal Code:"%> <%= form.text_field :zip %></p>
+</fieldset>
 
 <p>
 <b>Notes:</b> <br />

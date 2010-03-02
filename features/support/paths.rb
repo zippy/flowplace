@@ -110,6 +110,18 @@ module NavigationHelpers
       c = Configuration.find_by_name(config_name)
       raise "couldn't find configuration '#{config_name}' while building path" if c.nil?
       "/configurations/#{c.id}/edit"
+    when /the edit user page for "?([^"]*)"?/
+      path_to_user_page(:edit,$1)
+    when /the show user page for "?([^"]*)"?/
+      path_to_user_page(:show,$1)
+    when /the add user page/
+      path_to_user_page(:add)
+    when /the list users page/
+      path_to_user_page(:list)
+    when /the edit contact info page for "?([^"]*)"?/
+      path_to_user_page(:contact_edit,$1)
+    when /the view contact info page for "?([^"]*)"?/
+      path_to_user_page(:contact_view,$1)
     else
       raise "Can't find mapping from \"#{page_name}\" to a path."
     end
@@ -127,4 +139,27 @@ def currency_accounts_paths(kind,locator)
   end
 end
 
+def path_to_user_page(type, locator = nil)
+  if locator == "myself"
+    locator = controller.current_user.id
+  elsif locator
+    user = User.find_by_user_name(locator)
+    raise "could not find user_name #{locator.inspect} while building user path" if user.nil?
+    locator = user.id
+  end
+  case type
+  when :edit
+    "/users/#{locator}/edit"
+  when :contact_edit
+    "/users/#{locator}/contact_info"
+  when :contact_view
+    "/users/#{locator}/contact_info_read_only"
+  when :show
+    "/users/#{locator}"
+  when :add
+    "/users/new"
+  when :list
+    "/users"
+  end
+end
 World(NavigationHelpers)
