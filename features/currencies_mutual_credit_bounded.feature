@@ -21,6 +21,7 @@ Feature: bounded mutual credit currency
     When I make "joe" a "member" of "the circle"
     When I make "jane" a "member" of "the circle"
     Given "joe" is a "member" of currency "We"
+    And "joe" is an "admin" of currency "We"
     Given "jane" is a "member" of currency "We"
     Given I go to the logout page
     Given I log in as "joe"
@@ -29,22 +30,42 @@ Feature: bounded mutual credit currency
     When I go to the dashboard page
     Then I should see /Balance:.*?0/
     And I should see /Limit:.*?100/
-    When I select "Jane User's We member account" from "play_to"
+    When I select "Jane User's We member account" from "play_to" within "#dashboard_we_member"
     And I fill in "play_amount" with "100"
     And I fill in "play_memo" with "backrub"
     And I press "Record Play"
 #    Then I should be taken to the dashboard page
-    Then what
     And I should see /Balance:.*?-100/
-    When I select "Jane User's We member account" from "play_to"
+    When I select "Jane User's We member account" from "play_to" within "#dashboard_we_member"
     And I fill in "play_amount" with "1"
     And I fill in "play_memo" with "one more dollar!"
     And I press "Record Play"
 #    Then I should be taken to the dashboard page
-    Then what
     And I should see /Balance:.*?-100/
     And I should see "Credit limit (100) exceeded."
     When I go to the logout page
     And I log in as "jane"
     And I go to the dashboard page
     Then I should see /Balance:.*?100/
+
+  Scenario: Joe sets his credit limit
+    When I go to the dashboard page
+    Then I should see /Limit:.*?100/
+    When I select "Joe User's We member account" from "play_to" within "#dashboard_we_admin"
+    And I fill in "play_limit" with "500"
+    And I press "Record Play" within "#dashboard_we_admin"
+    Then I should see /Limit:.*?500/
+
+  Scenario: Joe tries to set his credit limit above system max
+    When I go to the dashboard page
+    When I select "Joe User's We member account" from "play_to" within "#dashboard_we_admin"
+    And I fill in "play_limit" with "5000"
+    And I press "Record Play" within "#dashboard_we_admin"
+    And I should see "Limit must be less than system maximum: 1000"
+    
+  Scenario: Joe tries to set his credit limit below system min
+    When I go to the dashboard page
+    When I select "Joe User's We member account" from "play_to" within "#dashboard_we_admin"
+    And I fill in "play_limit" with "5"
+    And I press "Record Play" within "#dashboard_we_admin"
+    And I should see "Limit must be greater than system minimum: 100"

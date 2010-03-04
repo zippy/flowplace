@@ -1,8 +1,8 @@
 <game>
   <description lang="en">
-    Mutual credit currencies are a "means of exchange" currency where all members issue currency at the point of transaction.<br />
-    Player classes: member<br />
-    Summary function: Balance,Volume<br />
+    Mutual credit currencies are a "means of exchange" currency where all members issue currency at the point of transaction.  Bounded mutual credit includes credit limits on members set by an admin<br />
+    Player classes: member,admin<br />
+    Summary function: Balance,Volume,Limit<br />
     Member Plays: Pay(to,amount,memo)<br />
   </description>
   <player_classes>
@@ -53,20 +53,26 @@
       </script>
       <play_sentence lang='en'><from /> pays <to /> <amount /> for <memo /></play_sentence>
     </play>
-    <play name="reverse" player_classes="admin">
+    <play name="set_limit" player_classes="admin">
       <fields>
-         <field type="play" id="play_to_reverse" />
-         <field type="string" id="memo" />
+        <field type="player_admin" id="from" />
+        <field type="player_member" id="to" />
+        <field type="integer" id="limit" />
       </fields>
       <script type="ruby">
         <![CDATA[
-        @play_to_reverse.from.member_state.balance += @play.amount
-        @play_to_reverse.from.member_state.volume -= abs(@play.amount)
-        @play_to_reverse.to.member_state.balance -= @play.amount
-        @play_to_reverse.to.member_state.volume -= abs(@amount)
-        @play_to_reverse.aggregator.aggregator_state.volume -= abs(@amount)
+        return_value = true
+        if @play.limit > self.configuration['_.max_negative_balance']
+          return_value = "Limit must be less than system maximum: #{self.configuration['_.max_negative_balance']}"
+        elsif @play.limit < self.configuration['_.min_negative_balance']
+          return_value = "Limit must be greater than system minimum: #{self.configuration['_.min_negative_balance']}"
+        else
+          @play.to['limit'] = @play.limit
+        end
+        return_value
         ]]>
       </script>
+      <play_sentence lang='en'><from /> limits <to /> to <limit /></play_sentence>
     </play>
   </plays>
 </game>

@@ -38,3 +38,16 @@ Then /^I should see link with title "([^\"]*)"$/ do |title|
   response.should have_tag('a','title'=>title)
 end
 
+When /^(?:|I )select "([^\"]*)" from "([^\"]*)" within "([^\"]*)"$/ do |value, field, selector|
+  within(selector) do |content|
+    select(value, :from => field)
+  end
+end
+
+
+When /^(?:|I )press "([^\"]*)" within "([^\"]*)"$/ do |button,selector|
+  within(selector) do |content|
+    click_button(button)
+  end
+end
+
