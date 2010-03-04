@@ -48,7 +48,23 @@ Feature: bounded mutual credit currency
     And I go to the dashboard page
     Then I should see /Balance:.*?100/
 
-  Scenario: Joe sets his credit limit
+  Scenario: Joe views his transaction history before and after a transaction
+    When I go to the dashboard page
+    When I follow "History" within "#dashboard_we_member"
+    Then I should see "You have made no plays in this currency as a member."
+    When I go to the dashboard page
+    And I select "Jane User's We member account" from "play_to" within "#dashboard_we_member"
+    And I fill in "play_amount" with "100"
+    And I fill in "play_memo" with "backrub"
+    And I press "Record Play"
+    And I follow "History" within "#dashboard_we_member"
+    Then I should see a table with 2 rows
+    Then I should see "Joe User's We member account" in row 1 column 0
+    Then I should see "Jane User's We member account" in row 1 column 1
+    Then I should see "100" in row 1 column 2
+    Then I should see "backrub" in row 1 column 3
+
+  Scenario: Joe sets a credit limit
     When I go to the dashboard page
     Then I should see /Limit:.*?100/
     When I select "Joe User's We member account" from "play_to" within "#dashboard_we_admin"
@@ -56,14 +72,14 @@ Feature: bounded mutual credit currency
     And I press "Record Play" within "#dashboard_we_admin"
     Then I should see /Limit:.*?500/
 
-  Scenario: Joe tries to set his credit limit above system max
+  Scenario: Joe tries to set a credit limit above system max
     When I go to the dashboard page
     When I select "Joe User's We member account" from "play_to" within "#dashboard_we_admin"
     And I fill in "play_limit" with "5000"
     And I press "Record Play" within "#dashboard_we_admin"
     And I should see "Limit must be less than system maximum: 1000"
     
-  Scenario: Joe tries to set his credit limit below system min
+  Scenario: Joe tries to set a credit limit below system min
     When I go to the dashboard page
     When I select "Joe User's We member account" from "play_to" within "#dashboard_we_admin"
     And I fill in "play_limit" with "5"

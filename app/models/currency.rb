@@ -91,7 +91,7 @@ class Currency < ActiveRecord::Base
       {f.attributes["id"].to_s => attributes}
     end
   end
-  
+
   def api_state_fields(player_class)
     @state_fields ||= {}
     return @state_fields if @state_fields[player_class]
@@ -156,7 +156,7 @@ class Currency < ActiveRecord::Base
 #    summary
   end
   
-  def api_render_play(play)
+  def api_parse_play(play)
     if play.is_a?(String)
       begin
         play = YAML.load(play)
@@ -164,7 +164,32 @@ class Currency < ActiveRecord::Base
         play = {"corrupted_play"=>play}
       end
     end
-    play.inspect
+    play_name = play['_name']
+    result = {}
+    if play_name
+      field_names = []
+      api_play_fields(play_name).each do |field|
+        field = field.values[0]
+        field_name = field['id']
+        field_type = field['type']
+        case field_type
+        when /player_(.*)/
+          player_state = play[field_name]
+          if player_state
+            account_name = player_state['_name'] 
+            result[field_name] = account_name
+            field_names << field_name
+          end
+        else
+          result[field_name] = play[field_name]
+          field_names << field_name
+        end
+      end
+      result['_ordered_field_names'] = field_names
+    else
+      result["play"] = play.inspect
+    end
+    result
   end
   
   def api_new_player(player_class,user,name = nil)
@@ -269,14 +294,17 @@ class Currency < ActiveRecord::Base
             player_class = $1
             a = play[field_name]
             if a.is_a?(CurrencyAccount)
-              p = @play[field_name]
+              p = @play[field_name].clone
+              name = p['_name']
               p.delete('_name')
               p.delete('_currency_account')
               a.state = p
               a.save
+              p['_name'] = name
             end
           end
         end
+        @play['_name'] = play_name
         Play.create!(:content=>@play,:currency_account_id => currency_account.id)
       end
     else

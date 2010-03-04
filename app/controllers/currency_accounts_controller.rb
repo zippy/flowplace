@@ -159,6 +159,10 @@ class CurrencyAccountsController < ApplicationController
     @currency_account = CurrencyAccount.find(params[:id])
     @currency = @currency_account.currency
     @plays = @currency_account.plays
+    if !@plays.empty?
+      p = @currency.api_parse_play(@plays[0].content)
+      @play_fields = p['_ordered_field_names']
+    end
   end
   
   # GET /currency_accounts/1/play
