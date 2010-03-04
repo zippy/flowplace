@@ -394,6 +394,15 @@ class CurrencyTrueGoodBeautiful
   end
 end
 
+class CurrencyMutualCreditBounded
+  def api_render_player_state(account)
+    s = account.get_state
+    if s
+      "Balance: #{s['balance']}; Volume: #{s['volume']}; Limit: #{s['limit']}; "
+    end
+  end
+end
+
 class CurrencyMutualRating
   def api_render_player_state(account)
     s = account.get_state

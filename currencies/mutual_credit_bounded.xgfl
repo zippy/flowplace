@@ -1,0 +1,72 @@
+<game>
+  <description lang="en">
+    Mutual credit currencies are a "means of exchange" currency where all members issue currency at the point of transaction.<br />
+    Player classes: member<br />
+    Summary function: Balance,Volume<br />
+    Member Plays: Pay(to,amount,memo)<br />
+  </description>
+  <player_classes>
+    <player_class name="member" />
+    <player_class name="aggregator" />
+    <player_class name="admin" />
+  </player_classes>
+  <states>
+    <state player_class="member"><integer name="balance" /><integer name="volume" /><integer name="limit" /></state>
+    <state player_class="aggregator"><integer name="volume" /></state>
+    <state player_class="_"><integer name="min_negative_balance" configure_with="integer" default="100"/><integer name="max_negative_balance" configure_with="integer" default="1000" /></state>
+  </states>
+
+  <plays>
+    <play name="_new_member">
+      <script type="ruby">
+          <![CDATA[ @member_state.balance = 0; @member_state.volume = 0; 
+          @member_state.limit = self.configuration['_.min_negative_balance'] ]]>
+      </script>
+    </play>
+    <play name="_new_aggregator">
+      <script type="ruby">
+          <![CDATA[ @aggregator_state.volume = 0 ]]>
+      </script>
+    </play>
+    <play name="pay" player_classes="member">
+      <fields>
+         <field type="player_member" id="from" />
+         <field type="player_member" id="to" />
+         <field type="player_aggregator" id="aggregator" />
+         <field type="integer" id="amount" />
+         <field type="string" id="memo" />
+      </fields>
+      <script type="ruby">
+        <![CDATA[
+        return_value = true
+        if (@play.from['balance'] - @play.amount.abs) < -@play.from['limit']
+          return_value = "Credit limit (#{@play.from['limit']}) exceeded."
+        else
+          @play.from['balance'] -= @play.amount
+          @play.from['volume'] += @play.amount.abs
+          @play.to['balance'] += @play.amount
+          @play.to['volume'] += @play.amount.abs
+          @play.aggregator['volume'] += @play.amount.abs if @play.aggregator
+        end
+        return_value
+        ]]>
+      </script>
+      <play_sentence lang='en'><from /> pays <to /> <amount /> for <memo /></play_sentence>
+    </play>
+    <play name="reverse" player_classes="admin">
+      <fields>
+         <field type="play" id="play_to_reverse" />
+         <field type="string" id="memo" />
+      </fields>
+      <script type="ruby">
+        <![CDATA[
+        @play_to_reverse.from.member_state.balance += @play.amount
+        @play_to_reverse.from.member_state.volume -= abs(@play.amount)
+        @play_to_reverse.to.member_state.balance -= @play.amount
+        @play_to_reverse.to.member_state.volume -= abs(@amount)
+        @play_to_reverse.aggregator.aggregator_state.volume -= abs(@amount)
+        ]]>
+      </script>
+    </play>
+  </plays>
+</game>
