@@ -103,7 +103,7 @@ module ApplicationHelper
   def my_circles_jump_select(include_flowplace = true)
     circles = my_circles_for_select(include_flowplace)
     if circles.size > 1
-      label_tag('current_circle', 'Jump to:') + select_tag('current_circle',options_for_select(circles,@current_circle ? @current_circle.id : nil))
+      label_tag('current_circle', 'Jump to:') + select_tag('current_circle',options_for_select(circles,@current_circle ? @current_circle.id : nil),:onchange => 'location = "/dashboard?current_circle="+$F("current_circle")')
     else
       ''
     end

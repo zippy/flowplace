@@ -68,8 +68,4 @@ left_banner = !Configuration.get(:left_banner).blank? && !session[:left_banner_c
 			%>
 		</p>
 	</body>
-	<%= observe_field :current_circle,
-  	:frequency => 0.5,
-  	:function => 'location = "/dashboard?current_circle="+$F("current_circle")'
-  %>
 </html>
