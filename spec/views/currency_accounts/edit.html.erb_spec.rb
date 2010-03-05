@@ -8,7 +8,7 @@ describe "/currency_accounts/edit.html.erb" do
       :new_record? => false,
       :user_id => 1,
       :currency_id => 1,
-      :player_class => "member"
+      :player_class => "member",
       :state => "value for state"
     )
   end
