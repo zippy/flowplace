@@ -156,40 +156,35 @@ class Currency < ActiveRecord::Base
 #    summary
   end
   
-  def api_parse_play(play)
-    if play.is_a?(String)
+  def api_play_history(account)
+    raw_plays = account.plays
+    plays = []
+    raw_plays.each do |play|
+      content = load_play_content(play)
+      content['__meta'] ||= {}
+      content['__meta']['timestamp'] = play.created_at
+      plays << content
+    end
+    plays
+  end
+  
+  def load_play_content(play)
+    if play.content.is_a?(String)
       begin
-        play = YAML.load(play)
+        play = YAML.load(play.content)
       rescue
-        play = {"corrupted_play"=>play}
+        play = {"corrupted_play"=>play.content}
       end
     end
-    play_name = play['_name']
-    result = {}
-    if play_name
-      field_names = []
-      api_play_fields(play_name).each do |field|
-        field = field.values[0]
-        field_name = field['id']
-        field_type = field['type']
-        case field_type
-        when /player_(.*)/
-          player_state = play[field_name]
-          if player_state
-            account_name = player_state['_name'] 
-            result[field_name] = account_name
-            field_names << field_name
-          end
-        else
-          result[field_name] = play[field_name]
-          field_names << field_name
-        end
-      end
-      result['_ordered_field_names'] = field_names
-    else
-      result["play"] = play.inspect
-    end
-    result
+    play
+  end
+  
+  def api_play_field_names(play_name)
+    api_play_fields(play_name).collect {|field| field.keys[0]}
+  end
+  
+  def api_play_names(player_class)
+    api_plays.collect {|name,attrs| (!(name =~ /^_/) && attrs[:player_classes] == player_class) ? name : nil}.compact
   end
   
   def api_new_player(player_class,user,name = nil)
@@ -250,7 +245,7 @@ class Currency < ActiveRecord::Base
   end
   
   def api_play(play_name,currency_account,play)
-    @play = Currency::State.new(api_play_fields(play_name).collect {|field| field.keys[0]})
+    @play = Currency::State.new(api_play_field_names(play_name))
     api_play_fields(play_name).each do |field|
       field = field.values[0]
       field_name = field['id']
@@ -294,7 +289,7 @@ class Currency < ActiveRecord::Base
             player_class = $1
             a = play[field_name]
             if a.is_a?(CurrencyAccount)
-              p = @play[field_name].clone
+              p = @play[field_name]
               name = p['_name']
               p.delete('_name')
               p.delete('_currency_account')
@@ -304,8 +299,9 @@ class Currency < ActiveRecord::Base
             end
           end
         end
-        @play['_name'] = play_name
-        Play.create!(:content=>@play,:currency_account_id => currency_account.id)
+        content = @play.get_state
+        content['__meta'] = {'name' => play_name}
+        Play.create!(:content=>content,:currency_account_id => currency_account.id)
       end
     else
       if return_value.nil?

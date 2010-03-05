@@ -5,6 +5,8 @@
 
 <% for currency_account in @currency_accounts 
   currency = currency_account.currency
+  play_names = currency.api_play_names(currency_account.player_class)
+  play_name = play_names[0]
 %>
   <div class="dashboard_item" id="dashboard_<%= currency.name_as_html_id%>_<%=currency_account.player_class%>" title="<%=h currency.description%>">
     <div class="dashboard_play">
@@ -15,7 +17,7 @@
     </p>
     <div class="dashboard_explanation">
       <%= currency_account.render_state %><br />
-      <%= link_to 'History', history_currency_account_url(currency_account) %>
+      <%= link_to 'History', history_url(currency_account,play_name) %>
     </div>
   </div>
 <% end %>

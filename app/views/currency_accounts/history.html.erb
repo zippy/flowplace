@@ -5,7 +5,7 @@ Current State: <%= @currency.api_render_player_state(@currency_account)%>
 <br />
 <h4> History </h4>
 <% if @plays.empty? %>
-You have made no plays in this currency as a <%= @currency_account.player_class%>.
+You have made no '<%= @play_name%>' plays in this currency.
 <% else %>
 <table>
   <tr>
@@ -16,10 +16,10 @@ You have made no plays in this currency as a <%= @currency_account.player_class%
   </tr>
 
 <% for play in @plays
-  play_data = @currency.api_parse_play(play.content)
+  play_data = get_play_data_for_display(@currency,play,@play_name)
 %>
   <tr>
-    <td><%= standard_date_time(play.created_at)%>
+    <td><%= standard_date_time(play['__meta']['timestamp'])%>
     <% for play_field in @play_fields %>
     <td><%= play_data[play_field] %></td>
     <% end %>

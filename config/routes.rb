@@ -5,9 +5,10 @@ ActionController::Routing::Routes.draw do |map|
 
   map.resources :currency_accounts, :member => {
     :play => :get,
-    :history => :get,
     :record_play => :post
   }
+  map.history 'currency_accounts/:id/history/:play_name', :controller => 'currency_accounts', :action => 'history'
+  
   map.my_currencies('/my_currencies', :controller => 'currency_accounts', :action => 'my_currencies')
   map.dashboard('/dashboard', :controller => 'currency_accounts', :action => 'dashboard')
   map.join_currency('/my_currencies/join', :controller => 'currency_accounts', :action => 'join_currency', :conditions => { :method => :get })

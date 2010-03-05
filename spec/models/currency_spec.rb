@@ -198,6 +198,14 @@ describe Currency do
         {"from"=>{'id'=>'from','type'=>"player_member"}}, {"to"=>{'id'=>'to','type'=>"player_member"}}, {"aggregator"=>{'id'=>'aggregator','type'=>"player_aggregator"}}, {"amount"=>{'id'=>'amount','type'=>"integer"}}, {"memo"=>{'id'=>'memo','type'=>"string"}}
         ]
     end
+    it "should be able to return the fields names a play" do
+      @currency.api_play_field_names('pay').should == ["from","to","aggregator","amount","memo"]
+    end
+
+    it "should be able to return the play names available to a player class" do
+      @currency.api_play_names('member').should == ["pay"]
+    end
+
     describe "configurable fields" do
       it "should be able to return a list of the configurable fields for plays" do
         @cr = create_currency("R1",:klass=>CurrencyMutualRating)
@@ -216,7 +224,8 @@ describe Currency do
       end
       it "should initialize the currency state" do
         @cr = create_currency("A1",:klass=>CurrencyAcknowledgement)
-        @cr.configuration.should == {"_.max_per_day"=>20, "_.max_per_person_per_day"=>5}
+        @cr.configuration["_.max_per_day"].should == 20
+        @cr.configuration["_.max_per_person_per_day"].should == 5
       end
     end
     it "should be able to return a list of player classes" do
@@ -243,6 +252,18 @@ describe Currency do
       @account2.get_state['balance'].should == 20
       plays = Play.find(:all)
       plays.size.should == 1
+    end
+    
+    it "returns the play history for an account" do
+      @user2 = create_user('u2')
+      @account2 = create_currency_account(@user2,@currency)
+      play = {'from' => @account, 'to' => @account2, 'amount'=>20, 'memo'=>'leg waxing'}
+      @currency.api_play('pay',@account,play)
+      history = @currency.api_play_history(@account)
+      history.size.should == 1
+      h = history[0]
+      t = h["__meta"].delete("timestamp")
+      h.should == { "__meta" => {"name"=>"pay"}, "from"=>{"_name"=>"Joe U1", "volume"=>20, "balance"=>-20}, "amount"=>20, "memo"=>"leg waxing", "to"=>{"_name"=>"Joe U2", "volume"=>20, "balance"=>20}, "aggregator"=>nil}
     end
     
     describe 'api_user_accounts' do

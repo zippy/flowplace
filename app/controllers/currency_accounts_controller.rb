@@ -154,15 +154,15 @@ class CurrencyAccountsController < ApplicationController
     end
   end
 
-  # GET /currency_accounts/1/history
+  # GET /currency_accounts/1/history/play_name
   def history
     @currency_account = CurrencyAccount.find(params[:id])
     @currency = @currency_account.currency
-    @plays = @currency_account.plays
-    if !@plays.empty?
-      p = @currency.api_parse_play(@plays[0].content)
-      @play_fields = p['_ordered_field_names']
-    end
+    @play_name = params[:play_name]
+    @plays = @currency.api_play_history(@currency_account)
+    raise "play_name missing" if @play_name.blank?
+    @play_fields = @currency.api_play_field_names(@play_name)
+    @play_fields -= ['aggregator']
   end
   
   # GET /currency_accounts/1/play
@@ -171,7 +171,7 @@ class CurrencyAccountsController < ApplicationController
     @currency = @currency_account.currency
 
     player_class = @currency_account.player_class
-    @play_names = @currency.api_plays.collect {|name,attrs| (!(name =~ /^_/) && attrs[:player_classes] == player_class) ? name : nil}.compact
+    @play_names = @currency.api_play_names(player_class)
     @play_name = params[:name]
     if @play_name.blank?
       @play_name = @play_names[0]

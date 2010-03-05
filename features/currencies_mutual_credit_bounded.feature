@@ -51,7 +51,7 @@ Feature: bounded mutual credit currency
   Scenario: Joe views his transaction history before and after a transaction
     When I go to the dashboard page
     When I follow "History" within "#dashboard_we_member"
-    Then I should see "You have made no plays in this currency as a member."
+    Then I should see "You have made no 'pay' plays in this currency."
     When I go to the dashboard page
     And I select "Jane User's We member account" from "play_to" within "#dashboard_we_member"
     And I fill in "play_amount" with "100"

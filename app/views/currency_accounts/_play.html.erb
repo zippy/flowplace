@@ -1,7 +1,7 @@
 <% currency_account = play
 currency = currency_account.currency;
 player_class = currency_account.player_class
-play_names = currency.api_plays.collect {|name,attrs| (!(name =~ /^_/) && attrs[:player_classes] == player_class) ? name : nil}.compact
+play_names = currency.api_play_names(player_class)
 play_name = play_names[0]
 %>
 <% if play_name %>
