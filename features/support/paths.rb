@@ -137,7 +137,8 @@ def currency_accounts_paths(kind,locator)
   when :play
     "/currency_accounts/#{ca.id}/play"
   when :history
-    "/currency_accounts/#{ca.id}/history"
+    play_name = ca.currency.api_play_names(ca.player_class).first
+    "/currency_accounts/#{ca.id}/history/#{play_name}"
   end
 end
 

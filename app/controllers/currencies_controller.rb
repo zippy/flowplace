@@ -50,8 +50,13 @@ class CurrenciesController < ApplicationController
   def create
     params_key = params[:currency_params_key]
     currency_params = get_currency_params
-    @currency = currency_params[:type].constantize.new(currency_params)
-    @currency.configuration = params[:config]
+    if currency_params[:type].blank?
+      # this will end up throwing a "Type can't be blank error later"
+      @currency = Currency.new(currency_params)
+    else
+      @currency = currency_params[:type].constantize.new(currency_params)
+      @currency.configuration = params[:config]
+    end
     respond_to do |format|
       if @currency.save
         flash[:notice] = 'Currency was successfully created.'

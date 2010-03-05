@@ -27,21 +27,13 @@ Feature: dashboard
     And I should not see a "Y" "member" dashboard item
     And I should not see a "Z" "member" dashboard item
 
-  Scenario: Namers looks at a circle's dashboard and sees the circle's membrane currency
+  Scenario: Namers looks at a circle's dashboard and does NOT see the circle's membrane currency
     When I log in as "namer"
     Then I should be taken to the dashboard page
     And I should see "Dashboard" as the current tab
-    And I should see a "this circle" "namer" dashboard item
-    And I should not see a "that circle" "namer" dashboard item
-    And I should not see a "X" "member" dashboard item
-    And I should not see a "Y" "member" dashboard item
-    And I should not see a "Z" "member" dashboard item
-    When I go to the dashboard page for "that circle"
-    Then I should see a "that circle" "namer" dashboard item
     And I should not see a "this circle" "namer" dashboard item
-    And I should not see a "X" "member" dashboard item
-    And I should not see a "Y" "member" dashboard item
-    And I should not see a "Z" "member" dashboard item
+    When I go to the dashboard page for "that circle"
+    Then I should not see a "that circle" "namer" dashboard item
 
   Scenario: User makes a play in a currency
     When I log in as "joe"
@@ -55,7 +47,7 @@ Feature: dashboard
 #    Then I should be taken to the my currencies page
     And I should see "-20"
     When I follow "history"
-    Then I should be taken to the currency account history page for "Anonymous User's X member account"
+    Then I should be taken to the currency account history page for "Joe User's X member account"
     And I should see "leg waxing"
     
 #  Scenario: User looks at a currency account

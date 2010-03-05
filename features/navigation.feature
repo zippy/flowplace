@@ -7,11 +7,6 @@ Feature: Navigation feedback
     Given I am logged into my account
     Given a circle "the circle"
     When I go to the players page for "the circle"
-    When I select "Show all" from "search_on_main"
-    And I press "Search"
-    And I check the box for "anonymous"
-    When I select "member" from "player_class"
-    And I press "Submit"
     Given I have "admin" privs
     Given I have "accessAccounts" privs
 
@@ -40,6 +35,6 @@ Feature: Navigation feedback
     When I go to the accounts page
     Then I should not see "Currencies" as the current tab
     And I should see "Accounts" as the current tab
-    When I go to the admin page
+    When I go to the configurations page
     Then I should not see "Accounts" as the current tab
-    And I should see "Admin" as the current tab
+    And I should see "Config" as the current tab

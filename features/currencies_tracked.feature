@@ -5,8 +5,12 @@ Feature: tracked currency
 
   Background:
     Given I am logged into my account
+    Given I have "admin" privs
+    Given a circle "the circle"
     Given a "Tracked" currency "USD"
+    And I bind "USD" to "the circle"
     Given I am a "member" of currency "USD"
+    When I make "anonymous" a "member" of "the circle"
 
   Scenario: Users makes a play in a tracked currency
     Given "Joe" is a "member" of currency "USD"
@@ -19,7 +23,7 @@ Feature: tracked currency
     And I fill in "play_amount" with "20"
     And I fill in "play[memo]" with "leg waxing"
     And I press "Record Play"
-    Then I should be taken to the my currencies page
+    Then I should be taken to the dashboard page
     And I should see /Balance:.*-20/
     When I follow "history"
     Then I should be taken to the currency account history page for "Anonymous User's USD member account"

@@ -5,9 +5,14 @@ Feature: social capital currency
 
   Background:
     Given I am logged into my account
-    Given a "SocialCapital" currency "Hearts"
-    Given I am a "member" of currency "Hearts"
-    Given "Joe" is a "member" of currency "Hearts"
+    And I have "admin" privs
+    And a circle "the circle"
+    And I make "Joe" a "member" of "the circle"
+    And I make "anonymous" a "member" of "the circle"
+    And a "SocialCapital" currency "Hearts"
+    And I bind "Hearts" to "the circle"
+    And I am a "member" of currency "Hearts"
+    And "Joe" is a "member" of currency "Hearts"
 
   Scenario: Users makes a play in a social capital currency
     When I go to the my currencies page
@@ -18,22 +23,22 @@ Feature: social capital currency
     When I select "Joe User's Hearts member account" from "play_to"
     When I select "4" from "play_rating"
     And I press "Record Play"
-#    Then I should be taken to the my currencies page
-    And I should see /Rating:.*0/
-    And I should see /Given:.*1/
-    And I should see /Received:.*0/
+    Then I should be taken to the dashboard page
+    And I should see /Rating: 0/
+    And I should see /Given: 1/
+    And I should see /Received: 0/
     When I follow "Hearts"
     And I select "Joe User's Hearts member account" from "play_to"
     And I select "2" from "play_rating"
     And I press "Record Play"
-    Then I should be taken to the my currencies page
-    And I should see /Rating:.*0/
-    And I should see /Given:.*2/
-    And I should see /Received:.*0/
+    Then I should be taken to the dashboard page
+    And I should see /Rating: 0/
+    And I should see /Given: 2/
+    And I should see /Received: 0/
     Given I go to the logout page
     Given I log in as "Joe"
     When I go to the my currencies page
-    And I should see /Rating:.*3/
-    And I should see /Given:.*0/
-    And I should see /Received:.*2/
+    And I should see /Rating: 3/
+    And I should see /Given: 0/
+    And I should see /Received: 2/
 

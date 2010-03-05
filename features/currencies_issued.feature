@@ -5,10 +5,16 @@ Feature: issued currency
 
   Background:
     Given I am logged into my account
+    Given I have "admin" privs
+    Given a circle "the circle"
     Given an "Issued" currency "WE"
     Given I am a "user" of currency "WE"
     Given "TT" is an "issuer" of currency "WE"
     Given "Joe" is a "user" of currency "WE"
+    And I bind "WE" to "the circle"
+    When I make "Joe" a "member" of "the circle"
+    When I make "TT" a "member" of "the circle"
+    When I make "anonymous" a "member" of "the circle"
 
   Scenario: Users makes a play in a tracked currency with no money
     When I go to the my currencies page
@@ -33,7 +39,7 @@ Feature: issued currency
     And I fill in "play_amount" with "20"
     And I fill in "play[memo]" with "opening balance"
     And I press "Record Play"
-    Then I should be taken to the my currencies page
+    Then I should be taken to the dashboard page
     And I should see /Volume:.*20/
     And I should see /Circulation.*20/
     When I go to the logout page

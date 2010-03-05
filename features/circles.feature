@@ -4,6 +4,7 @@ Feature: circles
   I want to be able to see and request admission to circles
   
   Background:
+    Given the default site configurations
     Given I am logged into my "namer" account
     Given a circle "the circle" with members "joe,jane"
     When I go to the logout page
