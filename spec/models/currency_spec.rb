@@ -232,13 +232,13 @@ describe Currency do
       @currency.api_player_classes.should == ['member','aggregator','admin']
     end
     it "should be able to return a the play sentence" do
-      @currency.api_play_sentence('pay').should == "<from/> pays <to/> <amount/> for <memo/>"
+      @currency.api_play_sentence('pay').should == "<from></from> pays <to></to> <amount></amount> for <memo></memo>"
     end
     it "should be able to return a list of plays" do
       @currency.api_plays.should == {"_new_member"=>{:player_classes=>""}, "reverse"=>{:player_classes=>"admin"}, "pay"=>{:player_classes=>"member"}, "_new_aggregator"=>{:player_classes=>""}}
     end
     it "should be able to return the game description" do
-      @currency.api_description.should == "\n    Mutual credit currencies are a \"means of exchange\" currency where all members issue currency at the point of transaction.<br/>\n    Player classes: member<br/>\n    Summary function: Balance,Volume<br/>\n    Member Plays: Pay(to,amount,memo)<br/>\n  "
+      @currency.api_description.should == "\n    Mutual credit currencies are a \"means of exchange\" currency where all members issue currency at the point of transaction.<br>\n    Player classes: member<br>\n    Summary function: Balance,Volume<br>\n    Member Plays: Pay(to,amount,memo)<br>\n  "
     end
     it "should be able to record a play" do
       @user2 = create_user('u2')
