@@ -1,7 +1,9 @@
 class CurrencyAccount < ActiveRecord::Base
   belongs_to :currency
   belongs_to :user
-  has_many :plays
+  has_many :play_currency_account_links, :dependent => :destroy
+  has_many :plays, :through => :play_currency_account_links
+
   validates_presence_of :currency_id,:user_id,:player_class,:name
   validates_uniqueness_of :currency_id, :scope => [:name,:player_class], :message => 'You are allready a member of that currency'
   validates_uniqueness_of :name, :scope => [:currency_id,:player_class], :message => 'You allready have an account with that name in the currency'
@@ -22,7 +24,7 @@ class CurrencyAccount < ActiveRecord::Base
   end
   
   def render_state
-    currency.api_render_player_state(self).split(/; /).join('<br/>').gsub(' ','&nbsp;')
+    currency.api_render_player_state(self).split(/; /).join('<br/>')
   end
 
   def name_as_html_id

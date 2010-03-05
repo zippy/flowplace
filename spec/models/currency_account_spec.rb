@@ -45,12 +45,34 @@ describe CurrencyAccount do
       ca.errors.full_messages.should == ['Player class doggy does not exist in LETS']
     end
     it "should be able to render the account state" do
-      @account.render_state.should == @currency.api_render_player_state(@account)
+      @account.render_state.should == "Balance: 0<br/>Volume: 0"
     end
     it "should get the state of an account" do
       @account.get_state.should == {'balance' => 0, 'volume' => 0}
       ca = CurrencyAccount.find(@account.id)
       ca.get_state.should == {'balance' => 0, 'volume' => 0}
     end
+  end
+  
+  describe "account history" do
+    before(:each) do
+      @user = create_user('u1')
+      @user2 = create_user('u2')
+      @user3 = create_user('u3')
+      @currency = create_currency("LETS",:klass=>CurrencyMutualCredit)
+      @account = create_currency_account(@user,@currency)
+      @account2 = create_currency_account(@user2,@currency)
+      @account3 = create_currency_account(@user3,@currency)
+      play = {'from' => @account, 'to' => @account2, 'amount'=>20, 'memo'=>'leg waxing'}
+      @currency.api_play('pay',@account,play)
+      play = {'from' => @account, 'to' => @account3, 'amount'=>100, 'memo'=>'botox'}
+      @currency.api_play('pay',@account,play)
+    end
+    it "return a list of plays the account was involved in" do
+      all_plays = Play.find(:all)
+      @account.plays.should == all_plays
+      @account2.plays.should == [all_plays.first]
+      @account3.plays.should == [all_plays.last]
+    end    
   end
 end

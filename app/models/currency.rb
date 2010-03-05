@@ -278,6 +278,7 @@ class Currency < ActiveRecord::Base
 #    end
     if return_value == true
       CurrencyAccount.transaction do
+        currency_account_links = {}
         api_play_fields(play_name).each do |field|
           field = field.values[0]
           field_name = field['id']
@@ -292,7 +293,7 @@ class Currency < ActiveRecord::Base
               p = @play[field_name]
               name = p['_name']
               p.delete('_name')
-              p.delete('_currency_account')
+              currency_account_links[field_name] = p.delete('_currency_account')
               a.state = p
               a.save
               p['_name'] = name
@@ -301,7 +302,13 @@ class Currency < ActiveRecord::Base
         end
         content = @play.get_state
         content['__meta'] = {'name' => play_name}
-        Play.create!(:content=>content,:currency_account_id => currency_account.id)
+        Play.transaction do
+          p = Play.create!(:content=>content)
+          currency_account_links.each do |field_name,account|
+            PlayCurrencyAccountLink.create!(:currency_account_id => account.id, :play_id => p.id,:field_name => field_name)
+          end
+          p
+        end
       end
     else
       if return_value.nil?

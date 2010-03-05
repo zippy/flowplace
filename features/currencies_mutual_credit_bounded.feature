@@ -63,6 +63,16 @@ Feature: bounded mutual credit currency
     Then I should see "Jane User's We member account" in row 1 column 1
     Then I should see "100" in row 1 column 2
     Then I should see "backrub" in row 1 column 3
+    When I go to the logout page
+    And I log in as "jane"
+    And I go to the dashboard page
+    Then I should see /Balance:.*?100/
+    When I follow "History" within "#dashboard_we_member"
+    Then I should see a table with 2 rows
+    Then I should see "Jane User's We member account" in row 1 column 0
+    Then I should see "Joe User's We member account" in row 1 column 1
+    Then I should see "100" in row 1 column 2
+    Then I should see "backrub" in row 1 column 3
 
   Scenario: Joe sets a credit limit
     When I go to the dashboard page
