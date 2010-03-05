@@ -203,7 +203,7 @@ module ApplicationHelper
     
     fields = {}
     currency.api_play_fields(play).each {|f| fields.update(f)}
-    sentence = currency.api_play_sentence(play)
+    sentence = currency.api_play_sentence_raw(play)
     #TODO: we need to make this actually work by XML not strings as this broke once allready when
     # the nokogiri library converted the play sentence to slightly different XML.
     sentence = sentence.gsub(/(<([^>]+) *\/>)|(<([^>]+)><\/\4>)/) do |field_name|

@@ -161,8 +161,7 @@ class CurrencyAccountsController < ApplicationController
     @play_name = params[:play_name]
     @plays = @currency.api_play_history(@currency_account)
     raise "play_name missing" if @play_name.blank?
-    @play_fields = @currency.api_play_field_names(@play_name)
-    @play_fields -= ['aggregator']
+    @play_fields = @currency.api_play_sentence_fields(@play_name)
   end
   
   # GET /currency_accounts/1/play

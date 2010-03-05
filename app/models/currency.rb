@@ -149,7 +149,18 @@ class Currency < ActiveRecord::Base
     @xgfl ||= Nokogiri::XML.parse(xgfl)
     ps = @xgfl.xpath(%Q|/game/plays/play[@name= "#{play}"]/play_sentence|).first
     raise "Error: play sentence not defined for #{play}" if ps.nil?
-    @play_sentence[play]  = ps.inner_html
+    @play_sentence[play]  = ps
+  end
+
+  def api_play_sentence_fields(play)
+    sentence = api_play_sentence(play)
+    fields = []
+    sentence.children.each {|e| fields << e.name if e.is_a?(Nokogiri::XML::Element)}
+    fields
+  end
+  
+  def api_play_sentence_raw(play)
+    api_play_sentence(play).inner_html
   end
 
   def api_render_summary

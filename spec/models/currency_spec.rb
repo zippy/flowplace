@@ -231,9 +231,18 @@ describe Currency do
     it "should be able to return a list of player classes" do
       @currency.api_player_classes.should == ['member','aggregator','admin']
     end
-    it "should be able to return a the play sentence" do
-      @currency.api_play_sentence('pay').should == "<from></from> pays <to></to> <amount></amount> for <memo></memo>"
+    it "should be able to return a the play sentence as raw html" do
+      @currency.api_play_sentence_raw('pay').should == "<from></from> pays <to></to> <amount></amount> for <memo></memo>"
     end
+    it "should be able to return a the play sentence as parsed XML" do
+      s = @currency.api_play_sentence('pay')
+      s.class.should == Nokogiri::XML::Element
+      s.name.should == "play_sentence"
+    end
+    it "should be able to return a list of the fields used in the play sentence" do
+      s = @currency.api_play_sentence_fields('pay').should == %w(from to amount memo)
+    end
+    
     it "should be able to return a list of plays" do
       @currency.api_plays.should == {"_new_member"=>{:player_classes=>""}, "reverse"=>{:player_classes=>"admin"}, "pay"=>{:player_classes=>"member"}, "_new_aggregator"=>{:player_classes=>""}}
     end
