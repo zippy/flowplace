@@ -1,4 +1,4 @@
-class PlayCurrencyAccountLink < ActiveRecord::Migration
+class AddPlayCurrencyAccountLink < ActiveRecord::Migration
   def self.up
     create_table :play_currency_account_links  do |t|
       t.integer :currency_account_id
