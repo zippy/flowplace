@@ -206,51 +206,59 @@ module ApplicationHelper
     sentence = currency.api_play_sentence_raw(play)
     #TODO: we need to make this actually work by XML not strings as this broke once allready when
     # the nokogiri library converted the play sentence to slightly different XML.
-    sentence = sentence.gsub(/(<([^>]+) *\/>)|(<([^>]+)><\/\4>)/) do |field_name|
-      field_name = $2
-      field_name ||= $4
-      next if exclude_list.include?(field_name)
-      raise "unknown field '#{field_name}'" if fields[field_name].nil?
-      field_type = fields[field_name]['type']
-      if field_id_prefix.blank?
-        html_id = html_name = field_name
-      else
-        html_id = "#{field_id_prefix}_#{field_name}"
-        html_name = "#{field_id_prefix}[#{field_name}]"
-      end
-      case field_type
-      when 'integer','float'
-        result = text_field_tag(html_name,'',:size=>4)
-      when 'string'
-        result = text_field_tag(html_name,'',:size=>30)
-      when 'range'
-        case fields[field_name]['configure_with']
-        when 'enumerable_range'
-          r = enumerable_range_to_options_array(currency.configuration ? currency.configuration["#{play}.#{field_name}"] : "")
+    sentence = "";
+    
+    currency.api_play_sentence(play).children.each do |element|
+      case element
+      when Nokogiri::XML::Text
+        sentence += element.text
+      when Nokogiri::XML::Element
+        field_name = element.name
+        next if exclude_list.include?(field_name)
+        raise "unknown field '#{field_name}'" if fields[field_name].nil?
+        field_type = fields[field_name]['type']
+        if field_id_prefix.blank?
+          html_id = html_name = field_name
         else
-          r = (fields[field_name]['start']..fields[field_name]['end']).to_a
+          html_id = "#{field_id_prefix}_#{field_name}"
+          html_name = "#{field_id_prefix}[#{field_name}]"
         end
+        case field_type
+        when 'integer','float'
+          result = text_field_tag(html_name,'',:size=>4)
+        when 'string'
+          result = text_field_tag(html_name,'',:size=>30)
+        when 'range'
+          case fields[field_name]['configure_with']
+          when 'enumerable_range'
+            r = enumerable_range_to_options_array(currency.configuration ? currency.configuration["#{play}.#{field_name}"] : "")
+          else
+            r = (fields[field_name]['start']..fields[field_name]['end']).to_a
+          end
         
-        result = select_tag(html_name, options_for_select([nil].concat(r)))
-      when 'text'
-        result = text_area_tag(html_name)
-      when 'currency'
-        r = [nil].concat Currency.all.map(&:name)
-        result = select_tag(html_name, options_for_select(r))        
-      when 'user'
-        r = [nil].concat User.all.map(&:user_name)
-        result = select_tag(html_name, options_for_select(r))        
-      when /player_(.*)/
-        if field_name == "from"  #from is allways hard-coded to be current user and gets set in currency_accounts_controller when the play is made.
-          result = currency_account.name
+          result = select_tag(html_name, options_for_select([nil].concat(r)))
+        when 'text'
+          result = text_area_tag(html_name)
+        when 'currency'
+          r = [nil].concat Currency.all.map(&:name)
+          result = select_tag(html_name, options_for_select(r))        
+        when 'user'
+          r = [nil].concat User.all.map(&:user_name)
+          result = select_tag(html_name, options_for_select(r))        
+        when /player_(.*)/
+          if field_name == "from"  #from is allways hard-coded to be current user and gets set in currency_accounts_controller when the play is made.
+            result = currency_account.name
+          else
+            player_class = $1
+            result = currency_accounts_select(currency,html_name,:exclude=>currency_account,:player_class=>player_class)
+          end
         else
-          player_class = $1
-          result = currency_accounts_select(currency,html_name,:exclude=>currency_account,:player_class=>player_class)
+          result = "--UNKNOW FIELD TYPE: #{field_type}--"
         end
+        sentence += result
       else
-        result = "--UNKNOW FIELD TYPE: #{field_type}--"
+        raise element.inspect
       end
-      result
     end
     return sentence+%Q|<input type="hidden" name="play_name" value="#{play}">|
     
