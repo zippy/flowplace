@@ -262,6 +262,7 @@ ul#play_names li.last a {margin-right:0;}
 	margin-bottom: 10px;
 }
 
+
 fieldset {
 	border: 1px solid #4C3366;
 	margin:0em 0em 2em 0em;
@@ -269,6 +270,12 @@ fieldset {
 	.padding:  10px;
 	display:inline;
 }
+
+/* -------------- DASHBOARD -------------------*/
+fieldset.play_form  {
+	margin:0em 0em 0em 0em;
+}
+/* ---------------------------------*/
 
 .aligned_label label {
 	display:block;
@@ -596,3 +603,4 @@ img.clickable {
 	float: right;
 	clear:both;
 }
+

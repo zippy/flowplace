@@ -10,9 +10,7 @@ play_name = play_names[0]
     <li><%= playtab(name,currency_account) %></li>
   <% end %>
 </ul>
-<div id="play_form">
   <%= render_play_form(currency,currency_account,play_name)%>
-</div>
 <% else %>
   No plays available in this currency
 <% end %>

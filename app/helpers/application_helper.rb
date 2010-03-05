@@ -178,7 +178,7 @@ module ApplicationHelper
       
     form_tag(record_play_currency_account_path(currency_account),:id => play_name) +
       <<-EOHTML
-      <fieldset>
+      <fieldset class="play_form">
         #{currency_play_html(currency,currency_account,play_name,:field_id_prefix=>'play',:exclude=>exclude_list)}
         #{submit_tag 'Record Play'}
       </fieldset>
