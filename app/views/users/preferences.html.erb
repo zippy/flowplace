@@ -12,8 +12,7 @@ Your Account and Your Preferences
 <p>
   <%= [
     ['terse','I know how the site works now.  Hide the long-winded instructions.'],
-    ['enlargeFont', 'I don\'t like to squint.  Use a larger font size.'],
-    ['multi_wallet', "I want to be able to use many wallets."]
+    ['enlargeFont', 'I don\'t like to squint.  Use a larger font size.']
     ].collect {|p| check_box_tag("prefs[#{p[0]}]", value = 1, checked = @preferences.include?(p[0])) << " " << p[1]}.join("<br />")
   -%>
 </p>
