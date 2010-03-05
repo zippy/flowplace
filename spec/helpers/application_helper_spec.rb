@@ -17,7 +17,7 @@ describe ApplicationHelper do
 
     describe "currencies_list_for_select" do
       it "should return a list of name/id pairs for building currency selects" do
-        helper.currencies_list_for_select([@usd,c1]).should == [['USD',@usd.id],['LETS',@lets.id]]
+        helper.currencies_list_for_select([@usd,@lets]).should == [["USD: ", 1], ["LETS: ", 2]]
       end
     end
     
