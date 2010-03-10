@@ -219,3 +219,8 @@ Feature: circle namer
     And I am logged into my "new" account
     When I go to the circles page
     Then I should not see "Delete" in row 0 column 3
+
+  Scenario: namer deletes a circle
+    When I go to the circles page
+    And I follow "Delete"
+    Then I should see "There are no circles defined yet."

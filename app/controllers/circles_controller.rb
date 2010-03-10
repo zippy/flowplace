@@ -81,9 +81,11 @@ class CirclesController < ApplicationController
   def destroy
     @circle = Currency.find(params[:id])
     return if am_not_namer?
-    circle_user = User.find_by_user_name(circle_user_name(@circle.name))
-    circle_user.destroy if !circle_user.nil?
-    @circle.destroy
+    circle_user = User.find_by_user_name(@circle.circle_user_name)
+    Currency.transaction do
+      circle_user.destroy if !circle_user.nil?
+      @circle.destroy
+    end
     respond_to do |format|
       format.html { redirect_to(circles_url) }
       format.xml  { head :ok }
