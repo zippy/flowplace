@@ -27,3 +27,10 @@ Feature: Users
     And I press "Reset Password"
     Then I should be logged in
     
+  Scenario: a user requests password reset but for an email that doesn't exist in the system
+    When I go to the forgot password page
+    And I fill in "E-mail address" with "anonymous@anonymous.org"
+    And I press "Request Reset Password E-mail"
+    Then I should see "We have no account associated with that e-mail address"
+
+    

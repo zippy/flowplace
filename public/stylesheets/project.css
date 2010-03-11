@@ -262,6 +262,9 @@ ul#play_names li.last a {margin-right:0;}
 	margin-bottom: 10px;
 }
 
+.errortext, .errortext a {
+	color: #CC0033;
+}
 
 fieldset {
 	border: 1px solid #4C3366;
