@@ -128,6 +128,23 @@ Feature: circle namer
     And I press "Add >>"
     Then I should see "You must choose a role!"
     Then I should see "You must choose some users!"
+
+  Scenario: namer adds a user as namer to a circle and then later also as a member and sees the diff re linking
+    Given A user "joe"
+    When I go to the players page for "the circle"
+    When I check the box for user "joe"
+    When I select "namer" from "player_class"
+    And I press "Add >>"
+    Then I should see "Circle was successfully updated."
+    And I should see "Joe User (namer)" in row 2 column 0 within "#circle_players"
+    When I go to the link players page for "the circle"
+    Then I should not see "Joe User"
+    When I go to the players page for "the circle"
+    When I check the box for user "joe"
+    When I select "member" from "player_class"
+    And I press "Add >>"
+    When I go to the link players page for "the circle"
+    Then I should see "Joe User"
     
   Scenario: namer views her circle's currencies
     When I go to the circles page

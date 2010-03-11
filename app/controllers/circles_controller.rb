@@ -127,7 +127,7 @@ class CirclesController < ApplicationController
   def link_players
     @circle = Currency.find(params[:id])
     return if am_not_namer?
-    setup_players_users
+    setup_players_users('member')
     #FIXME we should parameterize setup_players_users
     @users = @players.paginate(:page => @search_params[:page])
     
@@ -230,7 +230,7 @@ class CirclesController < ApplicationController
     @currencies = @currencies.paginate(:page => @search_params[:page])
     @paginate_bound_currencies = false # !@bound_currencies.empty?
   end
-  def setup_players_users
+  def setup_players_users(circle_player_class = nil)
     set_params(:circle_users,true)
 #    @users = perform_search(OrderPairs,SearchPairs,SearchFormParams,User)
     key = @search_params['key']
@@ -240,11 +240,18 @@ class CirclesController < ApplicationController
       key = '%'+key+'%'
       @users = User.find(:all,:conditions=>["#{SQL_FULL_NAME} #{ILIKE} ? or user_name #{ILIKE} ?",key,key])
     end
+    circle_user_name = @circle.circle_user_name
     @total_users = User.count
-    @users = @users.reject {|u| u.user_name == @circle.circle_user_name}
+    @users = @users.reject {|u| u.user_name == circle_user_name}
     @users ||=[]
     @users = @users.paginate(:page => @search_params[:page])
-    @players = @circle.users.uniq.reject {|u| u.user_name == @circle.circle_user_name}
+    
+    @players = []
+    
+    @circle.currency_accounts.each do |ca|
+      @players << ca.user if ca.user.user_name != circle_user_name && (circle_player_class.nil? || ca.player_class == circle_player_class)
+    end
+
     @paginate_players = false # !@players.empty?
   end
   

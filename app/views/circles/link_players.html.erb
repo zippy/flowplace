@@ -15,7 +15,7 @@
   <%= error_messages_for('circle') %>
   <% form_tag(set_link_players_circle_url(@circle), :method=>:put) do -%>
 
-  <div id="circle_currencies">  
+  <div id="circle_currencies">
   <% @circle.currencies.collect do |c| %>
       <p id="currency_<%=c.name_as_html_id%>">
       <%= render_currency_icon(c,:size=>16)%> 
