@@ -314,7 +314,7 @@ class UsersController < ApplicationController
         if i.enabled
           raise i.inspect if !i.valid?
           i.reset_code! if i.reset_code.blank? # keep old reset code
-          accounts = [{:identity => i, :url =>password_url(i.reset_code, :host => request.host_with_port, :user_name => i.user_name)}]
+          accounts = [{:identity => i, :url =>resetcode_password_url(i.reset_code, :host => request.host_with_port, :user_name => i.user_name)}]
           @email_text = BoltNotifications.deliver_password_reset_notice(@user.email,accounts)
           flash[:notice] = :password_reset
         end
