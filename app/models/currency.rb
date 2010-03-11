@@ -305,8 +305,10 @@ class Currency < ActiveRecord::Base
               name = p['_name']
               p.delete('_name')
               currency_account_links[field_name] = p.delete('_currency_account')
-              a.state = p
-              a.save
+              if !a.destroyed  #the currency account may just been destroyed by a revoke play
+                a.state = p
+                a.save
+              end
               p['_name'] = name
             end
           end

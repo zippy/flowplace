@@ -118,6 +118,7 @@
         perms[@play.currency] ||= {}
         perms[@play.currency].delete(@play.player_class)
         perms.delete(@play.currency) if perms[@play.currency].size == 0
+        @play.to['_currency_account'].destroy
         true
         ]]>
       </script>

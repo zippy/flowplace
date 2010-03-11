@@ -228,6 +228,19 @@ Feature: circle namer
     And I press "Link"
     And I should see "member" within "#joe"
 
+  Scenario: namer revokes a user's role in a currency
+    Given a "MutualCredit" currency "X"
+    And I bind "X" to "the circle"
+    And A user "joe"
+    And I make "joe" a "member" of "the circle"
+    And "joe" is a "member" of currency "X"
+    And I go to the link players page for "the circle"
+    Then I should see "member" within "#joe"
+    When I check the box for user "joe"
+    And I check "currencies[2][member]"
+    And I press "Unlink"
+    Then I should not see "joe"
+    
   Scenario: namer can delete a circle but a non-namer cannot
     When I go to the circles page
     And I should see a table with 1 rows

@@ -161,7 +161,8 @@ class CirclesController < ApplicationController
               'player_class' => pc
             }
             begin
-              @circle.api_play('grant',namer_account,play)
+              play_name = params["commit"] == "Unlink" ? 'revoke' : 'grant'
+              @circle.api_play(play_name,namer_account,play)
             rescue Exception => e
               raise e unless e.to_s =~ /You are allready a member of that currency/
             end

@@ -8,6 +8,12 @@ class CurrencyAccount < ActiveRecord::Base
   validates_uniqueness_of :currency_id, :scope => [:name,:player_class], :message => 'You are allready a member of that currency'
   validates_uniqueness_of :name, :scope => [:currency_id,:player_class], :message => 'You allready have an account with that name in the currency'
 
+  attr_accessor :destroyed
+  after_destroy :mark_as_destroyed
+  def mark_as_destroyed
+    self.destroyed = true
+  end
+  
   def setup
     self.state = currency.api_initialize_new_player_state(player_class) if currency
   end
