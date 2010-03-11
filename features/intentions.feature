@@ -6,11 +6,13 @@ Feature: Intentions
   Background:
     Given a "MutualCredit" currency "X"
     And a "MutualCredit" currency "Y"
+    And a "MutualCredit" currency "Z"
     Given I am logged into my "namer" account
     And a circle "this circle" with members "joe,jane,jacob"
     And a circle "that circle" with members "joe,herbert,jacob"
     And I bind "X" to "this circle"
     And I bind "Y" to "that circle"
+    And I bind "Z" to "this circle"
     And I grant "joe" role "member" in "X" for "this circle"
     And I grant "joe" role "member" in "Y" for "this circle"
     And I go to the logout page
@@ -20,13 +22,14 @@ Feature: Intentions
     When I go to the new intentions page
     Then I should see "X" within "#intention_currency_list"
     And I should not see "Y" within "#intention_currency_list"
+    And I should not see "Z" within "#intention_currency_list"
     When I fill in "Title" with "intention 1"
     And I fill in "Description" with "intention 1 description"
     And I check "currencies_1_used"
     And I press "Declare"
     Then I should be taken to the my intentions page
     And I should see "intention 1"
-    And I should see an image with title "X: "
+    And I should see an image with title "X: "    
 
   Scenario: Declaring intentions in different circles
     When I go to the dashboard page for "this circle"
