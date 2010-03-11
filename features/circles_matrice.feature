@@ -237,7 +237,17 @@ Feature: circle namer
     When I go to the circles page
     Then I should not see "Delete" in row 0 column 3
 
-  Scenario: namer deletes a circle
+  Scenario: namer deletes a circle and then creates it again
+    Given I have "admin" privs
     When I go to the circles page
+    Then I should see "the circle"
     And I follow "Delete"
     Then I should see "There are no circles defined yet."
+    When I go to the circles page
+    And I follow "New"
+    And I fill in "name" with "the circle"
+    And I fill in "password" with "password"
+    And I fill in "confirmation" with "password"
+    And I press "Create"
+    When I go to the circles page
+    Then I should see "the circle"

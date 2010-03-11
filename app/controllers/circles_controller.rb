@@ -83,7 +83,9 @@ class CirclesController < ApplicationController
     return if am_not_namer?
     circle_user = User.find_by_user_name(@circle.circle_user_name)
     Currency.transaction do
-      circle_user.destroy if !circle_user.nil?
+      if !circle_user.nil?
+        circle_user.destroy_with_identity
+      end
       @circle.destroy
     end
     respond_to do |format|
