@@ -20,7 +20,7 @@ Just give us your e-mail address (the one you use for the <%=configuration_text(
 <% end -%>
 
 <p>
-  <label for="id">E-mail address:</label>
+  <%= label_tag(:email,'E-mail address:') %>
   <%= text_field_tag(:email,params[:email], :size=>40) %>
 	<br />
 	<span class="smalltext">Very important!  If you type this incorrectly, we will not be able to find your account information or 

@@ -55,3 +55,23 @@ Given /^I have checked the "([^\"]*)" preference$/ do |pref_name|
   And %Q|I check "prefs[#{pref_name}]"|
   And %Q|I press "Set Preferences"|
 end
+
+Given /I should be an "admin"/ do
+  u = controller.current_user
+  u.can?(:admin).should == true
+end
+
+Given /I should be a "(.*)"$/ do |role|
+  u = controller.current_user
+  u.send("#{role}?").should_not == nil
+end
+
+Then /^there should be a reset code for "([^\"]*)"$/ do |user_name|
+  u = User.find_by_user_name(user_name)
+  u.bolt_identity.reset_code.should_not be_nil
+end
+
+Then /^there should not be a reset code for "([^\"]*)"$/ do |user_name|
+  u = User.find_by_user_name(user_name)
+  u.bolt_identity.reset_code.should be_nil
+end

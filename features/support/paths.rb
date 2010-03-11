@@ -10,6 +10,9 @@ module NavigationHelpers
       '/users/signup'
     when /the forgot password page/
       '/passwords/forgot'
+    when /the reset password page with the reset code for "([^\"]*)"/
+      u = User.find_by_user_name($1)
+      "/passwords/resetcode?code=#{u.bolt_identity.reset_code}&user_name=#{u.user_name}"
     when /the home page/
       '/'
     when /^the dashboard page$/
