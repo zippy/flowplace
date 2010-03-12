@@ -5,6 +5,7 @@
   <li><%= sub_nav_link 'New',new_circle_path,'Create a new circle'%></li>
   <% end %>
   <%if existing %>
+  <li><p class='thing'><%=h @circle.name%>:</p></li>
     <li><%= subtab('View',circle_path(@circle)) %></li>
     <%if @current_user_is_namer%>
   <li><%= subtab('Edit',edit_circle_path(@circle)) %></li>
@@ -15,4 +16,3 @@
   <%end%>
 </ul>
 <p class="clear">
-<%if existing %><h4>Circle: <%=h @circle.name%></h4><%end%>

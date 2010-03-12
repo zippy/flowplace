@@ -1,6 +1,9 @@
 <ul id="sub_nav">
   <li><%= sub_nav_link 'Browse',currencies_path,'Browse all currencies'%></li>
   <li><%= sub_nav_link 'New',new_currency_path,'Create Currencies'%></li>
-  <%if @currency && !@currency.new_record?%><li><p><%if @play%>Play<%else%>Edit<%end%></p></li><%end%>
+  <%if @currency && !@currency.new_record?%>
+  <li><p class='thing'><%=h @currency.name%>:</p></li>
+    <li><p><%if @play%>Play<%else%>Edit<%end%></p></li>
+  <%end%>
 </ul>
 <p class="clear">

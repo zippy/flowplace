@@ -322,9 +322,9 @@ module ApplicationHelper
 
   def subtab(tab,path)
     if request.path == path
-      %Q|<p class="active">#{tab}</p>|
+      %Q|<p class="active sub-tab">#{tab}</p>|
     else
-      link_to tab, path
+      link_to tab, path,:class=> 'sub-tab'
     end
   end
   def playtab(play_name,currency_account)

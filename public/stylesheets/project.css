@@ -148,18 +148,12 @@ ul#nav li.last a {margin-right:0;}
 	font-weight: normal;
 }
 
-#sub_nav a:link {
+#sub_nav a:link,#sub_nav a:active,#sub_nav a:visited, #sub_nav p {
 	color: #ffffff;
 	text-decoration: none;
-	}
-
-#sub_nav a:active {
-	color: #ffffff;
-	}
-
-#sub_nav a:visited {
-	color: #ffffff;
-	text-decoration: none;
+	height:22px;
+	padding: 4px 10px 0 10px;
+	
 	}
 	
 #sub_nav a:hover {
@@ -168,13 +162,20 @@ ul#nav li.last a {margin-right:0;}
 	border-color: #70787F;
 	}
 
-ul#sub_nav {display:block;margin-top:0px;padding-bottom:5px;list-style:none;}
+
+ul#sub_nav {display:block;margin:0px;height: 25px;list-style:none;height:px;}
 ul#sub_nav li {display:block;float:left;background: #686d6e;}
-ul#sub_nav li a {display:block;float:left;margin:0px;padding: 0 10px;}
+ul#sub_nav li a {display:block;float:left;margin:0px;}
 ul#sub_nav li a:hover {background: gray;}
-ul#sub_nav li a.active {background: #02687F;color:#ffffff;}
-ul#sub_nav li p {margin:0px 0px 0px 0px;background: blue;color:#ffffff;padding: 0 10px;}  /*active non-clickable item*/
+ul#sub_nav li a.active {background: #02687F;}
+ul#sub_nav li p {margin:0px 0px 0px 0px;background: #02687F;}  /*active non-clickable item*/
 ul#sub_nav li.last a {margin-right:0;}
+ul#sub_nav li p.thing {
+	background: white;
+	color: #000;
+	padding-left: 20px;
+	font-weight: bold;
+}
 
 
 	/* ----------PLAY LINKS TEXT---------- */
