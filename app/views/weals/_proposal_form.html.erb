@@ -1,3 +1,4 @@
+<script type="text/javascript" src="/ckeditor/ckeditor.js"></script>
 <%
   if party == :requester
     user = @weal.requester
@@ -51,3 +52,6 @@
     </p>
   <% end %>
 <% end %>
+<script type="text/javascript">
+	CKEDITOR.replace( 'proposal_description' );
+</script>

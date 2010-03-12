@@ -614,3 +614,12 @@ img.clickable {
 	clear:both;
 }
 
+
+/* -------------- WEAL ---------------------*/
+.weal-description {
+	margin-top: -10px;
+	border: 1px solid #aaaaaa;
+	background: #dddddd;
+	padding: 0 10px;
+}
+
