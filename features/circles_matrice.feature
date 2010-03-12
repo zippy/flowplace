@@ -167,6 +167,23 @@ Feature: circle namer
     And I should see "X" in row 1 column 0 within "#circle_currencies"
     And There should be a play in my currencies history that reflects this
 
+  Scenario: namer binds a currency to a circle forgetting to check a currency
+    Given a "MutualCredit" currency "X"
+    When I go to the currencies page for "the circle"
+    And I press "Add >>"
+    Then I should see "You must choose some currencies!"
+
+  Scenario: namer releases a currency from a circle
+    Given a "MutualCredit" currency "X"
+    And I bind "X" to "the circle"    
+    When I go to the currencies page for "the circle"
+    When I check the box for bound currency "X"
+    And I press "<< Remove"
+    Then I should be taken to the currencies page for "the circle"
+    And I should see "Circle was successfully updated."
+    And I should see "There are no currencies in this circle."
+    And There should be a play in my currencies history that reflects this
+
   Scenario: namer looks at users to be linked to currencies
     Given a "MutualCredit" currency "X"
     And I bind "X" to "the circle"    

@@ -514,6 +514,12 @@ li.item {
 	padding: 4px;
 	width: 300px;
 }
+#circle_currencies table {
+	margin-top: 7px;
+}
+
+#search-results-header { height: 45px; background: #aaa; }
+
 #circle_currencies_search_results {
 	float: left;
 	padding: 4px;

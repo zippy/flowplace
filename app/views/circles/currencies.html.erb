@@ -6,18 +6,27 @@
   <%= submit_tag('Search') %>
 <% end %>
 
+
+<%= error_messages_for('circle') %>
+<% form_tag(set_currencies_circle_url(@circle), :method=>:put) do -%>
 <div id="circle_currencies">
   <% if @bound_currencies.empty?%>
-    <b> There are no currencies in this circle.</b>
+    <div id="bound-currencies-header"> There are no currencies in this circle.</div>
   <% else %>
-    <b>Currencies in <%=h @circle.name %>:</b>
+    <div id="bound-currencies-header">
+      <b>Currencies in <%=h @circle.name %>:</b><br />
+      <%= submit_tag('<< Remove') %>
+      </div>
     <table>
     <tr>
       <th>Currency</th>
     </tr>
     <% for currency in @bound_currencies%>
       <tr>
-        <td title="<%=currency.description%>"><%= h currency.name %></td>
+        <td title="<%=currency.description%>">
+          <%= check_box_tag("bound_currencies[#{currency.id}]") %>
+          <%=  label_tag "currencies_bound_#{currency.id}","#{currency.name}"%>
+        </td>
       </tr>
     <% end %>
     </table>
@@ -26,15 +35,13 @@
 </div>
 
 <%if @currencies.empty?%>
-  No currencies found
+  <div id="search-results-header">No currencies found</div>
 <%else%>
-  Search found <%= pluralize("currency", @currencies.size) %>
-  <%= error_messages_for('circle') %>
-  <% form_tag(set_currencies_circle_url(@circle), :method=>:put) do -%>
-  <p>
+  <div id="search-results-header">Search found <%= pluralize("currency", @currencies.size) %>
+    <br />
     Bind selected currencies to circle
     <%= submit_tag('Add >>') %>
-  </p>
+  </div>
   <div id="circle_currencies_search_results">
   <table>
   <tr>
@@ -52,5 +59,6 @@
   </table>
   <%= will_paginate @currencies%>
   </div>
-  <%end%>
 <% end %>
+
+<%end%>

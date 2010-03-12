@@ -13,6 +13,11 @@ When /^I check the box for currency "([^\"]*)"$/ do |currency_name|
   When %Q|I check "currencies_#{currency.id}"|
 end
 
+When /^I check the box for bound currency "([^\"]*)"$/ do |currency_name|
+  currency = Currency.find_by_name(currency_name)
+  When %Q|I check "bound_currencies_#{currency.id}"|
+end
+
 Given /^a circle "([^\"]*)" with members "([^\"]*)"$/ do |circle_name,member_list|
   Given %Q|a circle "#{circle_name}"| if Currency.find_by_name(circle_name).nil?
   Given %Q|I make "#{member_list}" a "member" of "#{circle_name}"|

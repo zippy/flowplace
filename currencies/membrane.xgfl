@@ -62,6 +62,22 @@
       </script>
       <play_sentence lang='en'> <from /> binds <currency /> to <to /> as <name /></play_sentence>
     </play>
+    <play name="unbind_currency" player_classes="namer">
+      <fields>
+         <field type="player_namer" id="from" />
+         <field type="player_self" id="to" />
+         <field type="currency" id="currency" />
+      </fields>
+      <script type="ruby">
+        <![CDATA[
+         currencies =  @play.to['currencies']
+         return "Currency must be specified" unless @play.currency.is_a?(Currency)
+         currencies.delete(@play.currency.id)
+         true
+         ]]>
+      </script>
+      <play_sentence lang='en'> <from /> unbinds <currency /> from <to /></play_sentence>
+    </play>
     <play name="name_member" player_classes="namer">
       <fields>
          <field type="player_namer" id="from" />

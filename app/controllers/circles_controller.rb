@@ -189,11 +189,20 @@ class CirclesController < ApplicationController
   def set_currencies
     @circle = Currency.find(params[:id])
     return if am_not_namer?
-    if !params[:currencies]
+    case params["commit"]
+    when "Add >>"
+      selector = :currencies
+      play_name = 'bind_currency'
+    when "<< Remove"
+      selector = :bound_currencies
+      play_name = 'unbind_currency'
+    end
+    
+    if !params[selector] 
       @circle.errors.add_to_base('You must choose some currencies!')
     end
     if @circle.errors.empty?
-      params[:currencies].keys.each do |currency_id|
+      params[selector].keys.each do |currency_id|
         currency = Currency.find(currency_id)
         self_account = User.find_by_user_name(@circle.circle_user_name).currency_accounts[0]
         #TODO, this needs updating if the same user can have multiple accounts in the same currency as namer
@@ -204,12 +213,12 @@ class CirclesController < ApplicationController
           'to' => self_account,
           'currency' => currency
         }
-        @circle.api_play('bind_currency',namer_account,play)
+        @circle.api_play(play_name,namer_account,play)
       end
       flash[:notice] = 'Circle was successfully updated.'
       redirect_to(currencies_circle_url(@circle))
     else
-      setup_players_users
+      setup_bound_currencies
       render :action => 'currencies'
     end
   end
