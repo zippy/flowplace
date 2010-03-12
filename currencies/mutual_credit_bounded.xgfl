@@ -7,12 +7,10 @@
   </description>
   <player_classes>
     <player_class name="member" />
-    <player_class name="aggregator" />
     <player_class name="admin" />
   </player_classes>
   <states>
     <state player_class="member"><integer name="balance" /><integer name="volume" /><integer name="limit" /></state>
-    <state player_class="aggregator"><integer name="volume" /></state>
     <state player_class="_"><integer name="min_negative_balance" configure_with="integer" default="100"/><integer name="max_negative_balance" configure_with="integer" default="1000" /></state>
   </states>
 
@@ -23,16 +21,10 @@
           @member_state.limit = self.configuration['_.min_negative_balance'] ]]>
       </script>
     </play>
-    <play name="_new_aggregator">
-      <script type="ruby">
-          <![CDATA[ @aggregator_state.volume = 0 ]]>
-      </script>
-    </play>
     <play name="pay" player_classes="member">
       <fields>
          <field type="player_member" id="from" />
          <field type="player_member" id="to" />
-         <field type="player_aggregator" id="aggregator" />
          <field type="integer" id="amount" />
          <field type="string" id="memo" />
       </fields>
@@ -46,7 +38,6 @@
           @play.from['volume'] += @play.amount.abs
           @play.to['balance'] += @play.amount
           @play.to['volume'] += @play.amount.abs
-          @play.aggregator['volume'] += @play.amount.abs if @play.aggregator
         end
         return_value
         ]]>
