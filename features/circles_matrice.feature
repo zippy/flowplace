@@ -75,7 +75,7 @@ Feature: circle namer
     And I should see "Edit" as a sub-tab
     And I should see a table with 2 rows within "#circle_players"
     And I should see "Player" in row 0 column 0 within "#circle_players"
-    And I should see "Anonymous User (namer)" in row 1 column 0 within "#circle_players"
+    And I should see "Anonymous User as namer" in row 1 column 0 within "#circle_players"
     And I should see "namer" in row 1 column 1 within "#circle_players"
   
   Scenario: namer searches for a users to add
@@ -107,7 +107,7 @@ Feature: circle namer
     When I select "member" from "player_class"
     And I press "Add >>"
     Then I should see "Circle was successfully updated."
-    And I should see "Joe User (member)" in row 2 column 0 within "#circle_players"
+    And I should see "Joe User as member" in row 2 column 0 within "#circle_players"
     And I should see "member" in row 2 column 1 within "#circle_players"
     And There should be a play in my currencies history that reflects this
 
@@ -120,8 +120,8 @@ Feature: circle namer
     When I select "member" from "player_class"
     And I press "Add >>"
     Then I should see "Circle was successfully updated."
-    And I should see "Anonymous User (namer, member)" in row 1 column 0 within "#circle_players"
-    And I should see "namer, member" in row 1 column 1 within "#circle_players"
+    And I should see "Anonymous User as namer" in row 1 column 0 within "#circle_players"
+    And I should see "Anonymous User as member" in row 2 column 0 within "#circle_players"
   
   Scenario: namer sees errors when not choosing user or player class when attempting to add to a circle
     When I go to the players page for "the circle"
@@ -136,7 +136,7 @@ Feature: circle namer
     When I select "namer" from "player_class"
     And I press "Add >>"
     Then I should see "Circle was successfully updated."
-    And I should see "Joe User (namer)" in row 2 column 0 within "#circle_players"
+    And I should see "Joe User as namer" in row 2 column 0 within "#circle_players"
     When I go to the link players page for "the circle"
     Then I should not see "Joe User"
     When I go to the players page for "the circle"
@@ -145,6 +145,14 @@ Feature: circle namer
     And I press "Add >>"
     When I go to the link players page for "the circle"
     Then I should see "Joe User"
+
+  Scenario: namer removes a user from a circle
+    Given A user "joe"
+    And I make "joe" a "member" of "the circle"
+    When I go to the players page for "the circle"
+    And I check the box for player "joe" as "member"
+    And I press "<< Remove"
+    Then I should see "Circle was successfully updated."
     
   Scenario: namer views her circle's currencies
     When I go to the circles page

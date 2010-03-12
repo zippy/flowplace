@@ -8,6 +8,11 @@ When /^I check the box for user "([^\"]*)"$/ do |user_name|
   When %Q|I check "users_#{user.id}"|
 end
 
+When /^I check the box for player "([^\"]*)" as "([^\"]*)"$/ do |user_name,player_class|
+  ca = CurrencyAccount.find(:first,:conditions => ['player_class = ? and name = ?',player_class,user_name])
+  When %Q|I check "players_#{ca.id}"|
+end
+
 When /^I check the box for currency "([^\"]*)"$/ do |currency_name|
   currency = Currency.find_by_name(currency_name)
   When %Q|I check "currencies_#{currency.id}"|

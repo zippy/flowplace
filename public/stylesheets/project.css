@@ -514,7 +514,7 @@ li.item {
 	padding: 4px;
 	width: 300px;
 }
-#circle_currencies table {
+#circle_currencies table,#circle_players table {
 	margin-top: 7px;
 }
 

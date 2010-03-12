@@ -105,17 +105,49 @@ class CirclesController < ApplicationController
   def set_players
     @circle = Currency.find(params[:id])
     return if am_not_namer?
-    player_class = params[:player_class]
-    if player_class.blank?
-      @circle.errors.add_to_base('You must choose a role!')
+    
+    case params["commit"]
+    when "Add >>"
+      selector = :users
+      play_name = 'bind_currency'
+
+      player_class = params[:player_class]
+      if player_class.blank?
+        @circle.errors.add_to_base('You must choose a role!')
+      end
+      if !params[:users]
+        @circle.errors.add_to_base('You must choose some users!')
+      end
+    when "<< Remove"
+      selector = :players
+      play_name = 'unbind_currency'
+      if !params[selector]
+        @circle.errors.add_to_base('You must choose some players!')
+      end
+    else
+      raise "invalid commit"
     end
-    if !params[:users]
-      @circle.errors.add_to_base('You must choose some users!')
-    end
+    
     if @circle.errors.empty?
-      params[:users].keys.each do |user_id|
-        user = User.find(user_id)
-        @circle.add_player_to_circle(player_class,user)
+      params[selector].keys.each do |selector_id|
+        if selector == :users
+          user = User.find(selector_id)
+          @circle.add_player_to_circle(player_class,user)
+        else
+          to_account = CurrencyAccount.find(selector_id)
+          namer_account = @circle.api_user_accounts('namer',current_user)[0]
+          play = {
+            'from' => namer_account,
+            'to' => to_account,
+            'currency' => @circle,
+            'player_class' => 'member'
+          }
+          begin
+            @circle.api_play('revoke',namer_account,play)
+          rescue Exception => e
+            raise e
+          end
+        end
       end
       flash[:notice] = 'Circle was successfully updated.'
       redirect_to(players_circle_url(@circle))
@@ -131,7 +163,8 @@ class CirclesController < ApplicationController
     return if am_not_namer?
     setup_players_users('member')
     #FIXME we should parameterize setup_players_users
-    @users = @players.paginate(:page => @search_params[:page])
+    @users = @players.collect {|p| p.user}
+    @users = @users.paginate(:page => @search_params[:page])
     
   end
   
@@ -261,8 +294,9 @@ class CirclesController < ApplicationController
     @players = []
     
     @circle.currency_accounts.each do |ca|
-      @players << ca.user if ca.user.user_name != circle_user_name && (circle_player_class.nil? || ca.player_class == circle_player_class)
+      @players << ca if ca.user.user_name != circle_user_name && (circle_player_class.nil? || ca.player_class == circle_player_class)
     end
+    @players = @players.sort {|a,b| a.user.full_name(true) <=> b.user.full_name(true)}
 
     @paginate_players = false # !@players.empty?
   end
