@@ -265,6 +265,26 @@ Feature: circle namer
     And I check "currencies[2][member]"
     And I press "Unlink"
     Then I should not see "joe"
+
+  Scenario: namer works in a situation with many users
+    Given a "MutualCredit" currency "X"
+    And I bind "X" to "the circle"
+    And A user "joe"
+    And A user "jane"
+    When I go to page 1 of the players page for "the circle" with 2 per page
+    Then I should see "joe"
+    And I should not see "jane"
+    When I follow "Next"
+    Then I should see "jane"
+    And I should not see "joe"
+    When I make "joe" a "member" of "the circle"
+    When I make "jane" a "member" of "the circle"
+    When I go to page 1 of the link players page for "the circle" with 1 per page
+    Then I should see "jane"
+    And I should not see "joe"
+    When I follow "Next"
+    Then I should see "joe"
+    And I should not see "jane"
     
   Scenario: namer can delete a circle but a non-namer cannot
     When I go to the circles page

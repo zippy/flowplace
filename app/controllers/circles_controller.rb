@@ -164,7 +164,7 @@ class CirclesController < ApplicationController
     setup_players_users('member')
     #FIXME we should parameterize setup_players_users
     @users = @players.collect {|p| p.user}
-    @users = @users.paginate(:page => @search_params[:page])
+    @users = @users.paginate(:page => params[:page],:per_page => params[:per_page])
     
   end
   
@@ -272,7 +272,7 @@ class CirclesController < ApplicationController
     end
     @bound_currencies = @circle.currencies
     @currencies = @currencies - @bound_currencies
-    @currencies = @currencies.paginate(:page => @search_params[:page])
+    @currencies = @currencies.paginate(:page => params[:page],:per_page => params[:per_page])
     @paginate_bound_currencies = false # !@bound_currencies.empty?
   end
   def setup_players_users(circle_player_class = nil)
@@ -289,7 +289,7 @@ class CirclesController < ApplicationController
     @total_users = User.count
     @users = @users.reject {|u| u.user_name == circle_user_name}
     @users ||=[]
-    @users = @users.paginate(:page => @search_params[:page])
+    @users = @users.paginate(:page => params[:page],:per_page => params[:per_page])
     
     @players = []
     

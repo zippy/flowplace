@@ -1,7 +1,6 @@
 module NavigationHelpers
   def path_to(page_name)
-    case page_name
-    
+    result = case page_name
     when /the login page/
       '/login'
     when /the logout page/
@@ -130,6 +129,18 @@ module NavigationHelpers
     else
       raise "Can't find mapping from \"#{page_name}\" to a path."
     end
+    
+    if page_name =~ /^page (\d+) of.*with (\d+) per page$/
+      page = $1
+      per_page = $2
+      if page or per_page
+        p = []
+        p << "page=#{page}" if page
+        p << "per_page=#{per_page}" if per_page
+        result += "?"+p.join('&')
+      end
+    end
+    result
   end
 end
 
