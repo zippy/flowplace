@@ -48,6 +48,7 @@
     </play>
     <play name="reverse" player_classes="admin">
       <fields>
+         <field type="player_member" id="from" />
          <field type="play" id="play_to_reverse" />
          <field type="string" id="memo" />
       </fields>
@@ -57,9 +58,9 @@
         @play_to_reverse.from.member_state.volume -= abs(@play.amount)
         @play_to_reverse.to.member_state.balance -= @play.amount
         @play_to_reverse.to.member_state.volume -= abs(@amount)
-        @play_to_reverse.aggregator.aggregator_state.volume -= abs(@amount)
         ]]>
       </script>
+      <play_sentence lang='en'><from /> can't record reversals because it's not implemented yet</play_sentence>
     </play>
   </plays>
 </game>

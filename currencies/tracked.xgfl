@@ -47,8 +47,9 @@
     </play>
     <play name="reverse" player_classes="admin">
       <fields>
-         <field type="play" id="play_to_reverse" />
-         <field type="string" id="memo" />
+        <field type="player_member" id="from" />
+        <field type="play" id="play_to_reverse" />
+        <field type="string" id="memo" />
       </fields>
       <script type="ruby">
         <![CDATA[
@@ -59,6 +60,7 @@
         @play_to_reverse.aggregator.aggregate_volume.volume -= abs(@amount)
         ]]>
       </script>
+      <play_sentence lang='en'><from /> can't record reversals because it's not implemented yet</play_sentence>
     </play>
   </plays>
 </game>
