@@ -18,3 +18,27 @@ Feature: Users
     And I press "Set Preferences"
     Then I should see a tag "body[class=enlargeFont]"
 
+  Scenario: user toggles the self-authorize circles currency preference
+    Given the default site configurations
+    When I go to the logout page
+    And I am logged into my "admin" account
+    And I have "admin" privs
+    When I go to the configurations page
+    And I follow "Circle Currency Policy"
+    And I select "self_authorize" from "configuration_value"
+    And I press "Update"
+    Then I should not have "currency,circle" privs
+    When I follow "Preferences"
+    Then the "Activate circle and currency management features" checkbox should not be checked
+    When I check "Activate circle and currency management features"
+    And I press "Set Preferences"
+    Then I should have "currency,circle" privs
+    When I follow "Preferences"
+    Then the "Activate circle and currency management features" checkbox should be checked
+    When I uncheck "Activate circle and currency management features"
+    And I press "Set Preferences"
+    Then I should not have "currency,circle" privs
+    When I follow "Preferences"
+    Then the "Activate circle and currency management features" checkbox should not be checked
+    
+

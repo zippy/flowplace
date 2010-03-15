@@ -13,12 +13,12 @@ Your Account and Your Preferences
   <%= [
     ['terse','I know how the site works now.  Hide the long-winded instructions.'],
     ['enlargeFont', 'I don\'t like to squint.  Use a larger font size.']
-    ].collect {|p| check_box_tag("prefs[#{p[0]}]", value = 1, checked = @preferences.include?(p[0])) << " " << p[1]}.join("<br />")
+    ].collect {|p| field_id = "prefs[#{p[0]}]"; check_box_tag(field_id, value = 1, checked = @preferences.include?(p[0])) << " " << label_tag(field_id,p[1])}.join("<br />")
   -%>
 </p>
 <% if Configuration.get(:circle_currency_policy) == 'self_authorize'%>
 <p>
-  Activate circle and currency management features check_box_tag(:circle_currency_management)
+  <%= check_box_tag(:circle_currency_management,true,@user.can?(:circle))%> <%= label_tag :circle_currency_management, 'Activate circle and currency management features'%> 
 </p>
 <%end%>
 <%= submit_tag "Set Preferences" %>

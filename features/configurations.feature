@@ -18,7 +18,7 @@ Feature: configuration
     And I should see "Analytics"
     And I should see "Footer"
     And I should see "Site Name"
-    And I should see "Currency/Circle Policy"
+    And I should see "Circle Currency Policy"
 
   Scenario: non-admin user tries to look at configuration options
     When I go to the logout page
@@ -56,7 +56,7 @@ Feature: configuration
     Then I should see a table with 1 row
     When I go to the merge default configurations page
     And I go to the configurations page
-    Then I should see a table with 8 rows
+    Then I should see a table with 9 rows
 
   Scenario: admin turns on the circle/currency self-auth config
     When I go to the configurations page

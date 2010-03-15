@@ -13,7 +13,7 @@
     <tr class="<%= i%2 == 0 ? ' odd' : ''%>">
       <td><%= render_currency_icon(circle) %></td>
       <td> <%=link_to circle.name, is_namer ? edit_circle_path(circle) : circle_path(circle)  %></td>
-      <td> <% if is_namer %>
+      <td> <% if current_user.can?(:circle) && is_namer %>
         <%= link_to 'Add Players', players_circle_path(circle)%>
         &nbsp;&nbsp;
         <%= link_to 'Add Currencies', currencies_circle_path(circle)%>

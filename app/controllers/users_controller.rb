@@ -180,6 +180,11 @@ class UsersController < ApplicationController
   def set_preferences
     current_user_action do
       @user.update_attributes(:preferences => params[:prefs] ? params[:prefs].keys.join(',') : '')
+      if Configuration.get(:circle_currency_policy) == 'self_authorize'
+        roles = Role.find(:all,:conditions => "name in ('currency','circle')")
+        @user.roles -= roles
+        @user.roles += roles if params[:circle_currency_management]
+      end
       return_url = session[:prefs_return_to] || home_url
       respond_to do |format|
         flash[:notice] = :user_preferences_set

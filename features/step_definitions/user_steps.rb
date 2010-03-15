@@ -63,9 +63,20 @@ Given /I should be an "admin"/ do
   u.can?(:admin).should == true
 end
 
-Given /I should be a "(.*)"$/ do |role|
+Given /I should have "(.*)" privs$/ do |priv_names|
   u = controller.current_user
-  u.send("#{role}?").should_not == nil
+  roles = u.roles.collect(&:name)
+  priv_names.split(/\W*,\W*/).each do |priv_name|
+    roles.include?(priv_name).should == true
+  end
+end
+
+Given /I should not have "(.*)" privs$/ do |priv_names|
+  u = controller.current_user
+  roles = u.roles.collect(&:name)
+  priv_names.split(/\W*,\W*/).each do |priv_name|
+    roles.include?(priv_name).should == false
+  end
 end
 
 Then /^there should be a reset code for "([^\"]*)"$/ do |user_name|
