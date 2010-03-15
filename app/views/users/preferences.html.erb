@@ -16,6 +16,11 @@ Your Account and Your Preferences
     ].collect {|p| check_box_tag("prefs[#{p[0]}]", value = 1, checked = @preferences.include?(p[0])) << " " << p[1]}.join("<br />")
   -%>
 </p>
+<% if Configuration.get(:circle_currency_policy) == 'self_authorize'%>
+<p>
+  Activate circle and currency management features check_box_tag(:circle_currency_management)
+</p>
+<%end%>
 <%= submit_tag "Set Preferences" %>
 <% end -%>
 <p>
