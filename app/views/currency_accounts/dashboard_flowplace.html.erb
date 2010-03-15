@@ -12,12 +12,12 @@
   <p class="dashboard_title"><%= link_to 'Circles', circles_url%> </p>
   <% unless current_user.has_preference('terse') %>
   <div class="dashboard_explanation">
-    Browse circles, request to join them, <% if current_user.can?(:admin) %> create new ones,<%end%> etc...
+    Browse circles, request to join them, <% if current_user.can?(:circle) %> create new ones,<%end%> etc...
   </div>
   <% end %> 
 </div>
 
-<% if current_user.can?(:admin) %>
+<% if current_user.can?(:currency) %>
 <div class="dashboard_item"id="dashboard_currencies">
   <p class="dashboard_title"><%= link_to 'Currencies', currencies_url%> </p>
   <% unless current_user.has_preference('terse') %>

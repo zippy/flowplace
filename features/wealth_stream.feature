@@ -5,6 +5,7 @@ Feature: Wealth Stream
 
   Background:
     Given I am logged into my account
+    And I have "circle" privs
     And a circle "the circle" with members "anonymous"
 
   Scenario: User looks at wealth stream

@@ -5,6 +5,7 @@ Feature: membrane currency
 
   Background:
     Given I am logged into my account
+    Given I have "circle" privs
     And a circle "the circle"
 
   Scenario: Namer views the currency play page

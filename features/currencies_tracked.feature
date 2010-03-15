@@ -5,7 +5,7 @@ Feature: tracked currency
 
   Background:
     Given I am logged into my account
-    Given I have "admin" privs
+    Given I have "circle,currency" privs
     Given a circle "the circle"
     Given a "Tracked" currency "USD"
     And I bind "USD" to "the circle"

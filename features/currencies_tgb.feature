@@ -4,11 +4,12 @@ Feature: tgb currency
   I want to be able state my sense of goodness truth and beauty at a given momemnt
 
   Background:
-    Given a circle "the circle"
+    Given A user "joe"
     Given I am logged into my account
+    Given a circle "the circle"
+    Given I have "circle,currency" privs
     Given a "TrueGoodBeautiful" currency "TGB"
     And I bind "TGB" to "the circle"
-    And A user "joe"
     When I make "joe" a "member" of "the circle"
     Given "joe" is a "member" of currency "TGB"
     Given I go to the logout page

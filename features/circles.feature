@@ -5,8 +5,9 @@ Feature: circles
   
   Background:
     Given the default site configurations
-    Given I am logged into my "namer" account
-    Given a circle "the circle" with members "joe,jane"
+    And I am logged into my "namer" account
+    And I have "circle" privs
+    And a circle "the circle" with members "joe,jane"
     When I go to the logout page
 
   Scenario: a new user explores the list of circles on the system and gets more info about them

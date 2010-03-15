@@ -5,10 +5,17 @@ Feature: circle namer
   
   Background:
     Given I am logged into my account
+    Given I have "circle" privs
     And a circle "the circle"
 
+  Scenario: user without circle permissions tries to go to circle functions
+    When I go to the logout page
+    Given A user "joe"
+    And I log in as "joe"
+    When I go to the new circles page
+    Then I should be taken to the dashboard page
+    
   Scenario: user creates a circle and sees it in the circles page and user is namer so can edit the circle and a user should be created for the circle
-    Given I have "admin" privs
     When I go to the circles page
     And I follow "New"
     And I fill in "name" with "my circle"
@@ -29,7 +36,6 @@ Feature: circle namer
     And I should see "self"
 
   Scenario: user tries to create a circle but enters mismatched password
-    Given I have "admin" privs
     When I go to the circles page
     And I follow "New"
     And I fill in "name" with "my circle"
@@ -53,9 +59,10 @@ Feature: circle namer
     And I follow "the circle"
     Then I should see "a very cool circle"
 
-  Scenario: a non-namer user tries to go to a circle's players,edit and currency pages and fails
+  Scenario: a non-namer with circle perms tries to go to a circle's players,edit and currency pages and fails
     When I go to the logout page
     And I am logged into my "new" account
+    And I have "circle" privs
     When I go to the players page for "the circle"
     Then I should be taken to the home page
     And I should see "You don't have permission to do that."
@@ -296,7 +303,6 @@ Feature: circle namer
     Then I should not see "Delete" in row 0 column 3
 
   Scenario: namer deletes a circle and then creates it again
-    Given I have "admin" privs
     When I go to the circles page
     Then I should see "the circle"
     And I follow "Delete"

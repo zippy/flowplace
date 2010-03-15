@@ -33,7 +33,8 @@ Feature: configuration
     Then I should see "Powered by the Flowplace!" within "#footer"
 
   Scenario: admin changes the site name
-    Given a circle "the circle" with members "admin"
+    Given I have "circle" privs
+    And a circle "the circle" with members "admin"
     When I go to the configurations page
     And I follow "Site Name"
     And fill in "configuration_value" with "Cool Site"

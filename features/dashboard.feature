@@ -12,6 +12,7 @@ Feature: dashboard
     Given "herbert" is a "member" of currency "Y"
     Given a "MutualCredit" currency "Z"
     Given I am logged into my "namer" account
+    And I have "circle" privs
     And a circle "this circle" with members "joe,jane,jacob"
     And I bind "X" to "this circle"
     And a circle "that circle" with members "joe,herbert,jacob"

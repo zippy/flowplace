@@ -10,7 +10,7 @@ class User < ActiveRecord::Base
   has_many :wallets
   belongs_to :circle, :class_name => 'Currency' #this is for users that are a circle
 
-  Permissions = %w(dev admin assignPrivs createAccounts accessAccounts)
+  Permissions = %w(dev admin assignPrivs createAccounts accessAccounts circle currency)
   Preferences = %w(terse enlargeFont)
   
   validates_uniqueness_of :user_name

@@ -1,4 +1,7 @@
 class CirclesController < ApplicationController
+
+  require_authorization :circle,:except => [:index,:show,:members]
+
   before_filter :set_current_circle,:only => :members
   # GET /circles
   # GET /circles.xml

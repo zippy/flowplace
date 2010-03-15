@@ -5,7 +5,7 @@ Feature: social capital currency
 
   Background:
     Given I am logged into my account
-    And I have "admin" privs
+    Given I have "circle,currency" privs
     And a circle "the circle"
     And I make "Joe" a "member" of "the circle"
     And I make "anonymous" a "member" of "the circle"

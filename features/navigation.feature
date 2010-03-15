@@ -6,9 +6,8 @@ Feature: Navigation feedback
   Background:
     Given I am logged into my account
     Given a circle "the circle"
+    Given I have "admin,circle,currency,accessAccounts" privs
     When I go to the players page for "the circle"
-    Given I have "admin" privs
-    Given I have "accessAccounts" privs
 
   Scenario: User goes from one tab to the other
     When I go to the dashboard page

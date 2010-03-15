@@ -5,6 +5,7 @@ Feature: currencies
 
   Background:
     Given I am logged into my account
+    And I have "currency" privs
     And a circle "the circle"
     And an "Issued" currency "THEM"
 

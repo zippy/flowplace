@@ -45,9 +45,11 @@ Given /permissions setup/ do
   end
 end
 
-Given /^I have "([^\"]*)" privs$/ do |priv_name|
+Given /^I have "([^\"]*)" privs$/ do |priv_names|
   Given "permissions setup"
-  @user.roles << Role.find_by_name(priv_name)
+  priv_names.split(/\W*,\W*/).each do |priv_name|
+    @user.roles << Role.find_by_name(priv_name)
+  end
 end
 
 Given /^I have checked the "([^\"]*)" preference$/ do |pref_name|

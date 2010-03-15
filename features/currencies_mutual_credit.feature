@@ -5,7 +5,7 @@ Feature: mutual credit currency
 
   Background:
     Given I am logged into my account
-    Given I have "admin" privs
+    Given I have "circle,currency" privs
     Given a circle "the circle"
     When I go to the new "MutualCredit" currencies page
     Then I should be taken to the new "MutualCredit" currencies page

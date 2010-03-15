@@ -23,14 +23,14 @@ Feature: flowplace dashboard
     Then I should see an "Admin" dashboard item
     And I should see "Dashboard" as the current tab
 
-  Scenario: a user with admin privs goes to the dashboard and sees the currencies item
+  Scenario: a user with currency privs goes to the dashboard and sees the currencies item
     Given I am logged into my account
-    And I have "admin" privs
+    And I have "currency" privs
     When I go to the dashboard page
     Then I should see a "Currencies" dashboard item
     And I should see "Dashboard" as the current tab
 
-  Scenario: a user without admin privs goes to the dashboard and doesn't see the currencies item
+  Scenario: a user without currency privs goes to the dashboard and doesn't see the currencies item
     Given I am logged into my account
     When I go to the dashboard page
     Then I should not see a "Currencies" dashboard item

@@ -8,6 +8,7 @@ Feature: Intentions
     And a "MutualCredit" currency "Y"
     And a "MutualCredit" currency "Z"
     Given I am logged into my "namer" account
+    Given I have "circle" privs
     And a circle "this circle" with members "joe,jane,jacob"
     And a circle "that circle" with members "joe,herbert,jacob"
     And I bind "X" to "this circle"

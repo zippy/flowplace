@@ -5,7 +5,7 @@ Feature: issued currency
 
   Background:
     Given I am logged into my account
-    Given I have "admin" privs
+    Given I have "circle,currency" privs
     Given a circle "the circle"
     Given an "Issued" currency "WE"
     Given I am a "user" of currency "WE"

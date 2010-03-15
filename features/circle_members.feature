@@ -5,6 +5,7 @@ Feature: circle members
 
   Background:
     Given I am logged into my account
+    And I have "circle" privs
     Given a circle "the circle" with members "joe,jane"
     And I go to the logout page
 

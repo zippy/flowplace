@@ -5,7 +5,7 @@ Feature: mutual rating currency
 
   Background:
     Given I am logged into my account
-    Given I have "admin" privs
+    Given I have "circle,currency" privs
     When I go to the new "Mutual Rating" currencies page
     Then I should be taken to the new "Mutual Rating" currencies page
     Then I should see "Name"
