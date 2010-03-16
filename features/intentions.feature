@@ -60,3 +60,13 @@ Feature: Intentions
     Then I should be taken to the my intentions page
     And I should not see an image with title "X: "
   
+  Scenario: User views list of all intentions
+    When I go to the new intentions page
+    And I fill in "Title" with "intention 1"
+    And I fill in "Description" with "intention 1 description"
+    And I check "currencies_1_used"
+    And I press "Declare"
+    And I go to the all intentions page
+    Then the "Paginate results" checkbox should not be checked
+    
+  

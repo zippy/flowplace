@@ -262,7 +262,7 @@ class WealsController < ApplicationController
         ['offerer_id is not null and requester_id is null']
       end
     end
-    set_params(:user,params[:use_session],:order_current => 'd',:paginate => 'yes')
+    set_params(:user,params[:use_session],:order_current => 'd',:paginate => 'no')
     @search_params.update({'on_base' => 'base', 'for_base' => 'dummy','on_as' => 'as','on_circle'=>'circle'})
     @search_params["for_as"] ||= 'requester'
     @search_params["for_circle"] = @search_params["for_circle"].to_i if @search_params["for_circle"].to_i > 0
