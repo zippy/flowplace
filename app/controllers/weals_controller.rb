@@ -238,7 +238,7 @@ class WealsController < ApplicationController
       @weals = Weal.find(:all,:conditions=>["phase ='asset' and circle_id = ?",@current_circle.id])
       return
     end
-    def_sort_rules(* [['r','lft,users.last_name,users.first_name,weals.created_at'],['d','lft,weals.created_at']])
+    def_sort_rules(* [['d-o','weals.created_at'],['d','weals.created_at DESC']])
 
     def_search_rules(:sql,[['t','title'],['d','description']])
     def_search_rule 'base' do |search_for|
@@ -262,7 +262,7 @@ class WealsController < ApplicationController
         ['offerer_id is not null and requester_id is null']
       end
     end
-    set_params(:user,params[:use_session],:order_current => 'd',:paginate => 'no')
+    set_params(:user,params[:use_session],:order => 'd',:paginate => 'no')
     @search_params.update({'on_base' => 'base', 'for_base' => 'dummy','on_as' => 'as','on_circle'=>'circle'})
     @search_params["for_as"] ||= 'requester'
     @search_params["for_circle"] = @search_params["for_circle"].to_i if @search_params["for_circle"].to_i > 0

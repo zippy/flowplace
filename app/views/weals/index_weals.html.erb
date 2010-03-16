@@ -4,8 +4,8 @@
 <%
 #Get data ready for search form:
 order_choices = [
-  ['Created','d'],
-  ['Requester','r']
+  ['Newest First','d'],
+  ['Oldest First','d-o']
   ]
 select_options = {
   'main' => [
@@ -30,7 +30,7 @@ Match:
 %>
 <%= text_field_tag("search[for_main]", val) %>
 Circle: <%= select_tag("search[for_circle]", options_for_select(my_circles_for_select,@search_params["for_circle"])) %>
-Order by: <%= select_tag('search[order_current]', options_for_select(order_choices,@search_params[:order_current]))%>
+Order by: <%= select_tag('search[order]', options_for_select(order_choices,@search_params[:order]))%>
 
 <%= check_box_tag('search[paginate]','yes',@search_params[:paginate]=='yes') %> <%= label_tag('search[paginate]', 'Paginate results')%>
   <input id='search[paginate]' name='search[paginate]' type='hidden' value='no' />
