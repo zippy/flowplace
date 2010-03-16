@@ -48,13 +48,16 @@
           h[ca.currency] << ca
         end      
       %>
-      
-      <% @circle.currencies.each do |c| %>
-        <% if h[c] %>
-          <li>
-            <%= render_currency_icon(c,:size=>16)%>  <% c.name %>: (<%= h[c].collect{|ca| ca.player_class}.join(', ') %>)
-          </li>
+      <% if h.size > 1%>
+        <% @circle.currencies.each do |c| %>
+          <% if h[c] %>
+            <li>
+              <%= render_currency_icon(c,:size=>16)%>  <% c.name %>: (<%= h[c].collect{|ca| ca.player_class}.join(', ') %>)
+            </li>
+          <% end %>
         <% end %>
+      <% else%>
+      <li><i>not linked to any currencies</i></li>
       <% end %>
       </td>
     </tr>

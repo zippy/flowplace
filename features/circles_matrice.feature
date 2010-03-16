@@ -228,6 +228,7 @@ Feature: circle namer
     And A user "joe"
     When I make "joe" a "member" of "the circle"
     And I go to the link players page for "the circle"
+    Then I should see "not linked to any currencies" within "#joe"
     And I check the box for user "joe"
     #if webrat wasn't whack this should be, but in this test case it is unambiguous.
     #And I check "Member" within "#currency_x"
@@ -271,7 +272,7 @@ Feature: circle namer
     When I check the box for user "joe"
     And I check "currencies[2][member]"
     And I press "Unlink"
-    Then I should not see "joe"
+    Then I should see "not linked to any currencies" within "#joe"
 
   Scenario: namer works in a situation with many users
     Given a "MutualCredit" currency "X"

@@ -131,11 +131,19 @@
       <script type="ruby">
         <![CDATA[
         perms = @play.to['permissions']
-        perms[@play.currency] ||= {}
-        perms[@play.currency].delete(@play.player_class)
-        perms.delete(@play.currency) if perms[@play.currency].size == 0
-        @play.to['_currency_account'].destroy
-        true
+        currency = @play.currency
+        currency_name = currency.name
+        perms[currency_name] ||= {}
+        perms[currency_name].delete(@play.player_class)
+        perms.delete(@play.currency) if perms[currency_name].size == 0
+        to_ca = @play.to['_currency_account']
+        ca = CurrencyAccount.find(:first,:conditions=>["user_id=? and currency_id = ? and player_class = ?",to_ca.user.id,currency.id,@play.player_class])
+        if ca
+          ca.destroy
+          true
+        else
+          "Couldn't find #{@play.player_class} account in #{currency_name} for #{to_ca.name}"
+        end
         ]]>
       </script>
       <play_sentence lang='en'><from /> revokes <to />'s <player_class /> access to <currency /></play_sentence>
