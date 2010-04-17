@@ -316,3 +316,13 @@ Feature: circle namer
     And I press "Create"
     When I go to the circles page
     Then I should see "the circle"
+
+  Scenario: namer doesn't see currencies not managed by her
+    When I go to the logout page
+    Given I have an account as "Jane"
+    And an "Issued" currency "THEM"
+    When I go to the logout page
+    And I am logged into my account
+    When I go to the currencies page for "the circle"
+    Then I should see "No currencies found"
+    

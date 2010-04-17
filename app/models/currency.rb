@@ -35,7 +35,7 @@ class Currency < ActiveRecord::Base
   has_many :weals, :through => :currency_weal_links
   has_many :currency_accounts, :dependent => :destroy
   has_many :users, :through => :currency_accounts
-  has_one :creator, :foreign_key => :created_by
+  belongs_to :manager, :class_name => 'User', :foreign_key => :created_by
   
   @@types = []
   cattr_accessor :types

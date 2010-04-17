@@ -2,7 +2,7 @@ require 'lib/constants'
 class User < ActiveRecord::Base
   is_gravtastic
 
-  has_many :currencies, :foreign_key => :created_by
+  has_many :managed_currencies, :class_name => 'Currency', :foreign_key => :created_by
   has_many :currency_accounts, :dependent => :destroy
   has_many :weals_as_offerer, :class_name => 'Weal', :foreign_key => :offerer_id
   has_many :weals_as_requester, :class_name => 'Weal', :foreign_key => :requester_id

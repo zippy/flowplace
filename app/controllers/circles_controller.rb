@@ -267,11 +267,17 @@ class CirclesController < ApplicationController
   def setup_bound_currencies
     set_params(:circle_currencies,true)
     key = @search_params['key']
+    
     if key.blank?
-      @currencies = Currency.find(:all,:conditions=> "type != 'CurrencyMembrane'")
+      conditions = "type != 'CurrencyMembrane'"
     else
       key = '%'+key+'%'
-      @currencies = Currency.find(:all,:conditions=>["type != 'CurrencyMembrane' and (name #{ILIKE} ?)",key])
+      conditions = ["type != 'CurrencyMembrane' and (name #{ILIKE} ?)",key]
+    end
+    if current_user.can?(:admin)
+      @currencies = Currency.find(:all,:conditions=>conditions)
+    else
+      @currencies = current_user.managed_currencies.find(:all,:conditions=>conditions)
     end
     @bound_currencies = @circle.currencies
     @currencies = @currencies - @bound_currencies
