@@ -83,6 +83,10 @@ module NavigationHelpers
       '/currencies/new'
     when /the new "([^\"]*)" currencies page/
       '/currencies/new?currency_type=Currency'+$1.tr(' ','')
+    when /the edit currency page for "([^\"]*)"/
+      circle = $1
+      i = Currency.find_by_name(circle)
+      "/currencies/#{i.id}/edit"  
     when /the match page/
       '/weals'
     when /the accounts page/

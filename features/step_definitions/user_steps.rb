@@ -1,8 +1,11 @@
 def create_user(user)
-  u = User.new({:user_name => user, :first_name => user.capitalize,:last_name => 'User',:email=>"#{user}@#{user}.org"})
-  u.create_bolt_identity(:user_name => :user_name,:password => 'password') && u.save
-  @user = u
-  u
+  @user = User.find_by_user_name(user)
+  if @user.nil?
+    u = User.new({:user_name => user, :first_name => user.capitalize,:last_name => 'User',:email=>"#{user}@#{user}.org"})
+    u.create_bolt_identity(:user_name => :user_name,:password => 'password') && u.save
+    @user = u
+  end
+  @user
 end
 
 Given /I am logged into my( "([^\"]*)")* account/ do |dummy,user|

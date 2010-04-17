@@ -1,6 +1,9 @@
 <% @title='Currencies' %>
 <%= render(:partial => 'sub_nav') %>
 
+<%if @currencies.empty?%>
+<i>You currently manage no currencies.</i>
+<%else%>
 <table id="currency_list">
   <tr>
     <th colspan=2>Name</th>
@@ -24,6 +27,7 @@ for currency in @currencies
   </tr>
 <% end %>
 </table>
+<%end%>
 
 <br />
 

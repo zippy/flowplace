@@ -4,7 +4,8 @@ Feature: currencies
   I want to be able to add currencies to the flowplace
 
   Background:
-    Given I am logged into my account
+    Given I have an account as "Jane"
+    Given I am logged into my "Joe" account
     And I have "currency" privs
     And a circle "the circle"
     And an "Issued" currency "THEM"
@@ -36,3 +37,33 @@ Feature: currencies
     Then I should see "THEM" within "#currency_list"
     Then I should not see "the circle" within "#currency_list"
 
+  Scenario: changes the ownership of a currency
+    When I go to the currencies page
+    Then I should see "THEM" within "#currency_list"
+    When I follow "THEM"
+    Then I should see "THEM:"
+    And I should see "Edit Currency"
+    When I select "Jane User" from "Managed By"
+    And I press "Update"
+    Then I should be taken to the currencies page
+    Then I should see "You currently manage no currencies."
+
+  Scenario: admins sees all currencies
+    Given I go to the logout page
+    And I am logged into my "Jane" account
+    And I have "currency" privs
+    And I go to the currencies page
+    Then I should see "You currently manage no currencies."
+    Given I have "admin" privs
+    When I go to the currencies page
+    Then I should see "THEM" within "#currency_list"
+    
+  Scenario: user tries to access currency they don't manage and fails, but admin succeeds
+    Given I go to the logout page
+    And I am logged into my "Jane" account
+    And I have "currency" privs
+    When I go to the edit currency page for "THEM"
+    Then I should be taken to the home page
+    Given I have "admin" privs
+    When I go to the edit currency page for "THEM"
+    Then I should be taken to the edit currency page for "THEM"

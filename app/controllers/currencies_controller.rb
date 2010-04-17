@@ -5,7 +5,9 @@ class CurrenciesController < ApplicationController
   # GET /currencies
   # GET /currencies.xml
   def index
-    @currencies = Currency.find(:all,:conditions=>"type != 'CurrencyMembrane'")
+    conditions = "type != 'CurrencyMembrane'"
+    conditions = [conditions+" and created_by = ?",current_user.id] unless current_user.can?(:admin)
+    @currencies = Currency.find(:all,:conditions=>conditions)
 
     respond_to do |format|
       format.html # index.html.erb
@@ -40,6 +42,7 @@ class CurrenciesController < ApplicationController
   def edit
     check_for_currency_type
     @currency = Currency.find(params[:id])
+    return if !can_access_currency?
   end
 
   # GET /currencies/1/player_classes
@@ -60,6 +63,7 @@ class CurrenciesController < ApplicationController
       @currency = currency_params[:type].constantize.new(currency_params)
       @currency.configuration = params[:config]
     end
+    @currency.created_by = current_user.id
     respond_to do |format|
       if @currency.save
         flash[:notice] = 'Currency was successfully created.'
@@ -76,6 +80,7 @@ class CurrenciesController < ApplicationController
   # PUT /currencies/1.xml
   def update
     @currency = Currency.find(params[:id])
+    return if !can_access_currency?
     currency_params = get_currency_params
     @currency.configuration = params[:config]
 #    @currency.type = currency_params[:type]  CANT CHANGE THE CURRENCY TYPE!
@@ -112,6 +117,14 @@ class CurrenciesController < ApplicationController
     if @currency_type
       raise "unknown currency type" if !Currency.types.include?(@currency_type)
       @currency_type = @currency_type.constantize.new
+    end
+  end
+  def can_access_currency?
+    if (@currency.created_by == current_user.id) || current_user.can?(:admin)
+      true
+    else
+      access_denied
+      false
     end
   end
 end
