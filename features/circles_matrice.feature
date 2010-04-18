@@ -80,10 +80,10 @@ Feature: circle namer
     And I should see "View" as a sub-tab
     And I should see "Currencies" as a sub-tab
     And I should see "Edit" as a sub-tab
-    And I should see a table with 2 rows within "#circle_players"
+    And I should see a table with 3 rows within "#circle_players"
     And I should see "Player" in row 0 column 0 within "#circle_players"
-    And I should see "Anonymous User as namer" in row 1 column 0 within "#circle_players"
-    And I should see "namer" in row 1 column 1 within "#circle_players"
+    And I should see "Anonymous User as namer" in row 2 column 0 within "#circle_players"
+    And I should see "namer" in row 2 column 1 within "#circle_players"
   
   Scenario: namer searches for a users to add
     Given A user "jeff"
@@ -114,8 +114,8 @@ Feature: circle namer
     When I select "member" from "player_class"
     And I press "Add >>"
     Then I should see "Circle was successfully updated."
-    And I should see "Joe User as member" in row 2 column 0 within "#circle_players"
-    And I should see "member" in row 2 column 1 within "#circle_players"
+    And I should see "Joe User as member" in row 3 column 0 within "#circle_players"
+    And I should see "member" in row 3 column 1 within "#circle_players"
     And There should be a play in my currencies history that reflects this
 
 #this scenario also tests that when the user is redirected back to the players page
@@ -127,8 +127,8 @@ Feature: circle namer
     When I select "member" from "player_class"
     And I press "Add >>"
     Then I should see "Circle was successfully updated."
-    And I should see "Anonymous User as namer" in row 1 column 0 within "#circle_players"
-    And I should see "Anonymous User as member" in row 2 column 0 within "#circle_players"
+    And I should see "Anonymous User as namer" in row 2 column 0 within "#circle_players"
+    And I should see "Anonymous User as member" in row 3 column 0 within "#circle_players"
   
   Scenario: namer sees errors when not choosing user or player class when attempting to add to a circle
     When I go to the players page for "the circle"
@@ -143,7 +143,7 @@ Feature: circle namer
     When I select "namer" from "player_class"
     And I press "Add >>"
     Then I should see "Circle was successfully updated."
-    And I should see "Joe User as namer" in row 2 column 0 within "#circle_players"
+    And I should see "Joe User as namer" in row 3 column 0 within "#circle_players"
     When I go to the link players page for "the circle"
     Then I should not see "Joe User"
     When I go to the players page for "the circle"

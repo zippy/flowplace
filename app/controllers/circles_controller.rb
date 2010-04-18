@@ -302,7 +302,11 @@ class CirclesController < ApplicationController
     @players = []
     
     @circle.currency_accounts.each do |ca|
-      @players << ca if ca.user.user_name != circle_user_name && (circle_player_class.nil? || ca.player_class == circle_player_class)
+      #don't expose the self player class for a circle user
+      if  (circle_player_class.nil? || ca.player_class == circle_player_class) &&
+          (ca.user.user_name != circle_user_name || circle_player_class !='self')
+        @players << ca
+      end
     end
     @players = @players.sort {|a,b| a.user.full_name(true) <=> b.user.full_name(true)}
 
