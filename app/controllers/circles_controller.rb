@@ -296,7 +296,6 @@ class CirclesController < ApplicationController
     end
     circle_user_name = @circle.circle_user_name
     @total_users = User.count
-    @users = @users.reject {|u| u.user_name == circle_user_name}
     @users ||=[]
     @users = @users.paginate(:page => params[:page],:per_page => params[:per_page])
     
