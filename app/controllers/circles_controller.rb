@@ -112,7 +112,6 @@ class CirclesController < ApplicationController
     case params["commit"]
     when "Add >>"
       selector = :users
-      play_name = 'bind_currency'
 
       player_class = params[:player_class]
       if player_class.blank?
@@ -123,7 +122,6 @@ class CirclesController < ApplicationController
       end
     when "<< Remove"
       selector = :players
-      play_name = 'unbind_currency'
       if !params[selector]
         @circle.errors.add_to_base('You must choose some players!')
       end
@@ -133,10 +131,11 @@ class CirclesController < ApplicationController
     
     if @circle.errors.empty?
       params[selector].keys.each do |selector_id|
-        if selector == :users
+        case selector
+        when :users
           user = User.find(selector_id)
           @circle.add_player_to_circle(player_class,user)
-        else
+        when :players
           to_account = CurrencyAccount.find(selector_id)
           namer_account = @circle.api_user_accounts('namer',current_user)[0]
           play = {
