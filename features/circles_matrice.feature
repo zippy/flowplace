@@ -89,7 +89,7 @@ Feature: circle namer
     Given A user "jeff"
     Given A user "fred"
     When I go to the players page for "the circle"
-    Then I should see "Search found 3 users"
+    Then I should see "Search found 4 users"
     And I should see "Search"
     And I fill in "search_key" with "jeff"
     And I press "Search"
@@ -279,7 +279,7 @@ Feature: circle namer
     And I bind "X" to "the circle"
     And A user "joe"
     And A user "jane"
-    When I go to page 1 of the players page for "the circle" with 2 per page
+    When I go to page 1 of the players page for "the circle" with 3 per page
     Then I should see "joe"
     And I should not see "jane"
     When I follow "Next"
