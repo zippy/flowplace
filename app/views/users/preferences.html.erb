@@ -10,10 +10,12 @@ Your Account and Your Preferences
 <% form_tag(set_preferences_user_url(@user.id),:method => :put) do -%>
 
 <p>
-  <%= [
+  <%= prefs = [
     ['terse','I know how the site works now.  Hide the long-winded instructions.'],
     ['enlargeFont', 'I don\'t like to squint.  Use a larger font size.']
-    ].collect {|p| field_id = "prefs[#{p[0]}]"; check_box_tag(field_id, value = 1, checked = @preferences.include?(p[0])) << " " << label_tag(field_id,p[1])}.join("<br />")
+    ]
+    prefs << ['showMembranes', 'Show circles as membrane currencies in the dashboard'] if current_user.can?(:circle)
+    prefs.collect {|p| field_id = "prefs[#{p[0]}]"; check_box_tag(field_id, value = 1, checked = @preferences.include?(p[0])) << " " << label_tag(field_id,p[1])}.join("<br />")
   -%>
 </p>
 <% if Configuration.get(:circle_currency_policy) == 'self_authorize'%>

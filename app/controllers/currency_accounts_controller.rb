@@ -27,7 +27,7 @@ class CurrencyAccountsController < ApplicationController
   def dashboard
     if !@current_circle.nil?
       @currency_accounts = current_user.currency_accounts_in_circle(@current_circle)
-      @currency_accounts = @currency_accounts.reject {|ca| ca.currency.type == 'CurrencyMembrane'}
+      @currency_accounts = @currency_accounts.reject {|ca| ca.currency.type == 'CurrencyMembrane'} unless current_user.has_preference('showMembranes')
     end
 
     respond_to do |format|

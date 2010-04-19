@@ -41,4 +41,29 @@ Feature: Users
     When I follow "Preferences"
     Then the "Activate circle and currency management features" checkbox should not be checked
     
+  Scenario: user enables the show circles as membrane currencies preference
+    Given the default site configurations
+    When I go to the logout page
+    And I am logged into my "admin" account
+    And I have "admin" privs
+    When I go to the configurations page
+    And I follow "Circle Currency Policy"
+    And I select "self_authorize" from "configuration_value"
+    And I press "Update"
+    When I follow "Preferences"
+    Then I should not see "Show circles as membrane currencies in the dashboard"
+    When I go to the logout page
+    And I am logged into my account
+    Given I have "circle" privs
+    And a circle "the circle"
+    When I go to the dashboard page
+    Then I should not see a "the circle" "namer" dashboard item
+    Then I should not see a "the circle" "binder" dashboard item
+    When I go to the preferences page
+    Then I should see "Show circles as membrane currencies in the dashboard"
+    When I check "prefs[showMembranes]"
+    And I press "Set Preferences"
+    And I go to the dashboard page
+    Then I should see a "the circle" "namer" dashboard item
+    Then I should see a "the circle" "binder" dashboard item
 
