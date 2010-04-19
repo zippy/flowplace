@@ -517,10 +517,12 @@ class CurrencyMembrane
     if circle.errors.empty? && circle.save
       self_player = circle.add_player_to_circle('self',circle_user)
       namer_player = circle.add_player_to_circle('namer',namer_user) if self_player
+      binder_player = circle.add_player_to_circle('binder',namer_user) if self_player
     end
     if !circle.errors.empty?
       self_player.destroy if self_player
       namer_player.destroy if namer_player
+      binder_player.destroy if binder_player
       circle_user.destroy if circle_user
       circle.destroy
     end

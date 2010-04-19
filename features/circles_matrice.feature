@@ -80,10 +80,12 @@ Feature: circle namer
     And I should see "View" as a sub-tab
     And I should see "Currencies" as a sub-tab
     And I should see "Edit" as a sub-tab
-    And I should see a table with 2 rows within "#circle_players"
+    And I should see a table with 3 rows within "#circle_players"
     And I should see "Player" in row 0 column 0 within "#circle_players"
     And I should see "Anonymous User as namer" in row 1 column 0 within "#circle_players"
+    And I should see "Anonymous User as binder" in row 2 column 0 within "#circle_players"
     And I should see "namer" in row 1 column 1 within "#circle_players"
+    And I should see "binder" in row 2 column 1 within "#circle_players"
   
   Scenario: namer searches for a users to add
     Given A user "jeff"
@@ -149,7 +151,7 @@ Feature: circle namer
     When I select "namer" from "player_class"
     And I press "Add >>"
     Then I should see "Circle was successfully updated."
-    And I should see "Joe User as namer" in row 2 column 0 within "#circle_players"
+    And I should see "Joe User as namer" in row 3 column 0 within "#circle_players"
     When I go to the link players page for "the circle"
     Then I should not see "Joe User"
     When I go to the players page for "the circle"
@@ -166,44 +168,6 @@ Feature: circle namer
     And I check the box for player "joe" as "member"
     And I press "<< Remove"
     Then I should see "Circle was successfully updated."
-    
-  Scenario: namer views her circle's currencies
-    When I go to the circles page
-    And I follow "Add Currencies" within "table"
-    Then I should be taken to the currencies page for "the circle"
-    And I should see "Add Currencies" as the active sub-tab
-    And I should see "Add Players" as a sub-tab
-    And I should see "View" as a sub-tab
-    And I should see "Edit" as a sub-tab
-    And I should see "There are no currencies in this circle."
-  
-  Scenario: namer binds a currency to a circle
-    Given a "MutualCredit" currency "X"
-    When I go to the currencies page for "the circle"
-    When I check the box for currency "X"
-    And I press "Add >>"
-    Then I should be taken to the currencies page for "the circle"
-    And I should see "Circle was successfully updated."
-    And I should not see "There are no currencies in this circle."
-    And I should see "X" in row 1 column 0 within "#circle_currencies"
-    And There should be a play in my currencies history that reflects this
-
-  Scenario: namer binds a currency to a circle forgetting to check a currency
-    Given a "MutualCredit" currency "X"
-    When I go to the currencies page for "the circle"
-    And I press "Add >>"
-    Then I should see "You must choose some currencies!"
-
-  Scenario: namer releases a currency from a circle
-    Given a "MutualCredit" currency "X"
-    And I bind "X" to "the circle"    
-    When I go to the currencies page for "the circle"
-    When I check the box for bound currency "X"
-    And I press "<< Remove"
-    Then I should be taken to the currencies page for "the circle"
-    And I should see "Circle was successfully updated."
-    And I should see "There are no currencies in this circle."
-    And There should be a play in my currencies history that reflects this
 
   Scenario: namer looks at users to be linked to currencies
     Given a "MutualCredit" currency "X"

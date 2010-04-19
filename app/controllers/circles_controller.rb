@@ -239,7 +239,7 @@ class CirclesController < ApplicationController
   # PUT /circles/1/currencies
   def set_currencies
     @circle = Currency.find(params[:id])
-    return if am_not_namer?
+    return if am_not_binder?
     case params["commit"]
     when "Add >>"
       selector = :currencies
@@ -257,14 +257,14 @@ class CirclesController < ApplicationController
         currency = Currency.find(currency_id)
         self_account = User.find_by_user_name(@circle.circle_user_name).currency_accounts[0]
         #TODO, this needs updating if the same user can have multiple accounts in the same currency as namer
-        namer_account = @circle.api_user_accounts('namer',current_user)[0]
+        binder_account = @circle.api_user_accounts('binder',current_user)[0]
         
         play = {
-          'from' => namer_account,
+          'from' => binder_account,
           'to' => self_account,
           'currency' => currency
         }
-        @circle.api_play(play_name,namer_account,play)
+        @circle.api_play(play_name,binder_account,play)
       end
       flash[:notice] = 'Circle was successfully updated.'
       redirect_to(currencies_circle_url(@circle))
@@ -338,6 +338,17 @@ class CirclesController < ApplicationController
   end
   def namer?
     @current_user_is_namer = @circle.api_user_isa?(current_user,'namer')
+  end
+  def am_not_binder?
+    if binder?
+      false
+    else
+      access_denied
+      true
+    end
+  end
+  def binder?
+    @current_user_is_namer = @circle.api_user_isa?(current_user,'binder')
   end
   
 end

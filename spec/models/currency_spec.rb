@@ -131,12 +131,13 @@ describe Currency do
       @user = create_user('u1')
       @circle = CurrencyMembrane.create(@user,{:circle=>{:name => 'a circle',:steward_id=>@user.id},:password=>'password',:confirmation=>'password',:email=>'test@test.com'})
     end
-    it "should create a circle with associated user and self and namer players" do
+    it "should create a circle with associated user and self, namer and binder players" do
       @circle.class.should == CurrencyMembrane
       @circle.errors.should be_empty
       @circle.circle_user_name.should == 'a_circle_circle'
       @circle.api_user_isa?(User.find_by_user_name('a_circle_circle'),'self').should == true
-      @circle.api_user_isa?(@user,'namer').should == true
+      @circle.api_user_isa?(@user,'namer').should be_true
+      @circle.api_user_isa?(@user,'binder').should be_true
     end
     describe "binding" do
       it "should return a list of currencies bound to the membrane" do

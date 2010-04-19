@@ -11,7 +11,7 @@
     Binder Summary Function: none
     Binder Plays:
       bind_currency(from,to,currency,name)  # adds a currency to the circle to be known as name.
-      unbind_currency(from,to,currency,name)  # removed currency from the circle known as name.
+      unbind_currency(from,to,currency,name)  # removes currency known as name from the circle.
     Namer Summary Function: none
     Namer Plays:
       name_member(from,user,name)  # names a new member player into the circle as for a user.
