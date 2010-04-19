@@ -277,8 +277,9 @@ describe Currency do
       history = @currency.api_play_history(@account)
       history.size.should == 1
       h = history[0]
-      t = h["__meta"].delete("timestamp")
-      h.should == { "__meta" => {"name"=>"pay"}, "from"=>{"_name"=>"Joe U1", "volume"=>20, "balance"=>-20}, "amount"=>20, "memo"=>"leg waxing", "to"=>{"_name"=>"Joe U2", "volume"=>20, "balance"=>20}, "aggregator"=>nil}
+      h["__meta"]['timestamp'].should_not be_nil
+      t = h["__meta"].delete('timestamp')
+      h.should == { "__meta" => {"name"=>"pay", "currency_id"=>2}, "from"=>{"_name"=>"Joe U1", "volume"=>20, "balance"=>-20}, "amount"=>20, "memo"=>"leg waxing", "to"=>{"_name"=>"Joe U2", "volume"=>20, "balance"=>20}, "aggregator"=>nil}
     end
     
     describe 'api_user_accounts' do

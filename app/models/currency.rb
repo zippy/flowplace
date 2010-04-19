@@ -315,7 +315,8 @@ class Currency < ActiveRecord::Base
           end
         end
         content = @play.get_state
-        content['__meta'] = {'name' => play_name}
+        content['__meta'] = {'name' => play_name,'currency_id'=>self.id}
+        content.delete('currency')
         Play.transaction do
           p = Play.create!(:content=>content)
           currency_account_links.each do |field_name,account|
