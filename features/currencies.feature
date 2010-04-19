@@ -37,28 +37,28 @@ Feature: currencies
     Then I should see "THEM" within "#currency_list"
     Then I should not see "the circle" within "#currency_list"
 
-  Scenario: changes the ownership of a currency
+  Scenario: steward changes the ownership of a currency
     When I go to the currencies page
     Then I should see "THEM" within "#currency_list"
     When I follow "THEM"
     Then I should see "THEM:"
     And I should see "Edit Currency"
-    When I select "Jane User" from "Managed By"
+    When I select "Jane User" from "Steward"
     And I press "Update"
     Then I should be taken to the currencies page
-    Then I should see "You currently manage no currencies."
+    Then I should see "You currently steward no currencies."
 
   Scenario: admins sees all currencies
     Given I go to the logout page
     And I am logged into my "Jane" account
     And I have "currency" privs
     And I go to the currencies page
-    Then I should see "You currently manage no currencies."
+    Then I should see "You currently steward no currencies."
     Given I have "admin" privs
     When I go to the currencies page
     Then I should see "THEM" within "#currency_list"
     
-  Scenario: user tries to access currency they don't manage and fails, but admin succeeds
+  Scenario: user tries to access currency they don't steward and fails, but admin succeeds
     Given I go to the logout page
     And I am logged into my "Jane" account
     And I have "currency" privs

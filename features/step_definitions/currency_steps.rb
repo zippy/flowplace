@@ -2,7 +2,7 @@ Given /an* "([^\"]*)" currency "([^\"]*)"/ do |currency_type,currency_name|
   klass = "Currency#{currency_type}".constantize
   creator = @user.id if @user
   creator ||= 1
-  @currency = klass.create!({:type => currency_type, :name => currency_name, :created_by => creator})
+  @currency = klass.create!({:type => currency_type, :name => currency_name, :steward_id => creator})
 end
 
 Given /^I am an* "([^\"]*)" of currency "([^\"]*)"/ do |player_class,currency_name|

@@ -6,7 +6,7 @@ class CurrenciesController < ApplicationController
   # GET /currencies.xml
   def index
     conditions = "type != 'CurrencyMembrane'"
-    conditions = [conditions+" and created_by = ?",current_user.id] unless current_user.can?(:admin)
+    conditions = [conditions+" and steward_id = ?",current_user.id] unless current_user.can?(:admin)
     @currencies = Currency.find(:all,:conditions=>conditions)
 
     respond_to do |format|
@@ -63,7 +63,7 @@ class CurrenciesController < ApplicationController
       @currency = currency_params[:type].constantize.new(currency_params)
       @currency.configuration = params[:config]
     end
-    @currency.created_by = current_user.id
+    @currency.steward_id = current_user.id
     respond_to do |format|
       if @currency.save
         flash[:notice] = 'Currency was successfully created.'
@@ -120,7 +120,7 @@ class CurrenciesController < ApplicationController
     end
   end
   def can_access_currency?
-    if (@currency.created_by == current_user.id) || current_user.can?(:admin)
+    if (@currency.steward_id == current_user.id) || current_user.can?(:admin)
       true
     else
       access_denied

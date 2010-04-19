@@ -26,7 +26,7 @@ describe Currency do
   before(:each) do
     @valid_attributes = {
       :name => "My Currency",
-      :created_by => 1,
+      :steward_id => 1,
       :icon_url => "/images/my_currency.gif",
       :symbol => "MC"
     }
@@ -43,8 +43,8 @@ describe Currency do
     lambda {@c.save!}.should raise_error
   end
 
-  it "should raise an error given no created_by attribute" do
-    @c.created_by = nil
+  it "should raise an error given no steward_id attribute" do
+    @c.steward_id = nil
     lambda {@c.save!}.should raise_error
   end
 
@@ -129,7 +129,7 @@ describe Currency do
   describe "membrane currency" do
     before(:each) do
       @user = create_user('u1')
-      @circle = CurrencyMembrane.create(@user,{:circle=>{:name => 'a circle',:created_by=>@user.id},:password=>'password',:confirmation=>'password',:email=>'test@test.com'})
+      @circle = CurrencyMembrane.create(@user,{:circle=>{:name => 'a circle',:steward_id=>@user.id},:password=>'password',:confirmation=>'password',:email=>'test@test.com'})
     end
     it "should create a circle with associated user and self and namer players" do
       @circle.class.should == CurrencyMembrane

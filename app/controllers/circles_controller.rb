@@ -276,7 +276,7 @@ class CirclesController < ApplicationController
     if current_user.can?(:admin)
       @currencies = Currency.find(:all,:conditions=>conditions)
     else
-      @currencies = current_user.managed_currencies.find(:all,:conditions=>conditions)
+      @currencies = current_user.stewarded_currencies.find(:all,:conditions=>conditions)
     end
     @bound_currencies = @circle.currencies
     @currencies = @currencies - @bound_currencies

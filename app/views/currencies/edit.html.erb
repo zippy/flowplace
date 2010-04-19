@@ -3,8 +3,8 @@
 
 <% form_for(@currency,:url=>{ :action => "update" },:method => "put") do |f| %>
   <p>
-    <%= f.label :created_by,"Managed By:" %>
-    <%= f.select(:created_by, User.find(:all).collect {|p| [ p.full_name, p.id ] }) %>
+    <%= f.label :steward_id,"Steward:" %>
+    <%= f.select(:steward_id, User.find(:all).collect {|p| [ p.full_name, p.id ] }) %>
   </p>
 	<%= render(:partial => 'f', :object => f) %>
   <p>

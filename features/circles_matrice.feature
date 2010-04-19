@@ -317,7 +317,7 @@ Feature: circle namer
     When I go to the circles page
     Then I should see "the circle"
 
-  Scenario: namer doesn't see currencies not managed by her
+  Scenario: namer doesn't see currencies not stewarded by her
     When I go to the logout page
     Given I have an account as "Jane"
     And an "Issued" currency "THEM"

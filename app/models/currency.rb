@@ -28,14 +28,14 @@ class Currency < ActiveRecord::Base
   include ActionView::Helpers::FormTagHelper
   include ActionView::Helpers::TagHelper
   include ActionView::Helpers::FormOptionsHelper
-  validates_presence_of :name,:type,:created_by
+  validates_presence_of :name,:type,:steward_id
   validates_uniqueness_of :name
 
   has_many :currency_weal_links, :dependent => :destroy
   has_many :weals, :through => :currency_weal_links
   has_many :currency_accounts, :dependent => :destroy
   has_many :users, :through => :currency_accounts
-  belongs_to :manager, :class_name => 'User', :foreign_key => :created_by
+  belongs_to :steward, :class_name => 'User', :foreign_key => :steward_id
   
   @@types = []
   cattr_accessor :types
@@ -501,7 +501,7 @@ end
 
 class CurrencyMembrane
   def self.create(namer_user,params)
-    opts = {:created_by => namer_user.id}.update(params[:circle])
+    opts = {:steward_id => namer_user.id}.update(params[:circle])
     circle = CurrencyMembrane.new(opts)
     circle.type = 'CurrencyMembrane'
     

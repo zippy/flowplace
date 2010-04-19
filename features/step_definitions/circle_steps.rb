@@ -1,6 +1,6 @@
 Given /^a circle "([^\"]*)"$/ do |circle_name|
   @user ||= create_user('anonymous')
-  CurrencyMembrane.create(@user,{:circle=>{:created_by=>@user.id, :name => circle_name},:password=>'password',:confirmation=>'password',:email => 'test@test.com'})
+  CurrencyMembrane.create(@user,{:circle=>{:steward_id=>@user.id, :name => circle_name},:password=>'password',:confirmation=>'password',:email => 'test@test.com'})
 end
 
 When /^I check the box for user "([^\"]*)"$/ do |user_name|

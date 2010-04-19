@@ -20,7 +20,7 @@ Spec::Runner.configure do |config|
   end
   
   def create_currency(currency,opts={})
-    opts[:created_by] = 1 unless opts.has_key?(:created_by)
+    opts[:steward_id] = 1 unless opts.has_key?(:steward_id)
     if opts.has_key?(:klass)
       klass = opts[:klass]
       opts.delete(:klass)
