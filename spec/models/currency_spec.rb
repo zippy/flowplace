@@ -213,6 +213,11 @@ describe Currency do
       @currency.api_play_names('member').should == ["pay"]
     end
 
+    it "returns play names in the order defined" do
+      @circle = create_currency("C",:klass=>CurrencyMembrane)
+      @circle.api_play_names('binder').should == ["bind_currency", "unbind_currency"]
+    end
+
     describe "configurable fields" do
       it "should be able to return a list of the configurable fields for plays" do
         @cr = create_currency("R1",:klass=>CurrencyMutualRating)

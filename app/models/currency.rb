@@ -196,7 +196,15 @@ class Currency < ActiveRecord::Base
   end
   
   def api_play_names(player_class)
-    api_plays.collect {|name,attrs| (!(name =~ /^_/) && attrs[:player_classes] == player_class) ? name : nil}.compact
+    @xgfl ||= Nokogiri::XML.parse(xgfl)
+    play_names = []
+    @xgfl.xpath(%Q|/game/plays/*|).to_a.each do |p|
+      pc = p.attributes['player_classes'].to_s
+      if player_class == pc
+        play_names << p.attributes['name'].to_s
+      end
+    end
+    play_names
   end
   
   def api_new_player(player_class,user,name = nil)
