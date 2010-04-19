@@ -8,10 +8,12 @@
     Member Summary function: Permissions--The list of permissions a member has.<br />
     Member Plays:
       -- none yet --
+    Binder Summary Function: none
+    Binder Plays:
+      bind_currency(from,to,currency,name)  # adds a currency to the circle to be known as name.
+      unbind_currency(from,to,currency,name)  # removed currency from the circle known as name.
     Namer Summary Function: none
     Namer Plays:
-      bind_currency(from,to,currency,name,meta)  # adds a currency to the circle to be known as name.
-      unbind_currency(from,to,currency,name)  # adds a currency to the circle to be known as name.
       name_member(from,user,name)  # names a new member player into the circle as for a user.
       grant(from,to,currency,player_class)  # adds a member of the circle to a currency as a given player_class.
       revoke(from,to,currency,player_class)
@@ -19,6 +21,7 @@
   <player_classes>
     <player_class name="member" />
     <player_class name="namer" />
+    <player_class name="binder" />
     <player_class name="self" />
   </player_classes>
   <states>
@@ -35,6 +38,11 @@
         <![CDATA[ @self_state.currencies = {};]]>
       </script>
     </play>
+    <play name="_new_binder">
+      <fields>
+        <field type="" id="class" />
+      </fields>
+    </play>
     <play name="_new_member">
       <fields>
         <field type="" id="class" />
@@ -43,9 +51,9 @@
         <![CDATA[ @member_state.permissions = {};]]>
       </script>
     </play>
-    <play name="bind_currency" player_classes="namer">
+    <play name="bind_currency" player_classes="binder">
       <fields>
-         <field type="player_namer" id="from" />
+         <field type="player_binder" id="from" />
          <field type="player_self" id="to" />
          <field type="currency" id="currency" />
          <field type="string" id="name" />
@@ -62,9 +70,9 @@
       </script>
       <play_sentence lang='en'> <from /> binds <currency /> to <to /> as <name /></play_sentence>
     </play>
-    <play name="unbind_currency" player_classes="namer">
+    <play name="unbind_currency" player_classes="binder">
       <fields>
-         <field type="player_namer" id="from" />
+         <field type="player_binder" id="from" />
          <field type="player_self" id="to" />
          <field type="currency" id="currency" />
       </fields>
