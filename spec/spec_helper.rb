@@ -15,7 +15,7 @@ Spec::Runner.configure do |config|
 
   def create_user(user='user')
     u = User.new({:user_name => user, :first_name => 'Joe',:last_name => user.capitalize,:email=>"#{user}@#{user}.org"})
-    u.create_bolt_identity(:user_name => :user_name,:password => 'password') && u.save
+    u.create_bolt_identity(:user_name => :user_name,:password => 'password') && u.save!
     u
   end
   

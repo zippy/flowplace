@@ -67,3 +67,10 @@ Feature: currencies
     Given I have "admin" privs
     When I go to the edit currency page for "THEM"
     Then I should be taken to the edit currency page for "THEM"
+
+  Scenario: steward renames a currency
+    When I go to the currencies page
+    And I follow "THEM"
+    And I fill in "Name" with "WE"
+    And I press "Update"
+    Then I should see "WE" within "#currency_list"

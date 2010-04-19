@@ -325,4 +325,22 @@ Feature: circle namer
     And I am logged into my account
     When I go to the currencies page for "the circle"
     Then I should see "No currencies found"
+
+  Scenario: namer renames a circle
+    Given a "MutualCredit" currency "X"
+    And I bind "X" to "the circle"    
+    And I make "the_circle_circle" a "member" of "the circle"
+    And I make "anonymous" a "member" of "the circle"
+    And "the_circle_circle" is a "member" of currency "X"
+    And "anonymous" is a "member" of currency "X"
+    When I go to the edit circle page for "the circle"
+    And I fill in "Name" with "circle x"
+    And I press "Update"
+    And I should see "Circle was successfully updated."
+    And I should see "circle x"
+    When I go to the dashboard page
+    Then I should see a "X" "member" dashboard item
+    When I go to the logout page
+    And I log in as "circle_x_circle"
+    Then I should be taken to the dashboard page
     

@@ -66,9 +66,25 @@ class CirclesController < ApplicationController
   def update
     @circle = Currency.find(params[:id])
     return if am_not_namer?
-
+    if params[:circle][:name] != @circle.name
+      circle_user = User.find_by_user_name(circle_user_orig_name = @circle.circle_user_name)
+      Currency.transaction do
+        @circle.update_attributes(params[:circle])
+        if @circle.errors.empty?
+          circle_user.rename(circle_user_new_name = @circle.circle_user_name)
+          if !circle_user.errors.empty?
+            @circle.errors.add_to_base('Error renaming circle user:'+@circle.errors.full_messages)
+          else
+            CurrencyAccount.update_all "name = '#{circle_user_new_name}'", ['user_id = ? and name = ?',circle_user.id,circle_user_orig_name]
+          end
+        end
+      end
+    else
+      @circle.update_attributes(params[:circle])    
+    end
+    
     respond_to do |format|
-      if @circle.errors.empty? && @circle.update_attributes(params[:circle])
+      if @circle.errors.empty?
         flash[:notice] = 'Circle was successfully updated.'
         format.html { redirect_to circles_path }
         format.xml  { head :ok }

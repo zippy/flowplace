@@ -109,5 +109,19 @@ describe User do
     end
       
   end
+  describe 'renaming' do
+    before(:each) do
+      @user = create_user
+    end
+    it "works when renaming to a name that doesn't exist" do
+      @user.rename('joe')
+      User.find_by_user_name('joe').should === @user
+    end
+    it "bombs when renaming to a name that does exist" do
+      @user1 = create_user('joe')
+      @user.rename('joe')
+      @user.errors.full_messages.should == ["User name has already been taken"]
+    end
+  end
   
 end

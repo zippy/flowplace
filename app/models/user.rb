@@ -23,6 +23,19 @@ class User < ActiveRecord::Base
   @@per_page = 10
   
   ##############################################
+  # rename the user
+  def rename(new_name)
+    self.user_name = new_name
+    User.transaction do
+      if self.save
+        self.bolt_identity.user_name = new_name
+        self.bolt_identity.save!
+      end
+    end
+    self
+  end
+  
+  ##############################################
   def weals(circle=nil)
     _find_weals(['offerer_id = ? or requester_id = ? or proposals.user_id = ?',self.id,self.id,self.id],circle)
   end
