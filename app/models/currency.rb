@@ -284,7 +284,9 @@ class Currency < ActiveRecord::Base
         else
           @play[field_name] = play[field_name].get_state
           @play[field_name]['_name'] = play[field_name].name
-          @play[field_name]['_currency_account'] = play[field_name]
+          ca = play[field_name]
+          raise "currency account #{ca.name} (id=#{ca.id}) is a #{ca.player_class} not a #{player_class} as required for '#{field_name}' field in the #{play_name} play" if player_class != ca.player_class
+          @play[field_name]['_currency_account'] = ca
         end
       else
         raise "unknown field type: #{field_type}"
