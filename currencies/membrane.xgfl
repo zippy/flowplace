@@ -65,8 +65,10 @@
          to = @play.to['_currency_account']
          from = @play.from['_currency_account']
          request_type = @play.request_type
-         @play.to['requests'][from.name] = request_type
-         @play.from['requests'][to.name] = request_type
+         @play.to['requests']['from'] ||= {}
+         @play.to['requests']['from'][from.name] = request_type
+         @play.from['requests']['to'] ||= {}
+         @play.from['requests']['to'][to.name] = request_type
          true
          ]]>
       </script>

@@ -140,6 +140,22 @@ describe Currency do
       @circle.api_user_isa?(@user,'binder').should be_true
     end
     describe "binding" do
+      it "sends requests" do
+        @user2 = create_user('u2')
+        @c2 = CurrencyMembrane.create(@user2,{:circle=>{:name => 'another circle',:steward_id=>@user2.id},:password=>'password',:confirmation=>'password',:email=>'test@test.com'})
+        @to = @user2.currency_accounts.find(:first,:conditions=>"player_class = 'binder' and name='u2'")
+        @from = @user.currency_accounts.find(:first,:conditions=>"player_class = 'binder' and name='u1'")
+        play = {
+          'from' => @from,
+          'to' => @to,
+          'request_type' => 'contained'
+        }
+        @from.get_state['requests'].should == {}
+        @to.get_state['requests'].should == {}
+        @circle.api_play('request_binding',@from,play).class.should == Play
+        @from.get_state['requests'].should == {"to" => {"u2"=>"contained"}}
+        @to.get_state['requests'].should == {"from" => {"u1"=>"contained"}}
+      end
       it "should return a list of currencies bound to the membrane" do
         @mc = create_currency("MC",:klass=>CurrencyMutualCredit)
         @self = User.find_by_user_name('a_circle_circle').currency_accounts[0]
