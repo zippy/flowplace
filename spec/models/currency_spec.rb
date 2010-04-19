@@ -215,7 +215,7 @@ describe Currency do
 
     it "returns play names in the order defined" do
       @circle = create_currency("C",:klass=>CurrencyMembrane)
-      @circle.api_play_names('binder').should == ["bind_currency", "unbind_currency"]
+      @circle.api_play_names('namer').should == ["bind_currency", "unbind_currency", "name_member", "grant", "revoke"]
     end
 
     describe "configurable fields" do

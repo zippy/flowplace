@@ -10,6 +10,8 @@
       -- none yet --
     Binder Summary Function: none
     Binder Plays:
+      request_binding(from,to,type)  # request containment binding between membranes
+      accept_binding(from,to,play)  # accept containment binding between membranes
       bind_currency(from,to,currency,name)  # adds a currency to the circle to be known as name.
       unbind_currency(from,to,currency,name)  # removes currency known as name from the circle.
     Namer Summary Function: none
@@ -27,6 +29,7 @@
   <states>
     <state player_class="member"><hash name="permissions" /></state>
     <state player_class="self"><hash name="currencies" /></state>
+    <state player_class="binder"><hash name="requests" /></state>
   </states>
 
   <plays>
@@ -39,9 +42,9 @@
       </script>
     </play>
     <play name="_new_binder">
-      <fields>
-        <field type="" id="class" />
-      </fields>
+      <script type="ruby">
+        <![CDATA[ @binder_state.requests = {};]]>
+      </script>
     </play>
     <play name="_new_member">
       <fields>
@@ -51,9 +54,27 @@
         <![CDATA[ @member_state.permissions = {};]]>
       </script>
     </play>
-    <play name="bind_currency" player_classes="binder">
+    <play name="request_binding" player_classes="binder">
       <fields>
          <field type="player_binder" id="from" />
+         <field type="external_player_binder" id="to" />
+         <field type="string" id="request_type" />
+      </fields>
+      <script type="ruby">
+        <![CDATA[
+         to = @play.to['_currency_account']
+         from = @play.from['_currency_account']
+         request_type = @play.request_type
+         @play.to['requests'][from.name] = request_type
+         @play.from['requests'][to.name] = request_type
+         true
+         ]]>
+      </script>
+      <play_sentence lang='en'> <from /> requests <to /> to accept <request_type /></play_sentence>
+    </play>
+    <play name="bind_currency" player_classes="namer">
+      <fields>
+         <field type="player_namer" id="from" />
          <field type="player_self" id="to" />
          <field type="currency" id="currency" />
          <field type="string" id="name" />
@@ -70,9 +91,9 @@
       </script>
       <play_sentence lang='en'> <from /> binds <currency /> to <to /> as <name /></play_sentence>
     </play>
-    <play name="unbind_currency" player_classes="binder">
+    <play name="unbind_currency" player_classes="namer">
       <fields>
-         <field type="player_binder" id="from" />
+         <field type="player_namer" id="from" />
          <field type="player_self" id="to" />
          <field type="currency" id="currency" />
       </fields>
