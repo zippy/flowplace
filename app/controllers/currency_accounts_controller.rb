@@ -159,8 +159,8 @@ class CurrencyAccountsController < ApplicationController
     @currency_account = CurrencyAccount.find(params[:id])
     @currency = @currency_account.currency
     @play_name = params[:play_name]
-    @plays = @currency.api_play_history(@currency_account)
     raise "play_name missing" if @play_name.blank?
+    @plays = @currency.api_play_history(@currency_account).reject {|p| p['__meta']['name'] != @play_name}
     @play_fields = @currency.api_play_sentence_fields(@play_name)
   end
   

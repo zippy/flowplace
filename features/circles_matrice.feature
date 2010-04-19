@@ -108,27 +108,33 @@ Feature: circle namer
     And I should see "No users found"
 
   Scenario: namer adds a new user as member to a circle
+    When I go to the "namer" currency account history page for "anonymous" in "the circle" of "name_member"
+    Then I should see "You have made no 'name_member' plays in this currency"
     Given A user "joe"
     When I go to the players page for "the circle"
     When I check the box for user "joe"
     When I select "member" from "player_class"
     And I press "Add >>"
     Then I should see "Circle was successfully updated."
-    And I should see "Joe User as member" in row 2 column 0 within "#circle_players"
-    And I should see "member" in row 2 column 1 within "#circle_players"
-    And There should be a play in my currencies history that reflects this
+    And I should see "Joe User as member" in row 3 column 0 within "#circle_players"
+    And I should see "member" in row 3 column 1 within "#circle_players"
+    When I go to the "namer" currency account history page for "anonymous" in "the circle" of "name_member"
+    Then this should be working
+#    Then I should see a table with 2 rows
 
 #this scenario also tests that when the user is redirected back to the players page
 # that the default set of users (i.e. the ones in the circle) are rendered, instead of
 # the ones in the session from a search.
   Scenario: namer adds existing user as member to a circle
     When I go to the players page for "the circle"
+    Then I should see a table with 3 rows within "#circle_players"
     When I check the box for user "anonymous"
     When I select "member" from "player_class"
     And I press "Add >>"
     Then I should see "Circle was successfully updated."
+    And I should see a table with 4 rows within "#circle_players"
     And I should see "Anonymous User as namer" in row 1 column 0 within "#circle_players"
-    And I should see "Anonymous User as member" in row 2 column 0 within "#circle_players"
+    And I should see "Anonymous User as member" in row 3 column 0 within "#circle_players"
   
   Scenario: namer sees errors when not choosing user or player class when attempting to add to a circle
     When I go to the players page for "the circle"

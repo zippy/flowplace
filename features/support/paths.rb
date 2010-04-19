@@ -97,6 +97,17 @@ module NavigationHelpers
       currency_accounts_paths(:play,$1)
     when /^the currency account history page for "([^\"]*)"$/
       currency_accounts_paths(:history,$1)
+    when /^the "([^\"]*)" currency account history page for "([^\"]*)" in "([^\"]*)"( of "([^\"]*)")*$/
+      (player_class,user_name,currency_name,dummy,play_name) = [$1,$2,$3,$4,$5]
+      u = User.find_by_user_name(user_name)
+      raise "couldn't find user #{user_name} while building path '#{page_name}'" if u.nil?
+      c = Currency.find_by_name(currency_name)
+      raise "couldn't find currency #{currency_name} while building path '#{page_name}'" if c.nil?
+      ca = u.currency_accounts.find(:first,:conditions => ["currency_id = ? and player_class = ?",c.id,player_class])
+      raise "couldn't find currency account while building path '#{page_name}'" if ca.nil?
+      path = "/currency_accounts/#{ca.id}/history"
+      path += "/#{play_name}" if play_name
+      
     when /the "([^\"]*)" play page for my "([^\"]*)" account in "([^\"]*)"/
       user = controller.current_user
       (play_name,player_class,currency_name) = [$1,$2,$3]

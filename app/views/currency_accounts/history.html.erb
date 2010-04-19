@@ -3,11 +3,11 @@
 
 Current State: <%= @currency.api_render_player_state(@currency_account)%>
 <br />
-<h4> History </h4>
+<h4>History of <%= @play_name%> plays </h4>
 <% if @plays.empty? %>
 You have made no '<%= @play_name%>' plays in this currency.
 <% else %>
-<table>
+<table id="plays">
   <tr>
     <th>Date</th>
     <% for play_field in @play_fields %>
