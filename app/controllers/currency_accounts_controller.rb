@@ -1,4 +1,5 @@
 class CurrencyAccountsController < ApplicationController
+  Activity
   before_filter :set_current_circle
   # GET /currency_accounts
   # GET /currency_accounts.xml
@@ -29,7 +30,9 @@ class CurrencyAccountsController < ApplicationController
       @currency_accounts = current_user.currency_accounts_in_circle(@current_circle)
       @currency_accounts = @currency_accounts.reject {|ca| ca.currency.type == 'CurrencyMembrane'} unless current_user.has_preference('showMembranes')
     end
-
+    @activities = CurrencyActivity.by(current_user,{:limit =>20,:order =>'created_at desc'})
+    @activities = @activities.reject {|a| a.activityable.is_a?(CurrencyMembrane)} unless current_user.has_preference('showMembranes')
+      
     respond_to do |format|
       format.html { render :template => 'currency_accounts/dashboard_flowplace' if @current_circle.nil?}
       format.xml  { render :xml => @currency_accounts }

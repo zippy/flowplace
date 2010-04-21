@@ -314,6 +314,9 @@ module ApplicationHelper
       when CircleActivity
         circle = resource
         circle_path(circle)
+      when CurrencyActivity
+        currency = resource
+        currency_path(currency)
       else
         polymorphic_url(resource)
       end

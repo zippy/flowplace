@@ -22,6 +22,23 @@ describe Activity do
       a.humanize.should=="Intention"
     end
   end
-    
-  
+  describe CurrencyActivity do
+    before(:each) do
+      @currency = create_currency("LETS",:klass=>CurrencyMutualCredit)
+      @user1 = create_user('u1')
+      @user2 = create_user('u2')
+      @account1 = create_currency_account(@user1,@currency)
+      @account2 = create_currency_account(@user2,@currency)
+      play = {'from' => @account1, 'to' => @account2, 'amount'=>20, 'memo'=>'leg waxing'}
+      @play = @currency.api_play('pay',@account1,play)
+    end
+    it "stores currency activities" do
+      a = CurrencyActivity.add(@user1,@currency,{'played'=>@play})
+      b = CurrencyActivity.find(:first)
+      b.should === a
+      b.activityable.should == @currency
+      YAML.load(b.contents)['played'].class.should == Play
+      @currency.currency_activities[0].should === a
+    end
+  end
 end

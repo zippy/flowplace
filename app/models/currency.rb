@@ -36,6 +36,7 @@ class Currency < ActiveRecord::Base
   has_many :currency_accounts, :dependent => :destroy
   has_many :users, :through => :currency_accounts
   belongs_to :steward, :class_name => 'User', :foreign_key => :steward_id
+  has_many :currency_activities, :as => :activityable
   
   @@types = []
   cattr_accessor :types
@@ -348,6 +349,7 @@ class Currency < ActiveRecord::Base
           p = Play.create!(:content=>content)
           currency_account_links.each do |field_name,account|
             PlayCurrencyAccountLink.create!(:currency_account_id => account.id, :play_id => p.id,:field_name => field_name)
+            a = CurrencyActivity.add(account.user,self,{'play_id'=>p.id,'as'=>field_name})
           end
           p
         end

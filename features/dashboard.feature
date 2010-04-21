@@ -47,8 +47,8 @@ Feature: dashboard
     And I fill in "play_amount" with "20"
     And I fill in "play[memo]" with "leg waxing"
     And I press "Record Play"
-#    Then I should be taken to the my currencies page
-    And I should see "-20"
+    Then I should see "-20" within "#dashboard_x_member"
+    And I should see "Joe User's X member account pays Jane User's X member account 20 for leg waxing" within "#activity"
     When I follow "history"
     Then I should be taken to the currency account history page for "Joe User's X member account"
     And I should see "leg waxing"
