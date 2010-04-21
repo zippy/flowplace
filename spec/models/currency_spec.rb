@@ -271,6 +271,11 @@ describe Currency do
       s = @currency.api_play_sentence_fields('pay').should == %w(from to amount memo)
     end
     
+    it "should fill a play sentence" do
+      s = @currency.api_play_sentence_fill('pay') {|field_name| "'#{field_name}'"}
+      s.should == "'from' pays 'to' 'amount' for 'memo'"
+    end
+    
     it "should be able to return a list of plays" do
       @currency.api_plays.should == {"_new_member"=>{:player_classes=>""}, "reverse"=>{:player_classes=>"admin"}, "pay"=>{:player_classes=>"member"}, "_new_aggregator"=>{:player_classes=>""}}
     end

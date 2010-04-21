@@ -163,6 +163,23 @@ class Currency < ActiveRecord::Base
   def api_play_sentence_raw(play)
     api_play_sentence(play).inner_html
   end
+  
+  def api_play_sentence_fill(play)
+    sentence = ""
+    api_play_sentence(play).children.each do |element|
+      case element
+      when Nokogiri::XML::Text
+        sentence += element.text
+      when Nokogiri::XML::Element
+        field_name = element.name
+        result = yield(field_name)
+        sentence += result
+      else
+        raise element.inspect
+      end
+    end
+    sentence
+  end
 
   def api_render_summary
 #    summary
