@@ -58,7 +58,7 @@
       <fields>
          <field type="player_binder" id="from" />
          <field type="external_player_binder" id="to" />
-         <field type="string" id="request_type" />
+         <field type="range" id="request_type" start="0" end="1" display_as_enumerable="" />
       </fields>
       <script type="ruby">
         <![CDATA[
