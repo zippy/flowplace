@@ -12,10 +12,11 @@ Feature: membrane currency
     When I go to the my currencies page
     And I follow "the circle" within "#currency_account_anonymous"
     Then I should be taken to the currency account play page for "anonymous"
-    And I should see "Name Member" as the active play
+    And I should see "Bind Currency" as the active play
+    And I should see "Unbind Currency" as a possible play
+    And I should see "Name Member" as a possible play
     And I should see "Grant" as a possible play
     And I should see "Revoke" as a possible play
-    And I should see "Bind Currency" as a possible play
 
   Scenario: Namer makes a bind currency play
     Given a "MutualCredit" currency "MC"
