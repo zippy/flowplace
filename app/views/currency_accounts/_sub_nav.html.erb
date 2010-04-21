@@ -1,4 +1,5 @@
 <ul id="sub_nav">
+  <li><%= sub_nav_link 'Overview',dashboard_path,'Overview'%></li>
   <li><%= sub_nav_link 'Currencies',my_currencies_path,'My currencies'%></li>
   <%if @currency && @play%><li><p>Play</p></li><%end%>
 </ul>

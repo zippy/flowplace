@@ -23,6 +23,8 @@ Feature: dashboard
     When I log in as "joe"
     Then I should be taken to the dashboard page
     And I should see "Dashboard" as the current tab
+    And I should see "Overview" as the active sub-tab
+    And I should see "Currencies" as a sub-tab
     And I should see a "X" "member" dashboard item
     And I should not see a "this circle" "member" dashboard item
     And I should not see a "Y" "member" dashboard item
