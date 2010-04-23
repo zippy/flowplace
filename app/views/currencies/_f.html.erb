@@ -7,7 +7,9 @@
   <fieldset><legend>Currency Description</legend><%= @currency_type.api_description %></fieldset>
   <%= hidden_field_tag 'currency[type]', @currency_type.class.to_s%>
 </div>
-  
+<div id="currency_type_xgfl">
+  <fieldset><legend>XGFL <a href="#" onclick="$('xgfl').toggle()">...</a></legend><pre id="xgfl" style="display:none"><%= h @currency_type.xgfl %></pre></fieldset>
+</div>  
 <%else%>
 <%= javascript_tag <<-EOJS
 function do_change(type){
@@ -31,6 +33,16 @@ function do_change(type){
     config = "<fieldset><legend>Configurable Fields</legend>"+configs[type]+"</fieldset>"
   }
   $('currency_configurable_fields').innerHTML = config;
+
+  var xgfls = {#{Currency.types.collect {|c| "#{c}:'#{escape_javascript(h c.constantize.new.xgfl)}'" }.join(',')}}
+  var xgfl;
+  if (xgfls[type] == undefined || xgfls[type] == '') {
+    xgfl = ''
+  }
+  else {
+    xgfl = '<fieldset><legend>XGFL <a href="#" onclick="$(\\'xgfl\\').toggle()">...</a></legend><pre id="xgfl" style="display:none">'+xgfls[type]+'</pre></fieldset>';
+  }
+  $('currency_type_xgfl').innerHTML = xgfl;
 }
 EOJS
 %>
@@ -39,6 +51,7 @@ EOJS
 </p>
 
 <div id="currency_type_descrption"></div>
+<div id="currency_type_xgfl"></div>
 <% end %>
 
 <p>
