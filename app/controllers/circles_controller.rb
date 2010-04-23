@@ -153,17 +153,21 @@ class CirclesController < ApplicationController
           @circle.add_player_to_circle(player_class,user)
         when :players
           to_account = CurrencyAccount.find(selector_id)
-          namer_account = @circle.api_user_accounts('namer',current_user)[0]
-          play = {
-            'from' => namer_account,
-            'to' => to_account,
-            'currency' => @circle,
-            'player_class' => 'member'
-          }
-          begin
-            @circle.api_play('revoke',namer_account,play)
-          rescue Exception => e
-            raise e
+          if to_account.player_class != 'member'
+            to_account.destroy
+          else
+            namer_account = @circle.api_user_accounts('namer',current_user)[0]
+            play = {
+              'from' => namer_account,
+              'to' => to_account,
+              'currency' => @circle,
+              'player_class' => 'member'
+            }
+            begin
+              @circle.api_play('revoke',namer_account,play)
+            rescue Exception => e
+              raise e
+            end
           end
         end
       end
