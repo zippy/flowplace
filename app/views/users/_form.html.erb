@@ -21,18 +21,18 @@
 <span class="smalltext">This user's browser reported the last login time as:  <%= @user.time_local ? @user.time_local : '<i>never logged in</i>' %></span><% end %></p>
 
 <% if current_user.can?(:admin) %>
-  <%= check_box_tag(:autojoin,'1') %>  Execute the configured Autojoin
+  <%= check_box_tag(:autojoin,'1') %>  <%= label_tag :autojoin,"Execute the configured Autojoin"%> 
 <% end %>
 <% if current_user.can?(:createAccounts) %>
 	<p>
 	<% if @user.new_record? || @user.deactivated? %>
-	<%= check_box_tag(:activate_account,'1',params[:activate_account]) %>  Activate account
+	<%= check_box_tag(:activate_account,'1',params[:activate_account]) %>  <%= label_tag :activate_account,"Activate account"%> 
 	<% elsif @user.activation_pending? %>
 	An activation e-mail was sent to this user. <br />
-	<%= check_box_tag(:resend_activation,'1',params[:resend_activation]) %>  Resend activation email
+	<%= check_box_tag(:resend_activation,'1',params[:resend_activation]) %>  <%= label_tag :resend_activation,"Resend activation email"%> 
 	<% else %>
-	<%= check_box_tag(:reset_password,'1',params[:reset_password]) %> Reset password
-	<%= check_box_tag(:deactivate_account,'1',params[:deactivate_account]) %> Deactivate account
+	<%= check_box_tag(:reset_password,'1',params[:reset_password]) %> <%= label_tag :reset_password,"Reset password"%> 
+	<%= check_box_tag(:deactivate_account,'1',params[:deactivate_account]) %> <%= label_tag :deactivate_account,"Deactivate account"%>
 	<% end %>
 	</p>
 <%end%>
