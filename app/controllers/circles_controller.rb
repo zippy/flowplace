@@ -147,6 +147,9 @@ class CirclesController < ApplicationController
     
     if @circle.errors.empty?
       params[selector].keys.each do |selector_id|
+        # this is all really messed up because the containment relationship aren't correct
+        # Really it is the namer in the super circle that should be naming players as members and namers
+        # in sub-circles... but we don't do it that way yet...
         case selector
         when :users
           user = User.find(selector_id)
