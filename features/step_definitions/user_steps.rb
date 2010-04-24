@@ -91,3 +91,22 @@ Then /^there should not be a reset code for "([^\"]*)"$/ do |user_name|
   u = User.find_by_user_name(user_name)
   u.bolt_identity.reset_code.should be_nil
 end
+
+Given /^admin creates a user( "([^\"]*)")*$/ do |dummy,user_name|
+  user_name ||= 'joe'
+  When %Q|I go to the add user page|
+  And %Q|I fill in "Account Name" with "#{user_name}"|
+  And %Q|I fill in "First Name" with "#{user_name.capitalize}"|
+  And %Q|I fill in "Last Name" with "User"|
+  And %Q|I fill in "Email" with "#{user_name}@user.org"|
+  And %Q|I fill in "Phone" with "123-456-789"|
+  And %Q|I fill in "Address 1" with "123 Main St"|
+  And %Q|I fill in "City" with "Smalltown"|
+  And %Q|I fill in "Zip" with "12345"|
+  And %Q|I fill in "Zip" with "12345"|
+  And %Q|I press "Create"|
+  u = User.find_by_user_name(user_name)
+  u.bolt_identity.password="password"
+  u.bolt_identity.enabled = true
+  u.bolt_identity.save.should == true
+end

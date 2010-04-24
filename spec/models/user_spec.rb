@@ -123,5 +123,23 @@ describe User do
       @user.errors.full_messages.should == ["User name has already been taken"]
     end
   end
-  
+  describe 'autojoin' do
+    before(:each) do
+      @user = create_user
+      @circle = CurrencyMembrane.create(@user,{:circle=>{:name => 'a circle'},:password=>'password',:confirmation=>'password',:email=>'test@test.com'})
+      Configuration.create({
+        'name' => 'autojoin',
+        'value' => {'circles'=>'a circle'}.to_yaml,
+        'sequence' => '2',
+        'configuration_type' => 'yaml'
+      })
+    end
+    it "can autojoin users to circles" do
+      joe = create_user('joe')
+      joe.currency_accounts.should == []
+      joe.autojoin.should == nil
+      joe.reload
+      joe.currency_accounts[0].currency.should === @circle
+    end
+  end
 end

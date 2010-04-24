@@ -200,5 +200,28 @@ class User < ActiveRecord::Base
     currency_accounts.each {|ca| result.push(ca.currency) if ca.currency.is_a?(CurrencyMembrane)}
     result.uniq
   end
-
+  
+  ##############################################
+  # auto-join this user according to the configuration
+  def autojoin
+    err = nil
+    begin
+      autojoin = Configuration.get(:autojoin)
+      if autojoin.blank?
+        err = 'autojoin configuration is empty (<a href="/configurations">configure</a>)'
+      else
+        autojoin = YAML.load(autojoin)
+        circles = autojoin['circles'].split(/\W*,\W*/) if autojoin['circles'].is_a?(String)
+        circles = autojoin['circles'] if autojoin['circles'].is_a?(Array)
+        circles.each do |name|
+          c = Currency.find_by_name(name)
+          raise "circle #{name} not found!" if c.nil? || !c.is_a?(CurrencyMembrane)
+          c.add_player_to_circle('member',self)
+        end
+      end
+    rescue Exception => e
+      err = "autojoin failed (configuration: #{autojoin.inspect}; error: #{e.to_s})"
+    end
+    err
+  end
 end

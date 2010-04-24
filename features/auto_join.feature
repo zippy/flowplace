@@ -48,3 +48,12 @@ Feature: auto_join
     And I press "Update"
     Then I should see "autojoin configuration is empty"
  
+  Scenario: admin runs autojoin for a user and sees that new users are auto-added to the configured circles
+    When I go to the configurations page
+    And I follow "Autojoin"
+    And fill in "configuration_value" with "circles: the circle"
+    And I press "Update"
+    Given admin creates a user "bob"
+    When I go to the logout page
+    And I log in as "bob"
+    Then I should see "the circle" as a "Jump to" option
