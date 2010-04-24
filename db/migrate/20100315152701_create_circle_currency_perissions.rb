@@ -1,9 +1,11 @@
 class CreateCircleCurrencyPerissions < ActiveRecord::Migration
   def self.up    
     %w(circle currency).each do |p|
-      Permission.create(:name => p)
-      r = Role.create!(:name => p)
-      r.allowances.add(p)
+      if (!Permission.exists?(:name=>p))
+        Permission.create(:name => p)
+        r = Role.create!(:name => p)
+        r.allowances.add(p)
+      end
     end
   end
   
