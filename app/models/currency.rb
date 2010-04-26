@@ -1,4 +1,5 @@
 class Currency < ActiveRecord::Base
+  Activity
   class State
     def initialize(states)
       @state = {}
@@ -561,6 +562,15 @@ class CurrencyMembrane
     circle
   end
 
+  def autojoin_currencies
+    self_player = currency_accounts.find_by_player_class('self')
+    raise "missing self player for membrane currency" if self_player.nil?
+    bound_currencies = get_self_state(self_player)
+    result = []
+    bound_currencies.keys.each {|k| result.push(Currency.find_by_name(bound_currencies[k]['name'])) if bound_currencies[k]['autojoin']  }
+    result
+  end
+
   def circle_user_name
     name.tr(' ','_').downcase+'_circle'
   end
@@ -576,17 +586,35 @@ class CurrencyMembrane
   #  @circle.api_play('name_user',namer_currency_account,play)
   #else
   #end
-  def add_player_to_circle(player_class,user)
+  def add_player_to_circle(player_class,user,namer = nil)
     player = api_new_player(player_class,user)
     if player.valid?
+      if player_class == 'member' && namer
+        self_player = currency_accounts.find_by_player_class('self')
+        autojoin_currencies.each do |c|
+          play = {
+            'from' => namer,
+            'to' => player,
+            'currency' => c,
+            'player_class' => 'member'
+          }
+          api_play('grant',user,play)
+        end
+      end
       player
     else
       self.errors.add_to_base("Error creating #{player_class} player for #{user.user_name}:"+player.errors.full_messages.join('; '))
       nil
     end
   end
+  
+  def get_self_state(self_account)
+    currency_bindings = self_account.get_state['currencies']
+    currency_bindings.keys.each {|k| currency_bindings[k] = {'name' => k, 'autojoin' => true} if currency_bindings[k].is_a?(String) }
+    currency_bindings
+  end
 
-  def currencies
+  def currencies(get_full_info=false)
     @self = CurrencyAccount.find(:first, :conditions => ["name = ? and player_class = 'self'",circle_user_name])
     
     ####TODO remove this code!!  It's here to add in a self-player to circles that didn't have one
@@ -606,7 +634,15 @@ class CurrencyMembrane
     
     #RESTORE THIS LINE
     #raise "Couldn't find self currency account for #{name}" if @self.nil?  
-    Currency.find(:all, :conditions => ['id in (?)',@self.get_state['currencies'].keys])
+    currency_bindings = get_self_state(@self)
+    currency_list = Currency.find(:all, :conditions => ['id in (?)',currency_bindings.keys])
+    if get_full_info
+      result = {}
+      currency_list.each {|c| result[c.id] ={'currency'=> c,'autojoin'=>currency_bindings[c.id]['autojoin']}}
+      result
+    else
+      currency_list
+    end
   end
 
   def api_render_player_state(account)

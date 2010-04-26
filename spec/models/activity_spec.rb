@@ -34,11 +34,10 @@ describe Activity do
     end
     it "stores currency activities" do
       a = CurrencyActivity.add(@user1,@currency,{'played'=>@play})
-      b = CurrencyActivity.find(:first)
-      b.should === a
+      b = CurrencyActivity.find(a.id)
       b.activityable.should == @currency
       YAML.load(b.contents)['played'].class.should == Play
-      @currency.currency_activities[0].should === a
+      @currency.currency_activities[2].should === a
     end
   end
 end

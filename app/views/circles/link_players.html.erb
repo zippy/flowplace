@@ -16,7 +16,7 @@
   <% form_tag(set_link_players_circle_url(@circle), :method=>:put) do -%>
 
   <div id="circle_currencies">
-  <% @circle.currencies.collect do |c| %>
+  <% @bound_currencies.each do |c| %>
       <p id="currency_<%=c.name_as_html_id%>">
       <%= render_currency_icon(c,:size=>16)%> 
       <%= c.name %>
@@ -44,15 +44,15 @@
       <% 
         h = {}
         user.currency_accounts_in_circle(@circle).each do |ca|
-          h[ca.currency] ||= []
-          h[ca.currency] << ca
-        end      
+          h[ca.currency.name] ||= []
+          h[ca.currency.name] << ca
+        end
       %>
       <% if h.size > 1%>
-        <% @circle.currencies.each do |c| %>
-          <% if h[c] %>
+        <% @bound_currencies.each do |c| %>
+          <% if h[c.name] %>
             <li>
-              <%= render_currency_icon(c,:size=>16)%>  <% c.name %>: (<%= h[c].collect{|ca| ca.player_class}.join(', ') %>)
+              <%= render_currency_icon(c,:size=>16)%>  <% c.name %>: (<%= h[c.name].collect{|ca| ca.player_class}.join(', ') %>)
             </li>
           <% end %>
         <% end %>

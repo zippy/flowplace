@@ -338,6 +338,26 @@ Feature: circle namer
     When I go to the "namer" currency account history page for "anonymous" in "the circle" of "bind_currency"
     Then I should see a table with 2 rows
 
+  Scenario: namer binds a currency to a circle as autojoin
+    When I go to the "namer" currency account history page for "anonymous" in "the circle" of "bind_currency"
+    Then I should see "You have made no 'bind_currency' plays in this currency."
+    Given a "MutualCredit" currency "X"
+    When I go to the currencies page for "the circle"
+    When I check the box for currency "X"
+    And I check "Autojoin"
+    And I press "Add >>"
+    Then I should be taken to the currencies page for "the circle"
+    And I should see "Circle was successfully updated."
+    And I should not see "There are no currencies in this circle."
+    And I should see "X (autojoin)" in row 1 column 0 within "#circle_currencies"
+    Given A user "joe"
+    When I go to the players page for "the circle"
+    When I check the box for user "joe"
+    When I select "member" from "player_class"
+    And I press "Add >>"
+    And I go to the link players page for "the circle"
+    Then I should see "member" within "#joe"
+
   Scenario: namer binds a currency to a circle forgetting to check a currency
     Given a "MutualCredit" currency "X"
     When I go to the currencies page for "the circle"

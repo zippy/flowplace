@@ -28,3 +28,13 @@ Feature: membrane currency
     Then I should see a table with 2 rows within "#circle_currencies"
     And I should see "MC" in row 1 column 0
     
+  Scenario: Namer makes a bind currency play with autojoin
+    Given a "MutualCredit" currency "MC"
+    When I go to the "bind_currency" play page for my "namer" account in "the circle"
+    And I select "MC" from "play[currency]"
+    And I fill in "play_name" with "MC" 
+    And I select "true" from "play_autojoin"
+    And I press "Record Play"
+    When I go to the currencies page for "the circle"
+    Then I should see a table with 2 rows within "#circle_currencies"
+    And I should see "MC (autojoin)" in row 1 column 0

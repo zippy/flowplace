@@ -150,16 +150,16 @@ class CirclesController < ApplicationController
         # this is all really messed up because the containment relationship aren't correct
         # Really it is the namer in the super circle that should be naming players as members and namers
         # in sub-circles... but we don't do it that way yet...
+        namer_account = @circle.api_user_accounts('namer',current_user)[0]
         case selector
         when :users
           user = User.find(selector_id)
-          @circle.add_player_to_circle(player_class,user)
+          @circle.add_player_to_circle(player_class,user,namer_account)
         when :players
           to_account = CurrencyAccount.find(selector_id)
           if to_account.player_class != 'member'
             to_account.destroy
           else
-            namer_account = @circle.api_user_accounts('namer',current_user)[0]
             play = {
               'from' => namer_account,
               'to' => to_account,
@@ -185,6 +185,8 @@ class CirclesController < ApplicationController
   # GET /circles/1/link_players
   def link_players
     @circle = Currency.find(params[:id])
+    @bound_currencies = @circle.currencies
+    get_bound_currencies(@circle)
     return if am_not_namer?
     setup_players_users('member')
     #FIXME we should parameterize setup_players_users
@@ -196,6 +198,7 @@ class CirclesController < ApplicationController
   # PUT /circles/1/set_link_players
   def set_link_players
     @circle = Currency.find(params[:id])
+    @bound_currencies = @circle.currencies
     currencies = params[:currencies]
     return if am_not_namer?
     if !params[:users]
@@ -271,6 +274,7 @@ class CirclesController < ApplicationController
           'to' => self_account,
           'currency' => currency
         }
+        play['autojoin'] = params['autojoin'] if selector == :currencies
         @circle.api_play(play_name,namer_account,play)
       end
       flash[:notice] = 'Circle was successfully updated.'
@@ -301,11 +305,18 @@ class CirclesController < ApplicationController
     else
       @currencies = current_user.stewarded_currencies.find(:all,:conditions=>conditions)
     end
-    @bound_currencies = @circle.currencies
+    get_bound_currencies(@circle)
     @currencies = @currencies - @bound_currencies
     @currencies = @currencies.paginate(:page => params[:page],:per_page => params[:per_page])
     @paginate_bound_currencies = false # !@bound_currencies.empty?
   end
+  
+  def get_bound_currencies(circle)
+    @bound_currency_hash = circle.currencies(true)
+    @bound_currencies = @bound_currency_hash.keys.collect {|n| @bound_currency_hash[n]['currency']}
+    @bound_currencies =  @bound_currencies.sort {|x,y| x.name <=> y.name}
+  end
+  
   def setup_players_users(circle_player_class = nil)
     set_params(:circle_users,true)
 #    @users = perform_search(OrderPairs,SearchPairs,SearchFormParams,User)

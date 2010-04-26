@@ -139,6 +139,24 @@ describe Currency do
       @circle.api_user_isa?(@user,'namer').should be_true
       @circle.api_user_isa?(@user,'binder').should be_true
     end
+    describe "granting" do
+      it "creates new currency accounts" do
+        @namer = @user.currency_accounts[0]
+        @user3 = create_user('u3')
+        @mc = create_currency("MC",:klass=>CurrencyMutualCredit)
+        @circle.add_player_to_circle('member',@user3,@namer)
+        to_account = @circle.api_user_accounts('member',@user3).first
+        play = {
+          'from' => @namer,
+          'to' => to_account,
+          'currency' => @mc,
+          'player_class' => 'member'
+        }
+        @user3.currency_accounts.size.should == 1
+        @circle.api_play('grant',@namer,play)
+        @user3.currency_accounts.size.should == 2
+      end
+    end
     describe "binding" do
       it "sends requests" do
         @user2 = create_user('u2')
@@ -156,21 +174,34 @@ describe Currency do
         @from.get_state['requests'].should == {"to" => {"u2"=>"contained"}}
         @to.get_state['requests'].should == {"from" => {"u1"=>"contained"}}
       end
-      it "should return a list of currencies bound to the membrane" do
-        @mc = create_currency("MC",:klass=>CurrencyMutualCredit)
-        @self = User.find_by_user_name('a_circle_circle').currency_accounts[0]
-        @namer = @user.currency_accounts[0]
+      describe "with autojoin" do
+        before(:each) do
+          @mc = create_currency("MC",:klass=>CurrencyMutualCredit)
+          @self = User.find_by_user_name('a_circle_circle').currency_accounts[0]
+          @namer = @user.currency_accounts[0]
         
-        play = {
-          'from' => @namer,
-          'to' => @self,
-          'currency' => @mc
-        }
-        @self.get_state['currencies'].should == {}
-        @circle.currencies.should == []
-        @circle.api_play('bind_currency',@namer,play).class.should == Play
-        @self.get_state['currencies'].should == {@mc.id => @mc.name}
-        @circle.currencies.should == [@mc]
+          play = {
+            'from' => @namer,
+            'to' => @self,
+            'currency' => @mc,
+            'autojoin' => true
+          }
+          @self.get_state['currencies'].should == {}
+          @circle.currencies(true).should == {}
+          @circle.currencies.should == []
+          @circle.api_play('bind_currency',@namer,play).class.should == Play
+        end
+        it "should return a list of currencies bound to the membrane" do
+          @self.get_state['currencies'].should == {@mc.id => {'name' => @mc.name,'autojoin'=>true}}
+          @circle.currencies(true).should == {@mc.id => {'currency' => @mc,'autojoin' => true}}
+          @circle.currencies.should == [@mc]
+          @circle.autojoin_currencies.should == [@mc]
+        end
+        it "should autojoin any new members" do
+          @user3 = create_user('u3')
+          @circle.add_player_to_circle('member',@user3,@namer)
+          @user3.currencies.should == [@circle,@mc]
+        end
       end
     end
   end

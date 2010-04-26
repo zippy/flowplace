@@ -80,6 +80,7 @@
          <field type="player_self" id="to" />
          <field type="currency" id="currency" />
          <field type="string" id="name" />
+         <field type="boolean" id="autojoin" />
       </fields>
       <script type="ruby">
         <![CDATA[
@@ -87,11 +88,11 @@
          return "Currency must be specified" unless @play.currency.is_a?(Currency)
          name = @play.name
          name ||= @play.currency.name
-         currencies[@play.currency.id] = name
+         currencies[@play.currency.id] = {'name' => name,'autojoin' => @play.autojoin}
          true
          ]]>
       </script>
-      <play_sentence lang='en'> <from /> binds <currency /> to <to /> as <name /></play_sentence>
+      <play_sentence lang='en'> <from /> binds <currency /> to <to /> as <name /> with autojoin as <autojoin /></play_sentence>
     </play>
     <play name="unbind_currency" player_classes="namer">
       <fields>
@@ -137,7 +138,6 @@
       <script type="ruby">
         <![CDATA[
           currency = @play.currency
-            
            to = @play.to['_currency_account']
            ca = currency.api_new_player(@play.player_class,to.user,to.name)
            if ca.valid?

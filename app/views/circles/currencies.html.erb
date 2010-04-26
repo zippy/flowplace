@@ -25,7 +25,7 @@
       <tr>
         <td title="<%=currency.description%>">
           <%= check_box_tag("bound_currencies[#{currency.id}]") %>
-          <%=  label_tag "currencies_bound_#{currency.id}","#{currency.name}"%>
+          <%=  label_tag "currencies_bound_#{currency.id}","#{currency.name}"+(@bound_currency_hash[currency.id]['autojoin'] ? ' (autojoin)' : '')%>
         </td>
       </tr>
     <% end %>
@@ -41,6 +41,8 @@
     <br />
     Bind selected currencies to circle
     <%= submit_tag('Add >>') %>
+    <%= check_box_tag("autojoin") %> <%=  label_tag "autojoin","Autojoin"%>
+    
   </div>
   <div id="circle_currencies_search_results">
   <table>
