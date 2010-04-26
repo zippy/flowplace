@@ -228,6 +228,8 @@ module ApplicationHelper
           result = text_field_tag(html_name,'',:size=>4)
         when 'string'
           result = text_field_tag(html_name,'',:size=>30)
+        when 'boolean'
+          result = select_tag(html_name, options_for_select([["false", 0], ["true", 1]]))
         when 'range'
           case fields[field_name]['configure_with']
           when 'enumerable_range'

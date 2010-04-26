@@ -46,6 +46,12 @@ describe ApplicationHelper do
         helper.currency_play_html(@lets,@account2,'pay',:exclude =>['from']).should == 
           " pays <select id=\"to\" include_blank=\"true\" name=\"to\"><option value=\"3\">Joe U3</option></select> <input id=\"amount\" name=\"amount\" size=\"4\" type=\"text\" value=\"\" /> for <input id=\"memo\" name=\"memo\" size=\"30\" type=\"text\" value=\"\" /><input type=\"hidden\" name=\"play_name\" value=\"pay\">"
       end
+      it "should generate input html for boolean types" do
+        @circle = create_currency("C",:klass=>CurrencyMembrane)
+        @memb = create_currency_account(@user1,@circle,'member')
+        helper.currency_play_html(@circle,@memb,'bind_currency').should == 
+          " Joe U1 binds <select id=\"currency\" name=\"currency\"><option value=\"\" selected=\"selected\"></option>\n<option value=\"USD\">USD</option>\n<option value=\"LETS\">LETS</option>\n<option value=\"C\">C</option></select> to <select id=\"to\" include_blank=\"true\" name=\"to\"></select> as <input id=\"name\" name=\"name\" size=\"30\" type=\"text\" value=\"\" /> with autojoin as <select id=\"autojoin\" name=\"autojoin\"><option value=\"0\">false</option>\n<option value=\"1\">true</option></select><input type=\"hidden\" name=\"play_name\" value=\"bind_currency\">"
+      end
     end
   end
 end

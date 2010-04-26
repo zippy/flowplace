@@ -291,6 +291,9 @@ class Currency < ActiveRecord::Base
       case field_type
       when 'integer','string','text','range'
         @play[field_name] = play[field_name]
+      when 'boolean'
+        val = play[field_name]
+        @play[field_name] = (val == 'true' || val == '1' || val == true) ? true : false
       when 'currency'
         @play[field_name] = setup_model(Currency,play[field_name]) { |name| Currency.find_by_name(name)}
       when 'user'
