@@ -278,7 +278,7 @@ class Currency < ActiveRecord::Base
       field_value
     else
       v = yield(field_value)
-      raise "Unknown #{model.to_s.downcase}: #{c}" if v.nil?
+      raise "Unknown #{model.to_s.downcase}: #{field_value}" if v.nil?
       v
     end
   end
@@ -567,7 +567,17 @@ class CurrencyMembrane
     raise "missing self player for membrane currency" if self_player.nil?
     bound_currencies = get_self_state(self_player)
     result = []
-    bound_currencies.keys.each {|k| result.push(Currency.find_by_name(bound_currencies[k]['name'])) if bound_currencies[k]['autojoin']  }
+    bound_currencies.keys.each do |k|
+      if bound_currencies[k]['autojoin']
+        c = nil
+        begin
+          c = Currency.find(k)
+        rescue Exception => e
+        end
+        result.push(c) if c
+        puts "autojoin to currency #{k}: "+c.inspect
+      end
+    end
     result
   end
 
@@ -610,7 +620,7 @@ class CurrencyMembrane
   
   def get_self_state(self_account)
     currency_bindings = self_account.get_state['currencies']
-    currency_bindings.keys.each {|k| currency_bindings[k] = {'name' => k, 'autojoin' => true} if currency_bindings[k].is_a?(String) }
+    currency_bindings.keys.each {|k| currency_bindings[k] = {'name' => currency_bindings[k], 'autojoin' => true} if currency_bindings[k].is_a?(String) }
     currency_bindings
   end
 
