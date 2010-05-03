@@ -3,10 +3,12 @@ class Configuration < ActiveRecord::Base
   Types = %w(options string text yaml)
 
   def validate
-    begin
-      YAML.load(value) if !value.blank?
-    rescue
-      errors.add(:value,"must be valid YAML")
+    if configuration_type == 'yaml'
+      begin
+        YAML.load(value) if !value.blank?
+      rescue
+        errors.add(:value,"must be valid YAML")
+      end
     end
   end
 

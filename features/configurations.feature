@@ -19,6 +19,7 @@ Feature: configuration
     And I should see "Footer"
     And I should see "Site Name"
     And I should see "Circle Currency Policy"
+    And I should see "Wealing Policy"
 
   Scenario: non-admin user tries to look at configuration options
     When I go to the logout page
@@ -56,7 +57,7 @@ Feature: configuration
     Then I should see a table with 1 row
     When I go to the merge default configurations page
     And I go to the configurations page
-    Then I should see a table with 9 rows
+    Then I should see a table with 10 rows
 
   Scenario: admin turns on the circle/currency self-auth config
     When I go to the configurations page
@@ -74,5 +75,17 @@ Feature: configuration
     When follow "Preferences"
     Then I should not see "Activate circle and currency management features"
     
+  Scenario: admin turns off wealing
+    When I go to the configurations page
+    And I follow "Wealing Policy"
+    And I select "off" from "configuration_value"
+    And I press "Update"
+    And I have "circle" privs
+    And a circle "the circle" with members "admin"
+    And I go to the dashboard page for "the circle"
+    Then I should not see "Intentions"
+    And I should not see "Actions"
+    And I should not see "Assets"
+
     
   

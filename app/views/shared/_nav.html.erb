@@ -2,9 +2,11 @@
 <% if logged_in? %>
   <li><%= nav_link 'Dashboard', dashboard_path,'Take action'%></li>
   <li ><%= nav_link 'Holoptiview',home_path,"View your wealth stream"%></li>
+  <%if Configuration.get(:wealing_policy) == 'on'%>
   <li><%= nav_link 'Intentions', my_intentions_path,'Declare, search, and manage intentions'%></li>
   <li><%= nav_link 'Actions', my_actions_path,'Create, search and manage actions'%></li>
   <li><%= nav_link 'Assets', my_assets_path,'Create, search and manage assets'%></li>
+  <%end%>
   <li><%= nav_link 'Members', members_circles_path,'View the members of the circle'%></li>
   <% if @current_circle.api_user_isa?(current_user,'namer')%>
   <li><%= nav_link 'Setup', players_circle_path(@current_circle),'Configure members and currencies in a circle'%></li>

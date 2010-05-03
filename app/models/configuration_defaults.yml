@@ -24,18 +24,23 @@ configurations_5:
   value: self_authorize
   configuration_type: "options(self_authorize,admin_authorize)"
   description: The site policy on authorization for managing currencies and circles
-configurations_6: 
+configurations_6:
   name: global_banner
   value: 
   configuration_type: text
   description: This html text will appear across the top of the site and is dismissable once you log-in.  Used for demo/dev site warinings.
-configurations_7: 
+configurations_7:
   name: analytics
   value: 
   configuration_type: string
   description: Google Analytics html block.
-configurations_8: 
+configurations_8:
   name: autojoin
   value: 
   configuration_type: yaml
-  description: Autojoin yaml specification.
+  description: "Autojoin yaml specification. (Enter: circles: name1,name2,...)"
+configurations_9:
+  name: wealing_policy
+  value: "on"
+  configuration_type: "options(on,off)"
+  description: "Policy for activating the wealing interface."
