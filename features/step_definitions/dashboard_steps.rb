@@ -21,3 +21,8 @@ Then /^(?:|I )should not see an* "([^\"]*)" dashboard item$/ do |name|
   txt = name.tr(' ','_').downcase
   (response.body =~ /#{'dashboard_'+txt}/).should == nil
 end
+
+Then /^(?:|I )should see no activity items$/ do
+  lambda {within('#activity') do |content|
+  end}.should raise_error
+end

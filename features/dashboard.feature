@@ -47,11 +47,14 @@ Feature: dashboard
     And I fill in "play_amount" with "20"
     And I fill in "play[memo]" with "leg waxing"
     And I press "Record Play"
+    And I go to the dashboard page for "this circle"
     Then I should see "-20" within "#dashboard_x_member"
     And I should see "Joe User's X member account pays Jane User's X member account 20 for leg waxing" within "#activity"
     When I follow "history"
     Then I should be taken to the currency account history page for "Joe User's X member account"
     And I should see "leg waxing"
+    When I go to the dashboard page for "that circle"
+    And I should see no activity items
     
 #  Scenario: User looks at a currency account
 #    When I go to the currency accounts page

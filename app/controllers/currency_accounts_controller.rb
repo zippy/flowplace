@@ -29,9 +29,11 @@ class CurrencyAccountsController < ApplicationController
     if !@current_circle.nil?
       @currency_accounts = current_user.currency_accounts_in_circle(@current_circle)
       @currency_accounts = @currency_accounts.reject {|ca| ca.currency.type == 'CurrencyMembrane'} unless current_user.has_preference('showMembranes')
+
+      @activities = CurrencyActivity.by_user(current_user,{:limit =>20,:order =>'created_at desc'})
+      currency_list = @current_circle.currencies;
+      @activities = @activities.reject {|a| !currency_list.include?(a.activityable)}
     end
-    @activities = CurrencyActivity.by(current_user,{:limit =>20,:order =>'created_at desc'})
-    @activities = @activities.reject {|a| a.activityable.is_a?(CurrencyMembrane)} unless current_user.has_preference('showMembranes')
       
     respond_to do |format|
       format.html { render :template => 'currency_accounts/dashboard_flowplace' if @current_circle.nil?}
