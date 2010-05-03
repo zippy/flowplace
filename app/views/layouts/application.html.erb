@@ -28,7 +28,7 @@ left_banner = !Configuration.get(:left_banner).blank? && !session[:left_banner_c
   					<%= link_to 'Log In',login_url,{:title => 'Log in'}%>
   				<% end %>
   			</div>
-  			<%if !Configuration.get(:single_circle) == 'on'%>
+  			<%if Configuration.get(:single_circle) != 'on'%>
 				<a href="/dashboard?current_circle="><img class='logo' src="/images/logo.png" height="28" width="28" alt="logo"><img height="28" class='logo' src="/images/logo_txt.jpg" alt="<%=configuration_text(:site_name)%>"></a>
 				<% end %>
 		  </div>
