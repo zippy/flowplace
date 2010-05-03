@@ -4,6 +4,7 @@ Feature: Navigation feedback
   I want the current navigation tab to be displayed differently
 
   Background:
+    Given the default site configurations
     Given I am logged into my account
     Given a circle "the circle"
     Given I have "admin,circle,currency,accessAccounts" privs

@@ -44,3 +44,8 @@ configurations_9:
   value: "on"
   configuration_type: "options(on,off)"
   description: "Policy for activating the wealing interface."
+configurations_10:
+  name: single_circle
+  value: "off"
+  configuration_type: "options(on,off)"
+  description: "Activate single-circle simplified user interface."

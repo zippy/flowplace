@@ -1,7 +1,9 @@
 <ul id="nav">
 <% if logged_in? %>
   <li><%= nav_link 'Dashboard', dashboard_path,'Take action'%></li>
+  <%if Configuration.get(:single_circle) != 'on'%>
   <li ><%= nav_link 'Holoptiview',home_path,"View your wealth stream"%></li>
+  <%end%>
   <%if Configuration.get(:wealing_policy) == 'on'%>
   <li><%= nav_link 'Intentions', my_intentions_path,'Declare, search, and manage intentions'%></li>
   <li><%= nav_link 'Actions', my_actions_path,'Create, search and manage actions'%></li>

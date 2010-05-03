@@ -57,7 +57,7 @@ Feature: configuration
     Then I should see a table with 1 row
     When I go to the merge default configurations page
     And I go to the configurations page
-    Then I should see a table with 10 rows
+    Then I should see a table with 11 rows
 
   Scenario: admin turns on the circle/currency self-auth config
     When I go to the configurations page
@@ -87,5 +87,14 @@ Feature: configuration
     And I should not see "Actions"
     And I should not see "Assets"
 
+  Scenario: admin turns on single-circle demo interface
+    When I go to the configurations page
+    And I follow "Single Circle"
+    And I select "on" from "configuration_value"
+    And I press "Update"
+    And I have "circle" privs
+    And a circle "the circle" with members "joe"
+    When I go to the logout page
+    And I am logged into my "joe" account
+    Then I should not see "Jump to"
     
-  

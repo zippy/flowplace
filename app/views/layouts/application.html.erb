@@ -28,7 +28,9 @@ left_banner = !Configuration.get(:left_banner).blank? && !session[:left_banner_c
   					<%= link_to 'Log In',login_url,{:title => 'Log in'}%>
   				<% end %>
   			</div>
+  			<%if !Configuration.get(:single_circle) == 'on'%>
 				<a href="/dashboard?current_circle="><img class='logo' src="/images/logo.png" height="28" width="28" alt="logo"><img height="28" class='logo' src="/images/logo_txt.jpg" alt="<%=configuration_text(:site_name)%>"></a>
+				<% end %>
 		  </div>
 
 			<div id="top_bar">
@@ -41,7 +43,10 @@ left_banner = !Configuration.get(:left_banner).blank? && !session[:left_banner_c
     				<%= render(:partial => 'shared/nav_flowplace') %>
 			      <%end%>
 				  <%else%>
-				    <div id='circle_header'><%= render_currency_icon(@current_circle,:size =>35,:id=>"circle_logo")%><div id='circle_header_name'><%=@current_circle.name%></div></div> <div id="circle_jump_select"><%= my_circles_jump_select %> </div>
+				    <div id='circle_header'><%= render_currency_icon(@current_circle,:size =>35,:id=>"circle_logo")%><div id='circle_header_name'><%=@current_circle.name%></div></div>
+				    <%if current_user.can?(:admin) || Configuration.get(:single_circle) != 'on'%>
+				    <div id="circle_jump_select"><%= my_circles_jump_select %> </div>
+				    <%end%>
 					  <%= render(:partial => 'shared/nav') %>
 				  <%end%>
 				</div>
