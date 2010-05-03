@@ -575,7 +575,6 @@ class CurrencyMembrane
         rescue Exception => e
         end
         result.push(c) if c
-        puts "autojoin to currency #{k}: "+c.inspect
       end
     end
     result
