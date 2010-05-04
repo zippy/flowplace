@@ -57,3 +57,26 @@ Feature: auto_join
     When I go to the logout page
     And I log in as "bob"
     Then I should see "the circle" as a "Jump to" option
+
+  Scenario: a user creates an account and is joined to the circle
+    When I go to the configurations page
+    And I follow "Autojoin"
+    And fill in "configuration_value" with "circles: the circle"
+    And I press "Update"
+    And I follow "New User Policy"
+    And I select "self_signup" from "configuration_value"
+    And I press "Update"
+    When I go to the logout page
+    And I go to the sign up page
+    Then I should be taken to the sign up page
+    And I fill in "Account name" with "jane"
+    And I fill in "First name:" with "Jane"
+    And I fill in "Last name" with "Smith"
+    And I fill in "E-mail" with "notifications@harris-braun.com"
+    And I press "Sign up"
+    And I go to the user activation page
+    And I fill in "Choose a Password" with "password"
+    And I fill in "Password Confirmation" with "password"
+    And I press "Activate"
+    Then I should be taken to the dashboard page
+    Then I should see "the circle" as a "Jump to" option
