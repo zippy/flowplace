@@ -7,6 +7,10 @@ module NavigationHelpers
       '/logout'
     when /the sign up page/
       '/users/signup'
+    when /the user activation page/
+      u = User.last
+      code = u.bolt_identity.activation_code
+      "/activations/#{code}?user_name=#{u.user_name}"
     when /the forgot password page/
       '/passwords/forgot'
     when /the reset password page with the reset code for "([^\"]*)"/
