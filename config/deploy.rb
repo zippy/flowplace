@@ -5,6 +5,8 @@ subdomain = ENV['CAP_DOMAIN']
 
 if subdomain == 'oww'
   set :domain, "dev.onlinewritingworkshop.com"
+elsif subdomain == 'mc'
+  set :domain, 'demo.metacurrency.org'
 elsif subdomain && subdomain != ''
   set :domain, subdomain+'.flowplace.org'
 else
@@ -31,6 +33,10 @@ when 'dev.flowplace.org'
 when 'dev.onlinewritingworkshop.com'
   set :user, "eric"
   set :application, 'oww'
+  set :ssh_port,22
+when 'demo.metacurrency.org'
+  set :user, "eric"
+  set :application, 'metacurrency_demo'
   set :ssh_port,22
 end
 
