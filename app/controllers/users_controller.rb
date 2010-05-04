@@ -83,7 +83,8 @@ class UsersController < ApplicationController
     respond_to do |format|
       if @user.create_bolt_identity(:user_name => :user_name,:enabled => false) && @user.save
         do_extra_actions
-        @user.autojoin  #ignore any errors from autojoin
+        err = @user.autojoin
+        flash[:action_error] = err if !err.nil?
         flash[:notice] = :user_created
         flash[:notice_param] = @user
         format.html { redirect_to users_url(:use_session => true) }
