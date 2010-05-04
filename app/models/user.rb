@@ -216,7 +216,8 @@ class User < ActiveRecord::Base
         circles.each do |name|
           c = Currency.find_by_name(name)
           raise "circle #{name} not found!" if c.nil? || !c.is_a?(CurrencyMembrane)
-          c.add_player_to_circle('member',self)
+          namers = c.api_user_accounts('namer')
+          c.add_player_to_circle('member',self,namers[0])
         end
       end
     rescue Exception => e

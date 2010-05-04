@@ -42,12 +42,13 @@ Given /^I make "([^\"]*)" a "([^\"]*)" of "([^\"]*)"$/ do |users, role, circle_n
   When %Q|I press "Add >>"|
 end
 
-Given /^I bind "([^\"]*)" to "([^\"]*)"$/ do |currency_name, circle_name|
+Given /^I bind "([^\"]*)" to "([^\"]*)"( with autojoin on)*$/ do |currency_name, circle_name,autojoin|
   circle = Currency.find_by_name(circle_name)
   When %Q|I go to the "bind_currency" play page for my "namer" account in "#{circle_name}"|
   And %Q|I select "#{currency_name}" from "play_currency"|
   And %Q|I select "#{circle.circle_user_name}" from "play_to"|
   And %Q|I fill in "play_name" with "#{currency_name}"|
+  And %Q|I fill in "play_autojoin" with "1"| if autojoin
   And %Q|I press "Record Play"|
   Then %Q|I should see "The play was recorded."|
 end

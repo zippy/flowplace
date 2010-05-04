@@ -58,7 +58,9 @@ Feature: auto_join
     And I log in as "bob"
     Then I should see "the circle" as a "Jump to" option
 
-  Scenario: a user creates an account and is joined to the circle
+  Scenario: a user creates an account and is joined to the circle and its member currencies
+    Given a "MutualCredit" currency "X"
+    And I bind "X" to "the circle" with autojoin on
     When I go to the configurations page
     And I follow "Autojoin"
     And fill in "configuration_value" with "circles: the circle"
@@ -80,3 +82,5 @@ Feature: auto_join
     And I press "Activate"
     Then I should be taken to the dashboard page
     Then I should see "the circle" as a "Jump to" option
+    And I should see a "X" "member" dashboard item
+    
