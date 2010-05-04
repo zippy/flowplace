@@ -1,6 +1,8 @@
 <% @title="My Currencies #{@currency.name}: #{@play_name}" %>
 <%= render(:partial => 'sub_nav') %>
-
+<% if !@play_name %>
+There are no plays in this currency.
+<% else %>
 <% if @play_names && @play_names.size > 1%>
 <h3>Record play in <%=@currency.name%></h3>
 <ul id="play_names">
@@ -17,3 +19,4 @@
 <div id="make_play">
   <%= render_play_form(@currency,@currency_account,@play_name)%>
 </div>
+<%end%>
