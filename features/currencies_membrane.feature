@@ -9,6 +9,9 @@ Feature: membrane currency
     And a circle "the circle"
 
   Scenario: Namer views the currency play page
+    When I follow "Preferences"
+    When I check "prefs[showMembranes]"
+    And I press "Set Preferences"
     When I go to the my currencies page
     And I follow "the circle" within "#currency_account_anonymous"
     Then I should be taken to the currency account play page for "anonymous"

@@ -16,6 +16,7 @@ class CurrencyAccountsController < ApplicationController
   # GET /currency_accounts.xml
   def my_currencies
     @currency_accounts = current_user.currency_accounts
+    @currency_accounts = @currency_accounts.reject {|ca| ca.currency.class.to_s == 'CurrencyMembrane'} unless current_user.has_preference('showMembranes')
 
     respond_to do |format|
       format.html # index.html.erb
@@ -28,7 +29,7 @@ class CurrencyAccountsController < ApplicationController
   def dashboard
     if !@current_circle.nil?
       @currency_accounts = current_user.currency_accounts_in_circle(@current_circle)
-      @currency_accounts = @currency_accounts.reject {|ca| ca.currency.type == 'CurrencyMembrane'} unless current_user.has_preference('showMembranes')
+      @currency_accounts = @currency_accounts.reject {|ca| ca.currency.class.to_s == 'CurrencyMembrane'} unless current_user.has_preference('showMembranes')
 
       @activities = CurrencyActivity.by_user(current_user,{:limit =>20,:order =>'created_at desc'})
       currency_list = @current_circle.currencies;

@@ -31,9 +31,8 @@ Feature: circle namer
     Then I should see "Anonymous User (anonymous) -- namer"
     When I go to the logout page
     And I log in as "my_circle_circle"
-    And I go to the my currencies page
-    Then I should see "my circle"
-    And I should see "self"
+    Then I should be taken to the dashboard page
+    And I should see "my circle" as a "Jump to" option
 
   Scenario: user tries to create a circle but enters mismatched password
     When I go to the circles page
