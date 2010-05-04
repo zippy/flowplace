@@ -1,6 +1,6 @@
 Bolt::Initializer.run do |bolt|
-  bolt.application_name = 'Flowplace'
-  bolt.email_from = 'Flowplace <eric@harris-braun.com>'
+  bolt.application_name = CONFIG[:app_name]
+  bolt.email_from = CONFIG[:sys_email_from]
   bolt.min_password_length = 4
   bolt.user_name_label = "Account Name"
   bolt.forgery_secret = "kasjdf908klasdjf89asdfkjsdf"

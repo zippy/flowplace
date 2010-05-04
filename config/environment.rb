@@ -13,6 +13,16 @@ require File.join(File.dirname(__FILE__), '../vendor/plugins/engines/boot')
 SystemTZOffset = Time.now.utc_offset
 SessionExpirationSeconds = 60*60  #expiration is 1 hour (60*60 = 60 sec x 60 min)
 
+if File.exists?('config/flowplace_config.rb')
+  require 'config/flowplace_config.rb'
+else
+  CONFIG = {
+    :git_path => nil, #specify the path to your installed version of git for sys_info command to work
+    :app_name => 'Flowplace',
+    :sys_email_from => 'Flowplace Notifier<notifications@flowplace.org>'
+  }
+end
+
 Rails::Initializer.run do |config|
   # Settings in config/environments/* take precedence over those specified here.
   # Application configuration should go into files in config/initializers
@@ -84,13 +94,6 @@ ActionMailer::Base.perform_deliveries = true
 ActionMailer::Base.raise_delivery_errors = true
 
 require 'lib/country_select'
-if File.exists?('config/flowplace_config.rb')
-  require 'config/flowplace_config.rb'
-else
-  CONFIG = {
-    :git_path => nil #specify the path to your installed version of git for sys_info command to work
-  }
-end
 
 SMTP_SETTINGS = {:address  => "localhost"} unless defined? SMTP_SETTINGS
 ActionMailer::Base.smtp_settings = SMTP_SETTINGS

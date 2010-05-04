@@ -1,12 +1,14 @@
 CONFIG = {
-  :git_path => '/usr/local/bin/git'  #set a path for git so the sys_info command will return a git log
+  :git_path => '/usr/local/bin/git',  #set a path for git so the sys_info command will return a git log
+  :app_name => 'My Flowplace',
+  :sys_email_from => 'My Flowplace Notifier<notifications@myflowplace.org>'
 }
 
 SMTP_SETTINGS  = {
-  :address  => "mail.myflowplace.com",
+  :address  => "mail.myflowplace.org",
   :port  => 25,
   :domain  => "myflowplace.com",
-  :user_name  => "no-reply@myflowplace.com",
+  :user_name  => "no-reply@myflowplace.org",
   :password  => 'mypassword',
   :authentication  => :login
 }
