@@ -97,4 +97,8 @@ Feature: configuration
     When I go to the logout page
     And I am logged into my "joe" account
     Then I should not see "Jump to"
+    When I go to the dashboard page
+    Then I should see "Create Currency"
+    When I follow "Create Currency"
+    Then I should be taken to the new currencies page
     

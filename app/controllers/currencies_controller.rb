@@ -1,10 +1,9 @@
 class CurrenciesController < ApplicationController
 
-  require_authorization :currency
-
   # GET /currencies
   # GET /currencies.xml
   def index
+    return if !can_access_currency?
     conditions = "type != 'CurrencyMembrane'"
     conditions = [conditions+" and steward_id = ?",current_user.id] unless current_user.can?(:admin)
     @currencies = Currency.find(:all,:conditions=>conditions)
@@ -19,6 +18,7 @@ class CurrenciesController < ApplicationController
   # GET /currencies/1.xml
   def show
     @currency = Currency.find(params[:id])
+    return if !can_access_currency?(@currency)
 
     respond_to do |format|
       format.html # show.html.erb
@@ -29,6 +29,7 @@ class CurrenciesController < ApplicationController
   # GET /currencies/new
   # GET /currencies/new.xml
   def new
+    return if !can_access_currency?
     check_for_currency_type
     @currency = Currency.new
 
@@ -42,11 +43,12 @@ class CurrenciesController < ApplicationController
   def edit
     check_for_currency_type
     @currency = Currency.find(params[:id])
-    return if !can_access_currency?
+    return if !can_access_currency?(@currency)
   end
 
   # GET /currencies/1/player_classes
   def player_classes
+    return if !can_access_currency?
     @currency = Currency.find(params[:id])
     render :partial => "player_classes"
   end
@@ -54,6 +56,7 @@ class CurrenciesController < ApplicationController
   # POST /currencies
   # POST /currencies.xml
   def create
+    return if !can_access_currency?
     params_key = params[:currency_params_key]
     currency_params = get_currency_params
     if currency_params[:type].blank?
@@ -80,7 +83,7 @@ class CurrenciesController < ApplicationController
   # PUT /currencies/1.xml
   def update
     @currency = Currency.find(params[:id])
-    return if !can_access_currency?
+    return if !can_access_currency?(@currency)
     currency_params = get_currency_params
     @currency.configuration = params[:config]
 #    @currency.type = currency_params[:type]  CANT CHANGE THE CURRENCY TYPE!
@@ -100,6 +103,7 @@ class CurrenciesController < ApplicationController
   # DELETE /currencies/1.xml
   def destroy
     @currency = Currency.find(params[:id])
+    return if !can_access_currency?(@currency)
     @currency.destroy
 
     respond_to do |format|
@@ -119,8 +123,11 @@ class CurrenciesController < ApplicationController
       @currency_type = @currency_type.constantize.new
     end
   end
-  def can_access_currency?
-    if (@currency.steward_id == current_user.id) || current_user.can?(:admin)
+  
+  def can_access_currency?(currency = nil)
+    return true if current_user.can?(:admin)
+    perms_ok = Configuration.get(:single_circle) == 'on' || current_user.can?(:currency)
+    if perms_ok && (currency.nil? || currency.steward_id == current_user.id)
       true
     else
       access_denied

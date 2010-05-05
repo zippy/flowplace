@@ -2,7 +2,10 @@
 <%= stylesheet_link_tag 'dashboard' %>
 
 <%= render(:partial => 'sub_nav') %>
+<%if Configuration.get(:single_circle) == 'on'%>
+<span style="background-color:#f7a;padding: 2px;border: solid 2px"><%= sub_nav_link 'Create Currency',new_currency_path,'Create Currencies'%></p>
 
+<% end %>
 <% for currency_account in @currency_accounts 
   currency = currency_account.currency
   play_names = currency.api_play_names(currency_account.player_class)
