@@ -23,6 +23,9 @@ Your Account and Your Preferences
   <%= check_box_tag(:circle_currency_management,true,@user.can?(:circle))%> <%= label_tag :circle_currency_management, 'Activate circle and currency management features'%> 
 </p>
 <%end%>
+<p>
+  <%= label_tag :language,"Language:" %><%= select_tag(:language, options_for_select(User::Languages,@user.language))%>
+</p>
 <%= submit_tag "Set Preferences" %>
 <% end -%>
 <p>

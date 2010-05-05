@@ -4,6 +4,7 @@ Feature: Users
   I want there to be preferences
 
   Background:
+    Given the default site configurations
     Given I am logged into my account
 
   Scenario: user views the preferences page
@@ -19,7 +20,6 @@ Feature: Users
     Then I should see a tag "body[class=enlargeFont]"
 
   Scenario: user toggles the self-authorize circles currency preference
-    Given the default site configurations
     When I go to the logout page
     And I am logged into my "admin" account
     And I have "admin" privs
@@ -42,7 +42,6 @@ Feature: Users
     Then the "Activate circle and currency management features" checkbox should not be checked
     
   Scenario: user enables the show circles as membrane currencies preference
-    Given the default site configurations
     When I go to the logout page
     And I am logged into my "admin" account
     And I have "admin" privs
@@ -67,3 +66,12 @@ Feature: Users
     Then I should see a "the circle" "namer" dashboard item
     Then I should see a "the circle" "binder" dashboard item
 
+  Scenario: user changes language preference
+    When I go to the preferences page
+    Then "English" should be selected for "Language"
+    When I select "French" from "Language"
+    And I press "Set Preferences"
+    And I go to the preferences page
+    Then "French" should be selected for "Language"
+    
+    

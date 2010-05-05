@@ -49,3 +49,8 @@ configurations_10:
   value: "off"
   configuration_type: "options(on,off)"
   description: "Activate single-circle simplified user interface."
+configurations_11:
+  name: default_language
+  value: "en"
+  configuration_type: "options(en,fr,es)"
+  description: "Choose the default language for new users."

@@ -51,3 +51,6 @@ When /^(?:|I )press "([^\"]*)" within "([^\"]*)"$/ do |button,selector|
   end
 end
 
+Then /^"([^"]*)" should be selected for "([^"]*)"$/ do |value, field|
+  field_labeled(field).element.search(".//option[@selected = 'selected']").inner_html.should =~ /#{value}/
+end

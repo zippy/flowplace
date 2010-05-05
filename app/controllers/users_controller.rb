@@ -183,7 +183,7 @@ class UsersController < ApplicationController
   # PUT /users/1;preferences
   def set_preferences
     current_user_action do
-      @user.update_attributes(:preferences => params[:prefs] ? params[:prefs].keys.join(',') : '')
+      @user.update_attributes(:preferences => params[:prefs] ? params[:prefs].keys.join(',') : '',:language => params['language'])
       if Configuration.get(:circle_currency_policy) == 'self_authorize'
         roles = Role.find(:all,:conditions => "name in ('currency','circle')")
         @user.roles -= roles

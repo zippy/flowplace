@@ -13,6 +13,7 @@ class User < ActiveRecord::Base
 
   Permissions = %w(dev admin assignPrivs createAccounts accessAccounts circle currency)
   Preferences = %w(terse enlargeFont)
+  Languages = [["English", 'en'], ["French", 'fr'],["Spanish",'es']]
   
   validates_uniqueness_of :user_name
   validates_presence_of :user_name,:first_name,:last_name
@@ -75,6 +76,13 @@ class User < ActiveRecord::Base
     else
       "#{first_name} #{last_name}"
     end
+  end
+
+
+  ##############################################
+  def before_create
+    self.language = Configuration.get(:default_language) if self.language.blank?
+    true
   end
 
   ##############################################

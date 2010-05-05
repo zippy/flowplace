@@ -20,6 +20,7 @@ Feature: configuration
     And I should see "Site Name"
     And I should see "Circle Currency Policy"
     And I should see "Wealing Policy"
+    And I should see "Default Language"
 
   Scenario: non-admin user tries to look at configuration options
     When I go to the logout page
@@ -57,7 +58,7 @@ Feature: configuration
     Then I should see a table with 1 row
     When I go to the merge default configurations page
     And I go to the configurations page
-    Then I should see a table with 11 rows
+    Then I should see a table with 12 rows
 
   Scenario: admin turns on the circle/currency self-auth config
     When I go to the configurations page
@@ -101,4 +102,13 @@ Feature: configuration
     Then I should see "Create Currency"
     When I follow "Create Currency"
     Then I should be taken to the new currencies page
-    
+
+  Scenario: admin changes the default language
+    When I go to the configurations page
+    And I follow "Default Language"
+    And I select "fr" from "configuration_value"
+    And I press "Update"
+    When I go to the logout page
+    And I am logged into my "jaques" account
+    And I go to the preferences page
+    Then "French" should be selected for "Language"
