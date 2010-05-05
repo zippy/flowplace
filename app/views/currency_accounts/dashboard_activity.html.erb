@@ -1,0 +1,41 @@
+<% @title= h(@current_circle.name) +' Dashboard--Activity' %>
+<%= stylesheet_link_tag 'dashboard' %>
+
+<%= render(:partial => 'sub_nav') %>
+
+<% if @activities.empty? %>
+You have no activity in this circle.
+<% else %>
+<div id="activity">
+  <h3>Recent Activity</h3>
+  <table>
+    <tr>
+      <th>Date</th>
+      <th>Currency</th>
+      <th>Play</th>
+    </tr>
+  
+<% for activity in @activities
+  currency = activity.activityable
+  a=YAML.load(activity.contents)
+  play = Play.find(a['play_id']);
+  content = currency.load_play_content(play)
+  sentence = currency.api_play_sentence_fill(content['__meta']['name']) do |field_name|
+    case content[field_name]
+    when Hash
+      content[field_name]['_name']
+    else
+      content[field_name].to_s
+    end
+  end
+%>
+  <tr>
+    <td><%= standard_date_time(activity.created_at) %></td>
+    <td><%= currency.name %></td>
+    <td><%=h sentence%></td>
+  </tr>
+<% end %>
+  </table>
+</div>
+<%end%>
+

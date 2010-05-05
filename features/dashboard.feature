@@ -23,8 +23,8 @@ Feature: dashboard
     When I log in as "joe"
     Then I should be taken to the dashboard page
     And I should see "Dashboard" as the current tab
-    And I should see "Overview" as the active sub-tab
-    And I should see "Currencies" as a sub-tab
+    And I should see "Currencies" as the active sub-tab
+    And I should see "Activity" as a sub-tab
     And I should see a "X" "member" dashboard item
     And I should not see a "this circle" "member" dashboard item
     And I should not see a "Y" "member" dashboard item
@@ -49,12 +49,9 @@ Feature: dashboard
     And I press "Record Play"
     And I go to the dashboard page for "this circle"
     Then I should see "-20" within "#dashboard_x_member"
-    And I should see "Joe User's X member account pays Jane User's X member account 20 for leg waxing" within "#activity"
     When I follow "history"
     Then I should be taken to the currency account history page for "Joe User's X member account"
     And I should see "leg waxing"
-    When I go to the dashboard page for "that circle"
-    And I should see no activity items
     
 #  Scenario: User looks at a currency account
 #    When I go to the currency accounts page

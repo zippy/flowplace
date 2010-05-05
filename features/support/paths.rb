@@ -20,11 +20,16 @@ module NavigationHelpers
       '/'
     when /^the dashboard page$/
       '/dashboard'
+    when /^the dashboard activity page$/
+      '/dashboard/activity'
     when /the flowplace dashboard page/
       '/dashboard?current_circle='
     when /the dashboard page for "([^\"]*)"/
       i = Currency.find_by_name($1)
       '/dashboard?current_circle='+i.id.to_s
+    when /the dashboard activity page for "([^\"]*)"/
+      i = Currency.find_by_name($1)
+      '/dashboard/activity?current_circle='+i.id.to_s
     when /the holoptiview page/
       '/'
     when /the new intentions page/

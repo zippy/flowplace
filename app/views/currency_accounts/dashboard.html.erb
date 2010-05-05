@@ -1,43 +1,8 @@
-<% @title= h(@current_circle.name) +' Dashboard' %>
+<% @title= h(@current_circle.name) +' Dashboard--Currencies' %>
 <%= stylesheet_link_tag 'dashboard' %>
 
 <%= render(:partial => 'sub_nav') %>
 
-<% if !@activities.empty? %>
-<div id="activity">
-  <h3>Recent Activity</h3>
-  <table>
-    <tr>
-      <th>Date</th>
-      <th>Currency</th>
-      <th>Play</th>
-    </tr>
-  
-<% for activity in @activities
-  currency = activity.activityable
-  a=YAML.load(activity.contents)
-  play = Play.find(a['play_id']);
-  content = currency.load_play_content(play)
-  sentence = currency.api_play_sentence_fill(content['__meta']['name']) do |field_name|
-    case content[field_name]
-    when Hash
-      content[field_name]['_name']
-    else
-      content[field_name].to_s
-    end
-  end
-%>
-  <tr>
-    <td><%= standard_date_time(activity.created_at) %></td>
-    <td><%= currency.name %></td>
-    <td><%=h sentence%></td>
-  </tr>
-<% end %>
-  </table>
-</div>
-<%end%>
-
-<hr>
 <% for currency_account in @currency_accounts 
   currency = currency_account.currency
   play_names = currency.api_play_names(currency_account.player_class)
@@ -49,7 +14,11 @@
       <%= render(:partial => 'play', :object => currency_account) %>
     </div>
     <p class="dashboard_title">
-      <%= render_currency_icon(currency) %> <%= link_to currency.name, play_currency_account_url(currency_account) %><% if !currency.symbol.blank? %>&nbsp;(<%=currency_account.currency.symbol%>)<%end%> as <%= currency_account.player_class%>
+      <%= render_currency_icon(currency) %>
+      <%= link_to currency.name, play_currency_account_url(currency_account) %><% if !currency.symbol.blank? && currency.symbol != currency.name %> <%=currency_account.currency.symbol%><%end%>
+      <%if currency_account.player_class != 'member'%>
+       (<%= currency_account.player_class%> role)
+      <% end %>
     </p>
     <div class="dashboard_explanation">
       <%= currency_account.render_state %><br />

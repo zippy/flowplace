@@ -1,6 +1,6 @@
 <ul id="sub_nav">
-  <li><%= sub_nav_link 'Overview',dashboard_path,'Overview'%></li>
-  <li><%= sub_nav_link 'Currencies',my_currencies_path,'My currencies'%></li>
+  <li><%= sub_nav_link 'Currencies',dashboard_path,'Currencies'%></li>
+  <li><%= sub_nav_link 'Activity',dashboard_activity_path,'Activity'%></li>
   <%if @currency && @play%><li><p>Play</p></li><%end%>
 </ul>
 <p class="clear">
