@@ -69,8 +69,35 @@ class CurrenciesController < ApplicationController
     @currency.steward_id = current_user.id
     respond_to do |format|
       if @currency.save
+        if @demo_mode
+          # bind the new currency to the first membrane currency
+          circle = Currency.find_by_type('CurrencyMembrane')
+          self_account = User.find_by_user_name(circle.circle_user_name).currency_accounts[0]
+          namer_account = circle.api_user_accounts('namer')[0]
+          play = {
+            'from' => namer_account,
+            'to' => self_account,
+            'currency' => @currency,
+            'autojoin' => '1'
+          }
+          circle.api_play('bind_currency',namer_account,play)
+          #and add all members of the circle to this currency
+          circle.api_user_accounts('member').each do |ca|
+            play = {
+              'from' => namer_account,
+              'to' => ca,
+              'currency' => @currency,
+              'player_class' => 'member'
+            }
+            begin
+              circle.api_play('grant',namer_account,play)
+            rescue Exception => e
+              raise e unless e.to_s =~ /You are allready a member of that currency/
+            end            
+          end
+        end
         flash[:notice] = 'Currency was successfully created.'
-        format.html { redirect_to currencies_url }
+        format.html { redirect_to @demo_mode ? dashboard_path : currencies_path }
         format.xml  { render :xml => @currency, :status => :created, :location => @currency }
       else
         format.html { render :action => "new" }
@@ -126,7 +153,8 @@ class CurrenciesController < ApplicationController
   
   def can_access_currency?(currency = nil)
     return true if current_user.can?(:admin)
-    perms_ok = Configuration.get(:single_circle) == 'on' || current_user.can?(:currency)
+    @demo_mode = Configuration.get(:single_circle) == 'on'
+    perms_ok = @demo_mode || current_user.can?(:currency)
     if perms_ok && (currency.nil? || currency.steward_id == current_user.id)
       true
     else

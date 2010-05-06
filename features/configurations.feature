@@ -91,17 +91,10 @@ Feature: configuration
   Scenario: admin turns on single-circle demo interface
     When I go to the configurations page
     And I follow "Single Circle"
+    Then I should see "on" as a "configuration_value" option
+    And I should see "off" as a "configuration_value" option
     And I select "on" from "configuration_value"
     And I press "Update"
-    And I have "circle" privs
-    And a circle "the circle" with members "joe"
-    When I go to the logout page
-    And I am logged into my "joe" account
-    Then I should not see "Jump to"
-    When I go to the dashboard page
-    Then I should see "Create Currency"
-    When I follow "Create Currency"
-    Then I should be taken to the new currencies page
 
   Scenario: admin changes the default language
     When I go to the configurations page
