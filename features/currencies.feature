@@ -48,7 +48,7 @@ Feature: currencies
     Then I should be taken to the currencies page
     Then I should see "You currently steward no currencies."
 
-  Scenario: admins sees all currencies
+  Scenario: admins views currencies and sees them all as well as who's the steward
     Given I go to the logout page
     And I am logged into my "Jane" account
     And I have "currency" privs
@@ -57,6 +57,8 @@ Feature: currencies
     Given I have "admin" privs
     When I go to the currencies page
     Then I should see "THEM" within "#currency_list"
+    And I should see "Steward"
+    And I should see "Joe User"
     
   Scenario: user tries to access currency they don't steward and fails, but admin succeeds
     Given I go to the logout page

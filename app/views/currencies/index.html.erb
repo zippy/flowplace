@@ -8,6 +8,9 @@
   <tr>
     <th colspan=2>Name</th>
     <th>Type</th>
+    <% if current_user.can?(:admin)%>
+    <th>Steward</th>
+    <%end%>
     <th>Summary</th>
     <th>Description</th>
     <th>&nbsp;</th>
@@ -21,6 +24,9 @@ for currency in @currencies
     <td><%= render_currency_icon(currency,:size=>32) %></td>
     <td><%= link_to currency.name, edit_currency_path(currency)+'?currency_type='+currency.class.to_s %> </td>
     <td><%=h currency.humanized_type %> </td>
+    <% if current_user.can?(:admin)%>
+    <td><%=currency.steward.full_name%></td>
+    <%end%>
     <td><%=h currency.api_render_summary%></td>
     <td><%=h currency.description%></td>
     <td><%= link_to 'Remove', currency_path(currency), :confirm => 'Are you sure?', :method => :delete %></td>
