@@ -522,9 +522,10 @@ class CurrencyAcknowledgement
     acks.keys.sort.reverse.each do |d|
       break if d.to_time < a_week_ago
       result << "<i>#{d}:</i> "
-      acks[d].each do |to,acks|
+      
+      acks[d].each do |to,ack|
         if to !~ /^_/
-          result << "#{acks} #{direction} #{to}; "
+          result << "#{ack} #{direction} #{to}; "
         end
       end
     end
