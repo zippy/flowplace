@@ -6,14 +6,18 @@
 	padding: 5px;
 	background: #eee;
 	border: 1px solid #999;
+	overflow: auto;
+	
 }
 
 .dashboard_title {
-	margin-top: 10px;
+	margin-top: 0px;
 	margin-bottom: 2px;
 }
 .dashboard_explanation {
 	margin-left: 30px;
+}
+.dashboard_description {
 }
 
 .dashboard_note {
@@ -25,13 +29,32 @@
 }
 
 .dashboard_play {
-	float: right;
-	background: #FFF;
-	border: 1px solid #999;
-	padding: 10px;
 }
 
 .dashboard_play h3 {
-	margin: 0px;
+	margin: 10px;
 	font-size: 10pt;
+}
+
+.ditem_left {
+    float: left;
+    width: 200px;
+}
+.ditem_right {
+    float: right;
+    width: 250px;
+}
+.ditem_middle {
+    padding: 0px 260px 5px 210px;
+    margin: 0px;
+}
+
+.dashboard_item ul.play_names {
+	margin: 3px;
+}
+
+.dashboard_item ul.play_names li a {
+	border:1px solid black;
+	margin:2px;
+	padding:3px 10px;
 }

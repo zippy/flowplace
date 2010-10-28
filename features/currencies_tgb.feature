@@ -17,6 +17,7 @@ Feature: tgb currency
 
   Scenario: Users makes a play in a tgb currency
     When I go to the dashboard page
+    And I follow "Declare"
     And I select "1" from "play_truth"
     And I select "2" from "play_goodness"
     And I select "3" from "play_beauty"

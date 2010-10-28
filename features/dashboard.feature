@@ -38,6 +38,11 @@ Feature: dashboard
     When I go to the dashboard page for "that circle"
     Then I should not see a "that circle" "namer" dashboard item
 
+  Scenario: User navigates to the play interface for a currency from the dashboard
+    When I log in as "joe"
+    When I follow "Pay"
+    Then I should be taken to the "pay" play page for my "member" account in "X"
+
   Scenario: User makes a play in a currency
     When I log in as "joe"
     And I go to the "pay" play page for my "member" account in "X"

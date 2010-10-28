@@ -5,7 +5,7 @@ There are no plays in this currency.
 <% else %>
 <% if @play_names && @play_names.size > 1%>
 <h3>Record play in <%=@currency.name%></h3>
-<ul id="play_names">
+<ul class="play_names">
   <% for name in @play_names%>
     <li><%= playtab(name,@currency_account) %></li>
   <% end %>

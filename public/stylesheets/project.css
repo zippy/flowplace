@@ -181,40 +181,40 @@ ul#sub_nav li p.thing {
 	/* ----------PLAY LINKS TEXT---------- */
 
 
-#play_names {
+.play_names {
 	font-size: 9pt;
 	margin:0px 0px 0px 0px;
 	padding:0px;
 	font-weight: normal;
 }
 
-#play_names a:link {
+.play_names a:link {
 	color: #ffffff;
 	text-decoration: none;
 	}
 
-#play_names a:active {
+.play_names a:active {
 	color: #ffffff;
 	}
 
-#play_names a:visited {
+.play_names a:visited {
 	color: #ffffff;
 	text-decoration: none;
 	}
 	
-#play_names a:hover {
+.play_names a:hover {
 	color: white;
 	text-decoration: none;
 	border-color: #70787F;
 	}
 
-ul#play_names {display:block;margin-top:0px;padding-bottom:5px;list-style:none;}
-ul#play_names li {display:block;float:left;background: #686d6e;}
-ul#play_names li a {display:block;float:left;margin:0px;padding: 0 10px;}
-ul#play_names li a:hover {background: gray;}
-ul#play_names li a.active {background: #02687F;color:#ffffff;}
-ul#play_names li p {margin:0px 0px 0px 0px;background: blue;color:#ffffff;padding: 0 10px;}  /*active non-clickable item*/
-ul#play_names li.last a {margin-right:0;}
+ul.play_names {display:block;margin-top:0px;padding-bottom:5px;list-style:none;}
+ul.play_names li {display:block;float:left;}
+ul.play_names li a {display:block;float:left;margin:0px;padding: 0 10px;background: #686d6e;}
+ul.play_names li a:hover {background: gray;}
+ul.play_names li a.active {background: #02687F;color:#ffffff;}
+ul.play_names li p {margin:0px 0px 0px 0px;background: blue;color:#ffffff;padding: 0 10px;}  /*active non-clickable item*/
+ul.play_names li.last a {margin-right:0;}
 
 #page_content {
   min-height: 500px;

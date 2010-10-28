@@ -1,16 +1,15 @@
-<% currency_account = play
+<% currency_account = play_buttons
 currency = currency_account.currency;
 player_class = currency_account.player_class
 play_names = currency.api_play_names(player_class)
 play_name = play_names[0]
 %>
-<% if play_name %>
+<% if play_names.size > 0 %>
 <ul class="play_names">
   <% for name in play_names%>
     <li><%= playtab(name,currency_account) %></li>
   <% end %>
 </ul>
-  <%= render_play_form(currency,currency_account,play_name)%>
 <% else %>
   No plays available in this currency for <%= player_class%>
 <% end %>

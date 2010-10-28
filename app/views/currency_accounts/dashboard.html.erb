@@ -13,20 +13,31 @@
 %>
   <% if play_name %>
   <div class="dashboard_item" id="dashboard_<%= currency.name_as_html_id%>_<%=currency_account.player_class%>" title="<%=h currency.description%>">
-    <div class="dashboard_play">
-      <%= render(:partial => 'play', :object => currency_account) %>
+
+    <div class="ditem_left">
+      <p class="dashboard_title">
+        <%= render_currency_icon(currency) %>
+        <%= link_to currency.name, play_currency_account_url(currency_account) %><% if !currency.symbol.blank? && currency.symbol != currency.name %> <%=currency_account.currency.symbol%><%end%>
+        <%if currency_account.player_class != 'member'%>
+         (<%= currency_account.player_class%> role)
+        <% end %>
+      </p>
+      <div class="dashboard_explanation">
+        <%= currency_account.render_state %><br />
+        <%= link_to 'History', play_history_path(currency_account,play_name) %>
+      </div>
     </div>
-    <p class="dashboard_title">
-      <%= render_currency_icon(currency) %>
-      <%= link_to currency.name, play_currency_account_url(currency_account) %><% if !currency.symbol.blank? && currency.symbol != currency.name %> <%=currency_account.currency.symbol%><%end%>
-      <%if currency_account.player_class != 'member'%>
-       (<%= currency_account.player_class%> role)
-      <% end %>
-    </p>
-    <div class="dashboard_explanation">
-      <%= currency_account.render_state %><br />
-      <%= link_to 'History', play_history_path(currency_account,play_name) %>
+
+    <div class="ditem_right">
+      <div class="dashboard_play">
+        <%= render(:partial => 'play_buttons', :object => currency_account) %>
+      </div>
     </div>
+
+    <div class="ditem_middle">
+      <div class="dashboard_description"><%=h currency.description%></div>
+    </div>
+    
   </div>
   <% end %>
 <% end %>

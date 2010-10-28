@@ -26,7 +26,8 @@ Feature: mutual credit currency
   Scenario: Joe makes a trade with Jane
     When I go to the dashboard page
     Then I should see /Balance:.*?0/
-    When I select "Jane User's LETS member account" from "play_to"
+    When I follow "Pay"
+    And I select "Jane User's LETS member account" from "play_to"
     And I fill in "play_amount" with "100"
     And I fill in "play_memo" with "backrub"
     And I press "Record Play"
