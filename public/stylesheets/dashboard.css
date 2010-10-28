@@ -7,7 +7,8 @@
 	background: #eee;
 	border: 1px solid #999;
 	overflow: auto;
-	
+	-moz-border-radius:10px;
+	border-radius:10px;	
 }
 
 .dashboard_title {
@@ -55,6 +56,8 @@
 
 .dashboard_item ul.play_names li a {
 	border:1px solid black;
+	-moz-border-radius:5px;
+	border-radius:5px;	
 	margin:2px;
 	padding:3px 10px;
 }
