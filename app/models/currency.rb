@@ -290,7 +290,7 @@ class Currency < ActiveRecord::Base
       field_name = field['id']
       field_type = field['type']
       case field_type
-      when 'integer','string','text','range'
+      when 'integer','string','text','range','play'
         @play[field_name] = play[field_name]
       when 'boolean'
         val = play[field_name]
@@ -496,6 +496,19 @@ class CurrencyMutualRating
         rating = c[rating.round-1]
       end
       "My Rating: #{rating}"
+    end
+  end
+end
+
+class CurrencyMutualAcknowledgement
+  def api_render_player_state(account)
+    s = account.get_state
+    if s
+      result = "Balance: #{s['balance']}<br /> Volume: #{s['balance']}"
+      if !s['pending'].empty?
+        result += "<br />Pending Acknowledgements:<br /> &nbsp;&nbsp;&nbsp;#{s['pending'].inspect}"
+      end
+      result
     end
   end
 end

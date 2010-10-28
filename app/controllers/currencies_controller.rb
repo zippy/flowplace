@@ -59,6 +59,7 @@ class CurrenciesController < ApplicationController
     return if !can_access_currency?
     params_key = params[:currency_params_key]
     currency_params = get_currency_params
+    Currency
     if currency_params[:type].blank?
       # this will end up throwing a "Type can't be blank error later"
       @currency = Currency.new(currency_params)

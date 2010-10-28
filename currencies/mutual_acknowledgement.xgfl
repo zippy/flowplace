@@ -1,0 +1,62 @@
+<game>
+  <description lang="en">
+    Mutual acknowledgement currencies are like mutual credit in that they have a balance, but one person's balance is only affected by what they acknowledge, not by what others acknowledge about them.<br />
+    Player classes: member<br />
+    Summary function: Balance,Volume<br />
+    Member Plays: <br />
+    Acknowledge(to,amount,memo)<br />
+    Accept(play,amount,memo)<br />
+  </description>
+  <player_classes>
+    <player_class name="member" />
+  </player_classes>
+  <states>
+    <state player_class="member"><integer name="balance" /><integer name="volume" /></state>
+  </states>
+
+  <plays>
+    <play name="_new_member">
+      <script type="ruby">
+          <![CDATA[ @member_state.balance = 0; @member_state.volume = 0; @member_state.pending = {}]]>
+      </script>
+    </play>
+    <play name="acknowledge" player_classes="member">
+      <fields>
+         <field type="player_member" id="from" />
+         <field type="player_member" id="to" />
+         <field type="integer" id="amount" />
+         <field type="string" id="memo" />
+      </fields>
+      <script type="ruby">
+        <![CDATA[
+        @play.from['balance'] -= @play.amount
+        @play.from['volume'] += @play.amount.abs
+        @play.to['pending'][@play.from['_name']] = {'amount'=>@play.amount,'memo'=>@play.memo}
+        true
+        ]]>
+      </script>
+      <play_sentence lang='en'><from /> acknowledges <to /> in the amount <amount /> for <memo /></play_sentence>
+    </play>
+    <play name="accept" player_classes="member">
+      <fields>
+         <field type="player_member" id="from" />
+         <field type="play" id="play_id" />
+         <field type="integer" id="amount" />
+         <field type="string" id="memo" />
+      </fields>
+      <script type="ruby">
+        <![CDATA[
+        if @play.play_id.nil?
+          "No acknowledgement chosen"
+        else
+          @play.from['pending'].delete(@play.play_id)
+          @play.from['balance'] += @play.amount
+          @play.from['volume'] += @play.amount.abs
+          true
+        end
+        ]]>
+      </script>
+      <play_sentence lang='en'><from /> accepts acknowledgement from <play_id /> in the amount <amount /> for <memo /></play_sentence>
+    </play>  
+  </plays>
+</game>

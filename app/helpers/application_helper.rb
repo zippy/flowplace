@@ -224,6 +224,14 @@ module ApplicationHelper
           html_name = "#{field_id_prefix}[#{field_name}]"
         end
         case field_type
+        when 'play'
+          s = currency_account.get_state
+          pending_plays = s['pending'].keys
+          if pending_plays.empty?
+            result = '<i>&lt;No Pending Plays&gt;</i>'
+          else
+            result = select_tag(html_name, options_for_select(pending_plays))
+          end
         when 'integer','float'
           result = text_field_tag(html_name,'',:size=>4)
         when 'string'
