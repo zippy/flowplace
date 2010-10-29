@@ -11,7 +11,7 @@
 <%if @users.empty?%>
   No users found
 <%else%>
-  Search found <%= pluralize("user", @users.size) %>
+  Search found <%= pluralize("user", @total_users) %>
   <%= error_messages_for('circle') %>
   <% form_tag(set_link_players_circle_url(@circle), :method=>:put) do -%>
 

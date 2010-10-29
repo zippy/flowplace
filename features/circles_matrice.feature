@@ -277,6 +277,7 @@ Feature: circle namer
     And A user "joe"
     And A user "jane"
     When I go to page 1 of the players page for "the circle" with 3 per page
+    Then I should see "Search found 4 users"
     Then I should see "joe"
     And I should not see "jane"
     When I follow "Next"

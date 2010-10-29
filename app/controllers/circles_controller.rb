@@ -325,6 +325,7 @@ class CirclesController < ApplicationController
       @users = User.find(:all,:conditions=>["#{SQL_FULL_NAME} #{ILIKE} ? or user_name #{ILIKE} ?",key,key])
     end
     @users ||=[]
+    @total_users = @users.size
     @users = @users.paginate(:page => params[:page],:per_page => params[:per_page])
   end
   
@@ -352,6 +353,7 @@ class CirclesController < ApplicationController
     if !key.blank?
       @users = @users.find_all{|u| u.full_name =~ /#{key}/i || u.user_name =~ /#{key}/i}
     end
+    @total_users = @users.size
     @users = @users.paginate(:page => params[:page],:per_page => params[:per_page])
   end
 

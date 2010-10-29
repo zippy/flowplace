@@ -33,7 +33,7 @@
 <%if @users.empty?%>
   <div id="search-results-header">No users found</div>
 <%else%>
-  <div id="search-results-header">Search found <%= pluralize("user", @users.size) %>
+  <div id="search-results-header">Search found <%= pluralize("user", @total_users) %>
     <br />
     Add selected users to circle as 
     <%= pc=@circle.api_player_classes; pc.delete('self'); pc.insert(0,""); select_tag(:player_class, options_for_select(pc)) %>
