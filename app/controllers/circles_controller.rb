@@ -188,11 +188,7 @@ class CirclesController < ApplicationController
     @bound_currencies = @circle.currencies
     get_bound_currencies(@circle)
     return if am_not_namer?
-    setup_players_users('member')
-    #FIXME we should parameterize setup_players_users
-    @users = @players.collect {|p| p.user}
-    @users = @users.paginate(:page => params[:page],:per_page => params[:per_page])
-    
+    setup_link_players('member')    
   end
   
   # PUT /circles/1/set_link_players
@@ -233,7 +229,7 @@ class CirclesController < ApplicationController
       flash[:notice] = 'Players were successfully linked.'
       redirect_to(link_players_circle_url(@circle))
     else
-      setup_players_users
+      setup_link_players('member')
       render :action => 'link_players'
     end
     
@@ -317,9 +313,7 @@ class CirclesController < ApplicationController
     @bound_currencies =  @bound_currencies.sort {|x,y| x.name <=> y.name}
   end
   
-  def setup_players_users(circle_player_class = nil)
-    set_params(:circle_users,true)
-#    @users = perform_search(OrderPairs,SearchPairs,SearchFormParams,User)
+  def setup_users
     key = @search_params['key']
     if key.blank?
       @users = User.find(:all)
@@ -327,13 +321,14 @@ class CirclesController < ApplicationController
       key = '%'+key+'%'
       @users = User.find(:all,:conditions=>["#{SQL_FULL_NAME} #{ILIKE} ? or user_name #{ILIKE} ?",key,key])
     end
-    circle_user_name = @circle.circle_user_name
-    @total_users = User.count
     @users ||=[]
     @users = @users.paginate(:page => params[:page],:per_page => params[:per_page])
-    
+  end
+  
+  def setup_players(circle_player_class)
     @players = []
     
+    circle_user_name = @circle.circle_user_name
     @circle.currency_accounts.each do |ca|
       #don't expose the self player class for a circle user
       if  (circle_player_class.nil? || ca.player_class == circle_player_class) &&
@@ -344,6 +339,23 @@ class CirclesController < ApplicationController
     @players = @players.sort {|a,b| a.user.full_name(true) <=> b.user.full_name(true)}
 
     @paginate_players = false # !@players.empty?
+  end
+
+  def setup_link_players(circle_player_class)
+    set_params(:circle_link_players,true)
+    setup_players(circle_player_class)
+    key = @search_params['key']
+    @users = @players.collect {|p| p.user}
+    if !key.blank?
+      @users = @users.find_all{|u| u.full_name =~ /#{key}/i || u.user_name =~ /#{key}/i}
+    end
+    @users = @users.paginate(:page => params[:page],:per_page => params[:per_page])
+  end
+
+  def setup_players_users(circle_player_class = nil)
+    set_params(:circle_users,true)
+    setup_users
+    setup_players(circle_player_class)
   end
   
   def am_not_namer?

@@ -243,6 +243,24 @@ Feature: circle namer
     And I press "Unlink"
     Then I should see "not linked to any currencies" within "#joe"
 
+  Scenario: namer searches for a users to link
+    Given a "MutualCredit" currency "X"
+    And I bind "X" to "the circle"
+    And A user "joe"
+    And I make "joe" a "member" of "the circle"
+    And "joe" is a "member" of currency "X"
+    And A user "fred"
+    And I make "fred" a "member" of "the circle"
+    And "fred" is a "member" of currency "X"
+    And I go to the link players page for "the circle"
+    Then I should see "Search found 2 users"
+    And I should see "Search"
+    And I fill in "search_key" with "joe"
+    And I press "Search"
+    And I should be taken to the link players page for "the circle"
+    And I should see "Search found 1 user"
+    And I should see "joe" in row 1 column 0 within "#circle_users_search_results"
+
   Scenario: namer works in a situation with many users
     Given a "MutualCredit" currency "X"
     And I bind "X" to "the circle"
