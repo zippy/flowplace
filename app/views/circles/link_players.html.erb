@@ -8,16 +8,24 @@
   <%= submit_tag('Search') %>
 <% end %>
 
-
-
+<% form_tag(set_link_players_circle_url(@circle), :method=>:put) do -%>
 <%if @users.empty?%>
-  No users found
+  <div id="search-results-header">No users found</div>
 <%else%>
-  Search found <%= pluralize("user", @total_users) %>
+  <div id="search-results-header">Search found <%= pluralize("user", @total_users) %>
+  
   <%= error_messages_for('circle') %>
-  <% form_tag(set_link_players_circle_url(@circle), :method=>:put) do -%>
+  <br />
+    <%= submit_tag('Link') %>
+    <%= submit_tag('Unlink') %>
 
+  </div>
   <div id="circle_currencies">
+    <table id="circle_currency_roles">
+    <tr>
+      <th>Currency Roles</th>
+    </tr>
+    <tr><td>
   <% @bound_currencies.each do |c| %>
       <p id="currency_<%=c.name_as_html_id%>">
       <%= render_currency_icon(c,:size=>16)%> 
@@ -27,12 +35,9 @@
       <% end %>
       </p>
     <%end%>
+    </td></tr></table>
   </div>
 
-  <p>
-    <%= submit_tag('Link') %>
-    <%= submit_tag('Unlink') %>
-  </p>
   <div id="circle_users_search_results">
   <table>
   <tr>

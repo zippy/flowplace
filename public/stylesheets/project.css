@@ -546,6 +546,11 @@ li.item {
 #circle_currencies table,#circle_players table {
 	margin-top: 7px;
 }
+table#circle_currency_roles {
+	margin-top: 0px;
+	width: 100%;
+}
+
 
 #search-results-header { height: 45px; background: #aaa; }
 
