@@ -326,7 +326,8 @@ class CirclesController < ApplicationController
     end
     @users ||=[]
     @total_users = @users.size
-    @users = @users.paginate(:page => params[:page],:per_page => params[:per_page])
+    @paginate_users = @search_params['paginate'] == 'yes'
+    @users = @users.paginate(:page => params[:page],:per_page => params[:per_page]) if @paginate_users
   end
   
   def setup_players(circle_player_class)
@@ -346,7 +347,7 @@ class CirclesController < ApplicationController
   end
 
   def setup_link_players(circle_player_class)
-    set_params(:circle_link_players,true)
+    set_params(:circle_users,true)
     setup_players(circle_player_class)
     key = @search_params['key']
     @users = @players.collect {|p| p.user}
@@ -354,7 +355,8 @@ class CirclesController < ApplicationController
       @users = @users.find_all{|u| u.full_name =~ /#{key}/i || u.user_name =~ /#{key}/i}
     end
     @total_users = @users.size
-    @users = @users.paginate(:page => params[:page],:per_page => params[:per_page])
+    @paginate_users = @search_params['paginate'] == 'yes'
+    @users = @users.paginate(:page => params[:page],:per_page => params[:per_page]) if @paginate_users
   end
 
   def setup_players_users(circle_player_class = nil)

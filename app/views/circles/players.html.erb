@@ -3,6 +3,8 @@
 
 <% form_tag(players_circle_url(@circle),:method => :get, :id => 'search_form') do -%>
   <%= text_field_tag('search[key]',@search_params['key'])%>
+  <%=check_box_tag('search[paginate]','yes',@search_params[:paginate]=='yes') %> <%= label_tag('search[paginate]', 'Paginate results')%>
+    <input id='search[paginate]' name='search[paginate]' type='hidden' value='no' />
   <%= submit_tag('Search') %>
 <% end %>
 
@@ -53,7 +55,7 @@
     </tr>
   <% end %>
   </table>
-  <%= will_paginate @users,:per_page => 5%>
+  <%= will_paginate(@users,:per_page => 5)  if @paginate_users%>
   </div>
 <% end %>
 

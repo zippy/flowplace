@@ -276,6 +276,10 @@ Feature: circle namer
     And I bind "X" to "the circle"
     And A user "joe"
     And A user "jane"
+    And I go to the players page for "the circle"
+    Then I should not see "Next"
+    And I check "Paginate results"
+    And I press "Search"
     When I go to page 1 of the players page for "the circle" with 3 per page
     Then I should see "Search found 4 users"
     Then I should see "joe"
