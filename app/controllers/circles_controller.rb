@@ -200,6 +200,9 @@ class CirclesController < ApplicationController
     if !params[:users]
       @circle.errors.add_to_base('You must choose some players!')
     end
+    if currencies.nil?  || currencies.empty?
+      @circle.errors.add_to_base('You must choose some currency roles!')
+    end
     if @circle.errors.empty?
       #TODO, this needs updating if the same user can have multiple accounts in the same currency as namer
       namer_account = @circle.api_user_accounts('namer',current_user)[0]

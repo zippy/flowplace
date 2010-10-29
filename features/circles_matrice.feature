@@ -216,6 +216,16 @@ Feature: circle namer
     And I press "Link"
     And I should see "You must choose some players!"
 
+  Scenario: namer grants a role forgetting to check a currency role
+    Given a "MutualCredit" currency "X"
+    And I bind "X" to "the circle"
+    And A user "joe"
+    When I make "joe" a "member" of "the circle"
+    And I go to the link players page for "the circle"
+    And I check the box for user "joe"
+    And I press "Link"
+    And I should see "You must choose some currency roles!"
+
   Scenario: namer re-grants a role forgetting to check a user
     Given a "MutualCredit" currency "X"
     And I bind "X" to "the circle"
