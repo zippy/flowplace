@@ -340,8 +340,8 @@ module ApplicationHelper
       link_to tab, path,:class=> 'sub-tab'
     end
   end
-  def playtab(play_name,currency_account)
-    path = play_currency_account_path(currency_account)+"?name=#{play_name}"
+  def playtab(play_name,currency_account,history=false)
+    path = history ? play_history_path(currency_account,play_name) : play_play_path(currency_account,play_name)
     if play_name == @play_name
       "<p>#{play_name.titleize}</p>"
     else

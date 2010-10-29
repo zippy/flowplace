@@ -170,6 +170,8 @@ class CurrencyAccountsController < ApplicationController
   def history
     @currency_account = CurrencyAccount.find(params[:id])
     @currency = @currency_account.currency
+    player_class = @currency_account.player_class
+    @play_names = @currency.api_play_names(player_class)
     @play_name = params[:play_name]
     raise "play_name missing" if @play_name.blank?
     @plays = @currency.api_play_history(@currency_account).reject {|p| p['__meta']['name'] != @play_name}
@@ -183,7 +185,7 @@ class CurrencyAccountsController < ApplicationController
 
     player_class = @currency_account.player_class
     @play_names = @currency.api_play_names(player_class)
-    @play_name = params[:name]
+    @play_name = params[:play_name]
     if @play_name.blank?
       @play_name = @play_names[0]
     end

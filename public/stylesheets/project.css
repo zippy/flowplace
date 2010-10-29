@@ -237,7 +237,7 @@ ul.play_names li a.active {background: #02687F;color:#ffffff;
 	border-radius:5px 5px 0px 0px;
 	-moz-border-radius:5px 5px 0px 0px;
 	}
-ul.play_names li p {margin:0px 0px 0px 0px;background: blue;color:#ffffff;padding: 0 10px;
+ul.play_names li p {margin:0px 0px 0px 0px;background: #02687F;color:#ffffff;padding: 0 10px;
 	border-radius:5px 5px 0px 0px;
 	-moz-border-radius:5px 5px 0px 0px;
 	}  /*active non-clickable item*/

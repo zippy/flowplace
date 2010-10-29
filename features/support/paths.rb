@@ -124,7 +124,7 @@ module NavigationHelpers
       raise "couldn't find currency '#{currency_name}' while building path" if currency.nil?
       currency_account = CurrencyAccount.find(:first,:conditions => ["user_id = ? and player_class = ? and currency_id = ?",user.id,player_class,currency.id])
       raise "couldn't find a currency account for #{user.user_name} as #{player_class} while building path" if currency_account.nil?
-      "/currency_accounts/#{currency_account.id}/play?name=#{play_name}"
+      "/currency_accounts/#{currency_account.id}/play/#{play_name}"
     when /the preferences page/
       "/users/#{controller.current_user.id}/preferences"
     when /the wallets page/

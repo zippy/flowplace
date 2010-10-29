@@ -1,9 +1,8 @@
 <% @title='My Currencies '+@currency.name+' History' %>
-<h3>My Currencies: <%=@currency.name%></h3>
+<%= render(:partial => 'sub_nav') %>
 
-Current State: <%= @currency.api_render_player_state(@currency_account)%>
-<br />
-<h4>History of <%= @play_name%> plays </h4>
+<%= @is_history = true;render(:partial => 'play_tabs') %>
+
 <% if @plays.empty? %>
 You have made no '<%= @play_name%>' plays in this currency.
 <% else %>

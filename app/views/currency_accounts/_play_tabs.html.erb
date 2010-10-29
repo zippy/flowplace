@@ -1,0 +1,13 @@
+<% if @play_names && @play_names.size > 1%>
+<h3><%=@currency.name%></h3>
+<p><%= @currency.api_render_player_state(@currency_account)%></p>
+<ul class="play_names">
+  <% for name in @play_names%>
+    <li><%= playtab(name,@currency_account,@is_history) %></li>
+  <% end %>
+</ul>
+<p class="clear">
+<%else%>
+<h3><%=@currency.name%>: <%=@play_name.titleize%></h3>
+<p><%= @currency.api_render_player_state(@currency_account)%></p>
+<%end%>

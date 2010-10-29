@@ -56,6 +56,7 @@ Feature: dashboard
     Then I should see "-20" within "#dashboard_x_member"
     When I follow "history"
     Then I should be taken to the currency account history page for "Joe User's X member account"
+    And I should see "History" as the active sub-tab
     And I should see "leg waxing"
     
 #  Scenario: User looks at a currency account

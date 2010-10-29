@@ -3,20 +3,8 @@
 <% if !@play_name %>
 There are no plays in this currency.
 <% else %>
-<% if @play_names && @play_names.size > 1%>
-<h3>Record play in <%=@currency.name%></h3>
-<ul class="play_names">
-  <% for name in @play_names%>
-    <li><%= playtab(name,@currency_account) %></li>
-  <% end %>
-</ul>
-<p class="clear">
-<%else%>
-<h3><%=@currency.name%>: <%=@play_name.titleize%></h3>
-
-<%end%>
-<%= @currency.api_render_player_state(@currency_account)%>
-<div id="make_play">
-  <%= render_play_form(@currency,@currency_account,@play_name)%>
-</div>
+  <%= render(:partial => 'play_tabs') %>
+  <div id="make_play">
+    <%= render_play_form(@currency,@currency_account,@play_name)%>
+  </div>
 <%end%>

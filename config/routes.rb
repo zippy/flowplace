@@ -7,6 +7,8 @@ ActionController::Routing::Routes.draw do |map|
     :play => :get,
     :record_play => :post
   }
+  map.play_play 'currency_accounts/:id/play/:play_name', :controller => 'currency_accounts', :action => 'play'
+  map.play 'currency_accounts/:id/play', :controller => 'currency_accounts', :action => 'play'
   map.play_history 'currency_accounts/:id/history/:play_name', :controller => 'currency_accounts', :action => 'history'
   map.history 'currency_accounts/:id/history', :controller => 'currency_accounts', :action => 'history'
   
