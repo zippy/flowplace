@@ -1,4 +1,5 @@
 class CurrencyAccountsController < ApplicationController
+  require_authentication :except => [:summary_widget]
   Activity
   before_filter :set_current_circle
   # GET /currency_accounts
@@ -57,6 +58,13 @@ class CurrencyAccountsController < ApplicationController
       format.html # show.html.erb
       format.xml  { render :xml => @currency_account }
     end
+  end
+  
+  # GET /currency_accounts/1/summary_widget
+  def summary_widget
+    @currency_account = CurrencyAccount.find(params[:id])
+    @currency = @currency_account.currency
+    render :layout => 'widget'
   end
 
   # GET /currency_accounts/new

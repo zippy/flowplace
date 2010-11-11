@@ -5,6 +5,7 @@ ActionController::Routing::Routes.draw do |map|
 
   map.resources :currency_accounts, :member => {
     :play => :get,
+    :summary_widget => :get,
     :record_play => :post
   }
   map.play_play 'currency_accounts/:id/play/:play_name', :controller => 'currency_accounts', :action => 'play'

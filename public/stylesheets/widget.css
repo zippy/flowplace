@@ -1,0 +1,21 @@
+.widget {
+	float: left;
+	background-color:  #FFFFFF;	
+}
+.widget h1 {
+	padding: 6px;
+	font-size: 120%;
+	background: #02687F;
+	color: #fff;
+	border-radius:5px 5px 0px 0px;
+	-moz-border-radius:5px 5px 0px 0px;
+}
+
+.widget p {
+	padding: 10px;
+	border: 1px solid #02687F;	
+	border-top: none;	
+	border-radius:0px 0px 5px 5px;
+	-moz-border-radius:0px 0px 5px 5px;
+	margin-top: -11px;
+}
