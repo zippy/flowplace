@@ -187,7 +187,9 @@ class Currency < ActiveRecord::Base
   end
 
   def api_render_summary
-#    summary
+    result = name+" has "
+    result += api_player_classes.collect {|player_class| cas = currency_accounts.find(:all,:conditions => ["player_class = ?",player_class]).size; "#{cas} #{(cas > 1 || cas < 1) ? player_class.pluralize : player_class}" }.join (' and ')
+    result
   end
   
   def api_play_history(account)

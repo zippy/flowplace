@@ -244,6 +244,9 @@ describe Currency do
     it "should be able to render the account state" do
       @currency.api_render_player_state(@account).should == "Balance: 0; Volume: 0"
     end
+    it "should be able to render a currency summary" do
+      @currency.api_render_summary().should == "LETS has 1 member and 0 aggregators and 0 admins"
+    end
     it "should be able to return state fields for a player_class" do
       @currency.api_state_fields('member').should == [{"balance"=>"integer"}, {"volume"=>"integer"}]
     end
