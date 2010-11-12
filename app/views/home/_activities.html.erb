@@ -4,7 +4,7 @@
 		<% activity_type = activity.humanize.downcase %>
 		<%= gravitar_image_tag(activity.user,:size=>20) %> <%= link_to activity.user.full_name,"/?user_id=#{activity.user_id}" %>
 		<% if activity.is_a?(CurrencyActivity)%>
-		  made a play in <%= h activity.activityable.name %>
+		  made a play in <%= activity.activityable.nil? ? '<i>name unavailable</i>' : h(activity.activityable.name) %>
 		<% else %>
 		<%= activity.contents %> <%= %w(a e i o u).include?(activity_type[0..0]) ? 'an' : 'a' %> <%= a = activity.activityable; a ? link_to(activity_type,activity_resource_url(activity)) : activity_type %> 
 		<% end %>
