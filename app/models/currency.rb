@@ -506,7 +506,13 @@ class CurrencyMutualAcknowledgement
     if s
       result = "Balance: #{s['balance']}<br /> Volume: #{s['balance']}"
       if !s['pending'].empty?
-        result += "<br />Pending Acknowledgements:<br /> &nbsp;&nbsp;&nbsp;#{s['pending'].inspect}"
+        pending_plays = s['pending'].collect do |play_id,value|
+          (user,time) = play_id.split('|')
+          p = s['pending'][play_id]
+          "#{user} acknowledgement of #{p['memo']} at #{p['amount']}"
+        end
+        
+        result += "<br />Pending:<br /> &nbsp;&nbsp;&nbsp;#{pending_plays.join('<br />&nbsp;&nbsp;&nbsp;')}"
       end
       result
     end

@@ -33,12 +33,21 @@ Feature: mutual acknowledgement currency
     And I press "Record Play"
     Then I should be taken to the dashboard page
     And I should see /Balance: -100/
+    When I follow "Acknowledge"
+    And I select "Jane User's WE member account" from "play_to"
+    And I fill in "play_amount" with "5"
+    And I fill in "play_memo" with "smiles"
+    And I press "Record Play"
+    Then I should be taken to the dashboard page
+    And I should see /Balance: -105/
     When I go to the logout page
     And I log in as "jane"
     And I go to the dashboard page
     Then I should see /Balance: 0/
-    And I should see /Pending Acknowledgements:.*Joe User's WE member account/
+    And I should see /Pending:.*Joe User's WE member account acknowledgement of smiles at 5/
+    And I should see /Pending:.*Joe User's WE member account acknowledgement of backrub at 100/
     When I follow "Accept"
+    Then what
     Then the field with id "play_play_id" should contain "Joe User's WE member account"
 # for these to work, it would require AJAX to fill the values on the fly as you select the accepted play
 #    Then the field with id "play_memo" should contain "backrub"

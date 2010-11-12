@@ -31,7 +31,7 @@
         <![CDATA[
         @play.from['balance'] -= @play.amount
         @play.from['volume'] += @play.amount.abs
-        @play.to['pending'][@play.from['_name']] = {'amount'=>@play.amount,'memo'=>@play.memo}
+        @play.to['pending'][@play.from['_name']+"|#{Time.now().to_f}"] = {'amount'=>@play.amount,'memo'=>@play.memo}
         true
         ]]>
       </script>
@@ -56,7 +56,7 @@
         end
         ]]>
       </script>
-      <play_sentence lang='en'><from /> accepts acknowledgement from <play_id /> in the amount <amount /> for <memo /></play_sentence>
+      <play_sentence lang='en'><from /> accepts <play_id /> in the amount <amount /> for <memo /></play_sentence>
     </play>  
   </plays>
 </game>
