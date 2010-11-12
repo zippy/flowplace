@@ -42,7 +42,7 @@ describe ApplicationHelper do
         helper.currency_play_html(@lets,@account2,'pay',:field_id_prefix=>'play').should == 
           "Joe U2 pays <select id=\"play_to\" include_blank=\"true\" name=\"play[to]\"><option value=\"3\">Joe U3</option></select> <input id=\"play_amount\" name=\"play[amount]\" size=\"4\" type=\"text\" value=\"\" /> for <input id=\"play_memo\" name=\"play[memo]\" size=\"30\" type=\"text\" value=\"\" /><input type=\"hidden\" name=\"play_name\" value=\"pay\">"
       end
-      it "should generate input html for a play excluding the specified fiels" do
+      it "should generate input html for a play excluding the specified fields" do
         helper.currency_play_html(@lets,@account2,'pay',:exclude =>['from']).should == 
           " pays <select id=\"to\" include_blank=\"true\" name=\"to\"><option value=\"3\">Joe U3</option></select> <input id=\"amount\" name=\"amount\" size=\"4\" type=\"text\" value=\"\" /> for <input id=\"memo\" name=\"memo\" size=\"30\" type=\"text\" value=\"\" /><input type=\"hidden\" name=\"play_name\" value=\"pay\">"
       end
