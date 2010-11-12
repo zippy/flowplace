@@ -265,7 +265,7 @@ describe Currency do
     
     it "should return multiple play names for plays with multiple player classes defined" do
       @cr = create_currency("R1",:klass=>CurrencyMutualCounting)
-      @cr.api_play_names('creator').should == ["create countable","count"]
+      @cr.api_play_names('creator').sort.should == ["count","create countable","reset counts"]
       @cr.api_play_names('member').should == ["count"]
     end
 
