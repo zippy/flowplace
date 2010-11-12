@@ -1,5 +1,5 @@
 Feature: mutual acknowledgement currency
-  In order to facilitate anymetrical exchanges
+  In order to facilitate asymmetrical exchanges
   As a player
   I want to be able to record exchanges using mutual acknowledgement
 
@@ -25,7 +25,7 @@ Feature: mutual acknowledgement currency
 
   Scenario: Joe makes a trade with Jane
     When I go to the dashboard page
-    Then I should see /Balance:.*?0/
+    Then I should see /Balance: 0/
     When I follow "Acknowledge"
     And I select "Jane User's WE member account" from "play_to"
     And I fill in "play_amount" with "100"
@@ -47,7 +47,6 @@ Feature: mutual acknowledgement currency
     And I should see /Pending:.*Joe User's WE member account acknowledgement of smiles at 5/
     And I should see /Pending:.*Joe User's WE member account acknowledgement of backrub at 100/
     When I follow "Accept"
-    Then what
     Then the field with id "play_play_id" should contain "Joe User's WE member account"
 # for these to work, it would require AJAX to fill the values on the fly as you select the accepted play
 #    Then the field with id "play_memo" should contain "backrub"
