@@ -548,20 +548,53 @@ class CurrencyMutualCounting
 end
 
 class CurrencyIntentions
+  def get_types_as_configured
+    types = {}
+    configuration['declare.intention_type'].split(/\W*,\W*/).each {|t| types[t]=nil}
+    types
+  end
+    
   def api_render_player_state(account)
+#    types = get_types_as_configured
+    types = {}
     s = account.get_state
     if s && !(i = s['intentions']).empty?
-      result = "Intentions:"
+      result = ""
       i.each do |title,vals|
-        result += "<br /> &nbsp;&nbsp;&nbsp;#{vals['intention_type']}: #{title}"
+        types[vals['intention_type']] ||= []
+        types[vals['intention_type']] << title
+      end
+      types.each do |t,v|
+        if v.size > 0
+          result += "#{t.pluralize.titleize}:"; v.each {|title| result += "<br /> &nbsp;&nbsp;&nbsp;#{title}" }
+        end
       end
     else
       result = "<i>no intentions declared</i>"
     end
     result
   end
+  
+  def api_render_summary
+    player_class = 'member'
+    ca = currency_accounts.find(:all,:conditions => ["player_class = ?",player_class])
+    types = {}#get_types_as_configured
+    result = ""
+    ca.each do |account|
+      s = account.get_state
+      if s && !(i = s['intentions']).empty?
+        i.each do |title,vals|
+          types[vals['intention_type']] ||= 0
+          types[vals['intention_type']] += 1
+        end
+      end
+    end
+    types.each do |t,v|
+      result += "<br /> #{v} #{ (v > 1 || v == 0) ? t.pluralize.titleize : t.titleize}"; 
+    end
+    result
+  end
 end
-
 
 class CurrencyAcknowledgement
   def api_render_player_state(account)

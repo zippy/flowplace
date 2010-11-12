@@ -31,6 +31,8 @@ Feature: intentions currency
     And I fill in "play_title" with "nice room"
     And I press "Record Play"
     Then I should be taken to the dashboard page
-    Then I should see /Intentions:.*offer: nice room/
+    Then I should see /Offers:.*nice room/
+    When I go to the holoptiview page
+    Then what
 
     
