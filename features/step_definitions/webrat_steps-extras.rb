@@ -54,3 +54,11 @@ end
 Then /^"([^"]*)" should be selected for "([^"]*)"$/ do |value, field|
   field_labeled(field).element.search(".//option[@selected = 'selected']").inner_html.should =~ /#{value}/
 end
+
+Then /^the field with id "([^\"]*)" should contain "([^\"]*)"$/ do |field, value|
+  if defined?(Spec::Rails::Matchers)
+    field_with_id(field).value.should =~ /#{value}/
+  else
+    assert_no_match(/#{value}/, field_labeled(field).value)
+  end
+end

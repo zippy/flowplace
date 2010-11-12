@@ -41,8 +41,8 @@
       <fields>
          <field type="player_member" id="from" />
          <field type="play" id="play_id" />
-         <field type="integer" id="amount" />
-         <field type="string" id="memo" />
+         <field type="integer" id="amount" default="_from_play"/>
+         <field type="string" id="memo" default="_from_play"/>
       </fields>
       <script type="ruby">
         <![CDATA[
