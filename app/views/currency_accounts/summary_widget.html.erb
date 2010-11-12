@@ -1,2 +1,2 @@
-<h1>Flowplace Currency: <%=@currency.name%> <%=render_currency_icon(@currency)%></h1>
+<h1><%= link_to 'Flowplace',home_url%> Currency: <%=@currency.name%> <%=render_currency_icon(@currency)%></h1>
 <p><%=@currency_account.user.full_name%>'s Status: <%= @currency.api_render_player_state(@currency_account)%></p>
