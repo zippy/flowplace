@@ -119,9 +119,12 @@ class Currency < ActiveRecord::Base
     end
     @xgfl.xpath(%Q|/game/states/state[@player_class="_"]/*|).to_a.each do |state|
       state_name = state.attributes['name'].to_s
-      configurable_fields["_.#{state_name}"] = state.attributes['configure_with'].to_s
-      if d = state.attributes['default']
-        configurable_fields["_.#{state_name}.default"] = d.to_s
+      config_attributes = state.attributes['configure_with']
+      if !config_attributes.nil?
+        configurable_fields["_.#{state_name}"] = config_attributes.to_s
+        if d = state.attributes['default']
+          configurable_fields["_.#{state_name}.default"] = d.to_s
+        end
       end
     end
     
@@ -219,8 +222,11 @@ class Currency < ActiveRecord::Base
     play_names = []
     @xgfl.xpath(%Q|/game/plays/*|).to_a.each do |p|
       pc = p.attributes['player_classes'].to_s
-      if player_class == pc
-        play_names << p.attributes['name'].to_s
+      classes = pc.split(/, */)
+      classes.each do |pc|
+        if player_class == pc
+          play_names << p.attributes['name'].to_s
+        end
       end
     end
     play_names
@@ -290,7 +296,7 @@ class Currency < ActiveRecord::Base
       field_name = field['id']
       field_type = field['type']
       case field_type
-      when 'integer','string','text','range','play'
+      when 'integer','string','text','range','play','options'
         @play[field_name] = play[field_name]
       when 'boolean'
         val = play[field_name]
@@ -300,14 +306,19 @@ class Currency < ActiveRecord::Base
       when 'user'
         @play[field_name] = setup_model(User,play[field_name]) { |name| User.find_by_user_name(name)}
       when /player_(.*)/
-        player_class = $1
+        player_class_string = $1
+        player_classes = player_class_string.split(/, */)
         if play[field_name].blank?
           @play[field_name] = nil
         else
           @play[field_name] = play[field_name].get_state
           @play[field_name]['_name'] = play[field_name].name
           ca = play[field_name]
-          raise "currency account #{ca.name} (id=#{ca.id}) is a #{ca.player_class} not a #{player_class} as required for '#{field_name}' field in the #{play_name} play" if player_class != ca.player_class
+          ok = false
+          player_classes.each do |player_class|
+            ok = true if player_class == ca.player_class
+          end
+          raise "the player field '#{field_name}' in the #{play_name} play requires a player class of #{player_class_string}. Currency account #{ca.name} (id=#{ca.id}) is a #{ca.player_class}" unless ok
           @play[field_name]['_currency_account'] = ca
         end
       else
@@ -516,6 +527,21 @@ class CurrencyMutualAcknowledgement
       end
       result
     end
+  end
+end
+
+class CurrencyMutualCounting
+  def api_render_player_state(account)
+    c = configuration['_.countables']
+    result = "Counts:"
+    if c.nil?
+      result += "<br />&nbsp;&nbsp;&nbsp;<i>no countables defined</i>"
+    else
+      c.each do |name,vals|
+        result += "<br /> &nbsp;&nbsp;&nbsp;#{name}: #{vals['count']}"
+      end
+    end
+    result
   end
 end
 

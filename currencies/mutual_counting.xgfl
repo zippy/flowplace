@@ -1,0 +1,106 @@
+<game>
+  <description lang="en">
+    Mutual counting currencies are used to track monotonic progress.<br />
+    Player classes: member,creator<br />
+    Summary function: Counts<br />
+    Member Plays: <br />
+    &nbsp;&nbsp; Count(to,memo)<br />
+    Creator Plays: <br />
+    &nbsp;&nbsp; Count(to,memo)<br />
+    &nbsp;&nbsp; Create Countable(name,description)<br />
+  </description>
+  <player_classes>
+    <player_class name="member" />
+    <player_class name="creator" />
+  </player_classes>
+  <states>
+    <state player_class="member"><hash name="counts_recorded" /></state>
+    <state player_class="creator"><hash name="counts_recorded" /></state>
+    <state player_class="_"><hash name="countables" /></state>
+  </states>
+
+  <plays>
+    <play name="_new_member">
+      <script type="ruby">
+          <![CDATA[ @member_state.counts_recorded = {}]]>
+      </script>
+    </play>
+    <play name="_new_creator">
+      <script type="ruby">
+        <![CDATA[ @creator_state.counts_recorded = {}]]>
+      </script>
+    </play>
+    <play name="count" player_classes="member,creator">
+      <fields>
+         <field type="player_member,creator" id="from" />
+         <field type="player_member,creator" id="to" />
+         <field type="options" id="countable" from="countables"/>
+         <field type="string" id="memo" />
+      </fields>
+      <script type="ruby">
+        <![CDATA[
+        countables = self.configuration['_.countables']
+        if countables.nil?
+          return_value = "No countables defined"
+        else
+          c = countables[@play.countable]
+          if c.nil?
+            return_value = "countable: #{@play.countable} doesn't exist"
+          else
+            c['count'] += 1
+            self.save
+            @play.from['counts_recorded'][@play.countable] ||= []
+            @play.from['counts_recorded'][@play.countable] << @play.memo
+            return_value = true
+          end
+        end
+        return_value
+        ]]>
+      </script>
+      <play_sentence lang='en'><from /> counts <countable /> with <to /> memo: <memo /></play_sentence>
+    </play>
+    <play name="create countable" player_classes="creator">
+      <fields>
+         <field type="player_creator" id="from" />
+         <field type="string" id="name" />
+         <field type="string" id="description" />
+      </fields>
+      <script type="ruby">
+        <![CDATA[
+          countables = self.configuration['_.countables'] ||= {}
+          c = countables[@play.name] ||= {}
+          c['description'] = @play.description
+          c['count'] ||= 0
+          self.save
+          true
+        ]]>
+      </script>
+      <play_sentence lang='en'><from /> creates countable <name /> described as <description /></play_sentence>
+    </play>  
+    <play name="reset counts" player_classes="creator">
+      <fields>
+         <field type="player_creator" id="from" />
+         <field type="options" id="countable" from="countables"/>
+      </fields>
+      <script type="ruby">
+        <![CDATA[
+        countables = self.configuration['_.countables']
+        if countables.nil?
+          return_value = "No countables defined"
+        else
+          c = countables[@play.countable]
+          if c.nil?
+            return_value = "countable: #{@play.countable} doesn't exist"
+          else
+            c['count'] = 0
+            self.save
+            return_value = true
+          end
+        end
+        return_value
+        ]]>
+      </script>
+      <play_sentence lang='en'><from /> resets the counts for <countable /></play_sentence>
+    </play>  
+  </plays>
+</game>

@@ -259,6 +259,12 @@ describe Currency do
     it "should be able to return the play names available to a player class" do
       @currency.api_play_names('member').should == ["pay"]
     end
+    
+    it "should return multiple play names for plays with multiple player classes defined" do
+      @cr = create_currency("R1",:klass=>CurrencyMutualCounting)
+      @cr.api_play_names('creator').should == ["create countable","count"]
+      @cr.api_play_names('member').should == ["count"]
+    end
 
     it "returns play names in the order defined" do
       @circle = create_currency("C",:klass=>CurrencyMembrane)
@@ -269,6 +275,10 @@ describe Currency do
       it "should be able to return a list of the configurable fields for plays" do
         @cr = create_currency("R1",:klass=>CurrencyMutualRating)
         @cr.api_configurable_fields.should == {"rate.rating"=>"enumerable_range", "rate.rating.default"=>"poor,average,good,excellent"}
+      end
+      it "should only return fields with that have configure_with attributes" do
+        @cr = create_currency("R1",:klass=>CurrencyMutualCounting)
+        @cr.api_configurable_fields.should == {}
       end
       it "should include currency configuration fields" do
         @cr = create_currency("A1",:klass=>CurrencyAcknowledgement)

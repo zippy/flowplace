@@ -31,6 +31,12 @@ describe ApplicationHelper do
       it "should return a list of users of a given player class" do
         helper.currency_accounts(@usd,:player_class=>'issuer').should == [@account1]
       end
+      it "should return a list of users of a given player classes" do
+        acts = helper.currency_accounts(@usd,:player_class=>['issuer','user'])
+        acts.size.should == 2
+        acts.include?(@account1).should be_true
+        acts.include?(@account2).should be_true
+      end
     end
     
     describe "currency_play_html" do
@@ -51,6 +57,12 @@ describe ApplicationHelper do
         @memb = create_currency_account(@user1,@circle,'member')
         helper.currency_play_html(@circle,@memb,'bind_currency').should == 
           " Joe U1 binds <select id=\"currency\" name=\"currency\"><option value=\"\" selected=\"selected\"></option>\n<option value=\"USD\">USD</option>\n<option value=\"LETS\">LETS</option>\n<option value=\"C\">C</option></select> to <select id=\"to\" include_blank=\"true\" name=\"to\"></select> as <input id=\"name\" name=\"name\" size=\"30\" type=\"text\" value=\"\" /> with autojoin as <select id=\"autojoin\" name=\"autojoin\"><option value=\"0\">false</option>\n<option value=\"1\">true</option></select><input type=\"hidden\" name=\"play_name\" value=\"bind_currency\">"
+      end
+      it "should generate input html for options types" do
+        @mc = create_currency("MC",:klass=>CurrencyMutualCounting)
+        @memb = create_currency_account(@user1,@mc,'member')
+        helper.currency_play_html(@mc,@memb,'count').should ==
+          "Joe U1 counts <select id=\"countable\" name=\"countable\"><option value=\"\" selected=\"selected\"></option></select> with <select id=\"to\" include_blank=\"true\" name=\"to\"></select> memo: <input id=\"memo\" name=\"memo\" size=\"30\" type=\"text\" value=\"\" /><input type=\"hidden\" name=\"play_name\" value=\"count\">"
       end
     end
   end

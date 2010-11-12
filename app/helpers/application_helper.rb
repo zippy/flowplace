@@ -139,8 +139,9 @@ module ApplicationHelper
   end
 
   def currency_accounts(currency,opts={})
-    if opts[:player_class]
-      accounts = currency.currency_accounts.find(:all,:conditions=>["player_class = ?",opts[:player_class].to_s])
+    if pcs = opts[:player_class]
+      pcs = [pcs.to_s] unless pcs.is_a?(Array)
+      accounts = currency.currency_accounts.find(:all,:conditions=>["player_class in (?)",pcs])
     else
       accounts = currency.currency_accounts
     end
@@ -158,7 +159,8 @@ module ApplicationHelper
     exclude_list = []#['from','to']
     plays = currency.api_plays
     raise "#{play_name} doesn't exist" if !plays.has_key?(play_name)
-    raise "#{player_class} cannot make the #{play_name} play" if plays[play_name][:player_classes] != player_class
+    classes = plays[play_name][:player_classes].split(/, */)
+    raise "#{player_class} cannot make the #{play_name} play" if  !classes.include?(player_class)
     case currency
     when CurrencyMutualCredit
       exclude_list << 'aggregator'
@@ -215,7 +217,7 @@ module ApplicationHelper
       when Nokogiri::XML::Element
         field_name = element.name
         next if exclude_list.include?(field_name)
-        raise "unknown field '#{field_name}'" if fields[field_name].nil?
+        raise "field '#{field_name}' was specified in the play sentence, but not declared as a field in the '#{play}' play" if fields[field_name].nil?
         field_type = fields[field_name]['type']
         if field_id_prefix.blank?
           html_id = html_name = field_name
@@ -238,6 +240,17 @@ module ApplicationHelper
           else
             result = select_tag(html_name, options_for_select(pending_plays))
           end
+        when 'options'          
+          r = [nil]
+          if fields[field_name]['values']
+            r.concat fields[field_name]['values'].split(/, */)
+          elsif fields[field_name]['from']
+            #TODO: GENERALIZE THIS!!!
+            if c = currency.configuration['_.countables']
+              r.concat(c.keys)
+            end
+          end
+          result = select_tag(html_name, options_for_select(r))        
         when 'integer','float'
           result = text_field_tag(html_name,'',:size=>4)
         when 'string'
@@ -265,8 +278,8 @@ module ApplicationHelper
           if field_name == "from"  #from is allways hard-coded to be current user and gets set in currency_accounts_controller when the play is made.
             result = currency_account.name
           else
-            player_class = $1
-            result = currency_accounts_select(currency,html_name,:exclude=>currency_account,:player_class=>player_class)
+            player_classes = $1.split(/, */)
+            result = currency_accounts_select(currency,html_name,:exclude=>currency_account,:player_class=>player_classes)
           end
         else
           result = "--UNKNOW FIELD TYPE: #{field_type}--"
