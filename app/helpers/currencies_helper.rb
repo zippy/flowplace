@@ -21,7 +21,7 @@ module CurrenciesHelper
       field_name = $2
       id = "config[#{field}]"
       case fields[field]
-      when 'enumerable_range'
+      when 'enumerable_range','enumeration'
         extra = ": a comma separated list of choices"
       when 'integer'
         fsize = 5

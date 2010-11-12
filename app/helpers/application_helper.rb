@@ -244,6 +244,8 @@ module ApplicationHelper
           r = [nil]
           if fields[field_name]['values']
             r.concat fields[field_name]['values'].split(/, */)
+          elsif fields[field_name]['configure_with'] == 'enumeration'
+            r.concat enumeration_to_options_array(currency.configuration ? currency.configuration["#{play}.#{field_name}"] : "")
           elsif fields[field_name]['from']
             #TODO: GENERALIZE THIS!!!
             if c = currency.configuration['_.countables']
@@ -318,6 +320,10 @@ module ApplicationHelper
     c = configuration_string.split(/\W*,\W*/)
     i = 0;
     c.collect {|e| [e,i+=1]}
+  end
+
+  def enumeration_to_options_array(configuration_string)
+    c = configuration_string.split(/\W*,\W*/)
   end
   
   

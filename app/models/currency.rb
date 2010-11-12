@@ -545,6 +545,22 @@ class CurrencyMutualCounting
   end
 end
 
+class CurrencyIntentions
+  def api_render_player_state(account)
+    s = account.get_state
+    if s && !(i = s['intentions']).empty?
+      result = "Intentions:"
+      i.each do |title,vals|
+        result += "<br /> &nbsp;&nbsp;&nbsp;#{vals['intention_type']}: #{title}"
+      end
+    else
+      result = "<i>no intentions declared</i>"
+    end
+    result
+  end
+end
+
+
 class CurrencyAcknowledgement
   def api_render_player_state(account)
     s = account.get_state

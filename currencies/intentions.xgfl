@@ -1,0 +1,38 @@
+<game>
+  <description lang="en">
+    Intentions currencies are used to build "marketplaces."  They allow members to place intentions and match their own intentions to those that others have placed.<br />
+    Player classes: member<br />
+    Summary function: <br />
+    Member Plays: <br />
+    Place(title,type,details)<br />
+  </description>
+  <player_classes>
+    <player_class name="member" />
+  </player_classes>
+  <states>
+    <state player_class="member"><hash name="intentions" /></state>
+  </states>
+
+  <plays>
+    <play name="_new_member">
+      <script type="ruby">
+          <![CDATA[ @member_state.intentions = {};]]>
+      </script>
+    </play>
+    <play name="declare" player_classes="member">
+      <fields>
+         <field type="player_member" id="from" />
+         <field type="options" id="intention_type" configure_with="enumeration" default="offer,request"/>
+         <field type="string" id="title" />
+         <field type="string" id="details" />
+      </fields>
+      <script type="ruby">
+        <![CDATA[
+        @play.from['intentions'][@play.title] = {'details'=>@play.details,'intention_type' => @play.intention_type}
+        true
+        ]]>
+      </script>
+      <play_sentence lang='en'><from /> declares <intention_type /> with title <title /> and details <details /></play_sentence>
+    </play>
+  </plays>
+</game>
