@@ -11,6 +11,14 @@
 	-moz-border-radius:5px 5px 0px 0px;
 }
 
+.widget h1 a,.widget h1 a:visited{
+	color: #fff;
+}
+.widget h1 a:hover{
+	background: #02687F;
+	color: #ff0;
+}
+
 .widget p {
 	padding: 10px;
 	border: 1px solid #02687F;	
