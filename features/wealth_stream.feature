@@ -11,6 +11,6 @@ Feature: Wealth Stream
   Scenario: User looks at wealth stream
     When I go to the holoptiview page
     Then I should see "My Wealth"
-    Then I should see "My Intentions"
-    Then I should see "My Actions"
+#    Then I should see "My Intentions"
+#    Then I should see "My Actions"
     Then I should see "My Activities"
