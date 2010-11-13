@@ -41,7 +41,7 @@
   <div id="circle_users_search_results">
   <table>
   <tr>
-    <th>Player<%= button_to_function "Select All", "#{@users.collect{|u| "$('users_#{u.id}').checked=1"}.join(';')}", :style=>'float:right'%></th>
+    <th>Player<%= button_to_function "Toggle", "#{@users.collect{|u| "$('users_#{u.id}').checked = !$('users_#{u.id}').checked "}.join(';')}", :style=>'float:right'%></th>
   </tr>
   <% for user in @users%>
     <tr>
