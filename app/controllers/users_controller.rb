@@ -35,6 +35,9 @@ class UsersController < ApplicationController
   # GET /users
   # GET /users.xml
   def index
+    if params['search'] && params['search']['for_main'].blank?
+      @display_all = true
+    end
     @users = perform_search(OrderPairs,SearchPairs,SearchFormParams,User)
     respond_to do |format|
       format.html # index.rhtml
