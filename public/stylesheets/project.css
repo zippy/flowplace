@@ -657,3 +657,14 @@ img.clickable {
 	padding: 0 10px;
 }
 
+#embed_codes {
+	float: right;
+	border: solid 1px #686d6e;
+	padding: 5px;
+	border-radius:5px 5px 5px 5px;
+	-moz-border-radius:5px 5px 5px 5px;
+}
+
+#embed_codes h3 {
+	margin: 0px;	
+}

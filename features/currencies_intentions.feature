@@ -33,6 +33,5 @@ Feature: intentions currency
     Then I should be taken to the dashboard page
     Then I should see /Offers:.*nice room/
     When I go to the holoptiview page
-    Then what
 
     

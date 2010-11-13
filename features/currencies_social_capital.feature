@@ -27,7 +27,7 @@ Feature: social capital currency
     And I should see /Rating: 0/
     And I should see /Given: 1/
     And I should see /Received: 0/
-    When I follow "Hearts"
+    When I follow "Rate"
     And I select "Joe User's Hearts member account" from "play_to"
     And I select "2" from "play_rating"
     And I press "Record Play"

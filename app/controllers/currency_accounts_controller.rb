@@ -185,6 +185,13 @@ class CurrencyAccountsController < ApplicationController
     @plays = @currency.api_play_history(@currency_account).reject {|p| p['__meta']['name'] != @play_name}
     @play_fields = @currency.api_play_sentence_fields(@play_name)
   end
+
+  # GET /currency_accounts/1/settings
+  def settings
+    @currency_account = CurrencyAccount.find(params[:id])
+    @currency = @currency_account.currency
+    @player_class = @currency_account.player_class
+  end
   
   # GET /currency_accounts/1/play
   def play

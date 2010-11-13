@@ -5,6 +5,7 @@ ActionController::Routing::Routes.draw do |map|
 
   map.resources :currency_accounts, :member => {
     :play => :get,
+    :settings => :get,
     :summary_widget => :get,
     :record_play => :post
   }

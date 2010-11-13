@@ -17,7 +17,7 @@
     <div class="ditem_left">
       <p class="dashboard_title">
         <%= render_currency_icon(currency) %>
-        <%= link_to currency.name, play_currency_account_url(currency_account) %><% if !currency.symbol.blank? && currency.symbol != currency.name %> <%=currency_account.currency.symbol%><%end%>
+        <%= link_to currency.name, settings_currency_account_path(currency_account) %><% if !currency.symbol.blank? && currency.symbol != currency.name %> <%=currency_account.currency.symbol%><%end%>
         <%if currency_account.player_class != 'member'%>
          (<%= currency_account.player_class%> role)
         <% end %>

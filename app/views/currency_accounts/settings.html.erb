@@ -1,0 +1,12 @@
+<% @title="My Currencies #{@currency.name}: Settings" %>
+<%= render(:partial => 'sub_nav') %>
+<div id="embed_codes">
+  <h3>Embed Codes</h3>
+<p>
+Account summary: <br />
+<textarea rows="3" cols="50">
+  &lt;iframe src ="<%= summary_widget_currency_account_url%>" width="100%" height="100%"&gt;&lt;/iframe&gt;
+</textarea>
+</p>
+</div>
+<h3> <%=@currency.name%> account as <%=@player_class%></h3>
