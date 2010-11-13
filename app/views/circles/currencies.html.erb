@@ -47,7 +47,7 @@
   <div id="circle_currencies_search_results">
   <table>
   <tr>
-    <th>Currency</th>
+    <th>Currency<%= button_to_function "Toggle", "#{@currencies.collect{|u| "$('currencies_#{u.id}').checked = !$('currencies_#{u.id}').checked "}.join(';')}", :style=>'float:right'%></th>
     <th>Description</th>
   </tr>
   <% for currency in @currencies%>
