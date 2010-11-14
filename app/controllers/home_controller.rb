@@ -13,17 +13,20 @@ class HomeController < ApplicationController
         @user = current_user
       end
       @currency_accounts_my = @user.currency_accounts_in_circle(@current_circle) if !@current_circle.nil?
+      @currency_accounts_my = @currency_accounts_my.reject {|ca| ca.currency.is_a?(CurrencyMembrane)} unless current_user.has_preference('showMembranes')
       @currencies = @current_circle.currencies if @current_circle
 #      @currencies = Currency.find(:all)
     
-      @proposals_total_my = Proposal.count(:conditions=>["user_id = ?",@user.id])
-      @proposals_total =  Proposal.count
+      if Configuration.get(:wealing_policy) == 'on'
+        @proposals_total_my = Proposal.count(:conditions=>["user_id = ?",@user.id])
+        @proposals_total =  Proposal.count
    
-      @intentions_total_my = @user.intentions.size
-      @intentions_total =  Weal.count(:conditions=>"phase = 'intention'")
+        @intentions_total_my = @user.intentions.size
+        @intentions_total =  Weal.count(:conditions=>"phase = 'intention'")
 
-      @actions_total_my = @user.actions.size
-      @actions_total =  Weal.count(:conditions=>"phase = 'actions'")
+        @actions_total_my = @user.actions.size
+        @actions_total =  Weal.count(:conditions=>"phase = 'actions'")
+      end
     else
       render :action => :welcome
     end
