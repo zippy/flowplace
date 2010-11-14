@@ -491,7 +491,20 @@ class CurrencyMutualCreditBounded
     if account.player_class == 'member'
       s = account.get_state
       if s
-        "Balance: #{s['balance']}; Volume: #{s['volume']}; Limit: #{s['limit']}; "
+        "Balance: #{s['balance']}; Volume: #{s['volume']}; Transactions: #{account.plays.size}; Limit: #{s['limit']}; "
+      end
+    else
+      ""
+    end
+  end
+end
+
+class CurrencyMutualCredit
+  def api_render_player_state(account)
+    if account.player_class == 'member'
+      s = account.get_state
+      if s
+        "Balance: #{s['balance']}; Volume: #{s['volume']}; Transactions: #{account.plays.size}"
       end
     else
       ""
