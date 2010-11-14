@@ -698,7 +698,7 @@ class CurrencyMembrane
       if player_class == 'member' && namer
         self_player = currency_accounts.find_by_player_class('self')
         autojoin_currencies.each do |c|
-          if !user.player_clasess_in(self).include?('member')
+          if !user.player_clasess_in(c).include?('member')
             play = {
               'from' => namer,
               'to' => player,
