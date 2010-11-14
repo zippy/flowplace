@@ -13,7 +13,7 @@ ActionController::Routing::Routes.draw do |map|
   map.play 'currency_accounts/:id/play', :controller => 'currency_accounts', :action => 'play'
   map.play_history 'currency_accounts/:id/history/:play_name', :controller => 'currency_accounts', :action => 'history'
   map.history 'currency_accounts/:id/history', :controller => 'currency_accounts', :action => 'history'
-  
+    
   map.my_currencies('/my_currencies', :controller => 'currency_accounts', :action => 'my_currencies')
   map.dashboard('/dashboard', :controller => 'currency_accounts', :action => 'dashboard')
   map.dashboard_activity('/dashboard/activity', :controller => 'currency_accounts', :action => 'dashboard_activity')
@@ -57,6 +57,9 @@ ActionController::Routing::Routes.draw do |map|
   map.logged_out('/logged_out', :controller => 'home', :action => 'logged_out')
 
   map.from_plugin(:bolt)
+
+  map.do_accept_invitation '/users/accept_invitation', :controller => 'users', :action => 'do_accept_invitation', :conditions => { :method => :post }
+  map.accept_invitation '/users/accept_invitation/:currency_account_id/:email', :controller => 'users', :action => 'accept_invitation', :requirements => { :email => /[^\/]+/ }, :conditions => { :method => :get }
   map.logged_in_users '/users/logged_in', :controller => 'users', :action => 'logged_in_users'
   map.signup_users '/users/signup', :controller => 'users', :action => 'signup', :conditions => { :method => :get }
   map.signup_users '/users/signup', :controller => 'users', :action => 'do_signup', :conditions => { :method => :post }

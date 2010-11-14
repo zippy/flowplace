@@ -7,11 +7,13 @@ Feature: membrane currency
     Given I am logged into my account
     Given I have "circle" privs
     And a circle "the circle"
-
-  Scenario: Namer views the currency play page
-    When I follow "Preferences"
-    When I check "prefs[showMembranes]"
+    And I follow "Preferences"
+    And I check "prefs[showMembranes]"
     And I press "Set Preferences"
+
+#TODO: This is bogus because the my currencies page was never fully implemented, and it lists multiple currency accounts
+# with the same #currency_account_anonymous.  It only works because the first one is the namer currency account.
+  Scenario: Namer views the currency play page
     When I go to the my currencies page
     And I follow "the circle" within "#currency_account_anonymous"
     Then I should be taken to the currency account play page for "anonymous"

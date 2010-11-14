@@ -12,17 +12,22 @@
     Binder Plays:
       request_binding(from,to,type)  # request containment binding between membranes
       accept_binding(from,to,play)  # accept containment binding between membranes
-      bind_currency(from,to,currency,name)  # adds a currency to the circle to be known as name.
-      unbind_currency(from,to,currency,name)  # removes currency known as name from the circle.
     Namer Summary Function: none
     Namer Plays:
+    bind_currency(from,to,currency,name)  # adds a currency to the circle to be known as name.
+    unbind_currency(from,to,currency,name)  # removes currency known as name from the circle.
       name_member(from,user,name)  # names a new member player into the circle as for a user.
       grant(from,to,currency,player_class)  # adds a member of the circle to a currency as a given player_class.
       revoke(from,to,currency,player_class)
+    Inviter Summary Function: invitations list and status
+    Inviter Plays:
+      invite(from,email,text)
+      revoke_invitation(from,email,explanation)
   </description>
   <player_classes>
     <player_class name="member" />
     <player_class name="namer" />
+    <player_class name="inviter" />
     <player_class name="binder" />
     <player_class name="self" />
   </player_classes>
@@ -30,6 +35,7 @@
     <state player_class="member"><hash name="permissions" /></state>
     <state player_class="self"><hash name="currencies" /></state>
     <state player_class="binder"><hash name="requests" /></state>
+    <state player_class="inviter"><hash name="invitations" /></state>
   </states>
 
   <plays>
@@ -52,6 +58,11 @@
       </fields>
       <script type="ruby">
         <![CDATA[ @member_state.permissions = {};]]>
+      </script>
+    </play>
+    <play name="_new_inviter">
+      <script type="ruby">
+        <![CDATA[ @inviter_state.invitations = {};]]>
       </script>
     </play>
     <play name="request_binding" player_classes="binder">
@@ -178,6 +189,37 @@
         ]]>
       </script>
       <play_sentence lang='en'><from /> revokes <to />'s <player_class /> access to <currency /></play_sentence>
+    </play>
+    <play name="invite" player_classes="inviter">
+      <fields>
+         <field type="player_inviter" id="from" />
+         <field type="string" id="email" />
+         <field type="string" id="text" />
+      </fields>
+      <script type="ruby">
+        <![CDATA[
+        invitations = @play.from['invitations']
+        return_value = true
+        if invitations.has_key?(@play.email)
+          return_value = "You have already sent an invitation to #{@play.email}"
+        else
+          invitations[@play.email] = {'text'=>@play.text,'key'=> key = Time.now.to_f}
+          params = {}
+          params[:to_email] = @play.email
+          params[:circle] = self.name
+          params[:currency_account] = @play.from['_currency_account']
+          params[:extra] =  @play.text
+          params[:key] = key
+          begin
+            CurrencyAccountMailer.deliver_circle_invitation(params)
+          rescue Exception => e
+            return_value = "Could not deliver email: #{e}"
+          end
+        end
+        return_value
+        ]]>
+      </script>
+      <play_sentence lang='en'><from /> invites <email /> to circle with text <text /></play_sentence>
     </play>
   </plays>
 </game>

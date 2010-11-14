@@ -30,7 +30,7 @@ class CurrencyAccountsController < ApplicationController
   def dashboard
     if !@current_circle.nil?
       @currency_accounts = current_user.currency_accounts_in_circle(@current_circle)
-      @currency_accounts = @currency_accounts.reject {|ca| ca.currency.class.to_s == 'CurrencyMembrane'} unless current_user.has_preference('showMembranes')
+      @currency_accounts = @currency_accounts.reject {|ca| ca.currency.class.to_s == 'CurrencyMembrane' && ca.player_class != 'inviter'} unless current_user.has_preference('showMembranes')
     end
       
     respond_to do |format|
@@ -249,5 +249,5 @@ class CurrencyAccountsController < ApplicationController
       end
     end
   end
-  
+
 end

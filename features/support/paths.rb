@@ -157,6 +157,15 @@ module NavigationHelpers
       path_to_user_page(:contact_edit,$1)
     when /the view contact info page for "?([^"]*)"?/
       path_to_user_page(:contact_view,$1)
+    when /the accept invitation from "([^"]*)" in "([^"]*)" to "([^"]*)" page/
+      (user_name,currency_name,email) = [$1,$2,$3]
+      u = User.find_by_user_name(user_name)
+      raise "couldn't find user '#{user_name}' while building path" if u.nil?
+      currency = Currency.find_by_name(currency_name)
+      raise "couldn't find currency '#{currency_name}' while building path" if currency.nil?
+      currency_account = CurrencyAccount.find(:first,:conditions => ["user_id = ? and player_class = ? and currency_id = ?",u.id,'inviter',currency.id])
+      raise "couldn't find a currency account for #{u.user_name} as inviter while building path" if currency_account.nil?
+      "/users/accept_invitation/#{currency_account.id}/#{email}"
     else
       raise "Can't find mapping from \"#{page_name}\" to a path."
     end

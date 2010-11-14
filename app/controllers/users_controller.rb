@@ -1,5 +1,5 @@
 class UsersController < ApplicationController
-  require_authentication :except => [:signup,:do_signup]
+  require_authentication :except => [:signup,:do_signup,:accept_invitation,:do_accept_invitation]
   require_authorization(:createAccounts, :only => [:new,:create]) 
   require_authorization(:accessAccounts, :only => [:edit,:update,:index]) 
   require_authorization(:admin, :only => [:login_as,:destroy,:logged_in_users]) 
@@ -229,6 +229,40 @@ class UsersController < ApplicationController
     end
   end
   
+  # GET /users/accept_invitation/1/joe@email.com
+  def accept_invitation
+    @email = params[:email]
+    if verify_invitation
+      @user = User.find_by_email(@email)
+      if !@user.nil?
+        _do_accept_invitation
+      end
+      # render the accept_invitation signup form
+    else
+      access_denied
+    end
+  end
+
+  # POST /users/accept_invitation
+  def do_accept_invitation
+    @email = params[:user][:email]
+    if verify_invitation
+      @user = User.new(params[:user])
+      raise "you can't sign up as circle user!" if @user.user_name =~ /_circle/
+      respond_to do |format|
+        if (identity = @user.create_bolt_identity(:user_name => :user_name,:enabled => true,:password => params[:password],:confirmation => params[:confirmation])) && @user.save
+          err = @user.autojoin
+          flash[:action_error] = err if !err.nil?
+          format.html { _do_accept_invitation }  #redirect_to  "/activations/show/"+@user.user_name
+        else
+          format.html { render :action => "accept_invitation" }
+        end
+      end
+    else
+      access_denied
+    end
+  end
+
   def email
     u = User.find(params[:id])
     if u
@@ -273,6 +307,35 @@ class UsersController < ApplicationController
   end
   
   protected
+  
+  def verify_invitation
+    @currency_account = CurrencyAccount.find(params[:currency_account_id])
+    
+    # Confirm that there is an invitiation as specified in the URL
+    if !@currency_account.nil? && (@circle = @currency_account.currency).is_a?(CurrencyMembrane)
+      @state = @currency_account.get_state
+      if @state
+        @invitations = @state['invitations']
+        if @invitations && @invitations[@email]
+          return true
+        end
+      end
+    end
+    false
+  end
+  
+  def _do_accept_invitation
+    namer_account = @circle.api_user_accounts('namer',current_user)[0]
+    @circle.add_player_to_circle('member',@user,namer_account)
+    self.current_user = @user
+    flash[:notice] = "You have been added to: #{@circle.name}"
+    redirect_to(dashboard_url)
+    @invitations.delete(@email)
+    @state['invitations_accepted'] ||= {}
+    @state['invitations_accepted'][@email] = @user.user_name
+    @currency_account.save
+  end
+  
   def current_user_action
     if current_user_or_can?([:accessAccounts,:createAccounts])
       @user = User.find(params[:id])
@@ -330,6 +393,4 @@ class UsersController < ApplicationController
       true
     end
   end
-    
-
 end

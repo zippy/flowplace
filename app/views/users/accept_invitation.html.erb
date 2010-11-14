@@ -1,0 +1,21 @@
+<% @title='Accept Invitation' %>
+
+<h3>Welcome!</h3>
+<p>You have received an invitation from <%=@currency_account.user.full_name%> to join <%= @circle.name%> here on the <%=configuration_text(:site_name)%>
+<p>Please fill out the form below to activate your account.</p>  
+<%= error_messages_for :user %>
+
+<% form_for(:user, :url => do_accept_invitation_path) do |f| %>
+
+  <table>
+    <tr><td align="left"><%= f.label :email,"E-mail:"%></td><td><%= f.hidden_field :email,:value=>@email %><%= hidden_field_tag :currency_account_id,@currency_account.id %><%= @email %></td></tr>
+    <tr><td align="left"><%= f.label :user_name,"Account name:"%></td><td><%= f.text_field :user_name %></td></tr>
+    <tr><td align="left"><%= f.label :first_name,"First name:"%></td><td><%= f.text_field :first_name %></td></tr>
+    <tr><td align="left"><%= f.label :last_name,"Last name:"%></td><td><%= f.text_field :last_name %></td></tr>
+    <tr><td align="left"><%= label_tag :password,"Choose a Password:"%></td><td><%= password_field_tag(:password) %></td></tr>
+    <tr><td align="left"><%= label_tag :confirmation,"Password Confirmation:"%></td><td><%= password_field_tag(:confirmation) %></td></tr>
+  </table>
+  <p>
+    <%= submit_tag "Accept Invitation" %>
+  </p>
+<% end %>

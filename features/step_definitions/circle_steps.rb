@@ -28,7 +28,7 @@ Given /^a circle "([^\"]*)" with members "([^\"]*)"$/ do |circle_name,member_lis
   Given %Q|I make "#{member_list}" a "member" of "#{circle_name}"|
 end
 
-Given /^I make "([^\"]*)" a "([^\"]*)" of "([^\"]*)"$/ do |users, role, circle_name|
+Given /^I make "([^\"]*)" an* "([^\"]*)" of "([^\"]*)"$/ do |users, role, circle_name|
   members = users.split(/, */)
   save_user = @user
   members.each {|m| create_user(m) if User.find_by_user_name(m).nil?}

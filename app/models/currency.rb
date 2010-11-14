@@ -188,7 +188,7 @@ class Currency < ActiveRecord::Base
 
   def api_render_summary
     result = name+" has "
-    result += api_player_classes.collect {|player_class| cas = currency_accounts.find(:all,:conditions => ["player_class = ?",player_class]).size; "#{cas} #{(cas > 1 || cas < 1) ? player_class.pluralize : player_class}" }.join (' and ')
+    result += api_player_classes.collect {|player_class| cas = currency_accounts.find(:all,:conditions => ["player_class = ?",player_class]).size; "#{cas} #{(cas > 1 || cas < 1) ? player_class.pluralize : player_class}" }.join(' and ')
     result
   end
   
@@ -754,17 +754,44 @@ class CurrencyMembrane
   end
 
   def api_render_player_state(account)
-    s = account.get_state
-    if s
-      permissions = s['permissions']
-      p = ""
-      if permissions
-        permissions.collect {|k,v| p+= "#{k}[#{v.keys.join('; ')}]"}.join(', ')
-        "Perms: #{p}"
-      else
-        ''
+    case account.player_class
+    when 'member'
+      s = account.get_state
+      if s
+        permissions = s['permissions']
+        p = ""
+        if permissions
+          permissions.collect {|k,v| p+= "#{k}[#{v.keys.join('; ')}]"}.join(', ')
+          "Perms: #{p}"
+        else
+          ''
+        end
+      end
+    when 'inviter'
+      s = account.get_state
+      if s
+        result = ''
+        result += invite_helper(s['invitations'],'pending')
+        result += invite_helper(s['invitations_accepted'],'accepted')
+        result
+      end
+    when 'namer'
+      "<i>Namer player state rendering not implemented</i>"
+    when 'binder'
+      "<i>Binder player state rendering not implemented</i>"
+    end
+  end
+  
+  def invite_helper(i,kind)
+    result = ''
+    if i
+      count = i.size
+      if count > 0
+        result = ("#{count} #{kind} invitation:" + (count > 1 ? 's' : ''))
+        i.each {|email,val| result += "<br /> &nbsp;&nbsp;&nbsp;#{email}#{kind == 'accepted' ? " (#{val})" : ''}" }
       end
     end
+    result
   end
 end
 

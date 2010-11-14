@@ -1,7 +1,8 @@
-def create_user(user)
+def create_user(user,email = nil)
   @user = User.find_by_user_name(user)
   if @user.nil?
-    u = User.new({:user_name => user, :first_name => user.capitalize,:last_name => 'User',:email=>"#{user}@#{user}.org"})
+    email ||= "#{user}@#{user}.org"
+    u = User.new({:user_name => user, :first_name => user.capitalize,:last_name => 'User',:email=>email})
     u.create_bolt_identity(:user_name => :user_name,:password => 'password') && u.save
     @user = u
   end
@@ -29,8 +30,12 @@ Given /I have an account( as "([^\"]*)")*/ do |dummy,user|
   create_user(user)
 end
 
-Given /A user "([^\"]*)"/ do |user|
+Given /^A user "([^\"]*)"$/ do |user|
   create_user(user)
+end
+
+Given /^A user "([^\"]*)" with email "([^\"]*)"/ do |user,email|
+  create_user(user,email)
 end
 
 Then "I $should be logged in" do |should|

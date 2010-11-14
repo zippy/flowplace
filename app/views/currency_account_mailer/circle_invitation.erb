@@ -1,0 +1,11 @@
+Hi!
+
+You are being invited by <%=@currency_account.user.full_name%> to join a <%=@site_name%> circle called <%=@params[:circle]%>.
+
+To accept the invitation simply click on the url below and an account will be created for you at the <%=@site_name%>.
+
+<%=accept_invitation_url(@currency_account,@params[:to_email])%>
+
+Here's an additional note from <%=@currency_account.user.first_name%>:
+
+<%=@params[:extra]%>
