@@ -14,6 +14,8 @@ class HomeController < ApplicationController
       end
       @currency_accounts_my = @user.currency_accounts_in_circle(@current_circle) if !@current_circle.nil?
       @currency_accounts_my = @currency_accounts_my.reject {|ca| ca.currency.is_a?(CurrencyMembrane)} unless current_user.has_preference('showMembranes') if @currency_accounts_my
+      #TODO: later we'll be more sophisticated about what player classes show on the left
+      @currency_accounts_my = @currency_accounts_my.reject {|ca| ca.player_class != 'member'} if @currency_accounts_my
       @currencies = @current_circle.currencies if @current_circle
 #      @currencies = Currency.find(:all)
     
