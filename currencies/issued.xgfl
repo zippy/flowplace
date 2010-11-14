@@ -1,24 +1,24 @@
 <game>
   <description lang="en">
     Issued currencies are used when an issuer would like a community to be able to trade based on a particular set of valuables it can produce.<br />
-    Player classes: issuer, user<br />
+    Player classes: issuer, member<br />
     Issuer Summary function: Balance<br />
-    Issuer Plays: Issue(to_user,amount); Pay(to_user,amount)<br />
-    User Plays: Pay(to_user,amount); Reeem(to_issuer,amount)<br />
+    Issuer Plays: Issue(to_member,amount); Pay(to_member,amount)<br />
+    Member Plays: Pay(to_member,amount); Reeem(to_issuer,amount)<br />
   </description>
   <player_classes>
     <player_class name="issuer" />
-    <player_class name="user" />
+    <player_class name="member" />
   </player_classes>
   <states>
-    <state player_class="user"><integer name="balance" /><integer name="volume" /></state>
+    <state player_class="member"><integer name="balance" /><integer name="volume" /></state>
     <state player_class="issuer"><integer name="in_circulation" /><integer name="volume" /></state>
   </states>
 
   <plays>
-    <play name="_new_user">
+    <play name="_new_member">
       <script type="ruby">
-          <![CDATA[ @user_state.balance = 0; @user_state.volume=0]]>
+          <![CDATA[ @member_state.balance = 0; @member_state.volume=0]]>
       </script>
     </play>
     <play name="_new_issuer">
@@ -26,10 +26,10 @@
           <![CDATA[ @issuer_state.volume=0;@issuer_state.in_circulation=0]]>
       </script>
     </play>
-    <play name="pay" player_classes="user">
+    <play name="pay" player_classes="member">
       <fields>
-         <field type="player_user" id="from" />
-         <field type="player_user" id="to" />
+         <field type="player_member" id="from" />
+         <field type="player_member" id="to" />
          <field type="integer" id="amount" />
          <field type="string" id="memo" />
       </fields>
@@ -51,7 +51,7 @@
     <play name="issue" player_classes="issuer">
       <fields>
         <field type="player_issuer" id="from" />
-        <field type="player_user" id="to" />
+        <field type="player_member" id="to" />
         <field type="integer" id="amount" />
         <field type="string" id="memo" />
       </fields>
@@ -69,7 +69,7 @@
     <play name="retire" player_classes="issuer">
       <fields>
         <field type="player_issuer" id="from" />
-        <field type="player_user" id="to" />
+        <field type="player_member" id="to" />
         <field type="integer" id="amount" />
          <field type="string" id="memo" />
       </fields>
