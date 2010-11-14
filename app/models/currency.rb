@@ -698,13 +698,15 @@ class CurrencyMembrane
       if player_class == 'member' && namer
         self_player = currency_accounts.find_by_player_class('self')
         autojoin_currencies.each do |c|
-          play = {
-            'from' => namer,
-            'to' => player,
-            'currency' => c,
-            'player_class' => 'member'
-          }
-          api_play('grant',user,play)
+          if !user.player_clasess_in(self).include?('member')
+            play = {
+              'from' => namer,
+              'to' => player,
+              'currency' => c,
+              'player_class' => 'member'
+            }
+            api_play('grant',user,play)
+          end
         end
       end
       player
