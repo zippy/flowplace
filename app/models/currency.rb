@@ -504,20 +504,7 @@ class CurrencyTrueGoodBeautiful
   end
 end
 
-class CurrencyMutualCreditBounded
-  def api_render_player_state(account)
-    if account.player_class == 'member'
-      s = account.get_state
-      if s
-        "Balance: #{s['balance']}; Volume: #{s['volume']}; Transactions: #{account.plays.size}; Limit: #{s['limit']}; "
-      end
-    else
-      ""
-    end
-  end
-end
-
-class CurrencyMutualCredit
+module MutualCreditSummary
   def api_render_summary
     player_class = 'member'
     ca = currency_accounts.find(:all,:conditions => ["player_class = ?",player_class])
@@ -540,7 +527,24 @@ class CurrencyMutualCredit
       'No Plays'
     end
   end
+end
 
+class CurrencyMutualCreditBounded
+  include MutualCreditSummary
+  def api_render_player_state(account)
+    if account.player_class == 'member'
+      s = account.get_state
+      if s
+        "Balance: #{s['balance']}; Volume: #{s['volume']}; Transactions: #{account.plays.size}; Limit: #{s['limit']}; "
+      end
+    else
+      ""
+    end
+  end
+end
+
+class CurrencyMutualCredit
+  include MutualCreditSummary
   def api_render_player_state(account)
     if account.player_class == 'member'
       s = account.get_state
