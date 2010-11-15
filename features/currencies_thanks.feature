@@ -32,7 +32,6 @@ Feature: thanks currency
     Then I should be taken to the dashboard page
     And I should see "Thanks given: 1" within "#dashboard_greatfulness_member"
     And I should see "Thanks received: 0" within "#dashboard_greatfulness_member"
-    Then what
     And I should see /Recent:.*given to Jane.*?User's.*?Greatfulness.*?member.*?account/ within "#dashboard_greatfulness_member"
     When I go to the logout page
     And I log in as "jane"
