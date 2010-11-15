@@ -518,6 +518,29 @@ class CurrencyMutualCreditBounded
 end
 
 class CurrencyMutualCredit
+  def api_render_summary
+    player_class = 'member'
+    ca = currency_accounts.find(:all,:conditions => ["player_class = ?",player_class])
+    total_plays = 0
+
+    ca.each do |account|
+      s = account.get_state
+      if s
+        total_plays += account.plays.size
+      end
+    end
+
+    if total_plays > 0
+      total_plays /= 2
+      result = [
+        "Total transactions: #{total_plays}",
+        "Average transactions/member: #{sprintf("%.2f",total_plays.to_f/ca.size)}"
+      ].join('<br />')
+    else
+      'No Plays'
+    end
+  end
+
   def api_render_player_state(account)
     if account.player_class == 'member'
       s = account.get_state
