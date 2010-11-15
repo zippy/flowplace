@@ -49,6 +49,9 @@ Feature: bounded mutual credit currency
     And I log in as "jane"
     And I go to the dashboard page
     Then I should see /Balance:.*?100/
+    When I go to the holoptiview page
+    Then I should see "Total transactions: 1"
+    Then I should see "Average transactions/member: 0.5"
 
   Scenario: Joe views his transaction history before and after a transaction
     When I go to the dashboard page
