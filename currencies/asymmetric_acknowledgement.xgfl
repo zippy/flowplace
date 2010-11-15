@@ -1,0 +1,76 @@
+<game>
+  <description lang="en">
+    Asymmetric acknowledgement currencies allow tracking of in/out flow events between parties where it is not assumed that the magnitude or direction of the flow is perceived the same way by both parties.  This is unlike a standard sale event, where price is negotiated to be the same.  Players in this currency don't have a "balance", but simply track total inflow and total outflow./>
+    Player classes: member<br />
+    Summary function: Inflow,Outflow<br />
+    Member Plays: <br />
+    Initiate(to,direction,amount,memo)<br />
+    Complete(play,direction,amount,memo)<br />
+  </description>
+  <player_classes>
+    <player_class name="member" />
+  </player_classes>
+  <states>
+    <state player_class="member"><integer name="inflow" /><integer name="outflow" /></state>
+  </states>
+
+  <plays>
+    <play name="_new_member">
+      <script type="ruby">
+          <![CDATA[ @member_state.inflow = 0; @member_state.outflow = 0; @member_state.pending = {}]]>
+      </script>
+    </play>
+    <play name="initiate" player_classes="member">
+      <fields>
+         <field type="player_member" id="from" />
+         <field type="player_member" id="to" />
+         <field type="options" id="direction" values="inflow,outflow" />
+         <field type="integer" id="amount" />
+         <field type="string" id="memo" />
+      </fields>
+      <script type="ruby">
+        <![CDATA[
+        if !%w(inflow outflow).include?(@play.direction)
+          "You must choose a direction"
+        else
+          if @play.direction == 'inflow'
+            @play.from['inflow'] += @play.amount
+          elsif @play.direction == 'outflow'
+            @play.from['outflow'] += @play.amount
+          end
+          @play.to['pending'][@play.from['_name']+"|#{Time.now().to_f}"] = {'direction'=>@play.direction, 'amount'=>@play.amount, 'memo'=>@play.memo}
+          true
+        end
+        ]]>
+      </script>
+      <play_sentence lang='en'><from /> initiates <direction /> with <to /> in the amount <amount /> for <memo /></play_sentence>
+    </play>
+    <play name="complete" player_classes="member">
+      <fields>
+         <field type="player_member" id="from" />
+         <field type="play" id="play_id" />
+         <field type="options" id="direction" values="inflow,outflow" default="_from_play" />
+         <field type="integer" id="amount" default="_from_play" />
+         <field type="string" id="memo" default="_from_play" />
+      </fields>
+      <script type="ruby">
+        <![CDATA[
+        if @play.play_id.nil?
+          "No acknowledgement chosen"
+        elsif !%w(inflow outflow).include?(@play.direction)
+          "You must choose a direction"
+        else
+          @play.from['pending'].delete(@play.play_id)
+          if @play.direction == 'inflow'
+            @play.from['inflow'] += @play.amount
+          elsif @play.direction == 'outflow'
+            @play.from['outflow'] += @play.amount
+          end
+          true
+        end
+        ]]>
+      </script>
+      <play_sentence lang='en'><from /> completes <play_id /> as <direction /> in the amount <amount /> for <memo /></play_sentence>
+    </play>  
+  </plays>
+</game>

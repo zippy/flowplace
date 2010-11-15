@@ -228,12 +228,12 @@ module ApplicationHelper
         case field_type
         when 'play'
           s = currency_account.get_state
-#TODO: THIS IS BOGUS BECUSE IT'S CUSTOM DESIGNED FOR MUTUAL ACKNOWLEDGMENT CURRENCIES.  IT SHOULD BE IMPLEMENTED IN THE CURRENCY BUT
+#TODO: THIS IS BOGUS BECUSE IT'S CUSTOM DESIGNED FOR ASYMMETRIC ACKNOWLEDGMENT CURRENCIES.  IT SHOULD BE IMPLEMENTED IN THE CURRENCY BUT
 # XGFL DOESN'T HAVE A WAY TO DO THAT YET...
           pending_plays = s['pending'].collect do |play_id,value|
             (user,time) = play_id.split('|')
             p = s['pending'][play_id]
-            "#{user} acknowledgement of #{p['memo']} at #{p['amount']}"
+            ["#{user} #{p['direction']} of #{p['memo']} at #{p['amount']}",play_id]
           end
           if pending_plays.empty?
             result = '<i>&lt;No Pending Plays&gt;</i>'

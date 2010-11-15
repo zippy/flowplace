@@ -187,10 +187,10 @@ class Currency < ActiveRecord::Base
   end
 
   def api_render_summary
-    scan_member_accounts
+     (total_plays,result) = scan_member_accounts
 #    result = name+" has "
 #    result += api_player_classes.collect {|player_class| cas = currency_accounts.find(:all,:conditions => ["player_class = ?",player_class]).size; "#{cas} #{(cas > 1 || cas < 1) ? player_class.pluralize : player_class}" }.join(' and ')
-#    result
+    result
   end
   
   def scan_member_accounts
@@ -212,8 +212,9 @@ class Currency < ActiveRecord::Base
         "Total plays: #{total_plays}",
         "Average plays/member: #{sprintf("%.1f",total_plays.to_f/ca.size)}"
       ].join('<br />')
+      [total_plays,result]
     else
-      'No Plays'
+      [0,'No Plays']
     end
   end
   
@@ -532,7 +533,7 @@ end
 module MutualCreditSummary
   def api_render_summary
     mass = 0
-    result = scan_member_accounts do |s|
+    (total_plays,result) = scan_member_accounts do |s|
       if s
         mass += s['balance'] if s['balance'] > 0
       end
@@ -579,6 +580,40 @@ class CurrencyMutualRating
         rating = c[rating.round-1]
       end
       "My Rating: #{rating}"
+    end
+  end
+end
+
+class CurrencyAsymmetricAcknowledgement
+  def api_render_summary
+    inflow = 0
+    outflow = 0
+    (total_plays,result) = scan_member_accounts do |s|
+      if s
+        inflow += s['inflow']
+        outflow += s['outflow']
+      end
+    end
+    if total_plays > 0
+      result += "<br/ >Average Inflow: #{sprintf("%.1f",inflow.to_f/total_plays)}"
+      result += "<br/ >Average Outflow: #{sprintf("%.1f",outflow.to_f/total_plays)}"
+    end
+    result
+  end
+  def api_render_player_state(account)
+    s = account.get_state
+    if s
+      result = "Inflow: #{s['inflow']}; Outflow: #{s['outflow']}"
+      if !s['pending'].empty?
+        pending_plays = s['pending'].collect do |play_id,value|
+          (user,time) = play_id.split('|')
+          p = s['pending'][play_id]
+          "#{user} #{p['direction']} of #{p['memo']} at #{p['amount']}"
+        end
+        
+        result += "<br />Pending:<br /> &nbsp;&nbsp;&nbsp;#{pending_plays.join('<br />&nbsp;&nbsp;&nbsp;')}"
+      end
+      result
     end
   end
 end
