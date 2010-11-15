@@ -34,13 +34,13 @@ Feature: mutual credit currency
     Then I should be taken to the dashboard page
     And I should see "Balance: -100"
     And I should see "Volume: 100"
-    And I should see "Transactions: 1"
+    And I should see "Plays: 1"
     When I go to the logout page
     And I log in as "jane"
     And I go to the dashboard page
     Then I should see "Balance: 100"
     And I should see "Volume: 100"
-    And I should see "Transactions: 1"
+    And I should see "Plays: 1"
     When I go to the holoptiview page
-    Then I should see "Total transactions: 1"
-    Then I should see "Average transactions/member: 0.5"
+    Then I should see "Total plays: 1"
+    Then I should see "Average plays/member: 0.5"

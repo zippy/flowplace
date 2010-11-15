@@ -187,9 +187,33 @@ class Currency < ActiveRecord::Base
   end
 
   def api_render_summary
-    result = name+" has "
-    result += api_player_classes.collect {|player_class| cas = currency_accounts.find(:all,:conditions => ["player_class = ?",player_class]).size; "#{cas} #{(cas > 1 || cas < 1) ? player_class.pluralize : player_class}" }.join(' and ')
-    result
+    scan_member_accounts
+#    result = name+" has "
+#    result += api_player_classes.collect {|player_class| cas = currency_accounts.find(:all,:conditions => ["player_class = ?",player_class]).size; "#{cas} #{(cas > 1 || cas < 1) ? player_class.pluralize : player_class}" }.join(' and ')
+#    result
+  end
+  
+  def scan_member_accounts
+    player_class = 'member'
+    ca = currency_accounts.find(:all,:conditions => ["player_class = ?",player_class])
+    total_plays = 0
+
+    ca.each do |account|
+      s = account.get_state
+      if s
+        total_plays += account.plays.size
+      end
+    end
+
+    if total_plays > 0
+      total_plays /= 2
+      result = [
+        "Total plays: #{total_plays}",
+        "Average plays/member: #{sprintf("%.1f",total_plays.to_f/ca.size)}"
+      ].join('<br />')
+    else
+      'No Plays'
+    end
   end
   
   def api_play_history(account)
@@ -504,38 +528,12 @@ class CurrencyTrueGoodBeautiful
   end
 end
 
-module MutualCreditSummary
-  def api_render_summary
-    player_class = 'member'
-    ca = currency_accounts.find(:all,:conditions => ["player_class = ?",player_class])
-    total_plays = 0
-
-    ca.each do |account|
-      s = account.get_state
-      if s
-        total_plays += account.plays.size
-      end
-    end
-
-    if total_plays > 0
-      total_plays /= 2
-      result = [
-        "Total transactions: #{total_plays}",
-        "Average transactions/member: #{sprintf("%.1f",total_plays.to_f/ca.size)}"
-      ].join('<br />')
-    else
-      'No Plays'
-    end
-  end
-end
-
 class CurrencyMutualCreditBounded
-  include MutualCreditSummary
   def api_render_player_state(account)
     if account.player_class == 'member'
       s = account.get_state
       if s
-        "Balance: #{s['balance']}; Volume: #{s['volume']}; Transactions: #{account.plays.size}; Limit: #{s['limit']}; "
+        "Balance: #{s['balance']}; Volume: #{s['volume']}; Plays: #{account.plays.size}; Limit: #{s['limit']}; "
       end
     else
       ""
@@ -544,12 +542,11 @@ class CurrencyMutualCreditBounded
 end
 
 class CurrencyMutualCredit
-  include MutualCreditSummary
   def api_render_player_state(account)
     if account.player_class == 'member'
       s = account.get_state
       if s
-        "Balance: #{s['balance']}; Volume: #{s['volume']}; Transactions: #{account.plays.size}"
+        "Balance: #{s['balance']}; Volume: #{s['volume']}; Plays: #{account.plays.size}"
       end
     else
       ""
