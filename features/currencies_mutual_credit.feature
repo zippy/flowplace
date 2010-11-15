@@ -25,15 +25,22 @@ Feature: mutual credit currency
 
   Scenario: Joe makes a trade with Jane
     When I go to the dashboard page
-    Then I should see /Balance:.*?0/
+    Then I should see "Balance: 0"
     When I follow "Pay"
     And I select "Jane User's LETS member account" from "play_to"
     And I fill in "play_amount" with "100"
     And I fill in "play_memo" with "backrub"
     And I press "Record Play"
     Then I should be taken to the dashboard page
-    And I should see /Balance:.*?-100/
+    And I should see "Balance: -100"
+    And I should see "Volume: 100"
+    And I should see "Transactions: 1"
     When I go to the logout page
     And I log in as "jane"
     And I go to the dashboard page
-    Then I should see /Balance:.*?100/
+    Then I should see "Balance: 100"
+    And I should see "Volume: 100"
+    And I should see "Transactions: 1"
+    When I go to the holoptiview page
+    Then I should see "Total transactions: 1"
+    Then I should see "Average transactions/member: 0.5"
