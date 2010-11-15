@@ -48,6 +48,8 @@ img
 
 #circle_logo {
 	float:left;
+		-moz-border-radius:3px 3px 3px 3px;
+	border-radius:3px 3px 3px 3px;
 }
 #circle_header_name {
 	float:left;
