@@ -13,10 +13,14 @@ class HomeController < ApplicationController
         @user = current_user
       end
       @currency_accounts_my = @user.currency_accounts_in_circle(@current_circle) if !@current_circle.nil?
-      @currency_accounts_my = @currency_accounts_my.reject {|ca| ca.currency.is_a?(CurrencyMembrane)} unless current_user.has_preference('showMembranes') if @currency_accounts_my
-      #TODO: later we'll be more sophisticated about what player classes show on the left
-      @currency_accounts_my = @currency_accounts_my.reject {|ca| ca.player_class != 'member'} if @currency_accounts_my
+      if @currency_accounts_my
+        @currency_accounts_my = @currency_accounts_my.reject {|ca| ca.currency.is_a?(CurrencyMembrane)} unless current_user.has_preference('showMembranes') 
+        #TODO: later we'll be more sophisticated about what player classes show on the left
+        @currency_accounts_my = @currency_accounts_my.reject {|ca| ca.player_class != 'member'}
+        @currency_accounts_my = @currency_accounts_my.sort_by {|c| c.currency.name}
+      end
       @currencies = @current_circle.currencies if @current_circle
+      @currencies = @currencies.sort_by {|c| c.name} if @currencies
 #      @currencies = Currency.find(:all)
     
       if Configuration.get(:wealing_policy) == 'on'
