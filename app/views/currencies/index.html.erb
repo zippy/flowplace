@@ -27,7 +27,7 @@ for currency in @currencies
     <% if current_user.can?(:admin)%>
     <td><%=currency.steward.full_name%></td>
     <%end%>
-    <td><%=h currency.api_render_summary%></td>
+    <td><%=currency.api_render_summary%></td>
     <td><%=h currency.description%></td>
     <td><%= link_to 'Remove', currency_path(currency), :confirm => 'Are you sure?', :method => :delete %></td>
   </tr>

@@ -10,24 +10,24 @@
 <%if @current_circle.nil?%>
    You aren't a member of any circles...
 <% else %>
-<div style="float: right;background-color:#c7c;padding: 5px;border: 1px;width: 400px">Note: This page is not complete. Eventually it will be different for every circle to give a custom holoptical picture of that circle.</div>
 <table id='holoptiview'>
 <tr>
   <td class='holoptiview_my'>
     <div class="holoptiview_box">
-      <p class='holoptiview_box_title'><%=@who%> Wealth in <%=@current_circle.name%></p>
+      <h3><%=@who%> Wealth in <%=@current_circle.name%></h3>
       <%for account in @currency_accounts_my
         currency = Currency.find(account.currency.id)
         %>
-        <%=render_currency_icon(currency)%><%= currency.api_render_player_state(account) %><br />
+        <p id="account_summary_<%=account.id%>">
+        <%=render_currency_icon(currency)%><%= currency.api_render_player_state(account) %></p>
       <% end %>
     </div>
   </td>
   <td>
     <div class="holoptiview_box">
-      <p class='holoptiview_box_title'>HoloptiWealth</p>
+      <h3>HoloptiWealth</h3>
       <%for currency in @currencies%>
-        <%=render_currency_icon(currency)%><%= currency.api_render_summary %><br />
+        <p id="currency_summary_<%=currency.id%>"><%=render_currency_icon(currency)%><%= currency.api_render_summary %></p>
       <% end %>
     </div>
   </td>
@@ -36,13 +36,13 @@
 <tr>
   <td class='holoptiview_my'>
     <div class="holoptiview_box">
-      <p class='holoptiview_box_title'><%=@who%> Actions</p>
+      <h3><%=@who%> Actions</h3>
       <%= link_to('Actions',my_actions_path) %>: <%= @actions_total_my%>
     </div>
   </td>
   <td>
     <div class="holoptiview_box">
-      <p class='holoptiview_box_title'>Actions</p>
+      <h3>Actions</h3>
       <%= link_to('Actions',actions_path) %>: <%= @actions_total%>
     </div>
   </td>
@@ -50,14 +50,14 @@
 <tr>
   <td class='holoptiview_my'>
     <div class="holoptiview_box">
-      <p class='holoptiview_box_title'><%=@who%> Intentions</p>
+      <h3><%=@who%> Intentions</h3>
       <%= link_to('Proposals',proposed_intentions_path) %>: <%= @proposals_total_my%><br />
       <%= link_to('Intentions',my_intentions_path) %>: <%= @intentions_total_my%>
     </div>
   </td>
   <td>
     <div class="holoptiview_box">
-      <p class='holoptiview_box_title'>Intentions</p>
+      <h3>Intentions</h3>
       Proposals: <%= @proposals_total%><br />
       <%= link_to('Intentions',weals_path) %>: <%= @intentions_total%>
     </div>

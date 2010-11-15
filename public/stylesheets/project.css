@@ -441,7 +441,7 @@ p.box_title {
 
 /* ---------- HOLOPTIVIEW ---------- */
 
-p.holoptiview_box_title {
+.holoptiview_box h3 {
 	margin-top: 0;
 	margin-bottom: 4px;
 	text-align: center;
@@ -458,6 +458,9 @@ p.holoptiview_box_title {
 }
 td.holoptiview_my {
 	vertical-align: top;
+}
+
+.holoptiview_box p {
 }
 
 /* ---------- ACTIVITIES ---------- */
