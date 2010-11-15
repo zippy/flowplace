@@ -491,7 +491,7 @@ class CurrencyTrueGoodBeautiful
       end
     end
     if total > 0
-      "T:#{sprintf("%.2f",t.to_f/total)} G:#{sprintf("%.2f",(g).to_f/total)} B:#{sprintf("%.2f",(b).to_f/total)}"
+      "T:#{sprintf("%.1f",t.to_f/total)} G:#{sprintf("%.1f",(g).to_f/total)} B:#{sprintf("%.1f",(b).to_f/total)}"
     else
       'No Ratings'
     end
@@ -534,7 +534,7 @@ class CurrencyMutualCredit
       total_plays /= 2
       result = [
         "Total transactions: #{total_plays}",
-        "Average transactions/member: #{sprintf("%.2f",total_plays.to_f/ca.size)}"
+        "Average transactions/member: #{sprintf("%.1f",total_plays.to_f/ca.size)}"
       ].join('<br />')
     else
       'No Plays'
