@@ -478,6 +478,24 @@ end
 # Here are flowpace specific overrides of the xgfl currencies
 
 class CurrencyTrueGoodBeautiful
+  def api_render_summary
+    player_class = 'member'
+    ca = currency_accounts.find(:all,:conditions => ["player_class = ?",player_class])
+    t = g = b = 0
+    total = 0
+    ca.each do |account|
+      s = account.get_state
+      if s && s['true']
+        total += 1
+        t += s['true']; g += s['good']; b += s['beautiful']
+      end
+    end
+    if total > 0
+      "T:#{sprintf("%.2f",t.to_f/total)} G:#{sprintf("%.2f",(g).to_f/total)} B:#{sprintf("%.2f",(b).to_f/total)}"
+    else
+      'No Ratings'
+    end
+  end
   def api_render_player_state(account)
     s = account.get_state
     if s
