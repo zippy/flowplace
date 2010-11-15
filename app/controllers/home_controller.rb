@@ -16,7 +16,7 @@ class HomeController < ApplicationController
       if @currency_accounts_my
         @currency_accounts_my = @currency_accounts_my.reject {|ca| ca.currency.is_a?(CurrencyMembrane)} unless current_user.has_preference('showMembranes') 
         #TODO: later we'll be more sophisticated about what player classes show on the left
-        @currency_accounts_my = @currency_accounts_my.reject {|ca| ca.player_class != 'member'}
+        @currency_accounts_my = @currency_accounts_my.reject {|ca| !%w(member creator).include?(ca.player_class)}
         @currency_accounts_my = @currency_accounts_my.sort_by {|c| c.currency.name}
       end
       @currencies = @current_circle.currencies if @current_circle
