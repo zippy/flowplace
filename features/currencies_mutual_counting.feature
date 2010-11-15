@@ -27,13 +27,13 @@ Feature: mutual counting currency
 
   Scenario: Joe counts a gem in a conversation with Jane
     When I go to the dashboard page
-    Then I should see /Counts:.*no countables defined/
+    Then I should see "no countables defined"
     When I follow "Create Countable"
     And I fill in "play_name" with "Conversation Gems"
     And I fill in "play_description" with "we are tracking gems that come out of conversations"
     And I press "Record Play"
     Then I should be taken to the dashboard page
-    And I should see /Counts:.*Conversation Gems: 0/
+    And I should see /My Counts:.*Conversation Gems: 0/
     When I follow "Count"
     And I select "Conversation Gems" from "play_countable"
     And I select "Jane User's Counter member account" from "play_to"

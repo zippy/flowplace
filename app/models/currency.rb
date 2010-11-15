@@ -591,7 +591,28 @@ class CurrencyMutualAcknowledgement
 end
 
 class CurrencyMutualCounting
+  def api_render_summary
+    get_counts
+  end
+  
   def api_render_player_state(account)
+    result = ""
+    c = configuration['_.countables']
+    if c.nil?
+      result += "<i>no countables defined</i>"
+    else
+      s = account.get_state
+      if s
+        result = "My Counts:"
+        c.each do |name,vals|
+          count = ((cr = s['counts_recorded']) && cr.has_key?(name)) ? cr[name].size : 0
+          result += "<br /> &nbsp;&nbsp;&nbsp;#{name}: #{count}" 
+        end
+      end
+    end
+    result
+  end
+  def get_counts
     c = configuration['_.countables']
     result = "Counts:"
     if c.nil?

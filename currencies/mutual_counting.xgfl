@@ -51,6 +51,8 @@
             self.save
             @play.from['counts_recorded'][@play.countable] ||= []
             @play.from['counts_recorded'][@play.countable] << @play.memo
+            @play.to['counts_recorded'][@play.countable] ||= []
+            @play.to['counts_recorded'][@play.countable] << @play.memo
             return_value = true
           end
         end
@@ -94,6 +96,16 @@
           else
             c['count'] = 0
             self.save
+            @play.from['counts_recorded'].delete(@play.countable)
+            currency_accounts.each do |ca|
+              if ca != @play.from['_currency_account']
+                s = ca.get_state
+                if s
+                  s['counts_recorded'].delete(@play.countable)
+                  ca.save
+                end
+              end
+            end
             return_value = true
           end
         end
