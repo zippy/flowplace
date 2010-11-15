@@ -202,6 +202,7 @@ class Currency < ActiveRecord::Base
       s = account.get_state
       if s
         total_plays += account.plays.size
+        yield(s) if block_given?
       end
     end
 
@@ -528,7 +529,20 @@ class CurrencyTrueGoodBeautiful
   end
 end
 
+module MutualCreditSummary
+  def api_render_summary
+    mass = 0
+    result = scan_member_accounts do |s|
+      if s
+        mass += s['balance'] if s['balance'] > 0
+      end
+    end
+    result += "<br/ >Mass: #{mass}"
+  end
+end
+
 class CurrencyMutualCreditBounded
+  include MutualCreditSummary
   def api_render_player_state(account)
     if account.player_class == 'member'
       s = account.get_state
@@ -542,6 +556,7 @@ class CurrencyMutualCreditBounded
 end
 
 class CurrencyMutualCredit
+  include MutualCreditSummary
   def api_render_player_state(account)
     if account.player_class == 'member'
       s = account.get_state
