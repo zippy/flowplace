@@ -1,0 +1,50 @@
+<game>
+  <description lang="en">
+    This is a special purpose currency for sending people thank yous.<br />
+    Player classes: member<br />
+    Summary function: <br />
+    Member Plays: thank(to,memo)<br />
+  </description>
+  <player_classes>
+    <player_class name="member" />
+  </player_classes>
+  <states>
+    <state player_class="member"><integer name="total_given" /><integer name="total_received" /><hash name="recent" /></state>
+  </states>
+  <plays>
+    <play name="_new_member">
+      <script type="ruby">
+          <![CDATA[ 
+            @member_state.recent = {}
+            @member_state.total_given = 0
+            @member_state.total_received = 0
+            ]]>
+      </script>
+    </play>
+    <play name="thank" player_classes="member">
+      <fields>
+         <field type="player_member" id="from" />
+         <field type="player_member" id="to" />
+         <field type="string" id="memo" />
+      </fields>
+      <script type="ruby">
+        <![CDATA[
+        @play.from['total_given'] += 1
+        @play.to['total_received'] += 1
+        now = Time.now
+        now_f = now.to_f
+        @play.from['recent'][now_f] = "given to "+@play.to['_name']
+        x = @play.from['recent'].keys.sort
+        keep = 5
+        while (x.size>keep) do @play.from['recent'].delete(x.shift) end
+
+        @play.to['recent'][now_f] = "received from "+@play.from['_name']
+        x = @play.to['recent'].keys.sort
+        while (x.size>keep) do @play.to['recent'].delete(x.shift) end
+        true
+        ]]>
+      </script>
+      <play_sentence lang='en'><from /> thanks <to /> for <memo /></play_sentence>
+    </play>
+  </plays>
+</game>

@@ -249,8 +249,8 @@ class Currency < ActiveRecord::Base
     @xgfl ||= Nokogiri::XML.parse(xgfl)
     play_names = []
     @xgfl.xpath(%Q|/game/plays/*|).to_a.each do |p|
-      pc = p.attributes['player_classes'].to_s
-      classes = pc.split(/, */)
+      tpc = p.attributes['player_classes'].to_s
+      classes = tpc.split(/, */)
       classes.each do |pc|
         if player_class == pc
           play_names << p.attributes['name'].to_s
@@ -772,6 +772,41 @@ class CurrencyAcknowledgement
       end
     end
     result
+  end
+end
+
+
+class CurrencyThanks
+  include DateTimeRendering
+  def api_render_summary
+    given = received = 0
+    (total_plays,result) = scan_member_accounts do |s|
+      if s
+        given += s['total_given'] if s['total_given']
+        received += s['total_received'] if s['total_received']
+      end
+    end
+    if total_plays > 0
+      result += "<br/ >Average thanks given: #{sprintf("%.1f",given.to_f/total_plays)}"
+#      result += "<br/ >Average thanks received: #{sprintf("%.1f",received.to_f/total_plays)}"
+    end
+    result
+  end
+  
+  def api_render_player_state(account)
+    s = account.get_state
+    if s
+      given = s['total_given']
+      received = s['total_received']
+      result = "Thanks given: #{given}; Thanks received: #{received}"
+      recent = s['recent']
+      if recent && recent.size > 0 
+        result += "<br />Recent:"
+        x = recent.keys.sort.reverse
+        x.each {|t| result+= '<br />&nbsp;&nbsp;&nbsp;'+recent[t]+" on "+standard_date_time(Time.at(t))}
+      end
+      result
+    end
   end
 end
 
