@@ -19,11 +19,22 @@
 	color: #ff0;
 }
 
-.widget p {
+.widget div {
 	padding: 10px;
 	border: 1px solid #02687F;	
 	border-top: none;	
 	border-radius:0px 0px 5px 5px;
 	-moz-border-radius:0px 0px 5px 5px;
 	margin-top: -11px;
+}
+
+.widget p {
+	margin-top: -5px;
+	border-bottom: 1px solid #02687F;	
+	
+}
+.widget .last {
+	border: none;
+	margin-bottom: 0px;
+	
 }

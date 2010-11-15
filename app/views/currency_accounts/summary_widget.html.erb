@@ -1,2 +1,5 @@
 <h1><%= link_to 'Flowplace',home_url%> Currency: <%=@currency.name%> <%=render_currency_icon(@currency)%></h1>
-<p><%=@currency_account.user.full_name%>'s Status: <%= @currency.api_render_player_state(@currency_account)%></p>
+<div>
+<p<%if params[:hide_overall]%> class="last"<%end%>><%=@currency_account.user.full_name%>'s Status: <%= @currency.api_render_player_state(@currency_account)%></p>
+<%unless params[:hide_overall]%><p class="last">Overall Currency Summary: <%= @currency.api_render_summary%></p><%end%>
+</div>
