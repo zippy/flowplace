@@ -723,6 +723,26 @@ class CurrencyIntentions
 end
 
 class CurrencyAcknowledgement
+  def api_render_summary
+    player_class = 'member'
+    ca = currency_accounts.find(:all,:conditions => ["player_class = ?",player_class])
+    given = 0
+    received = 0
+    ca.each do |account|
+      s = account.get_state
+      if s
+        given += s['total_given']
+        received += s['total_received']
+      end
+    end
+    names = name.pluralize
+    if ca.size > 0
+      result = "Average #{names} Given: #{sprintf("%.2f",given.to_f/ca.size)}"
+    else
+      'No Plays'
+    end
+  end
+  
   def api_render_player_state(account)
     s = account.get_state
     if s
