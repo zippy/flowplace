@@ -26,3 +26,6 @@ Feature: tgb currency
     And I should see "T:1"
     And I should see "G:2"
     And I should see "B:3"
+    When I go to the holoptiview page
+    Then I should see "T:1.0 G:2.0 B:3.0"
+    
