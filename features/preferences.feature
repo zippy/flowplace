@@ -73,5 +73,53 @@ Feature: Users
     And I press "Set Preferences"
     And I go to the preferences page
     Then "French" should be selected for "Language"
-    
+
+  Scenario: user toggles the view self-authorize annotation preferences
+    When I go to the logout page
+    And I am logged into my "admin" account
+    And I have "admin" privs
+    When I go to the configurations page
+    And I follow "Annotations Policy"
+    And I select "self_authorize_view" from "configuration_value"
+    And I press "Update"
+    Then I should not have "view_annotations,edit_annotations" privs
+    When I follow "Preferences"
+    Then the "Activate view annotations feature" checkbox should not be checked
+    When I check "Activate view annotations feature"
+    And I press "Set Preferences"
+    Then I should have "view_annotations" privs
+    And I should not have "edit_annotations" privs
+    When I follow "Preferences"
+    Then the "Activate view annotations feature" checkbox should be checked
+    When I uncheck "Activate view annotations feature"
+    And I press "Set Preferences"
+    Then I should not have "view_annotations,edit_annotations" privs
+    When I follow "Preferences"
+    Then the "Activate view annotations feature" checkbox should not be checked
+
+  Scenario: user toggles the edit self-authorize annotation preferences
+    When I go to the logout page
+    And I am logged into my "admin" account
+    And I have "admin" privs
+    When I go to the configurations page
+    And I follow "Annotations Policy"
+    And I select "self_authorize_view_edit" from "configuration_value"
+    And I press "Update"
+    Then I should not have "view_annotations,edit_annotations" privs
+    When I follow "Preferences"
+    Then the "Activate view annotations feature" checkbox should not be checked
+    And the "Activate edit annotations feature" checkbox should not be checked
+    When I check "Activate edit annotations feature"
+    And I press "Set Preferences"
+    Then I should have "edit_annotations" privs
+    When I follow "Preferences"
+    Then the "Activate view annotations feature" checkbox should not be checked
+    Then the "Activate edit annotations feature" checkbox should be checked
+    When I uncheck "Activate edit annotations feature"
+    And I press "Set Preferences"
+    Then I should not have "edit_annotations" privs
+    When I follow "Preferences"
+    Then the "Activate view annotations feature" checkbox should not be checked
+    And the "Activate edit annotations feature" checkbox should not be checked
+ 
     

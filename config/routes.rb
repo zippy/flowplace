@@ -1,4 +1,6 @@
 ActionController::Routing::Routes.draw do |map|
+  map.resources :annotations
+
   map.resources :configurations, :collection => { :merge_defaults => :get }
   map.resources :wallets
   map.resources :plays

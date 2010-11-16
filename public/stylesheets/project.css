@@ -662,6 +662,8 @@ img.clickable {
 	padding: 0 10px;
 }
 
+/* -------------- EMBED CODES ---------------------*/
+
 #embed_codes {
 	float: right;
 	border: solid 1px #686d6e;
@@ -672,4 +674,54 @@ img.clickable {
 
 #embed_codes h3 {
 	margin: 0px;	
+}
+/* -------------- ANNOTATIONS ---------------------*/
+
+#annotation.visible {
+ display:block;
+}
+#annotation_fader.visible {
+ display:block;
+}
+#annotation {
+	display:none;
+	color: #000;
+	border: 1px solid #000;
+	background: white;
+	position:absolute;
+  left:20%;
+  top:20%;
+	width: 60%;
+	padding: 5px;
+	z-index: 102;
+	filter:alpha(opacity=90);
+  -moz-opacity:0.9;
+  -khtml-opacity: 0.9;
+  opacity: 0.9;
+  border-radius:5px 5px 5px 5px;
+	-moz-border-radius:5px 5px 5px 5px;
+	
+}
+#annotation_fader {
+	display:none;
+	color: #000;
+	border: 1px solid #aaaaaa;
+	background: white;
+	position:absolute;
+  left:0px;
+  top:0px;
+	width: 100%;
+	height: 100%;
+  filter:alpha(opacity=50);
+  -moz-opacity:0.5;
+  -khtml-opacity: 0.5;
+  opacity: 0.5;
+	z-index: 101;
+}
+#annotation_nav {
+	float:left;
+	margin-left: 10px;
+}
+#annotation_nav a {
+	color: #fff;
 }

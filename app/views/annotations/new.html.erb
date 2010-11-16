@@ -1,0 +1,21 @@
+<script type="text/javascript" src="/ckeditor/ckeditor.js"></script>
+<h3>Annotation for: <%= @path%></h3>
+
+<% form_for(@annotation) do |f| %>
+  <%= f.error_messages %>
+
+  <p>
+    <%= f.label :body%><br />
+    <%= f.text_area :body %><%= f.hidden_field :path,:value=>@path %>
+  </p>
+  <p>
+    <%= f.submit "Save" %>
+  </p>
+<% end %>
+<script type="text/javascript">
+	CKEDITOR.replace( 'annotation_body',
+	{
+         width : 900,height : 400
+     }
+	 );
+</script>

@@ -20,9 +20,15 @@ Your Account and Your Preferences
 </p>
 <% if Configuration.get(:circle_currency_policy) == 'self_authorize'%>
 <p>
-  <%= check_box_tag(:circle_currency_management,true,@user.can?(:circle))%> <%= label_tag :circle_currency_management, 'Activate circle and currency management features'%> 
-</p>
+  <br /><%= check_box_tag(:circle_currency_management,true,@user.can?(:circle))%> <%= label_tag :circle_currency_management, 'Activate circle and currency management features'%>
 <%end%>
+<% if (c= Configuration.get(:annotations_policy)) =~ /^self_authorize/%>
+  <br /><%= check_box_tag(:view_annotations,true,@user.can?(:view_annotations))%> <%= label_tag :view_annotations, 'Activate view annotations feature'%> 
+<%end%>
+<% if c == 'self_authorize_view_edit'%>
+  <br /><%= check_box_tag(:edit_annotations,true,@user.can?(:edit_annotations))%> <%= label_tag :edit_annotations, 'Activate edit annotations feature'%> 
+<%end%>
+</p>
 <p>
   <%= label_tag :language,"Language:" %><%= select_tag(:language, options_for_select(User::Languages,@user.language))%>
 </p>

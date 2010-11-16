@@ -54,3 +54,8 @@ configurations_11:
   value: "en"
   configuration_type: "options(en,fr,es)"
   description: "Choose the default language for new users."
+configurations_12:
+  name: annotations_policy
+  value: "admin_authorize"
+  configuration_type: "options(self_authorize_view,self_authorize_view_edit,admin_authorize)"
+  description: "Policy for activating the annotations feature."
