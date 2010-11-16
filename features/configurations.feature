@@ -58,7 +58,7 @@ Feature: configuration
     Then I should see a table with 1 row
     When I go to the merge default configurations page
     And I go to the configurations page
-    Then I should see a table with 12 rows
+    Then I should see a table with 13 rows
 
   Scenario: admin turns on the circle/currency self-auth config
     When I go to the configurations page
@@ -105,3 +105,22 @@ Feature: configuration
     And I am logged into my "jaques" account
     And I go to the preferences page
     Then "French" should be selected for "Language"
+
+  Scenario: admin turns on the annotations self-auth config
+    When follow "Preferences"
+    Then I should not see "Activate view annotations feature"
+    When I go to the configurations page
+    And I follow "Annotations Policy"
+    And I select "self_authorize_view" from "configuration_value"
+    And I press "Update"
+    When follow "Preferences"
+    Then I should see "Activate view annotations feature"
+    And I should not see "Activate edit annotations feature"
+    When I go to the configurations page
+    And I follow "Annotations Policy"
+    And I select "self_authorize_view_edit" from "configuration_value"
+    And I press "Update"
+    When follow "Preferences"
+    Then I should see "Activate view annotations feature"
+    Then I should see "Activate edit annotations feature"
+

@@ -11,7 +11,7 @@ class User < ActiveRecord::Base
   has_many :wallets
   belongs_to :circle, :class_name => 'Currency' #this is for users that are a circle
 
-  Permissions = %w(dev admin assignPrivs createAccounts accessAccounts circle currency)
+  Permissions = %w(dev admin assignPrivs createAccounts accessAccounts circle currency view_annotations edit_annotations admin_annotations)
   Preferences = %w(terse enlargeFont)
   Languages = [["English", 'en'], ["French", 'fr'],["Spanish",'es']]
   

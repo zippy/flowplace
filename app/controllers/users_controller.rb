@@ -192,6 +192,16 @@ class UsersController < ApplicationController
         @user.roles -= roles
         @user.roles += roles if params[:circle_currency_management]
       end
+      if Configuration.get(:annotations_policy) =~ /^self_authorize/
+        view_role = Role.find(:all,:conditions => "name = 'view_annotations'")
+        @user.roles -= view_role
+        @user.roles += view_role if params[:view_annotations]
+      end
+      if Configuration.get(:annotations_policy) == 'self_authorize_view_edit'
+        edit_role = Role.find(:all,:conditions => "name = 'edit_annotations'")
+        @user.roles -= edit_role
+        @user.roles += edit_role if params[:edit_annotations]
+      end
       return_url = session[:prefs_return_to] || home_url
       respond_to do |format|
         flash[:notice] = :user_preferences_set
