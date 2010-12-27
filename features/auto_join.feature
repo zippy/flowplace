@@ -83,4 +83,34 @@ Feature: auto_join
     Then I should be taken to the dashboard page
     Then I should see "the circle" as a "Jump to" option
     And I should see a "X" "member" dashboard item
-    
+
+  Scenario: a user creates an account and is joined to the circle and its member currencies even when circles have overlapping currencies
+    Given a circle "another circle"
+    Given a "MutualCredit" currency "X"
+    And I bind "X" to "the circle" with autojoin on
+    And I bind "X" to "another circle" with autojoin on
+    When I go to the configurations page
+    And I follow "Autojoin"
+    And fill in "configuration_value" with "circles: the circle,another circle"
+    And I press "Update"
+    And I follow "New User Policy"
+    And I select "self_signup" from "configuration_value"
+    And I press "Update"
+    When I go to the logout page
+    And I go to the sign up page
+    Then I should be taken to the sign up page
+    And I fill in "Account name" with "jane"
+    And I fill in "First name:" with "Jane"
+    And I fill in "Last name" with "Smith"
+    And I fill in "E-mail" with "notifications@harris-braun.com"
+    And I press "Sign up"
+    And I go to the user activation page
+    And I fill in "Choose a Password" with "password"
+    And I fill in "Password Confirmation" with "password"
+    And I press "Activate"
+    Then I should see "the circle" as a "Jump to" option
+    Then I should see "another circle" as a "Jump to" option
+    When I go to the dashboard page for "the circle"
+    And I should see a "X" "member" dashboard item
+    When I go to the dashboard page for "another circle"
+    And I should see a "X" "member" dashboard item
