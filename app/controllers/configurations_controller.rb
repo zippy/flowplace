@@ -1,5 +1,5 @@
 class ConfigurationsController < ApplicationController
-  require_authorization(:admin) 
+#BOLT-TO_REMOVE  require_authorization(:admin) 
   # GET /configurations
   # GET /configurations.xml
   def index

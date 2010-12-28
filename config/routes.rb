@@ -58,8 +58,6 @@ ActionController::Routing::Routes.draw do |map|
 
   map.logged_out('/logged_out', :controller => 'home', :action => 'logged_out')
 
-  map.from_plugin(:bolt)
-
   map.do_accept_invitation '/users/accept_invitation', :controller => 'users', :action => 'do_accept_invitation', :conditions => { :method => :post }
   map.accept_invitation '/users/accept_invitation/:currency_account_id/:email', :controller => 'users', :action => 'accept_invitation', :requirements => { :email => /[^\/]+/ }, :conditions => { :method => :get }
   map.logged_in_users '/users/logged_in', :controller => 'users', :action => 'logged_in_users'

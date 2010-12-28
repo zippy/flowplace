@@ -1,9 +1,9 @@
 class UsersController < ApplicationController
-  require_authentication :except => [:signup,:do_signup,:accept_invitation,:do_accept_invitation]
-  require_authorization(:createAccounts, :only => [:new,:create]) 
-  require_authorization(:accessAccounts, :only => [:edit,:update,:index]) 
-  require_authorization(:admin, :only => [:login_as,:destroy,:logged_in_users]) 
-  require_authorization(:assignPrivs, :only => [:permissions,:set_permissions]) 
+#BOLT-TO_REMOVE    require_authentication :except => [:signup,:do_signup,:accept_invitation,:do_accept_invitation]
+#BOLT-TO_REMOVE    require_authorization(:createAccounts, :only => [:new,:create]) 
+#BOLT-TO_REMOVE    require_authorization(:accessAccounts, :only => [:edit,:update,:index]) 
+#BOLT-TO_REMOVE    require_authorization(:admin, :only => [:login_as,:destroy,:logged_in_users]) 
+#BOLT-TO_REMOVE    require_authorization(:assignPrivs, :only => [:permissions,:set_permissions]) 
 
 	def logged_in_users
 		current_time = Time.now

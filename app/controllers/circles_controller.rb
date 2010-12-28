@@ -1,6 +1,6 @@
 class CirclesController < ApplicationController
 
-  require_authorization :circle,:except => [:index,:show,:members]
+#BOLT-TO_REMOVE  require_authorization :circle,:except => [:index,:show,:members]
 
   before_filter :set_current_circle,:only => :members
   # GET /circles

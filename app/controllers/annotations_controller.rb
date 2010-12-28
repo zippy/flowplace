@@ -1,7 +1,7 @@
 class AnnotationsController < ApplicationController
-  require_authorization :admin_annotations,:only => [:destroy]
-  require_authorization :view_annotations,:only => [:index,:show]
-  require_authorization :edit_annotations,:only => [:new,:edit,:create]
+#BOLT-TO_REMOVE  require_authorization :admin_annotations,:only => [:destroy]
+#BOLT-TO_REMOVE  require_authorization :view_annotations,:only => [:index,:show]
+#BOLT-TO_REMOVE  require_authorization :edit_annotations,:only => [:new,:edit,:create]
   # GET /annotations
   # GET /annotations.xml
   def index

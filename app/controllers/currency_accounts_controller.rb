@@ -1,5 +1,5 @@
 class CurrencyAccountsController < ApplicationController
-  require_authentication :except => [:summary_widget]
+#BOLT-TO_REMOVE    require_authentication :except => [:summary_widget]
   Activity
   before_filter :set_current_circle
   # GET /currency_accounts

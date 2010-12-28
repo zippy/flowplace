@@ -20,11 +20,3 @@ config.action_controller.allow_forgery_protection    = false
 # The :test delivery method accumulates sent emails in the
 # ActionMailer::Base.deliveries array.
 config.action_mailer.delivery_method = :test
-
-class ActionController::RackRequest 
-  DEFAULT_SESSION_OPTIONS = { 
-    :database_manager => CGI::Session::ActiveRecordStore, 
-    :cookie_only      => false, 
-    :session_http_only=> true 
-  } 
-end

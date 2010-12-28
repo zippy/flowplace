@@ -87,19 +87,19 @@ class User < ActiveRecord::Base
 
   ##############################################
 
-  # Bolt calls this method at login time if it exists
-  def login_action(request)
-    self.last_login = Time.now
-    self.last_login_ip = request.remote_ip
-    self.time_local = (!request.cookies["timeLocal"].empty? ? request.cookies["timeLocal"][0] : '')
-   	self.timezone_offset = (!request.cookies["timezoneOffset"].empty? ? request.cookies["timezoneOffset"][0].to_i : 14400)
-    self.save
-#    Event.create(:user_id=>self.id,:event_type=>'login',:sub_type =>"success",:content => request.remote_ip)
-    
-    # clean up stale sessions
-    last_week = (1.week.ago).to_formatted_s(:db)
-    CGI::Session::ActiveRecordStore.session_class.delete_all("updated_at < '#{last_week}'")
-  end
+#BOLT-TO_REMOVE    # Bolt calls this method at login time if it exists
+#  def login_action(request)
+#    self.last_login = Time.now
+#    self.last_login_ip = request.remote_ip
+#    self.time_local = (!request.cookies["timeLocal"].empty? ? request.cookies["timeLocal"][0] : '')
+#   	self.timezone_offset = (!request.cookies["timezoneOffset"].empty? ? request.cookies["timezoneOffset"][0].to_i : 14400)
+#    self.save
+##    Event.create(:user_id=>self.id,:event_type=>'login',:sub_type =>"success",:content => request.remote_ip)
+#    
+#    # clean up stale sessions
+#    last_week = (1.week.ago).to_formatted_s(:db)
+#    CGI::Session::ActiveRecordStore.session_class.delete_all("updated_at < '#{last_week}'")
+#  end
   
   def deactivated?
     !bolt_identity.enabled? && bolt_identity.activation_code.blank?
