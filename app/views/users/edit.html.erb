@@ -6,7 +6,7 @@
 
 <% form_for(:user, :url => user_path(@user), :html => { :method => :put }) do |f| %>
 
-	<% if current_user.can?(:createAccounts) %>
+	<% if current_user_can?(:createAccounts) %>
 	<table  border="0" cellspacing="0" cellpadding="0">
 	<tr><td>
 	<fieldset style=padding:5px>
@@ -15,8 +15,8 @@
 	<p>Created: <%= localize_time(@user.created_at) %>
 	</p>
 
-	<% if current_user.can?(:createAccounts) %>
-		<% if current_user.can?(:admin) %>
+	<% if current_user_can?(:createAccounts) %>
+		<% if current_user_can?(:admin) %>
 			<p>
 			<%= link_to 'Delete this account', user_url(@user), :method => :delete, :confirm => "Are you sure you want to delete this account?"%></p>
 		<% end %>

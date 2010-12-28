@@ -1,7 +1,7 @@
 <% existing = @circle && !@circle.new_record?%>
 <ul id="sub_nav">
   <li><%= sub_nav_link 'Browse', circles_path, 'List all circles' %>
-  <% if current_user.can?(:circle) %>
+  <% if current_user_can?(:circle) %>
   <li><%= sub_nav_link 'New',new_circle_path,'Create a new circle'%></li>
   <% end %>
   <%if existing %>

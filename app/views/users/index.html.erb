@@ -2,7 +2,7 @@
 
 <h3>Account Administration</h3>
 
-<% if current_user.can?(:createAccounts) %>
+<% if current_user_can?(:createAccounts) %>
   <%= link_to 'Add a new account', new_user_url %>
 <p>
 <% end %>
@@ -23,7 +23,7 @@
   <div style="float:left"><%= gravitar_image_tag(i,:size=>48)%></div> <%= i.user_name %>&nbsp;  <%= link_to '[edit account]', edit_user_url(:id => i.id) %>
 
 
-  <% if current_user.can?(:admin) %> &nbsp;<%= link_to '[sign in as]', login_as_user_url(i.id) %>
+  <% if current_user_can?(:admin) %> &nbsp;<%= link_to '[sign in as]', login_as_user_url(i.id) %>
    <% unless i.activated? %>(not active)<% end %>
    <% if i.last_login %>Last login: <%=time_ago_in_words(i.last_login)%> ago<%else%>Never logged in<%end%>; 
    Created: <%=standard_date(i.created_at)%>
@@ -39,9 +39,9 @@
   <br /> 
   <% end %>
 
-  <% if current_user.can?(:admin) %>
+  <% if current_user_can?(:admin) %>
     <% perms = (i.privs.empty?) ? '<i>none</i>' : i.privs.join(", ") 
-    if current_user.can?(:assignPrivs) %>
+    if current_user_can?(:assignPrivs) %>
       <%= link_to 'Privileges:', permissions_user_url(i.id) %>
     <% else %>
       <%= 'Privileges:' %>

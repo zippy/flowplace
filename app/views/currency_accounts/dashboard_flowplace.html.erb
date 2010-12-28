@@ -12,12 +12,12 @@
   <p class="dashboard_title"><%= link_to 'Circles', circles_url%> </p>
   <% unless current_user.has_preference('terse') %>
   <div class="dashboard_explanation">
-    Browse circles, request to join them, <% if current_user.can?(:circle) %> create new ones,<%end%> etc...
+    Browse circles, request to join them, <% if current_user_can?(:circle) %> create new ones,<%end%> etc...
   </div>
   <% end %> 
 </div>
 
-<% if current_user.can?(:currency) %>
+<% if current_user_can?(:currency) %>
 <div class="dashboard_item"id="dashboard_currencies">
   <p class="dashboard_title"><%= link_to 'Currencies', currencies_url%> </p>
   <% unless current_user.has_preference('terse') %>
@@ -28,11 +28,11 @@
 </div>
 <% end %>
 
-<% if current_user.can?(:accessAccounts) %>
+<% if current_user_can?(:accessAccounts) %>
   <div class="dashboard_item" id="dashboard_accounts">
   <p class="dashboard_title"><%= link_to 'Accounts', users_url%> </p>
   <% unless current_user.has_preference('terse') %>
-    <% if current_user.can?(:admin) %>
+    <% if current_user_can?(:admin) %>
         <div class="dashboard_explanation">
         Add new accounts, change account privileges, delete accounts, etc.
       </div>  
@@ -45,7 +45,7 @@
 </div>
 <% end %>
 
-<% if current_user.can?(:admin) %>
+<% if current_user_can?(:admin) %>
 <div class="dashboard_item" id="dashboard_admin">
   <p class="dashboard_title first_focus">Administrator Features</p>
   <ul>
@@ -57,7 +57,7 @@
   </div>
 <% end %>
 
-<% if current_user.can?(:dev) %>
+<% if current_user_can?(:dev) %>
 <div class="dashboard_item" id="dashboard_dev">
   <p class="dashboard_title">Developer Features</p>
   <ul>

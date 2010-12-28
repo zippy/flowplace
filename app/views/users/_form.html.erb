@@ -17,13 +17,13 @@
 <b>Notes:</b> <br />
 <%= form.text_area :notes, :rows=>7, :cols=>100 %>
 </p>
-<p><label for="time_zone">Time zone:</label><%= form.time_zone_select(:time_zone, ActiveSupport::TimeZone.us_zones,:include_blank => true) %><% if current_user.can?(:admin) %><br />
+<p><label for="time_zone">Time zone:</label><%= form.time_zone_select(:time_zone, ActiveSupport::TimeZone.us_zones,:include_blank => true) %><% if current_user_can?(:admin) %><br />
 <span class="smalltext">This user's browser reported the last login time as:  <%= @user.time_local ? @user.time_local : '<i>never logged in</i>' %></span><% end %></p>
 
-<% if current_user.can?(:admin) %>
+<% if current_user_can?(:admin) %>
   <%= check_box_tag(:autojoin,'1') %>  <%= label_tag :autojoin,"Execute the configured Autojoin"%> 
 <% end %>
-<% if current_user.can?(:createAccounts) %>
+<% if current_user_can?(:createAccounts) %>
 	<p>
 	<% if @user.new_record? || @user.deactivated? %>
 	<%= check_box_tag(:activate_account,'1',params[:activate_account]) %>  <%= label_tag :activate_account,"Activate account"%> 

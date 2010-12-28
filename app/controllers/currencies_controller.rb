@@ -5,7 +5,7 @@ class CurrenciesController < ApplicationController
   def index
     return if !can_access_currency?
     conditions = "type != 'CurrencyMembrane'"
-    conditions = [conditions+" and steward_id = ?",current_user.id] unless current_user.can?(:admin)
+    conditions = [conditions+" and steward_id = ?",current_user.id] unless current_user_can?(:admin)
     @currencies = Currency.find(:all,:conditions=>conditions)
 
     respond_to do |format|
@@ -153,9 +153,9 @@ class CurrenciesController < ApplicationController
   end
   
   def can_access_currency?(currency = nil)
-    return true if current_user.can?(:admin)
+    return true if current_user_can?(:admin)
     @demo_mode = Configuration.get(:single_circle) == 'on'
-    perms_ok = @demo_mode || current_user.can?(:currency)
+    perms_ok = @demo_mode || current_user_can?(:currency)
     if perms_ok && (currency.nil? || currency.steward_id == current_user.id)
       true
     else

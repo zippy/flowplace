@@ -2,7 +2,7 @@ def create_user(user,email = nil)
   @user = User.find_by_user_name(user)
   if @user.nil?
     email ||= "#{user}@#{user}.org"
-    u = User.new({:user_name => user, :first_name => user.capitalize,:last_name => 'User',:email=>email,:user_type=>type,:password => 'password'})
+    u = User.new({:user_name => user, :first_name => user.capitalize,:last_name => 'User',:email=>email,:password => 'password'})
     u.save
     @user = u
   end
@@ -43,9 +43,11 @@ Then "I $should be logged in" do |should|
 end
 
 Given /^I have "([^\"]*)" privs$/ do |priv_names|
+  the_privs = []
   priv_names.split(/\W*,\W*/).each do |priv_name|
-    @user.roles << Role.find_by_name(priv_name)
+    the_privs << p    
   end
+  @user.add_privs(*the_privs)
 end
 
 Given /^I have checked the "([^\"]*)" preference$/ do |pref_name|
@@ -56,23 +58,21 @@ end
 
 Given /I should be an "admin"/ do
   u = controller.current_user
-  u.can?(:admin).should == true
+  u.has_priv?(:admin).should == true
 end
 
-Given /I should have "(.*)" privs$/ do |priv_names|
+Then /I should have "(.*)" privs$/ do |priv_names|
   u = controller.current_user
-  roles = u.roles.collect(&:name)
-  priv_names.split(/\W*,\W*/).each do |priv_name|
-    roles.include?(priv_name).should == true
-  end
+  privs = priv_list.split(/\W*,\W*/)
+  the_privs = u.get_privs
+  privs.each {|p| the_privs.include?(p).should be_true}
 end
 
-Given /I should not have "(.*)" privs$/ do |priv_names|
+Then /I should not have "(.*)" privs$/ do |priv_names|
   u = controller.current_user
-  roles = u.roles.collect(&:name)
-  priv_names.split(/\W*,\W*/).each do |priv_name|
-    roles.include?(priv_name).should == false
-  end
+  privs = priv_list.split(/\W*,\W*/)
+  the_privs = u.get_privs
+  privs.each {|p| the_privs.include?(p).should be_false}
 end
 
 Then /^there should be a reset code for "([^\"]*)"$/ do |user_name|

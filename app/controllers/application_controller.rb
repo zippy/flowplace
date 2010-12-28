@@ -60,7 +60,7 @@ class ApplicationController < ActionController::Base
   def current_user_or_can?(permissions = nil,obj = nil)
     the_id = obj ? obj.user_id : params[:id].to_i
     permissions = [permissions] if !permissions.nil? && permissions.class != Array
-    if (the_id == current_user.id) || (!permissions || (permissions.any? {|p| current_user.can?(p)} ) )
+    if (the_id == current_user.id) || (!permissions || (permissions.any? {|p| current_user_can?(p)} ) )
       true
     else
       respond_to do |format|
@@ -79,6 +79,10 @@ class ApplicationController < ActionController::Base
   
   def logged_in?
     user_signed_in?
+  end
+
+  def authorized_if(priv)
+    authorize! priv, :all
   end
 
   private

@@ -17,8 +17,8 @@ left_banner = !Configuration.get(:left_banner).blank? && !session[:left_banner_c
       <%= image_tag 'close.png', :size =>'16x16',:class=>"clickable float_right", :title => 'Click here to close this box', :onclick => "new Effect.SlideUp($('global_banner'), { duration: .6 });location.href = '/close_banner'"%><%end%>
       <%=Configuration.get(:global_banner)%></div><%end%>
       <div id="flowplace_bar">
-        <% can_edit_annotations = current_user.can?(:edit_annotations) || current_user.can?(:admin_annotations)
-          can_access_annotations = current_user.can?(:view_annotations) || can_edit_annotations        
+        <% can_edit_annotations = current_user_can?(:edit_annotations) || current_user_can?(:admin_annotations)
+          can_access_annotations = current_user_can?(:view_annotations) || can_edit_annotations        
           if logged_in? && can_access_annotations %> 
         <% 
           path = Annotation.map_path(request.path,request.query_string)
@@ -72,7 +72,7 @@ left_banner = !Configuration.get(:left_banner).blank? && !session[:left_banner_c
             <%end%>
           <%else%>
             <div id='circle_header'><%= render_currency_icon(@current_circle,:size =>35,:id=>"circle_logo")%><div id='circle_header_name'><%=@current_circle.name%></div></div>
-            <%if current_user.can?(:admin) || Configuration.get(:single_circle) != 'on'%>
+            <%if current_user_can?(:admin) || Configuration.get(:single_circle) != 'on'%>
             <div id="circle_jump_select"><%= my_circles_jump_select %> </div>
             <%end%>
             <%= render(:partial => 'shared/nav') %>

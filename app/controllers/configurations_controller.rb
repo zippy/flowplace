@@ -1,8 +1,8 @@
 class ConfigurationsController < ApplicationController
-#BOLT-TO_REMOVE  require_authorization(:admin) 
   # GET /configurations
   # GET /configurations.xml
   def index
+    authorize! :read, Configuration
     @configurations = Configuration.find(:all,:order=>'sequence')
 
     respond_to do |format|
@@ -13,12 +13,14 @@ class ConfigurationsController < ApplicationController
 
   # GET /configurations/1/edit
   def edit
+    authorize! :edit, Configuration
     @configuration = Configuration.find(params[:id])
   end
 
   # POST /configurations
   # POST /configurations.xml
   def create
+    authorize! :create, Configuration
     @configuration = Configuration.new(params[:configuration])
 
     respond_to do |format|
@@ -36,6 +38,7 @@ class ConfigurationsController < ApplicationController
   # PUT /configurations/1
   # PUT /configurations/1.xml
   def update
+    authorize! :edit, Configuration
     @configuration = Configuration.find(params[:id])
     respond_to do |format|
       if @configuration.update_attributes(params[:configuration])
@@ -51,6 +54,7 @@ class ConfigurationsController < ApplicationController
 
   # GET /configurations/merge_defaults
   def merge_defaults
+    authorize! :merge_default, Configuration
     Configuration.merge_defaults
     flash[:notice] = 'Default configurations merged.'
     redirect_to(configurations_url)

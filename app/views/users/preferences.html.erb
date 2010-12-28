@@ -14,19 +14,19 @@ Your Account and Your Preferences
     ['terse','I know how the site works now.  Hide the long-winded instructions.'],
     ['enlargeFont', 'I don\'t like to squint.  Use a larger font size.']
     ]
-    prefs << ['showMembranes', 'Show circles as membrane currencies in the dashboard'] if current_user.can?(:circle)
+    prefs << ['showMembranes', 'Show circles as membrane currencies in the dashboard'] if current_user_can?(:circle)
     prefs.collect {|p| field_id = "prefs[#{p[0]}]"; check_box_tag(field_id, value = 1, checked = @preferences.include?(p[0])) << " " << label_tag(field_id,p[1])}.join("<br />")
   -%>
 </p>
 <% if Configuration.get(:circle_currency_policy) == 'self_authorize'%>
 <p>
-  <br /><%= check_box_tag(:circle_currency_management,true,@user.can?(:circle))%> <%= label_tag :circle_currency_management, 'Activate circle and currency management features'%>
+  <br /><%= check_box_tag(:circle_currency_management,true,@user.has_priv?(:circle))%> <%= label_tag :circle_currency_management, 'Activate circle and currency management features'%>
 <%end%>
 <% if (c= Configuration.get(:annotations_policy)) =~ /^self_authorize/%>
-  <br /><%= check_box_tag(:view_annotations,true,@user.can?(:view_annotations))%> <%= label_tag :view_annotations, 'Activate view annotations feature'%> 
+  <br /><%= check_box_tag(:view_annotations,true,@user.has_priv?(:view_annotations))%> <%= label_tag :view_annotations, 'Activate view annotations feature'%> 
 <%end%>
 <% if c == 'self_authorize_view_edit'%>
-  <br /><%= check_box_tag(:edit_annotations,true,@user.can?(:edit_annotations))%> <%= label_tag :edit_annotations, 'Activate edit annotations feature'%> 
+  <br /><%= check_box_tag(:edit_annotations,true,@user.has_priv?(:edit_annotations))%> <%= label_tag :edit_annotations, 'Activate edit annotations feature'%> 
 <%end%>
 </p>
 <p>

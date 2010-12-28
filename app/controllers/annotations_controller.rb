@@ -1,10 +1,8 @@
 class AnnotationsController < ApplicationController
-#BOLT-TO_REMOVE  require_authorization :admin_annotations,:only => [:destroy]
-#BOLT-TO_REMOVE  require_authorization :view_annotations,:only => [:index,:show]
-#BOLT-TO_REMOVE  require_authorization :edit_annotations,:only => [:new,:edit,:create]
   # GET /annotations
   # GET /annotations.xml
   def index
+    authorize! :read, Annotation
     @annotations = Annotation.find(:all)
 
     respond_to do |format|
@@ -16,6 +14,7 @@ class AnnotationsController < ApplicationController
   # GET /annotations/1
   # GET /annotations/1.xml
   def show
+    authorize! :read, Annotation
     @annotation = Annotation.find(params[:id])
 
     respond_to do |format|
@@ -27,6 +26,7 @@ class AnnotationsController < ApplicationController
   # GET /annotations/new
   # GET /annotations/new.xml
   def new
+    authorize! :create, Annotation
     @annotation = Annotation.new
     @path = Annotation.map_path(params[:path],params[:query])
     @annotation.path = @path
@@ -39,6 +39,7 @@ class AnnotationsController < ApplicationController
 
   # GET /annotations/1/edit
   def edit
+    authorize! :edit, Annotation
     @annotation = Annotation.find(params[:id])
     session[:annotations_return_to] = request.env['HTTP_REFERER']
   end
@@ -46,6 +47,7 @@ class AnnotationsController < ApplicationController
   # POST /annotations
   # POST /annotations.xml
   def create
+    authorize! :create, Annotation
     @annotation = Annotation.new(params[:annotation])
 
     respond_to do |format|
@@ -64,6 +66,7 @@ class AnnotationsController < ApplicationController
   # PUT /annotations/1
   # PUT /annotations/1.xml
   def update
+    authorize! :edit, Annotation
     @annotation = Annotation.find(params[:id])
 
     respond_to do |format|
@@ -82,6 +85,7 @@ class AnnotationsController < ApplicationController
   # DELETE /annotations/1
   # DELETE /annotations/1.xml
   def destroy
+    authorize! :delete, Annotation
     @annotation = Annotation.find(params[:id])
     @annotation.destroy
 

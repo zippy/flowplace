@@ -407,4 +407,8 @@ module ApplicationHelper
       end
     end
   end
+  
+  def current_user_can?(permission)
+    can?(permission,:all)
+  end
 end

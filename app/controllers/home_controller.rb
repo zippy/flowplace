@@ -1,9 +1,7 @@
 class HomeController < ApplicationController
   before_filter :set_current_circle,:only => :home
   helper :activities
-  skip_before_filter :authenticate_user!, :only => :logged_out
-#BOLT-TO_REMOVE    require_authentication :except => [:logged_out,:home]
-#BOLT-TO_REMOVE    require_authorization :admin,:only => :version
+  skip_before_filter :authenticate_user!, :only => [:logged_out,:home]
   def home
     if logged_in?
       @user = User.find(params[:user_id]) if params[:user_id]
@@ -40,6 +38,7 @@ class HomeController < ApplicationController
   end
 
   def sys_info
+    authorize! :read, :sys_info
     git_path = CONFIG[:git_path]
     git_path ||= '/usr/bin/git'
     @version = `#{git_path} describe`
