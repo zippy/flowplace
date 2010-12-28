@@ -80,10 +80,6 @@ Rails::Initializer.run do |config|
   # config.active_record.observers = :cacher, :garbage_collector, :forum_observer
 end
 
-ActionMailer::Base.delivery_method = :smtp
-ActionMailer::Base.perform_deliveries = true
-ActionMailer::Base.raise_delivery_errors = true
-
 require 'lib/country_select'
 
 SMTP_SETTINGS = {:address  => "localhost"} unless defined? SMTP_SETTINGS

@@ -167,7 +167,14 @@ module NavigationHelpers
       raise "couldn't find a currency account for #{u.user_name} as inviter while building path" if currency_account.nil?
       "/users/accept_invitation/#{currency_account.id}/#{email}"
     else
-      raise "Can't find mapping from \"#{page_name}\" to a path."
+      begin
+        page_name =~ /the (.*) page/
+        path_components = $1.split(/\s+/)
+        self.send(path_components.push('path').join('_').to_sym)
+      rescue Object => e
+        raise "Can't find mapping from \"#{page_name}\" to a path.\n" +
+          "Now, go and add a mapping in #{__FILE__}"
+      end
     end
     
     if page_name =~ /^page (\d+) of.*with (\d+) per page$/
