@@ -7,7 +7,7 @@ en:
       unauthenticated: 'You need to sign in or sign up before continuing.'
       unconfirmed: 'You have to confirm your account before continuing.'
       locked: 'Your account is locked.'
-      invalid: 'Invalid email or password.'
+      invalid: "Either we don't have an account with that name, or you've entered the wrong password. Please try again. (Remember that uppercase and lowercase matter in your password. Make sure your Caps Lock is not on.)"
       invalid_token: 'Invalid authentication token.'
       timeout: 'Your session expired, please sign in again to continue.'
       inactive: 'Your account was not activated yet.'
@@ -15,13 +15,14 @@ en:
       link: 'Forgot password?'
       send_instructions: 'You will receive an email with instructions about how to reset your password in a few minutes.'
       updated: 'Your password was changed successfully. You are now signed in.'
+      invalid_reset_token: 'Invalid password reset token. (You have probably allready used it and simply must request password reset again.)'
     confirmations:
       link: "Didn't receive confirmation instructions?"
       send_instructions: 'You will receive an email with instructions about how to confirm your account in a few minutes.'
-      confirmed: 'Your account was successfully confirmed. You are now signed in.'
+      confirmed: 'Your account has been activated. You are now signed in.'
     registrations:
       link: 'Sign up'
-      signed_up: 'You have signed up successfully. If enabled, a confirmation was sent to your e-mail.'
+      signed_up: 'The account has been created and activation instructions were sent to to your e-mail.'
       updated: 'You updated your account successfully.'
       destroyed: 'Bye! Your account was successfully cancelled. We hope to see you again soon.'
     unlocks:

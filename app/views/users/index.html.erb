@@ -40,7 +40,7 @@
   <% end %>
 
   <% if current_user_can?(:admin) %>
-    <% perms = (i.privs.empty?) ? '<i>none</i>' : i.privs.join(", ") 
+    <% perms = (i.get_privs.empty?) ? '<i>none</i>' : i.get_privs.join(", ") 
     if current_user_can?(:assignPrivs) %>
       <%= link_to 'Privileges:', permissions_user_url(i.id) %>
     <% else %>

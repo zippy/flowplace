@@ -2,7 +2,7 @@ require 'lib/constants'
 class User < ActiveRecord::Base
   is_gravtastic
 
-  devise :database_authenticatable, :confirmable, :recoverable, :rememberable, :trackable, :timeoutable
+  devise :database_authenticatable, :registerable, :recoverable, :rememberable, :trackable, :timeoutable, :confirmable
 
   has_many :stewarded_currencies, :class_name => 'Currency', :foreign_key => :steward_id
   has_many :currency_accounts, :dependent => :destroy
@@ -29,12 +29,6 @@ class User < ActiveRecord::Base
   # rename the user
   def rename(new_name)
     self.user_name = new_name
-    User.transaction do
-      if self.save
-        self.bolt_identity.user_name = new_name
-        self.bolt_identity.save!
-      end
-    end
     self
   end
   
@@ -104,28 +98,36 @@ class User < ActiveRecord::Base
 #  end
   
   def deactivated?
-    !bolt_identity.enabled? && bolt_identity.activation_code.blank?
+    !enabled? && confirmation_token.blank?
+#    !bolt_identity.enabled? && bolt_identity.activation_code.blank?
   end
 
   def activated?
-    bolt_identity.enabled? && bolt_identity.activation_code.blank?
+    enabled? && confirmation_token.blank?    
+#    bolt_identity.enabled? && bolt_identity.activation_code.blank?
   end
   
   def activation_pending?
-    !bolt_identity.enabled? && !bolt_identity.activation_code.blank?
+    !enabled? && !confirmation_token.blank?
+#    !bolt_identity.enabled? && !bolt_identity.activation_code.blank?
   end
 
   def activate!
-    identity = self.bolt_identity
-    identity.require_activation! {|code| yield code}
-    identity.save
+    self.enabled = true
+    save
+    #    identity = self.bolt_identity
+    #    identity.require_activation! {|code| yield code}
+    #    identity.save
   end
 
   def deactivate!
-    identity = self.bolt_identity
-    identity.enabled = false
-    identity.activation_code = nil
-    identity.save
+    self.enabled = false
+    self.confirmation_token = nil
+    save
+#    identity = self.bolt_identity
+#    identity.enabled = false
+#    identity.activation_code = nil
+#    identity.save
   end
   
   def acknowledge_tip
@@ -159,7 +161,7 @@ class User < ActiveRecord::Base
   end
 
   def set_privs(*p)
-    the_privs = p.flatten.map{|x|x.to_s}.uniq
+    the_privs = p.flatten.compact.map{|x|x.to_s}.uniq
     the_privs.each {|x| raise "invalid priv #{x}" if !Permissions.include?(x)}
     self.privs = the_privs.sort.to_yaml
     @privs = nil
@@ -255,4 +257,60 @@ class User < ActiveRecord::Base
     end
     err
   end
+  
+  ##############################################
+  # overriding Devise methods
+  ##############################################
+  # Find an initialize a record setting an error if it can't be found.
+  def self.find_or_initialize_with_error_by(attribute, value, error=:invalid,many = false)
+    if value.present?
+      conditions = { attribute => value }
+      records = find(:all, :conditions => conditions)
+    else
+      records = []
+    end
+    
+    if !records.empty?
+      records = records[0] if !many
+    else
+      record = new
+
+      if value.present?
+        record.send(:"#{attribute}=", value)
+      else
+        error, skip_default = :blank, true
+      end
+
+      add_error_on(record, attribute, error, !skip_default)
+      many ? records << record : records = record
+    end
+    records
+  end
+  
+  # Resets reset password token and send reset password instructions by email
+  def send_reset_password_instructions
+    prepare_to_reset_password
+    ::MyDeviseMailer.deliver_reset_password_instructions(self)
+  end
+
+  # Prepares for password reset
+  def prepare_to_reset_password
+    generate_reset_password_token!
+  end
+  
+end
+
+module MyDeviseClassMethods
+  def send_reset_password_instructions(attributes={})
+    recoverables = find_or_initialize_with_error_by(:email, attributes[:email], :not_found,true)
+    unless recoverables[0].new_record?
+      recoverables.each {|r| r.prepare_to_reset_password}
+      ::MyDeviseMailer.deliver_reset_password_instructions(recoverables)
+    end
+    recoverables
+  end
+end
+
+User.class_eval do
+  extend MyDeviseClassMethods
 end

@@ -408,7 +408,17 @@ module ApplicationHelper
     end
   end
   
-  def current_user_can?(permission)
-    can?(permission,:all)
+  def current_user
+    @current_user ||= warden.authenticate(:scope => :user)
+    @current_user ||= User.new
+  end
+  def logged_in?
+    anybody_signed_in?
+  end
+  def login_url
+    new_user_session_url
+  end
+  def logout_url
+    destroy_user_session_url
   end
 end

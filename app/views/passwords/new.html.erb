@@ -1,12 +1,18 @@
+<% @title = 'Forgot Passowrd?' %>
 <h2>Forgot your password?</h2>
 
 <% form_for resource_name, resource, :url => password_path(resource_name) do |f| %>
-  <%= f.error_messages %>
+  <% if resource.errors.on(:email) == 'not found' %>
+    <div class="formError">We have no account associated with that e-mail address</div>
+  <% elsif !resource.errors.on(:email).nil?%>
+    <div class="formError">Please enter a valid e-mail (<%= resource.errors.on(:email)%>)</div>
+  <% elsif !resource.errors.empty?%>
+    <%= error_messages_for resource%>
+  <% end %>
 
-  <p><%= f.label :email %></p>
-  <p><%= f.text_field :email %></p>
+  <p><%= f.label :email, 'E-mail Address'%> <%= f.text_field :email %></p>
 
-  <p><%= f.submit "Send me reset password instructions" %></p>
+  <p><%= f.submit "Request Reset Password E-mail" %></p>
 <% end %>
 
 <%= render :partial => "shared/devise_links" %>

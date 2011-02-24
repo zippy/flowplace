@@ -15,29 +15,25 @@ EOJS
 %>
 <div id="log_in_content" class="bottom_margin_10">
 
-<% unless @login_error.blank? %>
-<p class="errortext">Either we don't have an account with that name, or you've entered the wrong password.  Please try again.  (Remember that uppercase and lowercase matter in your password.  Make sure your Caps Lock is not on.)</p>
-<% end %> 
 
 <fieldset>
 <legend>Please sign in</legend>
-<% form_tag('/sessions') do -%>
-    <p>
-      <label for="login">Account Name:</label>
- 	  <%= text_field_tag :login, nil, :class => 'first_focus' %>   
-    </p>
-    <p>
-      <label for="password">Password:</label>
-      <%= password_field_tag(:password) %>
-    </p>
-	<p>
-	  <label for="commit">&nbsp;</label>
-	  <%= submit_tag('Log in') %>
-	</p>
-<p class="smalltext">
-	<%= link_to 'Forgot your account name or password?', forgot_passwords_url%>
-	<br />
-</p>
- <% end -%>
+  <% rn = defined?(resource_name) ? resource_name : :user
+    r = defined?(resource) ? resource : User.new
+  form_for rn, r, :url => user_session_path do |f| -%>
+    <p><%= f.label :user_name, 'Account Name:' %> <%= f.text_field :user_name %></p>
+
+    <p><%= f.label :password %> <%= f.password_field :password %></p>
+
+    <p><%= f.submit "Log in" %></p>
+  <% end -%>
+
+  <p class="smalltext">
+    <%- if Configuration.get(:new_user_policy) == 'self_signup' %>
+      <%= link_to t('devise.registrations.link'), new_user_registration_path %><br />
+    <% end -%>
+    <%= link_to t('devise.passwords.link'), new_user_password_path %><br />
+    <%= link_to t('devise.confirmations.link'), new_user_confirmation_path %><br />
+  </p>
 </fieldset>
 </div>

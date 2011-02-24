@@ -72,8 +72,9 @@ class UsersController < ApplicationController
   def create
     authorize! :create, User
     @user = User.new(params[:user])
+    @user.enabled = false
     respond_to do |format|
-      if @user.create_bolt_identity(:user_name => :user_name,:enabled => false) && @user.save
+      if @user.valid? && @user.save
         do_extra_actions
         err = @user.autojoin
         flash[:action_error] = err if !err.nil?
@@ -366,9 +367,6 @@ class UsersController < ApplicationController
         BoltNotifications.deliver_activation_notice(@user, @user.bolt_identity, activation_url(@user.bolt_identity.activation_code, :user_name=> @user.user_name))
         flash[:notice] = :user_activation_resent
       end
-      if params[:assign_paper_code] && !@user.paper_code?
-        @user.assign_paper_code
-      end
       if params[:reset_password]
         i = @user.bolt_identity
         if i.enabled
@@ -379,15 +377,6 @@ class UsersController < ApplicationController
           flash[:notice] = :password_reset
         end
       end
-    end
-  end
-  
-  def self_signup_ok?
-    if Configuration.get(:new_user_policy) != 'self_signup'
-      redirect_to home_url
-      false
-    else
-      true
     end
   end
   

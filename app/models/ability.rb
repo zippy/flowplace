@@ -33,9 +33,13 @@ class Ability
       can :edit, Annotation
     end
     if @user.has_priv?(:circle)
-      can :edit, Circle
-      can :delete, Circle
+      can :edit, :circle
+      can :delete, :circle
     end
-#    can :read, Circle
+    if @user.new_record?
+      can :self_signup, :all if  Configuration.get(:new_user_policy) == 'self_signup'
+    else
+      can :read, :circle
+    end
   end
 end

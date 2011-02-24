@@ -1,9 +1,11 @@
 def create_user(user,email = nil)
   @user = User.find_by_user_name(user)
   if @user.nil?
-    email ||= "#{user}@#{user}.org"
+    email ||= "#{user}@harris-braun.com"
     u = User.new({:user_name => user, :first_name => user.capitalize,:last_name => 'User',:email=>email,:password => 'password'})
     u.save
+    u.update_attribute(:confirmation_token,nil)
+    u.update_attribute(:confirmed_at,Time.now)
     @user = u
   end
   @user
@@ -45,9 +47,9 @@ end
 Given /^I have "([^\"]*)" privs$/ do |priv_names|
   the_privs = []
   priv_names.split(/\W*,\W*/).each do |priv_name|
-    the_privs << p    
+    the_privs << priv_name
   end
-  @user.add_privs(*the_privs)
+  @user.add_privs(the_privs)
 end
 
 Given /^I have checked the "([^\"]*)" preference$/ do |pref_name|
@@ -77,12 +79,12 @@ end
 
 Then /^there should be a reset code for "([^\"]*)"$/ do |user_name|
   u = User.find_by_user_name(user_name)
-  u.bolt_identity.reset_code.should_not be_nil
+  u.reset_password_token.should_not be_nil
 end
 
 Then /^there should not be a reset code for "([^\"]*)"$/ do |user_name|
   u = User.find_by_user_name(user_name)
-  u.bolt_identity.reset_code.should be_nil
+  u.reset_password_token.should be_nil
 end
 
 Given /^admin creates a user( "([^\"]*)")*$/ do |dummy,user_name|
@@ -91,7 +93,7 @@ Given /^admin creates a user( "([^\"]*)")*$/ do |dummy,user_name|
   And %Q|I fill in "Account Name" with "#{user_name}"|
   And %Q|I fill in "First Name" with "#{user_name.capitalize}"|
   And %Q|I fill in "Last Name" with "User"|
-  And %Q|I fill in "Email" with "#{user_name}@user.org"|
+  And %Q|I fill in "Email" with "#{user_name}@harris-braun.com"|
   And %Q|I fill in "Phone" with "123-456-789"|
   And %Q|I fill in "Address 1" with "123 Main St"|
   And %Q|I fill in "City" with "Smalltown"|

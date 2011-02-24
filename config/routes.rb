@@ -1,6 +1,13 @@
 ActionController::Routing::Routes.draw do |map|
+  map.devise_for :users, :path_names => { :sign_in => 'login', :sign_out => 'logout', :registration => 'registrations' }
+  map.resources :users, :member => {
+    :login_as => :get,
+    :permissions => :get, :set_permissions => :put,
+    :preferences => :get, :set_preferences => :put,
+    :contact_info => :get, :set_contact_info => :put,
+    :email => :get, :process_email => :put
+    }
 
-  map.devise_for :users, :path_names => { :sign_in => 'login', :sign_out => 'logout' }
   map.new_user_session 'login', :controller => 'sessions', :action => 'new', :conditions => { :method => :get }
   map.user_session 'login', :controller => 'sessions', :action => 'create', :conditions => { :method => :post }
   map.destroy_user_session 'logout', :controller => 'sessions', :action => 'destroy', :conditions => { :method => :get }
@@ -68,16 +75,8 @@ ActionController::Routing::Routes.draw do |map|
   map.do_accept_invitation '/users/accept_invitation', :controller => 'users', :action => 'do_accept_invitation', :conditions => { :method => :post }
   map.accept_invitation '/users/accept_invitation/:currency_account_id/:email', :controller => 'users', :action => 'accept_invitation', :requirements => { :email => /[^\/]+/ }, :conditions => { :method => :get }
   map.logged_in_users '/users/logged_in', :controller => 'users', :action => 'logged_in_users'
-  map.signup_users '/users/signup', :controller => 'users', :action => 'signup', :conditions => { :method => :get }
-  map.signup_users '/users/signup', :controller => 'users', :action => 'do_signup', :conditions => { :method => :post }
-  map.resources :users, :member => {
-    :login_as => :get,
-    :permissions => :get, :set_permissions => :put,
-    :preferences => :get, :set_preferences => :put,
-    :contact_info => :get, :set_contact_info => :put,
-    :email => :get, :process_email => :put
-    }
-
+#  map.signup_users '/users/sign_up', :controller => 'registrations', :action => 'new', :conditions => { :method => :get }
+#  map.signup_users '/users/sign_up', :controller => 'registrations', :action => 'create', :conditions => { :method => :post }
 
   map.home('', :controller => 'home', :action => 'home')
   map.version('/version', :controller => 'home', :action => 'version')

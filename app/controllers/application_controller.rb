@@ -37,6 +37,11 @@ class ApplicationController < ActionController::Base
 #BOLT-TO_REMOVE  require_authentication
   before_filter :authenticate_user!
   helper :all # include all helpers, all the time
+  helper_method :current_user_can?
+  
+  def current_user_can?(permission)
+    can?(permission,:all)
+  end
 
   # See ActionController::RequestForgeryProtection for details
   # Uncomment the :secret if you're not using the cookie session store
@@ -55,6 +60,11 @@ class ApplicationController < ActionController::Base
   def rescue_action_in_public(exception)
     @exception = exception.to_s
     render :file => "#{RAILS_ROOT}/public/500_active.html",:layout=>true, :status => 500
+  end
+
+  rescue_from CanCan::AccessDenied do |exception|
+    flash[:alert] = exception.message
+    redirect_to home_url
   end
   
   def current_user_or_can?(permissions = nil,obj = nil)
@@ -76,13 +86,17 @@ class ApplicationController < ActionController::Base
     flash[:notice] = :not_allowed
     redirect_to(home_url)
   end
-  
-  def logged_in?
-    user_signed_in?
-  end
 
   def authorized_if(priv)
     authorize! priv, :all
+  end
+  
+  def current_user
+    @current_user ||= warden.authenticate(:scope => :user)
+    @current_user ||= User.new
+  end
+  def logged_in?
+    anybody_signed_in?
   end
 
   private
@@ -101,5 +115,12 @@ class ApplicationController < ActionController::Base
     end
     @current_circle ||= @my_circles[0]
   end
+  def after_sign_out_path_for(resource_or_scope)
+    logged_out_path
+  end
+  def after_sign_in_path_for(resource_or_scope)
+    '/dashboard'
+  end
+  
   
 end

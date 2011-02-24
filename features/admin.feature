@@ -5,8 +5,7 @@ Feature: Priviliged users
 
   Background:
     Given I am logged into my account
-    Given I have "admin" privs
-    Given I have "accessAccounts" privs
+    Given I have "admin,accessAccounts" privs
 
   Scenario: Admin goes to the accounts page and lists all users
     When I go to the accounts page

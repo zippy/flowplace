@@ -6,7 +6,7 @@ describe User do
       :user_name => "user",
       :first_name => "value for first_name",
       :last_name => "value for last_name",
-      :email => "some@email.com"
+      :email => "test@harris-braun.com"
     }
   end
 
@@ -111,7 +111,7 @@ describe User do
       @user.currencies.should == [@usd]
     end
     it "should return the user's currency accounts in a given circle" do
-      @circle = CurrencyMembrane.create(@user,{:circle=>{:name => 'a circle'},:password=>'password',:confirmation=>'password',:email=>'test@test.com'})
+      @circle = CurrencyMembrane.create(@user,{:circle=>{:name => 'a circle'},:password=>'password',:confirmation=>'password',:email=>'test@harris-braun.com'})
       @user.reload
       @user.currency_accounts << CurrencyAccount.new(:currency => @usd)
       @user.currency_accounts.size.should == 3
@@ -138,7 +138,7 @@ describe User do
     it "should be able to list a user's membership in membrane currencies" do
       @user.circle_memberships.should == []
       @user.currency_accounts.size.should == 0
-      @circle = CurrencyMembrane.create(@user,{:circle=>{:name => 'a circle'},:password=>'password',:confirmation=>'password',:email=>'test@test.com'})
+      @circle = CurrencyMembrane.create(@user,{:circle=>{:name => 'a circle'},:password=>'password',:confirmation=>'password',:email=>'test@harris-braun.com'})
       @user.reload
       @user.currency_accounts.size.should == 2
       @user.circle_memberships.should == [@circle]
@@ -166,7 +166,7 @@ describe User do
   describe 'autojoin' do
     before(:each) do
       @user = create_user
-      @circle = CurrencyMembrane.create(@user,{:circle=>{:name => 'a circle'},:password=>'password',:confirmation=>'password',:email=>'test@test.com'})
+      @circle = CurrencyMembrane.create(@user,{:circle=>{:name => 'a circle'},:password=>'password',:confirmation=>'password',:email=>'test@harris-braun.com'})
       Configuration.create({
         'name' => 'autojoin',
         'value' => {'circles'=>'a circle'}.to_yaml,

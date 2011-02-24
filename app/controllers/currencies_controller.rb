@@ -1,4 +1,5 @@
 class CurrenciesController < ApplicationController
+  helper :all # include all helpers, all the time
 
   # GET /currencies
   # GET /currencies.xml

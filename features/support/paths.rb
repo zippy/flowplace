@@ -6,16 +6,16 @@ module NavigationHelpers
     when /the logout page/
       '/logout'
     when /the sign up page/
-      '/users/signup'
+      '/registrations/sign_up'
     when /the user activation page/
       u = User.last
-      code = u.bolt_identity.activation_code
-      "/activations/#{code}?user_name=#{u.user_name}"
+      code = u.confirmation_token
+      "/users/confirmation?confirmation_token=#{code}"
     when /the forgot password page/
-      '/passwords/forgot'
+      'users/password/new'
     when /the reset password page with the reset code for "([^\"]*)"/
       u = User.find_by_user_name($1)
-      "/passwords/resetcode?code=#{u.bolt_identity.reset_code}&user_name=#{u.user_name}"
+      "/users/password/edit?reset_password_token=#{u.reset_password_token}"
     when /the home page/
       '/'
     when /^the dashboard page$/

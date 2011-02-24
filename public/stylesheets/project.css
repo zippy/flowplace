@@ -281,6 +281,12 @@ ul.play_names li.last a {margin-right:0;}
 	margin-bottom: 10px;
 	background-color: #A3B15A;
 }
+#alert {
+	border: 1px solid #F00;
+	padding: 4px;
+	margin-bottom: 10px;
+	background-color: #FF00FF;
+}
 #action_error {
 	border: 1px solid #F00;
 	padding: 4px;
@@ -292,6 +298,10 @@ ul.play_names li.last a {margin-right:0;}
 	border: 2px solid #000066;
 	padding: 4px;
 	margin-bottom: 10px;
+}
+
+.formError {
+	color: #CC0033;
 }
 
 .errortext, .errortext a {
@@ -355,7 +365,7 @@ fieldset.new_user_contact_info p.bottom{
 }	
 
 /* ---------- Fieldset (used in login) --------- */
-#log_in_content fieldset label {
+#log_in_content fieldset label, #registration_content fieldset label {
 	display:block;
 	float:left;
 	margin-right:0.5em;

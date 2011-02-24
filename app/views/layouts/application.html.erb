@@ -85,6 +85,7 @@ left_banner = !Configuration.get(:left_banner).blank? && !session[:left_banner_c
           <%if flash[:notice] %><div id='notice'><%=notice(flash[:notice],flash[:notice_param])%>
             <%= image_tag 'close.png', :size =>'16x16',:class=>"clickable float_right", :title => 'Click here to close this box', :onclick => "new Effect.SlideUp($('notice'), { duration: .6 })"%> 
             </div><%end%>
+          <%if flash[:alert] %><div id='alert'><%=flash[:alert]%></div><%end%>
           <%if flash[:action_error] %><div id='action_error'><%=action_error(flash[:action_error])%></div><%end%>
           <%= yield  %>
         </div>

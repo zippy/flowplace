@@ -4,7 +4,7 @@ class CirclesController < ApplicationController
   # GET /circles
   # GET /circles.xml
   def index
-    authorize! :read, Circle
+    authorize! :read, :circle
     @membranes = Currency.find(:all,:conditions => "type = 'CurrencyMembrane'",:include => :currency_accounts)
     respond_to do |format|
       format.html # index.html.erb
@@ -15,7 +15,7 @@ class CirclesController < ApplicationController
   # GET /circles/1
   # GET /circles/1.xml
   def show
-    authorize! :read, Circle
+    authorize! :read, :circle
     @circle = Currency.find(params[:id])
     namer?
     respond_to do |format|
@@ -27,7 +27,7 @@ class CirclesController < ApplicationController
   # GET /circles/new
   # GET /circles/new.xml
   def new
-    authorize! :create, Circle
+    authorize! :create, :circle
     @circle = Currency.new
 
     respond_to do |format|
@@ -38,7 +38,7 @@ class CirclesController < ApplicationController
 
   # GET /circles/1/edit
   def edit
-    authorize! :edit, Circle
+    authorize! :edit, :circle
     @circle = Currency.find(params[:id])
     return if am_not_namer?
   end
@@ -46,7 +46,7 @@ class CirclesController < ApplicationController
   # POST /circles
   # POST /circles.xml
   def create
-    authorize! :create, Circle
+    authorize! :create, :circle
     Activity
     Currency
     @circle = CurrencyMembrane.create(current_user,params)
@@ -67,7 +67,7 @@ class CirclesController < ApplicationController
   # PUT /circles/1
   # PUT /circles/1.xml
   def update
-    authorize! :edit, Circle
+    authorize! :edit, :circle
     @circle = Currency.find(params[:id])
     return if am_not_namer?
     if params[:circle][:name] != @circle.name
@@ -102,7 +102,7 @@ class CirclesController < ApplicationController
   # DELETE /circles/1
   # DELETE /circles/1.xml
   def destroy
-    authorize! :delete, Circle
+    authorize! :delete, :circle
     @circle = Currency.find(params[:id])
     return if am_not_namer?
     circle_user = User.find_by_user_name(@circle.circle_user_name)
@@ -120,7 +120,7 @@ class CirclesController < ApplicationController
 
   # GET /circles/1/players
   def players
-    authorize! :edit, Circle
+    authorize! :edit, :circle
     @circle = Currency.find(params[:id])
     return if am_not_namer?
     setup_players_users
@@ -128,7 +128,7 @@ class CirclesController < ApplicationController
   
   # PUT /circles/1/players
   def set_players
-    authorize! :edit, Circle
+    authorize! :edit, :circle
     @circle = Currency.find(params[:id])
     return if am_not_namer?
     
@@ -191,7 +191,7 @@ class CirclesController < ApplicationController
 
   # GET /circles/1/link_players
   def link_players
-    authorize! :edit, Circle
+    authorize! :edit, :circle
     @circle = Currency.find(params[:id])
     @bound_currencies = @circle.currencies
     get_bound_currencies(@circle)
@@ -201,7 +201,7 @@ class CirclesController < ApplicationController
   
   # PUT /circles/1/set_link_players
   def set_link_players
-    authorize! :edit, Circle
+    authorize! :edit, :circle
     @circle = Currency.find(params[:id])
     @bound_currencies = @circle.currencies
     currencies = params[:currencies]
@@ -249,7 +249,7 @@ class CirclesController < ApplicationController
 
   # GET /circles/1/currencies
   def currencies
-    authorize! :edit, Circle
+    authorize! :edit, :circle
     @circle = Currency.find(params[:id])
     return if am_not_namer?
     setup_bound_currencies
@@ -257,7 +257,7 @@ class CirclesController < ApplicationController
   
   # PUT /circles/1/currencies
   def set_currencies
-    authorize! :edit, Circle
+    authorize! :edit, :circle
     @circle = Currency.find(params[:id])
     return if am_not_namer?
     case params["commit"]
@@ -297,7 +297,7 @@ class CirclesController < ApplicationController
 
   #GET /circles/members
   def members
-    authorize! :read, Circle
+    authorize! :read, :circle
     @users = @current_circle.api_user_accounts('member').collect{|ca| ca.user}.uniq
   end
   
