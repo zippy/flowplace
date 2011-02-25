@@ -72,14 +72,13 @@ Feature: auto_join
     And I go to the sign up page
     Then I should be taken to the sign up page
     And I fill in "Account name" with "jane"
-    And I fill in "First name:" with "Jane"
+    And I fill in "First name" with "Jane"
     And I fill in "Last name" with "Smith"
     And I fill in "E-mail" with "notifications@harris-braun.com"
+    And I fill in "Password" with "password"
+    And I fill in "Confirm Password" with "password"
     And I press "Sign up"
     And I go to the user activation page
-    And I fill in "Choose a Password" with "password"
-    And I fill in "Password Confirmation" with "password"
-    And I press "Activate"
     Then I should be taken to the dashboard page
     Then I should see "the circle" as a "Jump to" option
     And I should see a "X" "member" dashboard item
@@ -100,14 +99,13 @@ Feature: auto_join
     And I go to the sign up page
     Then I should be taken to the sign up page
     And I fill in "Account name" with "jane"
-    And I fill in "First name:" with "Jane"
+    And I fill in "First name" with "Jane"
     And I fill in "Last name" with "Smith"
     And I fill in "E-mail" with "notifications@harris-braun.com"
+    And I fill in "Password" with "password"
+    And I fill in "Confirm Password" with "password"
     And I press "Sign up"
     And I go to the user activation page
-    And I fill in "Choose a Password" with "password"
-    And I fill in "Password Confirmation" with "password"
-    And I press "Activate"
     Then I should see "the circle" as a "Jump to" option
     Then I should see "another circle" as a "Jump to" option
     When I go to the dashboard page for "the circle"

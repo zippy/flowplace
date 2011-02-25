@@ -43,7 +43,7 @@ Feature: invitations
     When I go to the logout page
     And I go to the accept invitation from "anonymous" in "the circle" to "notifications@harris-braun.com" page
     And I fill in "Account name" with "jane"
-    And I fill in "First name:" with "Jane"
+    And I fill in "First name" with "Jane"
     And I fill in "Last name" with "Smith"
     And I fill in "Choose a Password" with "password"
     And I fill in "Password Confirmation" with "password"

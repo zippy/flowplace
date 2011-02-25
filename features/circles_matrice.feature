@@ -8,12 +8,14 @@ Feature: circle namer
     Given I have "circle" privs
     And a circle "the circle"
 
+  @allow-rescue
   Scenario: user without circle permissions tries to go to circle functions
     When I go to the logout page
     Given A user "joe"
     And I log in as "joe"
     When I go to the new circles page
-    Then I should be taken to the dashboard page
+    Then I should be taken to the home page
+    And I should see "You are not authorized to access this page."
     
   Scenario: user creates a circle and sees it in the circles page and user is namer so can edit the circle and a user should be created for the circle
     When I go to the circles page

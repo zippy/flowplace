@@ -1,5 +1,5 @@
 module WealsHelper
-  include TagsHelper
+#  include TagsHelper
   def render_name(which,weal)
     u = case which
     when :requester

@@ -63,14 +63,14 @@ Given /I should be an "admin"/ do
   u.has_priv?(:admin).should == true
 end
 
-Then /I should have "(.*)" privs$/ do |priv_names|
+Then /I should have "(.*)" privs$/ do |priv_list|
   u = controller.current_user
   privs = priv_list.split(/\W*,\W*/)
   the_privs = u.get_privs
   privs.each {|p| the_privs.include?(p).should be_true}
 end
 
-Then /I should not have "(.*)" privs$/ do |priv_names|
+Then /I should not have "(.*)" privs$/ do |priv_list|
   u = controller.current_user
   privs = priv_list.split(/\W*,\W*/)
   the_privs = u.get_privs
@@ -101,7 +101,6 @@ Given /^admin creates a user( "([^\"]*)")*$/ do |dummy,user_name|
   And %Q|I fill in "Zip" with "12345"|
   And %Q|I press "Create"|
   u = User.find_by_user_name(user_name)
-  u.bolt_identity.password="password"
-  u.bolt_identity.enabled = true
-  u.bolt_identity.save.should == true
+  u.attempt_set_password(:password => "password", :password_confirmation => "password")
+  u.confirm!
 end

@@ -35,32 +35,6 @@ class UsersController < ApplicationController
     @user = User.new
   end
 
-  # GET /users/signup
-  def signup
-    return if !self_signup_ok?
-    @user = User.new
-  end
-  
-  # POST /users/signup
-  def do_signup
-    return if !self_signup_ok?
-    @user = User.new(params[:user])
-    raise "you can't sign up as circle user!" if @user.user_name =~ /_circle/
-    respond_to do |format|
-      if @user.create_bolt_identity(:user_name => :user_name,:enabled => false) && @user.save
-        @user.activate! {|activation_code| activation_url(activation_code, :user_name=> @user.user_name)}
-        err = @user.autojoin
-        flash[:action_error] = err if !err.nil?
-        flash[:notice] = "The account #{@user.user_name} has been created and activation instructions were sent to #{@user.email}.  Please check your e-mail and follow the instructions in the activation message."
-        format.html { redirect_to  "/" }  #redirect_to  "/activations/show/"+@user.user_name
-        format.xml  { head :created, :location => user_url(@user) }
-      else
-        format.html { render :action => "signup" }
-        format.xml  { render :xml => @user.errors.to_xml }
-      end
-    end
-  end
-
   # GET /users/1;edit
   def edit
     authorize! :edit, User
@@ -76,8 +50,6 @@ class UsersController < ApplicationController
     respond_to do |format|
       if @user.valid? && @user.save
         do_extra_actions
-        err = @user.autojoin
-        flash[:action_error] = err if !err.nil?
         flash[:notice] = :user_created
         flash[:notice_param] = @user
         format.html { redirect_to users_url(:use_session => true) }
@@ -112,7 +84,7 @@ class UsersController < ApplicationController
     authorize! :delete, User
     @user = User.find(params[:id])
     flash[:notice_param] = @user.user_name
-    @user.destroy_with_identity
+    @user.destroy
     respond_to do |format|
       flash[:notice] = :user_deleted
       format.html { redirect_to users_url(:use_session => true) }
@@ -124,11 +96,8 @@ class UsersController < ApplicationController
   def login_as
     authorize! :login_as, User
     @user = User.find(params[:id])
-    self.current_user = @user
-    respond_to do |format|
-      format.html { redirect_to home_url }
-      format.xml  { head :ok }
-    end
+    sign_in(:user, @user)
+    redirect_to home_url
   end
 
   # GET /users/1;permissions
@@ -176,19 +145,16 @@ class UsersController < ApplicationController
     current_user_action do
       @user.update_attributes(:preferences => params[:prefs] ? params[:prefs].keys.join(',') : '',:language => params['language'])
       if Configuration.get(:circle_currency_policy) == 'self_authorize'
-        roles = Role.find(:all,:conditions => "name in ('currency','circle')")
-        @user.roles -= roles
-        @user.roles += roles if params[:circle_currency_management]
+        @user.delete_privs(:currency,:circle)
+        @user.add_privs(:currency,:circle) if params[:circle_currency_management]
       end
       if Configuration.get(:annotations_policy) =~ /^self_authorize/
-        view_role = Role.find(:all,:conditions => "name = 'view_annotations'")
-        @user.roles -= view_role
-        @user.roles += view_role if params[:view_annotations]
+        @user.delete_privs(:view_annotations)
+        @user.add_privs(:view_annotations) if params[:view_annotations]
       end
       if Configuration.get(:annotations_policy) == 'self_authorize_view_edit'
-        edit_role = Role.find(:all,:conditions => "name = 'edit_annotations'")
-        @user.roles -= edit_role
-        @user.roles += edit_role if params[:edit_annotations]
+        @user.delete_privs(:edit_annotations)
+        @user.add_privs(:edit_annotations) if params[:edit_annotations]
       end
       return_url = session[:prefs_return_to] || home_url
       respond_to do |format|
@@ -197,6 +163,33 @@ class UsersController < ApplicationController
         format.html {redirect_to(return_url) }
         format.xml  { head :ok }
         session[:prefs_return_to] = nil
+      end
+    end
+  end
+
+  # GET /users/1;password_change
+  def password_change
+    authorize! :change_password, User
+    current_user_or_can?(:admin)
+    @user = User.find(params[:id])
+  end
+
+  # PUT /users/1;do_password_change
+  def do_password_change
+    authorize! :change_password, User
+    if current_user_or_can?(:admin)
+      @user = User.find(params[:id])
+      if @user == current_user
+        @user.errors.add(:current_password," is incorrect.") if !@user.valid_password?(params[:current_password])
+      end
+      @user.attempt_set_password(params) if @user.errors.empty?
+      if @user.errors.empty?
+        sign_in(:user, @user)
+        flash[:notice] = :password_changed
+        flash[:notice_param] = @user
+        redirect_to home_url
+      else
+        render :action => "password_change"
       end
     end
   end
@@ -247,14 +240,14 @@ class UsersController < ApplicationController
     if verify_invitation
       @user = User.new(params[:user])
       raise "you can't sign up as circle user!" if @user.user_name =~ /_circle/
-      respond_to do |format|
-        if (identity = @user.create_bolt_identity(:user_name => :user_name,:enabled => true,:password => params[:password],:confirmation => params[:confirmation])) && @user.save
-          err = @user.autojoin
-          flash[:action_error] = err if !err.nil?
-          format.html { _do_accept_invitation }  #redirect_to  "/activations/show/"+@user.user_name
-        else
-          format.html { render :action => "accept_invitation" }
-        end
+
+      @user.password = params[:password]
+      @user.password_confirmation = params[:confirmation]
+      @user.skip_confirmation!
+      if @user.valid? && @user.save
+        _do_accept_invitation  #redirect_to  "/activations/show/"+@user.user_name
+      else
+        render :action => "accept_invitation"
       end
     else
       access_denied
@@ -325,7 +318,7 @@ class UsersController < ApplicationController
   def _do_accept_invitation
     namer_account = @circle.api_user_accounts('namer',current_user)[0]
     @circle.add_player_to_circle('member',@user,namer_account)
-    self.current_user = @user
+    sign_in(:user, @user)
     flash[:notice] = "You have been added to: #{@circle.name}"
     redirect_to(dashboard_url)
     @invitations.delete(@email)
@@ -356,7 +349,7 @@ class UsersController < ApplicationController
     if current_user_can?(:createAccounts)
       flash[:notice_param] = @user
       if params[:activate_account] && @user.deactivated?
-        @user.activate! {|activation_code| activation_url(activation_code, :user_name=> @user.user_name)}
+        @user.activate!
         flash[:notice] = :user_activated
       end
       if params[:deactivate_account] && @user.activated?
@@ -364,18 +357,12 @@ class UsersController < ApplicationController
         flash[:notice] = :user_deactivated
       end
       if params[:resend_activation] && @user.activation_pending?
-        BoltNotifications.deliver_activation_notice(@user, @user.bolt_identity, activation_url(@user.bolt_identity.activation_code, :user_name=> @user.user_name))
+        @user.resend_activation_message
         flash[:notice] = :user_activation_resent
       end
       if params[:reset_password]
-        i = @user.bolt_identity
-        if i.enabled
-          raise i.inspect if !i.valid?
-          i.reset_code! if i.reset_code.blank? # keep old reset code
-          accounts = [{:identity => i, :url =>resetcode_passwords_url(:host => request.host_with_port, :user_name => i.user_name,:code => i.reset_code)}]
-          @email_text = BoltNotifications.deliver_password_reset_notice(@user.email,accounts)
-          flash[:notice] = :password_reset
-        end
+        @user.send_reset_password_instructions
+        flash[:notice] = :password_reset
       end
     end
   end

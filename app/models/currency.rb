@@ -819,8 +819,9 @@ class CurrencyMembrane
     if params[:password] != params[:confirmation]
       circle.errors.add_to_base("Passwords don't match")
     else
-      circle_user = User.new({:user_name => circle.circle_user_name, :first_name => circle.name,:password => params[:password],:last_name => "Circle",:email=>params[:email]})
+      circle_user = User.new({:user_name => circle.circle_user_name, :first_name => circle.name,:password => params[:password],:password_confirmation => params[:password],:last_name => "Circle",:email=>params[:email]})
       circle_user.circle = circle
+      circle_user.skip_confirmation!
       if !circle_user.save
         circle.errors.add_to_base("Error creating circle user: "+ circle_user.errors.full_messages.join('; '))
       end

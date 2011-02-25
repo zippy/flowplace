@@ -14,6 +14,7 @@ class Ability
       can :read, Configuration
       can :edit, Configuration
       can :create, Configuration
+      can :change_password, User
     end
     if @user.has_priv?(:accessAccounts)
       can :read, User
@@ -31,14 +32,17 @@ class Ability
     if @user.has_priv?(:edit_annotations)
       can :read, Annotation
       can :edit, Annotation
+      can :create, Annotation
     end
     if @user.has_priv?(:circle)
       can :edit, :circle
+      can :create, :circle
       can :delete, :circle
     end
     if @user.new_record?
       can :self_signup, :all if  Configuration.get(:new_user_policy) == 'self_signup'
     else
+      can :change_password, User
       can :read, :circle
     end
   end

@@ -5,6 +5,6 @@ There are no plays in this currency.
 <% else %>
   <%= render(:partial => 'play_tabs') %>
   <div id="make_play">
-    <%= render_play_form(@currency,@currency_account,@play_name)%>
+    <%= render_play_form(@currency,@currency_account,@play_name).html_safe%>
   </div>
 <%end%>

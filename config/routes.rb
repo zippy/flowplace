@@ -5,7 +5,8 @@ ActionController::Routing::Routes.draw do |map|
     :permissions => :get, :set_permissions => :put,
     :preferences => :get, :set_preferences => :put,
     :contact_info => :get, :set_contact_info => :put,
-    :email => :get, :process_email => :put
+    :email => :get, :process_email => :put,
+    :password_change => :get, :do_password_change => :put
     }
 
   map.new_user_session 'login', :controller => 'sessions', :action => 'new', :conditions => { :method => :get }

@@ -94,7 +94,7 @@ Feature: Users
     When I go to the user activation page
     Then I should see "Your account has been activated. You are now signed in."
 
-  Scenario: a user tries to create a password but mistypes password confirmation
+  Scenario: a user tries to create an account but mistypes password confirmation
     And I am logged into my "admin" account
     And I have "admin" privs
     When I go to the configurations page
@@ -111,8 +111,7 @@ Feature: Users
     And I fill in "Password" with "password"
     And I fill in "Confirm Password" with "pasword"
     And I press "Sign up"
-    Then what
-    Then I should see "password mismatch"
+    Then I should see "Password doesn't match confirmation"
           
   @allow-rescue
   Scenario: a user tries to sign up when self signup policy is off

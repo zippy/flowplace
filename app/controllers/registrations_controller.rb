@@ -14,7 +14,6 @@ class RegistrationsController < ApplicationController
   def create
     build_resource
     return if !self_signup_ok?
-
     if resource.save
       flash[:notice] = "The account #{resource.user_name} has been created and activation instructions were sent to #{resource.email}"
 #      set_flash_message :notice, :signed_up

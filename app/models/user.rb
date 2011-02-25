@@ -1,7 +1,8 @@
 require 'lib/constants'
 class User < ActiveRecord::Base
+  include Gravtastic
+  gravtastic
   is_gravtastic
-
   devise :database_authenticatable, :registerable, :recoverable, :rememberable, :trackable, :timeoutable, :confirmable
 
   has_many :stewarded_currencies, :class_name => 'Currency', :foreign_key => :steward_id
@@ -20,6 +21,11 @@ class User < ActiveRecord::Base
   validates_uniqueness_of :user_name
   validates_presence_of :user_name,:first_name,:last_name
   validates_format_of :email, :with => EmailAddressRegEx
+  with_options :if => :password_required? do |v|
+    v.validates_presence_of     :password
+    v.validates_confirmation_of :password
+    v.validates_length_of       :password, :within => 4..20, :allow_blank => true
+  end
 
   attr_protected :account_id,:last_login,:last_login_ip,:created_at
   cattr_reader :per_page
@@ -29,7 +35,7 @@ class User < ActiveRecord::Base
   # rename the user
   def rename(new_name)
     self.user_name = new_name
-    self
+    self.save
   end
   
   ##############################################
@@ -96,38 +102,47 @@ class User < ActiveRecord::Base
 #    last_week = (1.week.ago).to_formatted_s(:db)
 #    CGI::Session::ActiveRecordStore.session_class.delete_all("updated_at < '#{last_week}'")
 #  end
-  
+
+  def enabled?
+    enabled == true
+  end
+
   def deactivated?
     !enabled? && confirmation_token.blank?
-#    !bolt_identity.enabled? && bolt_identity.activation_code.blank?
   end
 
   def activated?
     enabled? && confirmation_token.blank?    
-#    bolt_identity.enabled? && bolt_identity.activation_code.blank?
   end
   
   def activation_pending?
     !enabled? && !confirmation_token.blank?
-#    !bolt_identity.enabled? && !bolt_identity.activation_code.blank?
+  end
+
+  def humanized_activation_status
+    case
+      when deactivated?
+      "deactivated"
+    when activation_pending?
+      "activation e-mail sent"
+    when activated?
+      "active"
+    end
   end
 
   def activate!
-    self.enabled = true
-    save
-    #    identity = self.bolt_identity
-    #    identity.require_activation! {|code| yield code}
-    #    identity.save
+    send_confirmation_instructions
+  end
+  
+  def resend_activation_message
+    resend_confirmation_token
   end
 
   def deactivate!
     self.enabled = false
     self.confirmation_token = nil
+    self.encrypted_password = ''
     save
-#    identity = self.bolt_identity
-#    identity.enabled = false
-#    identity.activation_code = nil
-#    identity.save
   end
   
   def acknowledge_tip
@@ -147,11 +162,6 @@ class User < ActiveRecord::Base
   end
   
   ##############################################
-  def destroy_with_identity
-    bolt_identity.destroy if bolt_identity
-    destroy
-  end
-  
   def has_priv?(priv)
     get_privs.include?(priv.to_s)
   end
@@ -287,6 +297,23 @@ class User < ActiveRecord::Base
     records
   end
   
+  # overriden to also enable
+  def skip_confirmation!
+    self.confirmed_at = Time.now
+    self.enabled = true
+    @skip_confirmation = true
+  end
+       
+  # overriden to also enable
+  def confirm!
+    unless_confirmed do
+      self.enabled = true
+      self.confirmation_token = nil
+      self.confirmed_at = Time.now
+      save(:validate => false)
+    end
+  end
+  
   # Resets reset password token and send reset password instructions by email
   def send_reset_password_instructions
     prepare_to_reset_password
@@ -297,7 +324,28 @@ class User < ActiveRecord::Base
   def prepare_to_reset_password
     generate_reset_password_token!
   end
-  
+
+  # new function to set the password without knowing the current password
+  # used in our confirmation controller. 
+  def attempt_set_password(params)
+    p = {}
+    p[:password] = params[:password]
+    p[:password_confirmation] = params[:password_confirmation]
+    update_attributes(p)
+  end
+
+  protected 
+  # overriden because Devise requires passwords for new records.  We don't
+  def password_required?
+    !password.nil? || !password_confirmation.nil?
+  end
+
+  def after_create
+    if circle.nil?
+      autojoin
+    end
+  end
+
 end
 
 module MyDeviseClassMethods

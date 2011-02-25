@@ -22,11 +22,13 @@ Feature: configuration
     And I should see "Wealing Policy"
     And I should see "Default Language"
 
+  @allow-rescue
   Scenario: non-admin user tries to look at configuration options
     When I go to the logout page
     And I am logged into my "user" account
     And I go to the configurations page
-    Then I should be taken to the dashboard page
+    Then I should be taken to the home page
+    And I should see "You are not authorized to access this page."
 
   Scenario: admin changes the footer configuration
     When I go to the configurations page
@@ -48,9 +50,6 @@ Feature: configuration
     And I select "Cool Site" from "Jump to"
     When I go to the logout page
     Then I should see "Thanks for being part of the Cool Site!"
-    When I go to the forgot password page
-    Then I should see "the one you use for the Cool Site web site"
-    And I should see "please be sure to give us the one you used to sign up for the Cool Site"
 
   Scenario: admin merges new defaults
     Given all configurations are deleted
