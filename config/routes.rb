@@ -1,4 +1,11 @@
 ActionController::Routing::Routes.draw do |map|
+
+  map.devise_for :users, :path_names => { :sign_in => 'login', :sign_out => 'logout' }
+  map.new_user_session 'login', :controller => 'sessions', :action => 'new', :conditions => { :method => :get }
+  map.user_session 'login', :controller => 'sessions', :action => 'create', :conditions => { :method => :post }
+  map.destroy_user_session 'logout', :controller => 'sessions', :action => 'destroy', :conditions => { :method => :get }
+  
+  map.root :controller => 'home', :action => 'home'
   map.resources :annotations
 
   map.resources :configurations, :collection => { :merge_defaults => :get }

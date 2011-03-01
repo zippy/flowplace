@@ -14,8 +14,8 @@ Spec::Runner.configure do |config|
   config.fixture_path = RAILS_ROOT + '/spec/fixtures/'
 
   def create_user(user='user')
-    u = User.new({:user_name => user, :first_name => 'Joe',:last_name => user.capitalize,:email=>"#{user}@#{user}.org"})
-    u.create_bolt_identity(:user_name => :user_name,:password => 'password') && u.save!
+    u = User.new({:user_name => user, :first_name => 'Joe',:last_name => user.capitalize,:email=>"#{user}@#{user}.org",:password => 'password'})
+    u.save
     u
   end
   

@@ -2,6 +2,8 @@ require 'lib/constants'
 class User < ActiveRecord::Base
   is_gravtastic
 
+  devise :database_authenticatable, :confirmable, :recoverable, :rememberable, :trackable, :timeoutable
+
   has_many :stewarded_currencies, :class_name => 'Currency', :foreign_key => :steward_id
   has_many :currency_accounts, :dependent => :destroy
   has_many :weals_as_offerer, :class_name => 'Weal', :foreign_key => :offerer_id
@@ -148,9 +150,29 @@ class User < ActiveRecord::Base
     destroy
   end
   
-  ##############################################
-  def privs
-    roles.collect {|r| r.name.intern}
+  def has_priv?(priv)
+    get_privs.include?(priv.to_s)
+  end
+
+  def get_privs
+    @privs ||= self.privs.nil? ? [] : (privs.is_a?(String) ? YAML.load(self.privs) : privs)
+  end
+
+  def set_privs(*p)
+    the_privs = p.flatten.map{|x|x.to_s}.uniq
+    the_privs.each {|x| raise "invalid priv #{x}" if !Permissions.include?(x)}
+    self.privs = the_privs.sort.to_yaml
+    @privs = nil
+    save
+  end
+
+  def add_privs(*p)
+    set_privs(get_privs.concat(p))
+  end
+
+  def delete_privs(*p)
+    new_privs = get_privs - p.map{|x|x.to_s}
+    set_privs(new_privs)
   end
 
   ##############################################

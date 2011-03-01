@@ -1,6 +1,7 @@
 class HomeController < ApplicationController
   before_filter :set_current_circle,:only => :home
   helper :activities
+  skip_before_filter :authenticate_user!, :only => :logged_out
 #BOLT-TO_REMOVE    require_authentication :except => [:logged_out,:home]
 #BOLT-TO_REMOVE    require_authorization :admin,:only => :version
   def home

@@ -34,8 +34,10 @@ SearchFormParams = {
 }
 
 class ApplicationController < ActionController::Base
-  require_authentication
+#BOLT-TO_REMOVE  require_authentication
+  before_filter :authenticate_user!
   helper :all # include all helpers, all the time
+
   # See ActionController::RequestForgeryProtection for details
   # Uncomment the :secret if you're not using the cookie session store
 #  protect_from_forgery :secret => 'b97ae5e625966e6c6aab11ea53aeabc4'
@@ -74,6 +76,10 @@ class ApplicationController < ActionController::Base
     flash[:notice] = :not_allowed
     redirect_to(home_url)
   end
+  
+  def logged_in?
+    user_signed_in?
+  end
 
   private
   
@@ -91,8 +97,5 @@ class ApplicationController < ActionController::Base
     end
     @current_circle ||= @my_circles[0]
   end
-
-  ################################################################################
-  include(Bolt::BoltControllerMethods)
   
 end

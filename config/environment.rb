@@ -39,6 +39,9 @@ Rails::Initializer.run do |config|
   # config.gem "hpricot", :version => '0.6', :source => "http://code.whytheluckystiff.net"
   # config.gem "sqlite3-ruby", :lib => "sqlite3"
   # config.gem "aws-s3", :lib => "aws/s3"
+  config.gem "cancan"
+  config.gem 'warden'
+  config.gem 'devise', :version => '1.0.9'
   config.gem 'gravtastic'
   config.gem 'nokogiri'
   config.gem "rich-acts_as_revisable", :lib => "acts_as_revisable", :source => "http://gems.github.com"

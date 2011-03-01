@@ -1,7 +1,19 @@
 # Read about fixtures at http://ar.rubyonrails.org/classes/Fixtures.html
 
-one:
-  user_name: user_one
-  first_name: user_one_first_name
-  last_name: user_one_last_name
-
+user_one:
+  id: 1
+  user_name: 'user_one'
+  email: 'user_one@harris-braun.com'
+  first_name: 'One'
+  last_name: 'User'
+  address1: 'Address 1'
+  address2: ''
+  city: 'City'
+  state: 'CA'
+  phone: '123/456-7890'
+  phone2: ''
+  fax: ''
+  country: 'US'
+  created_at: '2009-01-23'
+  last_login: '2009-12-02 12:02:00'
+  enabled: true

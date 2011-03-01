@@ -13,6 +13,46 @@ describe User do
   it "should create a new instance given valid attributes" do
     User.create!(@valid_attributes)
   end
+  
+  describe 'privs' do
+    fixtures :users
+    it "should return an empty list if no privs" do
+      users('user_one').get_privs.should == []
+    end
+    it "should set privs" do
+      u = users('user_one')
+      u.set_privs(User::Permissions)
+      u.get_privs.sort.should == User::Permissions.sort
+      u.set_privs(:dev)
+      u.get_privs.should == ['dev']
+    end
+    it "should be able to add privs" do
+      u = users('user_one')
+      u.add_privs(:createAccounts,:dev)
+      u.get_privs.should == ['createAccounts','dev']
+      u.add_privs(:createAccounts,:admin)
+      u.get_privs.should == ['admin','createAccounts','dev']
+      u.add_privs([:createAccounts,:assignPrivs])
+      u.get_privs.should == ['admin','assignPrivs','createAccounts','dev']
+    end
+    it "should be able to delete privs" do
+      u = users('user_one')
+      u.add_privs(:createAccounts,:dev,:admin)
+      u.get_privs.should == ['admin','createAccounts','dev']
+      u.delete_privs(:createAccounts,:admin)
+      u.get_privs.should == ['dev']
+    end
+    it "should be able to check for a priv" do
+      u = users('user_one')
+      u.add_privs(:createAccounts,:dev,:admin)
+      u.has_priv?(:createAccounts).should be_true
+      u.has_priv?(:assignPrivs).should be_false
+    end
+    it "should raise an error if setting a non existent priv" do
+      u = users('user_one')
+      lambda{u.add_privs(:fish)}.should raise_error
+    end
+  end
     
   describe 'retreiving weals' do
     before(:each) do
