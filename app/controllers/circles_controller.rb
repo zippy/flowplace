@@ -1,6 +1,6 @@
 class CirclesController < ApplicationController
 
-  before_filter :set_current_circle,:only => :members
+  before_filter :set_current_circle ,:except => :index
   # GET /circles
   # GET /circles.xml
   def index

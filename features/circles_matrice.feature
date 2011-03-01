@@ -52,7 +52,7 @@ Feature: circle namer
     When I go to the circles page
     And I follow "the circle"
     Then I should see "Edit" as the active sub-tab
-    And I should see "View" as a sub-tab
+    And I should see "Overview" as a sub-tab
     And I should see "Players" as a sub-tab
     And I should see "Currencies" as a sub-tab
     When I fill in "description" with "a very cool circle"
@@ -78,7 +78,7 @@ Feature: circle namer
     When I go to the circles page
     And I follow "Add Players" within "table"
     And I should see "Add Players" as the active sub-tab
-    And I should see "View" as a sub-tab
+    And I should see "Overview" as a sub-tab
     And I should see "Currencies" as a sub-tab
     And I should see "Edit" as a sub-tab
     And I should see a table with 3 rows within "#circle_players"
@@ -183,7 +183,7 @@ Feature: circle namer
     Then I should be taken to the link players page for "the circle"
     And I should see "Link Players to Currencies" as the active sub-tab
     And I should see "Add Players" as a sub-tab
-    And I should see "View" as a sub-tab
+    And I should see "Overview" as a sub-tab
     And I should see "Edit" as a sub-tab
     And I should see "Joe User" within "#circle_users_search_results"
     And I should see "Jane User" within "#circle_users_search_results"
@@ -354,7 +354,7 @@ Feature: circle namer
     Then I should be taken to the currencies page for "the circle"
     And I should see "Add Currencies" as the active sub-tab
     And I should see "Add Players" as a sub-tab
-    And I should see "View" as a sub-tab
+    And I should see "Overview" as a sub-tab
     And I should see "Edit" as a sub-tab
     And I should see "There are no currencies in this circle."
 

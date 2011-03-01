@@ -18,7 +18,7 @@ Feature: circles
     And I should see "the circle"
     When I follow "the circle"
     Then I should be taken to the show circle page for "the circle"
-    And I should see "View" as the active sub-tab
+    And I should see "Overview" as the active sub-tab
 
   Scenario: a new user who hasn't joined a circle doesn't see the jump pop-up
     When I am logged into my "new" account
@@ -48,3 +48,11 @@ Feature: circles
     Then I should see "Jump to"
     And I select "Flowplace" from "Jump to"
     And I select "the circle" from "Jump to"
+
+  Scenario: a namer goes to the circle setup
+    Given I am logged into my "namer" account
+    And I select "the circle" from "Jump to"
+    And I follow "Setup"
+    And I should see "Setup" as the current tab
+    And I should see "Overview" as the active sub-tab
+  
