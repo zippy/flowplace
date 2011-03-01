@@ -21,11 +21,19 @@ class MoveFromBoltToDevise < ActiveRecord::Migration
       t.confirmable
       t.recoverable
       t.rememberable
-      t.trackable
     end
+    rename_column(:users, :last_login, :last_sign_in_at)
+    rename_column(:users, :last_login_ip, :last_sign_in_ip)
+    add_column :users,:sign_in_count, :integer, :default => 0
+    add_column :users,:current_sign_in_at, :datetime
+    add_column :users,:current_sign_in_ip, :string
 
     add_index :users, :confirmation_token,   :unique => true
     add_index :users, :reset_password_token, :unique => true
+    User.reset_column_information
+    User.all.each do |user|
+      user.confirm!
+    end
   end
 
   def self.down
@@ -41,9 +49,9 @@ class MoveFromBoltToDevise < ActiveRecord::Migration
     remove_column :users,"remember_created_at"
     remove_column :users,"sign_in_count"
     remove_column :users,"current_sign_in_at"
-    remove_column :users,"last_sign_in_at"
     remove_column :users,"current_sign_in_ip"
-    remove_column :users,"last_sign_in_ip"
+    rename_column(:users, :last_sign_in_at, :last_login)
+    rename_column(:users, :last_sign_in_ip, :last_login_ip)    
     remove_column :users,"encrypted_password"
   end
 end
