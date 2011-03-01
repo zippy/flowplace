@@ -65,13 +65,13 @@ left_banner = !Configuration.get(:left_banner).blank? && !session[:left_banner_c
         <div class='wrap_to_center'>
         <div id="header">
           <%if @current_circle.nil? %>
-             <div id='circle_header'><img id='circle_logo' src="/images/logo.png" height="35" width="35" alt="logo"><div id='circle_header_name'><%=configuration_text(:site_name)%></div></div>
+             <div id='circle_header'><img id='circle_logo' src="/images/logo.png" alt="logo"><div id='circle_header_name'><%=configuration_text(:site_name)%></div></div>
             <% if logged_in? %>
             <div id="circle_jump_select"><%= my_circles_jump_select %></div>
             <%= render(:partial => 'shared/nav_flowplace') %>
             <%end%>
           <%else%>
-            <div id='circle_header'><%= render_currency_icon(@current_circle,:size =>35,:id=>"circle_logo")%><div id='circle_header_name'><%=@current_circle.name%></div></div>
+            <div id='circle_header'><%= render_currency_icon(@current_circle,:id=>"circle_logo")%><div id='circle_header_name'><%=@current_circle.name%></div></div>
             <%if current_user_can?(:admin) || Configuration.get(:single_circle) != 'on'%>
             <div id="circle_jump_select"><%= my_circles_jump_select %> </div>
             <%end%>

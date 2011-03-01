@@ -25,7 +25,7 @@ img
 #top_bar {
 	padding: 0 0 0 0;
 	margin: 0 0 0 0;
-	height: 35px;
+	height: 40px;
 }
 
 
@@ -47,6 +47,8 @@ img
 }
 
 #circle_logo {
+  width: 40px;
+  height: 40px;
 	float:left;
 		-moz-border-radius:3px 3px 3px 3px;
 	border-radius:3px 3px 3px 3px;
@@ -133,7 +135,7 @@ th {
 	border-color: #70787F;
 	}
 
-ul#nav {float:right;display:block;margin-top:20px;list-style:none;}
+ul#nav {float:right;display:block;margin-top:25px;list-style:none;}
 ul#nav li {display:block;float:left;}
 ul#nav li a {display:block;float:left;margin:0px;padding: 0 10px;}
 ul#nav li a:hover {background: gray;
