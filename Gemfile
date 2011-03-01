@@ -11,6 +11,10 @@ gem 'nokogiri'
 gem 'rich-acts_as_revisable'
 gem 'acts-as-taggable-on', '~> 2.0.0.rc1'
 
+group :production do
+  gem 'mysql'
+end
+
 group :development do
   # bundler requires these gems in development
   # gem "rails-footnotes"
