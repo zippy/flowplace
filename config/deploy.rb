@@ -74,6 +74,7 @@ role :db,  domain, :primary => true
 
 after 'deploy:symlink', :roles => :app do
   run "ln -nfs #{shared_path}/config/flowplace_config.rb #{release_path}/config/flowplace_config.rb" 
+  run "cd #{deploy_to}/current &&  #{sudo} bundle install --deployment --without=cucumber test development"
 end
 
 task :fish do
