@@ -10,7 +10,7 @@ gem 'gravtastic'
 gem 'nokogiri'
 gem 'rich-acts_as_revisable'
 gem 'acts-as-taggable-on', '~> 2.0.0.rc1'
-gem 'i18n'
+#gem 'i18n'
 
 
 group :production do
