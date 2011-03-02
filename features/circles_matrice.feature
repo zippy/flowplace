@@ -92,7 +92,7 @@ Feature: circle namer
     Given A user "jeff"
     Given A user "fred"
     When I go to the players page for "the circle"
-    Then I should see "Search found 4 users"
+    Then I should see "Search found 5 users"
     And I should see "Search"
     And I fill in "search_key" with "jeff"
     And I press "Search"
@@ -282,8 +282,8 @@ Feature: circle namer
     Then I should not see "Next"
     And I check "Paginate results"
     And I press "Search"
-    When I go to page 1 of the players page for "the circle" with 3 per page
-    Then I should see "Search found 4 users"
+    When I go to page 1 of the players page for "the circle" with 4 per page
+    Then I should see "Search found 5 users"
     Then I should see "joe"
     And I should not see "jane"
     When I follow "Next"

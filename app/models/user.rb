@@ -27,7 +27,7 @@ class User < ActiveRecord::Base
     v.validates_length_of       :password, :within => 4..20, :allow_blank => true
   end
 
-  attr_protected :account_id,:last_login,:last_login_ip,:created_at
+  attr_protected :account_id,:last_sign_in_at,:last_sign_in_ip,:created_at
   cattr_reader :per_page
   @@per_page = 10
   

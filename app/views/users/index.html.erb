@@ -25,7 +25,7 @@
 
   <% if current_user_can?(:admin) %> &nbsp;<%= link_to '[sign in as]', login_as_user_url(i.id) %>
    <% unless i.activated? %>(not active)<% end %>
-   <% if i.last_login %>Last login: <%=time_ago_in_words(i.last_login)%> ago<%else%>Never logged in<%end%>; 
+   <% if i.last_sign_in_at %>Last login: <%=time_ago_in_words(i.last_sign_in_at)%> ago<%else%>Never logged in<%end%>; 
    Created: <%=standard_date(i.created_at)%>
   <br>
    Full Name: <%= i.full_name %><% end %>

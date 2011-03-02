@@ -11,7 +11,7 @@
 	<tr><td>
 	<fieldset style=padding:5px>
 
-	<p>Last signed in: <% if @user.last_login_ip? %> <%= localize_time(@user.last_login) %> from <%= @user.last_login_ip %> <%else%> <i>never signed in</i><% end %></p>
+	<p>Last signed in: <% if @user.last_sign_in_ip? %> <%= localize_time(@user.last_sign_in_at) %> from <%= @user.last_sign_in_ip %> <%else%> <i>never signed in</i><% end %></p>
 	<p>Created: <%= localize_time(@user.created_at) %>
 	</p>
 
