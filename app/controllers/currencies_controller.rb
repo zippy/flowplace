@@ -33,7 +33,10 @@ class CurrenciesController < ApplicationController
     return if !can_access_currency?
     check_for_currency_type
     @currency = Currency.new
-
+    @circle = @current_circle = Currency.find(params[:circle]) if params[:circle]
+    if @circle
+      @current_user_is_namer = @circle.api_user_isa?(current_user,'namer')
+    end
     respond_to do |format|
       format.html # new.html.erb
       format.xml  { render :xml => @currency }
@@ -69,37 +72,45 @@ class CurrenciesController < ApplicationController
       @currency.configuration = params[:config]
     end
     @currency.steward_id = current_user.id
+    @circle = @current_circle = Currency.find(params[:circle]) if params[:circle]
+    if @demo_mode
+      @current_circle = Currency.find_by_type('CurrencyMembrane')
+      @namer_account = @current_circle.api_user_accounts('namer')[0]
+      @autojoin = '1'
+    elsif @current_circle
+      @namer_account = @current_circle.api_user_accounts('namer',current_user)[0]
+      raise "You are not a namer in #{@current_circle.name}!" if @namer_account.nil?
+      @autojoin = params[:autojoin]
+    end
     respond_to do |format|
       if @currency.save
-        if @demo_mode
-          # bind the new currency to the first membrane currency
-          circle = Currency.find_by_type('CurrencyMembrane')
-          self_account = User.find_by_user_name(circle.circle_user_name).currency_accounts[0]
-          namer_account = circle.api_user_accounts('namer')[0]
+        if @current_circle
+          # bind the new currency to the circle if it was declared
+          self_account = User.find_by_user_name(@current_circle.circle_user_name).currency_accounts[0]
           play = {
-            'from' => namer_account,
+            'from' => @namer_account,
             'to' => self_account,
             'currency' => @currency,
-            'autojoin' => '1'
+            'autojoin' => @autojoin
           }
-          circle.api_play('bind_currency',namer_account,play)
+          @current_circle.api_play('bind_currency',@namer_account,play)
           #and add all members of the circle to this currency
-          circle.api_user_accounts('member').each do |ca|
+          @current_circle.api_user_accounts('member').each do |ca|
             play = {
-              'from' => namer_account,
+              'from' => @namer_account,
               'to' => ca,
               'currency' => @currency,
               'player_class' => 'member'
             }
             begin
-              circle.api_play('grant',namer_account,play)
+              @current_circle.api_play('grant',@namer_account,play)
             rescue Exception => e
               raise e unless e.to_s =~ /You are allready a member of that currency/
             end            
           end
         end
         flash[:notice] = 'Currency was successfully created.'
-        format.html { redirect_to @demo_mode ? dashboard_path : currencies_path }
+        format.html { redirect_to @demo_mode ? dashboard_path : (@current_circle ? currencies_circle_path(@current_circle) : currencies_path) }
         format.xml  { render :xml => @currency, :status => :created, :location => @currency }
       else
         format.html { render :action => "new" }

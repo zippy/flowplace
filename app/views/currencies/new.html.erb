@@ -1,5 +1,5 @@
 <% @title='New Currency' %>
-<%= render(:partial => 'sub_nav') %>
+<%= render(:partial => (@current_circle ? 'circles/sub_nav' : 'sub_nav')) %>
 
 <% form_for(@currency) do |f| %>
 	<%= render(:partial => 'f', :object => f) %>

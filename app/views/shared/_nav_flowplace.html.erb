@@ -3,7 +3,7 @@
 
   <li><%= nav_link 'Dashboard', '/dashboard?current_circle=','Take action', '/dashboard'%></li>
   <li><%= nav_link 'Circles',circles_path,'Join, create and manage circles'%></li>
-  <% if current_user_can?(:currency) %>
+  <% if current_user_can?(:admin) %>
   <li><%= nav_link 'Currencies', currencies_path,'Create an manage currencies'%></li>
   <%end%>
   <% if current_user_can?(:accessAccounts) %>

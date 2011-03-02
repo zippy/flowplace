@@ -5,7 +5,7 @@ Feature: circle namer
   
   Background:
     Given I am logged into my account
-    Given I have "circle" privs
+    Given I have "circle,currency" privs
     And a circle "the circle"
 
   @allow-rescue
@@ -327,7 +327,7 @@ Feature: circle namer
     And an "Issued" currency "THEM"
     When I go to the logout page
     And I am logged into my account
-    When I go to the currencies page for "the circle"
+    When I go to the bind currencies page for "the circle"
     Then I should see "No currencies found"
 
   Scenario: namer renames a circle
@@ -350,22 +350,59 @@ Feature: circle namer
 
   Scenario: namer views her circle's currencies
     When I go to the circles page
-    And I follow "Add Currencies" within "table"
+    And I follow "Currencies" within "table"
     Then I should be taken to the currencies page for "the circle"
-    And I should see "Add Currencies" as the active sub-tab
+    And I should see "Currencies" as the active sub-tab
     And I should see "Add Players" as a sub-tab
     And I should see "Overview" as a sub-tab
     And I should see "Edit" as a sub-tab
     And I should see "There are no currencies in this circle."
 
+  Scenario: namer adds a new currency to a circle
+    When I go to the currencies page for "the circle"
+    Then I should see "There are no currencies in this circle."
+    When I follow "Add Currency"
+    Then I should be taken to the new currencies page for "the circle"
+    And I should see "Setup" as the active tab
+    And I should see "New Currency" as the active sub-tab
+    And I should see "New currency for the circle"
+    And I fill in "Name" with "WE"
+    And I select "Mutual Credit" from "Type"
+    And I fill in "Icon url" with "/images/currency_icon_we.jpg"
+    And I press "Create"
+    Then I should be taken to the currencies page for "the circle"
+    And I should see "WE"
+    And I should see the "/images/currency_icon_we.jpg" image
+
+  Scenario: namer adds a new currency to a circle with autojoin
+    When I go to the currencies page for "the circle"
+    Then I should see "There are no currencies in this circle."
+    When I follow "Add Currency"
+    Then I should be taken to the new currencies page for "the circle"
+    And I should see "New currency for the circle"
+    And I check "Autojoin circle members to this currency."
+    And I fill in "Name" with "WE"
+    And I select "Mutual Credit" from "Type"
+    And I fill in "Icon url" with "/images/currency_icon_we.jpg"
+    And I press "Create"
+    Given A user "joe"
+    When I go to the players page for "the circle"
+    When I check the box for user "joe"
+    When I select "member" from "player_class"
+    And I press "Add >>"
+    And I go to the link players page for "the circle"
+    Then I should see "member" within "#joe"
+    
+  #this scenario though it works, is no longer revealed.  Namers never need to bind pre-existing
+  # currencies to circles.
   Scenario: namer binds a currency to a circle
     When I go to the "namer" currency account history page for "anonymous" in "the circle" of "bind_currency"
     Then I should see "You have made no 'bind_currency' plays in this currency."
     Given a "MutualCredit" currency "X"
-    When I go to the currencies page for "the circle"
+    When I go to the bind currencies page for "the circle"
     When I check the box for currency "X"
     And I press "Add >>"
-    Then I should be taken to the currencies page for "the circle"
+    Then I should be taken to the bind currencies page for "the circle"
     And I should see "Circle was successfully updated."
     And I should not see "There are no currencies in this circle."
     And I should see "X" in row 1 column 0 within "#circle_currencies"
@@ -376,11 +413,11 @@ Feature: circle namer
     When I go to the "namer" currency account history page for "anonymous" in "the circle" of "bind_currency"
     Then I should see "You have made no 'bind_currency' plays in this currency."
     Given a "MutualCredit" currency "X"
-    When I go to the currencies page for "the circle"
+    When I go to the bind currencies page for "the circle"
     When I check the box for currency "X"
     And I check "Autojoin"
     And I press "Add >>"
-    Then I should be taken to the currencies page for "the circle"
+    Then I should be taken to the bind currencies page for "the circle"
     And I should see "Circle was successfully updated."
     And I should not see "There are no currencies in this circle."
     And I should see "X (autojoin)" in row 1 column 0 within "#circle_currencies"
@@ -394,7 +431,7 @@ Feature: circle namer
 
   Scenario: namer binds a currency to a circle forgetting to check a currency
     Given a "MutualCredit" currency "X"
-    When I go to the currencies page for "the circle"
+    When I go to the bind currencies page for "the circle"
     And I press "Add >>"
     Then I should see "You must choose some currencies!"
 
@@ -403,10 +440,10 @@ Feature: circle namer
     Then I should see "You have made no 'unbind_currency' plays in this currency."
     Given a "MutualCredit" currency "X"
     And I bind "X" to "the circle"    
-    When I go to the currencies page for "the circle"
+    When I go to the bind currencies page for "the circle"
     When I check the box for bound currency "X"
     And I press "<< Remove"
-    Then I should be taken to the currencies page for "the circle"
+    Then I should be taken to the bind currencies page for "the circle"
     And I should see "Circle was successfully updated."
     And I should see "There are no currencies in this circle."
     When I go to the "namer" currency account history page for "anonymous" in "the circle" of "unbind_currency"

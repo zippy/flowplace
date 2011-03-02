@@ -86,10 +86,18 @@ module NavigationHelpers
       circle = $1
       i = Currency.find_by_name(circle)
       "/circles/#{i.id}/currencies"
-    when /the currencies page/
+    when /^the bind currencies page for "([^\"]*)"$/
+      circle = $1
+      i = Currency.find_by_name(circle)
+      "/circles/#{i.id}/bind_currencies"
+    when /^the currencies page$/
       '/currencies'
-    when /the new currencies page/
+    when /^the new currencies page$/
       '/currencies/new'
+    when /^the new currencies page for "([^\"]*)"$/
+      circle = $1
+      i = Currency.find_by_name(circle)
+      "/currencies/new?circle=#{i.id}"
     when /the new "([^\"]*)" currencies page/
       '/currencies/new?currency_type=Currency'+$1.tr(' ','')
     when /the edit currency page for "([^\"]*)"/

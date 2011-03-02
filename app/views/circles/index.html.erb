@@ -16,7 +16,7 @@
       <td> <% if current_user_can?(:circle) && is_namer %>
         <%= link_to 'Add Players', players_circle_path(circle)%>
         &nbsp;&nbsp;
-        <%= link_to 'Add Currencies', currencies_circle_path(circle)%>
+        <%= link_to 'Currencies', currencies_circle_path(circle)%>
         &nbsp;&nbsp;
         <%= link_to 'Link Players to Currencies', link_players_circle_path(circle)%>
         &nbsp;&nbsp;

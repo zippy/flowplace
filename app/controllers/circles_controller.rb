@@ -252,11 +252,19 @@ class CirclesController < ApplicationController
     authorize! :edit, :circle
     @circle = Currency.find(params[:id])
     return if am_not_namer?
+    get_bound_currencies(@circle)
+  end
+
+  # GET /circles/1/bind_currencies
+  def bind_currencies
+    authorize! :edit, :circle
+    @circle = Currency.find(params[:id])
+    return if am_not_namer?
     setup_bound_currencies
   end
   
-  # PUT /circles/1/currencies
-  def set_currencies
+  # PUT /circles/1/do_bind_currencies
+  def do_bind_currencies
     authorize! :edit, :circle
     @circle = Currency.find(params[:id])
     return if am_not_namer?
@@ -288,10 +296,10 @@ class CirclesController < ApplicationController
         @circle.api_play(play_name,namer_account,play)
       end
       flash[:notice] = 'Circle was successfully updated.'
-      redirect_to(currencies_circle_url(@circle))
+      redirect_to(bind_currencies_circle_url(@circle))
     else
       setup_bound_currencies
-      render :action => 'currencies'
+      render :action => 'bind_currencies'
     end
   end
 

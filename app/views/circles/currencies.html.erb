@@ -1,66 +1,36 @@
 <% @title="Currencies in #{h @circle.name}" %>
 <%= render(:partial => 'sub_nav') %>
 
-<% form_tag(currencies_circle_url(@circle),:method => :get, :id => 'search_form') do -%>
-  <%= text_field_tag('search[key]',@search_params['key'])%>
-  <%= submit_tag('Search') %>
-<% end %>
+<%= link_to 'Add Currency', new_currency_path(:circle => @circle.id) %>
 
-
-<%= error_messages_for('circle') %>
-<% form_tag(set_currencies_circle_url(@circle), :method=>:put) do -%>
-<div id="circle_currencies">
-  <% if @bound_currencies.empty?%>
-    <div id="bound-currencies-header"> There are no currencies in this circle.</div>
-  <% else %>
-    <div id="bound-currencies-header">
-      <b>Currencies in <%=h @circle.name %>:</b><br />
-      <%= submit_tag('<< Remove') %>
-    </div>
-    <table>
-    <tr>
-      <th>Currency</th>
-    </tr>
-    <% for currency in @bound_currencies%>
-      <tr>
-        <td title="<%=currency.description%>">
-          <%= check_box_tag("bound_currencies[#{currency.id}]") %>
-          <%=  label_tag "currencies_bound_#{currency.id}","#{currency.name}"+(@bound_currency_hash[currency.id]['autojoin'] ? ' (autojoin)' : '')%>
-        </td>
-      </tr>
-    <% end %>
-    </table>
-    <%= will_paginate @bound_currencies if @paginate_bound_currencies%>
-  <% end %>
-</div>
-
-<%if @currencies.empty?%>
-  <div id="search-results-header">No currencies found</div>
-<%else%>
-  <div id="search-results-header">Search found <%= pluralize("currency", @currencies.size) %>
-    <br />
-    Bind selected currencies to circle
-    <%= submit_tag('Add >>') %>
-    <%= check_box_tag("autojoin") %> <%=  label_tag "autojoin","Autojoin"%>
-    
-  </div>
-  <div id="circle_currencies_search_results">
-  <table>
+<% if @bound_currencies.empty?%>
+  <div> There are no currencies in this circle.</div>
+<% else %>
+<table id="currency_list">
   <tr>
-    <th>Currency<%= button_to_function "Toggle", "#{@currencies.collect{|u| "$('currencies_#{u.id}').checked = !$('currencies_#{u.id}').checked "}.join(';')}", :style=>'float:right'%></th>
+    <th colspan=2>Name</th>
+    <th>Type</th>
+    <% if current_user_can?(:admin)%>
+    <th>Steward</th>
+    <%end%>
     <th>Description</th>
+    <th>&nbsp;</th>
   </tr>
-  <% for currency in @currencies%>
-    <tr>
-      <td>
-      <%= check_box_tag("currencies[#{currency.id}]") %>
-      <%=  label_tag "currencies_#{currency.id}","#{currency.name} (#{currency.humanized_type})"%></td>
-      <td> <%= h currency.description%></td>
+
+  <% i = 0
+  for currency in @bound_currencies
+    i+=1
+    %>
+    <tr class="<%= i%2 == 0 ? ' odd' : ''%>" >
+      <td><%= render_currency_icon(currency,:size=>32) %></td>
+      <td><%= link_to currency.name, edit_currency_path(currency)+'?currency_type='+currency.class.to_s %> </td>
+      <td><%=h currency.humanized_type %> </td>
+      <% if current_user_can?(:admin)%>
+      <td><%=currency.steward.full_name%></td>
+      <%end%>
+      <td><%=h currency.description%></td>
+      <td><% if (currency.steward == current_user)||current_user_can?(:admin) %> <%= link_to 'Remove', currency_path(currency), :confirm => 'Are you sure?', :method => :delete %><%else%>&nbsp;<%end%></td>
     </tr>
   <% end %>
-  </table>
-  <%= will_paginate @currencies%>
-  </div>
-<% end %>
-
+</table>
 <%end%>

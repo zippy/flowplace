@@ -11,7 +11,7 @@
   <%end%>
   <li><%= nav_link 'Members', members_circles_path,'View the members of the circle', '/circles/members'%></li>
   <% if @current_circle.api_user_isa?(current_user,'namer')%>
-  <li><%= nav_link 'Setup', circle_path(@current_circle),'Configure members and currencies in a circle', '/circles/'+@current_circle.id.to_s%></li>
+  <li><%= nav_link 'Setup', circle_path(@current_circle),'Configure members and currencies in a circle', (request.path == '/currencies/new' && request.query_string =~ /circle=/) ? request.path : '/circles/'+@current_circle.id.to_s%></li>
   <% end %>
 <%end%>
 </ul>
