@@ -192,6 +192,24 @@ class CurrencyAccountsController < ApplicationController
     @currency = @currency_account.currency
     @player_class = @currency_account.player_class
   end
+
+  # PUT /currency_accounts/1/set_settings
+  def set_settings
+    @currency_account = CurrencyAccount.find(params[:id])
+    @currency = @currency_account.currency
+    @player_class = @currency_account.player_class
+    respond_to do |format|
+      if @currency_account.update_attribute(:notification, params[:notification])
+        flash[:notice] = 'The currency settings were updated.'
+        format.html { redirect_to(settings_currency_account_path) }
+        format.xml  { head :ok }
+      else
+        format.html { render :action => "settings" }
+        format.xml  { render :xml => @currency_account.errors, :status => :unprocessable_entity }
+      end
+    end
+    
+  end
   
   # GET /currency_accounts/1/play
   def play

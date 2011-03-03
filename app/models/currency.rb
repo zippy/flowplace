@@ -186,6 +186,18 @@ class Currency < ActiveRecord::Base
     sentence
   end
 
+  def api_humanize_play(play)
+    content = load_play_content(play)
+    sentence = api_play_sentence_fill(content['__meta']['name']) do |field_name|
+      case content[field_name]
+      when Hash
+        content[field_name]['_name']
+      else
+        content[field_name].to_s
+      end
+    end
+  end
+    
   def api_render_summary
      (total_plays,result) = scan_member_accounts
 #    result = name+" has "
@@ -233,12 +245,13 @@ class Currency < ActiveRecord::Base
   def load_play_content(play)
     if play.content.is_a?(String)
       begin
-        play = YAML.load(play.content)
+        YAML.load(play.content)
       rescue
-        play = {"corrupted_play"=>play.content}
+        {"corrupted_play"=>play.content}
       end
+    else
+      play.content
     end
-    play
   end
   
   def api_play_field_names(play_name)
@@ -319,6 +332,7 @@ class Currency < ActiveRecord::Base
   
   def api_play(play_name,currency_account,play)
     @play = Currency::State.new(api_play_field_names(play_name))
+    notification_players = {}
     api_play_fields(play_name).each do |field|
       field = field.values[0]
       field_name = field['id']
@@ -342,6 +356,7 @@ class Currency < ActiveRecord::Base
           @play[field_name] = play[field_name].get_state
           @play[field_name]['_name'] = play[field_name].name
           ca = play[field_name]
+          notification_players[field_name] = ca
           ok = false
           player_classes.each do |player_class|
             ok = true if player_class == ca.player_class
@@ -360,7 +375,7 @@ class Currency < ActiveRecord::Base
       eval script
 #    end
     if return_value == true
-      CurrencyAccount.transaction do
+      stored_play = CurrencyAccount.transaction do
         currency_account_links = {}
         api_play_fields(play_name).each do |field|
           field = field.values[0]
@@ -397,6 +412,22 @@ class Currency < ActiveRecord::Base
           p
         end
       end
+      notification_players.each do |field_name,ca|
+        if field_name != 'from' && ca.notification == 'email'
+          params = {}
+          params[:play_name] = play_name
+          params[:currency] = self
+          params[:from_currency_account] = currency_account
+          params[:to_currency_account] = ca
+          params[:play_text] = api_humanize_play(stored_play)            
+          begin
+            CurrencyNotificationMailer.deliver_currency_notification(params)
+          rescue Exception => e
+  #          return_value = "Could not deliver email: #{e}"
+          end
+        end
+      end
+      stored_play
     else
       if return_value.nil?
         raise "play script returned nil.  It should return true or an error string."

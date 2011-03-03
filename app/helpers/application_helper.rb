@@ -395,15 +395,7 @@ module ApplicationHelper
     else
       a=YAML.load(activity.contents)
       play = Play.find(a['play_id']);
-      content = currency.load_play_content(play)
-      sentence = currency.api_play_sentence_fill(content['__meta']['name']) do |field_name|
-        case content[field_name]
-        when Hash
-          content[field_name]['_name']
-        else
-          content[field_name].to_s
-        end
-      end
+      currency.api_humanize_play(play)
     end
   end
   

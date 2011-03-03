@@ -22,7 +22,7 @@ ActionController::Routing::Routes.draw do |map|
 
   map.resources :currency_accounts, :member => {
     :play => :get,
-    :settings => :get,
+    :settings => :get, :set_settings => :put,
     :summary_widget => :get,
     :record_play => :post
   }

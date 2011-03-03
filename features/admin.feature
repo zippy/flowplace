@@ -13,7 +13,7 @@ Feature: Priviliged users
     And I press "Search"
     Then I should be taken to the the accounts page
     And I should see "anonymous"
-    And I should see "all 2"
+    And I should see "all 1"
   
   Scenario: Admin goes to the accounts page and searches for users by account name
     Given A user "user1"

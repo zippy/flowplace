@@ -15,4 +15,10 @@ Account and Overall summary: <br />
 </textarea>
 </p>
 </div>
-<h3> <%=@currency.name%> account as <%=@player_class%></h3>
+<h3>Settings for <%=@currency.name%> (as <%=@player_class%>)</h3>
+<% form_tag(set_settings_currency_account_path(@currency_account), :method=>:put) do -%>
+  <%= label_tag :notification,"Notification"%> 
+  <%= select_tag :notification, options_for_select([['none',''], ['email','email']], @currency_account.notification) %>
+  <br />
+  <%= submit_tag "Update" %>
+<% end %>

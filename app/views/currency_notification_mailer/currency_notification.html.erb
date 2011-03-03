@@ -1,0 +1,7 @@
+A play involving you was made in <%= @currency.name %> by <%= @from_currency_account.user.full_name %> (<%= @from_currency_account.name %>):
+
+<%= @play_text %>
+
+To see the details of this play click here:
+
+<%= play_history_url(@to_currency_account,@play_name) %>
