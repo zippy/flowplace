@@ -1,7 +1,7 @@
 <% @title="Currencies in #{h @circle.name}" %>
 <%= render(:partial => 'sub_nav') %>
 
-<%= link_to 'Add Currency', new_currency_path(:circle => @circle.id) %>
+<%= link_to 'Add Currency', new_currency_path(:current_circle => @circle.id) %>
 
 <% if @bound_currencies.empty?%>
   <div> There are no currencies in this circle.</div>
@@ -23,7 +23,7 @@
     %>
     <tr class="<%= i%2 == 0 ? ' odd' : ''%>" >
       <td><%= render_currency_icon(currency,:size=>32) %></td>
-      <td><%= link_to currency.name, edit_currency_path(currency)+'?currency_type='+currency.class.to_s %> </td>
+      <td><%= link_to currency.name, edit_currency_path(currency)+'?currency_type='+currency.class.to_s+'&current_circle='+@circle.id.to_s %> </td>
       <td><%=h currency.humanized_type %> </td>
       <% if current_user_can?(:admin)%>
       <td><%=currency.steward.full_name%></td>

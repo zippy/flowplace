@@ -33,10 +33,7 @@ class CurrenciesController < ApplicationController
     return if !can_access_currency?
     check_for_currency_type
     @currency = Currency.new
-    @circle = @current_circle = Currency.find(params[:circle]) if params[:circle]
-    if @circle
-      @current_user_is_namer = @circle.api_user_isa?(current_user,'namer')
-    end
+    setup_current_circle
     respond_to do |format|
       format.html # new.html.erb
       format.xml  { render :xml => @currency }
@@ -45,6 +42,7 @@ class CurrenciesController < ApplicationController
 
   # GET /currencies/1/edit
   def edit
+    setup_current_circle
     check_for_currency_type
     @currency = Currency.find(params[:id])
     return if !can_access_currency?(@currency)
@@ -72,7 +70,7 @@ class CurrenciesController < ApplicationController
       @currency.configuration = params[:config]
     end
     @currency.steward_id = current_user.id
-    @circle = @current_circle = Currency.find(params[:circle]) if params[:circle]
+    setup_current_circle
     if @demo_mode
       @current_circle = Currency.find_by_type('CurrencyMembrane')
       @namer_account = @current_circle.api_user_accounts('namer')[0]
@@ -123,6 +121,7 @@ class CurrenciesController < ApplicationController
   # PUT /currencies/1.xml
   def update
     @currency = Currency.find(params[:id])
+    setup_current_circle
     return if !can_access_currency?(@currency)
     currency_params = get_currency_params
     @currency.configuration = params[:config]
@@ -130,7 +129,7 @@ class CurrenciesController < ApplicationController
     respond_to do |format|
       if @currency.update_attributes(currency_params)
         flash[:notice] = 'Currency was successfully updated.'
-        format.html { redirect_to currencies_url }
+        format.html { redirect_to @demo_mode ? dashboard_path : (@current_circle ? currencies_circle_path(@current_circle) : currencies_path) }
         format.xml  { head :ok }
       else
         format.html { render :action => "edit" }
@@ -175,4 +174,13 @@ class CurrenciesController < ApplicationController
       false
     end
   end
+  
+  def setup_current_circle
+    set_current_circle(false)
+    @circle = @current_circle
+    if @current_circle
+      @current_user_is_namer = @current_circle.api_user_isa?(current_user,'namer')
+    end
+  end
+  
 end

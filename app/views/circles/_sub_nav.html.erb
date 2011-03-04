@@ -15,6 +15,9 @@
       <%if request.path == new_currency_path%>
         <li><%= subtab('New Currency',new_currency_path) %></li>
       <%end%>
+      <%if request.path =~ /\/currencies\/[0-9]+\/edit/%>
+        <li><%= subtab('Edit Currency',request.path) %></li>
+      <%end%>
     <% end %>
   <%end%>
 </ul>

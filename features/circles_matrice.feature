@@ -363,7 +363,7 @@ Feature: circle namer
     Then I should see "There are no currencies in this circle."
     When I follow "Add Currency"
     Then I should be taken to the new currencies page for "the circle"
-    And I should see "Setup" as the active tab
+    And I should see "Setup" as the current tab
     And I should see "New Currency" as the active sub-tab
     And I should see "New currency for the circle"
     And I fill in "Name" with "WE"
@@ -392,9 +392,20 @@ Feature: circle namer
     And I press "Add >>"
     And I go to the link players page for "the circle"
     Then I should see "member" within "#joe"
+
+  Scenario: namer edits a currency
+    When  I go to the new currencies page for "the circle"
+    And I fill in "Name" with "WE"
+    And I select "Mutual Credit" from "Type"
+    And I press "Create"
+    When I follow "WE"
+    Then I should be taken to the edit currency page for "WE" in "the circle"
+    And I should see "Setup" as the current tab
+    And I should see "Edit Currency" as the active sub-tab
     
-  #this scenario though it works, is no longer revealed.  Namers never need to bind pre-existing
-  # currencies to circles.
+  #scenarios with "bind currencies page" work, but bind currency is no longer revealed.
+  # Namers should no longer need to bind pre-existing currencies to circles, as all currencies now
+  # are created in the context of a circle.
   Scenario: namer binds a currency to a circle
     When I go to the "namer" currency account history page for "anonymous" in "the circle" of "bind_currency"
     Then I should see "You have made no 'bind_currency' plays in this currency."

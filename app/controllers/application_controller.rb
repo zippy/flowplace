@@ -101,7 +101,7 @@ class ApplicationController < ActionController::Base
 
   private
   
-  def set_current_circle
+  def set_current_circle(set_default_if_not_specified = true)
     @my_circles = current_user.circle_memberships
     if params[:current_circle]
       if !Currency.exists?(params[:current_circle])
@@ -113,7 +113,9 @@ class ApplicationController < ActionController::Base
     elsif session[:current_circle]
       @current_circle = Currency.find(session[:current_circle])
     end
-    @current_circle ||= @my_circles[0]
+    if set_default_if_not_specified
+      @current_circle ||= @my_circles[0] 
+    end
   end
   def after_sign_out_path_for(resource_or_scope)
     logged_out_path

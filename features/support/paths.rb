@@ -97,13 +97,22 @@ module NavigationHelpers
     when /^the new currencies page for "([^\"]*)"$/
       circle = $1
       i = Currency.find_by_name(circle)
-      "/currencies/new?circle=#{i.id}"
+      "/currencies/new?current_circle=#{i.id}"
     when /the new "([^\"]*)" currencies page/
       '/currencies/new?currency_type=Currency'+$1.tr(' ','')
-    when /the edit currency page for "([^\"]*)"/
+    when /^the edit currency page for "([^\"]*)"$/
       circle = $1
       i = Currency.find_by_name(circle)
-      "/currencies/#{i.id}/edit"  
+      raise "No currency '#{circle}' found" if i.nil?
+      "/currencies/#{i.id}/edit?currency_type=#{i.type}"
+    when /^the edit currency page for "([^\"]*)" in "([^\"]*)"$/
+      currency = $1
+      circle = $2
+      c = Currency.find_by_name(circle)
+      raise "No circle '#{circle}' found" if c.nil?
+      cu = Currency.find_by_name(currency)
+      raise "No currency '#{currency}' found" if cu.nil?
+      "/currencies/#{cu.id}/edit?currency_type=#{cu.type}&current_circle=#{c.id}"
     when /the match page/
       '/weals'
     when /the accounts page/

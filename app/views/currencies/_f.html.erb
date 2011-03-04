@@ -1,10 +1,10 @@
 <%= f.error_messages %>
 <%= hidden_field_tag :currency_params_key, @currency.class.to_s.underscore%>
 
-<%if @current_circle%>
+<%if @current_circle && @currency.new_record?%>
   <h3>New currency for the circle</h3>
   <%= check_box_tag("autojoin") %> <%=  label_tag "autojoin","Autojoin circle members to this currency."%>
-  <%= hidden_field_tag 'circle', @current_circle.id%>
+  <%= hidden_field_tag 'current_circle', @current_circle.id%>
 <%end%>
 
 <%if @currency_type%>
