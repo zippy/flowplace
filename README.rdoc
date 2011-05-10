@@ -14,7 +14,7 @@ The flowplace is a tool for individuals, communities and organizations to build 
 
 == Installation
 
-The flowplace is a standard rails app.  It requires some gems, and some of it's plugins are stored in the repository as submodules.  Here are the installation instructions that should get you up and running assuming sqlite3 for your database (which is the default in the database.yml):
+The flowplace is a standard rails app.  Currently it runs on rails 2.3.8 or greater.  It requires some gems, and some of it's plugins are stored in the repository as submodules.  Here are the installation instructions that should get you up and running assuming sqlite3 for your database (which is the default in the database.yml):
 
   sudo gem install sqlite3-ruby nokogiri gravtastic
   git clone git://github.com/zippy/flowplace.git flowplace
@@ -23,7 +23,16 @@ The flowplace is a standard rails app.  It requires some gems, and some of it's 
   git submodule update
   cp config/database.yml.example config/database.yml
   cp config/flowplace_config.rb.example config/flowplace_config.rb
-  rake db:migrate
+  rake db:schema:load
+  
+ Then, to create an admin account so you can log in:
+ 
+  script/console
+  u = User.new(:user_name => 'admin', :first_name => 'Your', :last_name => 'Name',:email=> 'your@reale-mail-here.com')
+  u.enabled=true
+  u.set_privs(%w(accessAccounts admin assignPrivs circle createAccounts currency view_annotations))
+  u.save
+  u.attempt_set_password(:password=> "password", :password_confirmation=>"password")
 
 === Platform Specific Notes:
 
@@ -33,8 +42,22 @@ If you are installing on a Debian based Linux (including Ubuntu) you will need t
 
 otherwise the nokogiri gem won't install.
 
+If you are installing on Mac OS X you may also need to install the libxml2 library to get nokogiri working.  Assuming you have  brew (https://github.com/mxcl/homebrew) installed, this might work for you:
+
+brew install libxml2
+brew link libxml2
+cd /temp
+wget ftp://xmlsoft.org/libxml2/libxslt-1.1.26.tar.gz
+tar -zxvf libxslt-1.1.26.tar.gz
+cd libxslt-1.1.26
+./configure --prefix=/usr/local/Cellar/libxslt/1.1.26 --with-libxml-prefix=/usr/local/Cellar/libxml2/2.7.8
+make
+sudo make install
+gem install nokogiri -- --with-xslt-dir=/usr/local/Cellar/libxslt/1.1.26
+
+
 == License
 
 The flowplace is released under the GPL license.
 
-Copyright (c) 2009 Eric Harris-Braun, Jean-François Noubel, Fernanda Ibarra
+Copyright (c) 2009-2011 Eric Harris-Braun, Jean-François Noubel, Fernanda Ibarra
