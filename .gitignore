@@ -10,7 +10,6 @@ public/cache/**/*
 *.sqlite3.db
 *.sqlite3
 *-bak.*
-db/schema.rb
 config/database.yml
 config/smtp_settings.rb
 config/flowplace_config.rb
